@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: impulse    # 项目名称尽量用小写
+  data:
+    mongodb:
+      custom:
+        hosts:
+        - 39.105.86.90
+        ports:
+        - 27017
+        database: huanyu
+  jackson:
+    deserialization:
+      FAIL_ON_UNKNOWN_PROPERTIES: false
+    default-property-inclusion: non_null
+
+server:
+  port: 8072
+
+logging:
+  level:
+    root: INFO
+  file: impulse.log
+
+
