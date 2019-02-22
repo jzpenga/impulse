@@ -27,8 +27,11 @@ public class AlarmDaoImpl implements AlarmDao {
      * @throws ParseException
      */
     @Override
-    public List<Alarm> findAlarm(AlarmQuery alarmQuery) throws ParseException {
+    public List<Alarm> findAlarm(AlarmQuery alarmQuery,String userId) throws ParseException {
         Query query=new Query();
+        if(StringUtils.isNotBlank(userId)){
+            query.addCriteria(Criteria.where("userId").is(userId));
+        }
         if(StringUtils.isNotBlank(alarmQuery.getGatewayName())){//网关名称
             Pattern pattern = Pattern.compile("^" + alarmQuery.getGatewayName() + ".*$", Pattern.CASE_INSENSITIVE);
             query.addCriteria(Criteria.where("gatewayName").regex(pattern));

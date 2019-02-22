@@ -22,6 +22,8 @@ public class Relay implements Serializable {
     private Date updateTime;
     @ApiModelProperty(name = "createTime", value = "创建时间", example = "2019-01-01 00:00:00", required = true)
     private Date createTime;
+    @ApiModelProperty(name = "userId", value = "用户id", example = "5a31bhjb123333123dsada", required = true)
+    private String userId;
 
     public String getId() {return id; }
     public void setId(String id) { this.id = id;}
@@ -60,5 +62,13 @@ public class Relay implements Serializable {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

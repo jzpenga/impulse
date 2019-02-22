@@ -2,6 +2,7 @@ package com.msp.impulse.controller;
 
 import com.msp.impulse.base.BaseResponse;
 import com.msp.impulse.base.ResponseCode;
+import com.msp.impulse.entity.Company;
 import com.msp.impulse.query.ControlInstruQuery;
 import com.msp.impulse.query.ControllnstruUpdateQuery;
 import com.msp.impulse.service.ControlInstruService;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpSession;
+
 @RestController
 @RequestMapping("impulse/controlInstru")
 @Api(value = "控制指令", tags = "控制指令", description = "控制指令")
@@ -26,10 +29,16 @@ public class ControlInstruController {
 
     @PostMapping("findControlInstru")
     @ApiOperation(value = "查询控制指令", notes = "查询控制指令", tags = "控制指令", httpMethod = "POST")
-    public BaseResponse findControlInstru(@RequestBody ControlInstruQuery controlInstruQuery) {
+    public BaseResponse findControlInstru(@RequestBody ControlInstruQuery controlInstruQuery, HttpSession session) {
         BaseResponse response;
         try {
-            response = controlInstruService.findControlInstru(controlInstruQuery);
+            //获取用户id
+            String  userId="";
+            Company company= (Company)session.getAttribute("loginUser");
+            if(company!=null){
+                userId=company.getId();
+            }
+            response = controlInstruService.findControlInstru(controlInstruQuery,userId);
         } catch (Exception e) {
             logger.error(e.getMessage(),e);
             response = new BaseResponse();

@@ -67,9 +67,12 @@ public class SensorDaoImpl implements SensorDao {
      * @return
      */
     @Override
-    public List<Sensor> queryBySensorAndGateway(SensorQuery sensorQuery) {
+    public List<Sensor> queryBySensorAndGateway(SensorQuery sensorQuery,String userId) {
 
         Query query =new Query();
+        if(StringUtils.isNotBlank(userId)){
+            query.addCriteria(Criteria.where("userId").is(userId));
+        }
         if(StringUtils.isNotBlank(sensorQuery.getGatewayName())) {
             Pattern pattern = Pattern.compile("^" + sensorQuery.getGatewayName() + ".*$", Pattern.CASE_INSENSITIVE);
             query.addCriteria(Criteria.where("gatewayName").regex(pattern));

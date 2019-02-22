@@ -11,7 +11,7 @@ public interface GatewayDao {
 
     void findAndRemove(String id);
 
-    List<Gateway> findGatewayByCondition(GatewayQuery gatewayQuery);
+    List<Gateway> findGatewayByCondition(GatewayQuery gatewayQuery,String id);
 
     boolean findByName(String gatewayName);
 

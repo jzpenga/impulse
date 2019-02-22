@@ -37,7 +37,7 @@ public class GatewayService {
      * @return
      */
     @Transactional
-    public BaseResponse addGateway(Gateway gateway) {
+    public BaseResponse addGateway(Gateway gateway,String userId) {
         BaseResponse response = new BaseResponse<>();
         //名称必输
         if (StringUtils.isBlank(gateway.getEquipmentName())) {
@@ -106,7 +106,10 @@ public class GatewayService {
             }
             gateway.setRelayList(relayList);
         }
-
+        //用户id
+        if(StringUtils.isNotBlank(userId)){
+            gateway.setUserId(userId);
+        }
         gateway.setCreateTime(new Date());
         gatewayDao.save(gateway);
 
@@ -121,7 +124,7 @@ public class GatewayService {
      * @param gatewayQuery
      * @return
      */
-    public BaseResponse<List<Gateway>> findGatewayByCondition(@RequestBody GatewayQuery gatewayQuery) {
+    public BaseResponse<List<Gateway>> findGatewayByCondition(@RequestBody GatewayQuery gatewayQuery,String id) {
         BaseResponse<List<Gateway>> response = new BaseResponse<>();
         //最小页为第一页
         if (gatewayQuery.getPageNo() == null || gatewayQuery.getPageNo() < 1) {
@@ -130,7 +133,7 @@ public class GatewayService {
         if (gatewayQuery.getPageSize() == null || gatewayQuery.getPageSize() < 1) {
             gatewayQuery.setPageSize(10);
         }
-        response.setData(gatewayDao.findGatewayByCondition(gatewayQuery));
+        response.setData(gatewayDao.findGatewayByCondition(gatewayQuery,id));
         response.setResponseCode(ResponseCode.OK.getCode());
         response.setResponseMsg(ResponseCode.OK.getMessage());
 

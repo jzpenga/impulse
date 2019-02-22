@@ -20,6 +20,8 @@ public class DataHistory {
     private Date reportDate;
     @ApiModelProperty(name = "SensorType", value = "检测类别", example = "", required = true)
     private String SensorType;
+    @ApiModelProperty(name = "userId", value = "用户id", example = "5a31bhjb123333123dsada", required = true)
+    private String userId;
 
     public Integer getWayNo() {
         return wayNo;
@@ -67,5 +69,9 @@ public class DataHistory {
 
     public void setSensorType(String sensorType) {
         SensorType = sensorType;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

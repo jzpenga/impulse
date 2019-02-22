@@ -2,6 +2,7 @@ package com.msp.impulse.controller;
 
 import com.msp.impulse.base.BaseResponse;
 import com.msp.impulse.base.ResponseCode;
+import com.msp.impulse.entity.Company;
 import com.msp.impulse.entity.Gateway;
 import com.msp.impulse.exception.MyException;
 import com.msp.impulse.query.GatewayQuery;
@@ -14,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @RestController
@@ -26,10 +28,16 @@ public class GatewayController {
 
     @PostMapping("findGatewayByCondition")
     @ApiOperation(value = "根据条件查询网关", notes = "根据条件查询网关", tags = "网关管理", httpMethod = "POST")
-    public BaseResponse<List<Gateway>> findGatewayByCondition(@RequestBody GatewayQuery gatewayQuery) {
+    public BaseResponse<List<Gateway>> findGatewayByCondition(@RequestBody GatewayQuery gatewayQuery,HttpSession session) {
         BaseResponse<List<Gateway>> response;
         try {
-            response = gatewayService.findGatewayByCondition(gatewayQuery);
+            //获取用户id
+            String  id="";
+            Company company= (Company)session.getAttribute("loginUser");
+            if(company!=null){
+                id=company.getId();
+            }
+            response = gatewayService.findGatewayByCondition(gatewayQuery,id);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             response = new BaseResponse<>();
@@ -57,10 +65,16 @@ public class GatewayController {
 
     @PostMapping("saveGateway")
     @ApiOperation(value = "新增修改网关信息", notes = "新增修改网关信息", tags = "网关管理", httpMethod = "POST")
-    public BaseResponse addGateway(@RequestBody Gateway gateway) {
+    public BaseResponse addGateway(@RequestBody Gateway gateway,HttpSession session) {
         BaseResponse response;
         try {
-            response = gatewayService.addGateway(gateway);
+            //获取用户id
+            String  userId="";
+            Company company= (Company)session.getAttribute("loginUser");
+            if(company!=null){
+                userId=company.getId();
+            }
+            response = gatewayService.addGateway(gateway,userId);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             response = new BaseResponse();

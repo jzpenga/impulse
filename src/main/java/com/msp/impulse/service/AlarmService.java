@@ -15,9 +15,9 @@ public class AlarmService {
     @Autowired
     private AlarmDao alarmDao;
 
-    public BaseResponse<Alarm> findAlarm(AlarmQuery alarmQuery) throws ParseException {
+    public BaseResponse<Alarm> findAlarm(AlarmQuery alarmQuery,String userId) throws ParseException {
         BaseResponse<Alarm> response=new BaseResponse();
-        alarmDao.findAlarm(alarmQuery);
+        alarmDao.findAlarm(alarmQuery,userId);
         response.setResponseCode(ResponseCode.OK.getCode());
         response.setResponseMsg(ResponseCode.OK.getMessage());
         return response;

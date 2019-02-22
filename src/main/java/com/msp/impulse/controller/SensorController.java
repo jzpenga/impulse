@@ -2,6 +2,7 @@ package com.msp.impulse.controller;
 
 import com.msp.impulse.base.BaseResponse;
 import com.msp.impulse.base.ResponseCode;
+import com.msp.impulse.entity.Company;
 import com.msp.impulse.entity.Pass;
 import com.msp.impulse.entity.Sensor;
 import com.msp.impulse.exception.MyException;
@@ -16,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @RestController
@@ -28,10 +30,16 @@ public class SensorController {
 
     @PostMapping("saveSensor")
     @ApiOperation(value="新增",notes = "新增或修改传感器",tags="传感器操作",httpMethod = "POST")
-    public BaseResponse addSensor(@RequestBody Sensor sensor){
+    public BaseResponse addSensor(@RequestBody Sensor sensor, HttpSession session){
         BaseResponse response;
         try{
-           response=sensorService.saveSensor(sensor);
+            //获取用户id
+            String  userId="";
+            Company company= (Company)session.getAttribute("loginUser");
+            if(company!=null){
+                userId=company.getId();
+            }
+           response=sensorService.saveSensor(sensor,userId);
         }catch(Exception e){
             logger.error(e.getMessage(),e);
             e.printStackTrace();
@@ -60,10 +68,16 @@ public class SensorController {
 
     @PostMapping("searchSensor")
     @ApiOperation(value = "查询", notes = "查询传感器相关信息", tags = "传感器操作", httpMethod = "POST")
-    public BaseResponse<List<Sensor>> queryBySensorAndGateway(@RequestBody SensorQuery sensorQuery){
+    public BaseResponse<List<Sensor>> queryBySensorAndGateway(@RequestBody SensorQuery sensorQuery, HttpSession session){
         BaseResponse<List<Sensor>> response;
         try{
-            response=sensorService.queryBySensorAndGateway(sensorQuery);
+            //获取用户id
+            String  userId="";
+            Company company= (Company)session.getAttribute("loginUser");
+            if(company!=null){
+                userId=company.getId();
+            }
+            response=sensorService.queryBySensorAndGateway(sensorQuery,userId);
         }catch(Exception e){
             logger.error(e.getMessage(),e);
             e.printStackTrace();

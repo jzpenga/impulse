@@ -31,8 +31,11 @@ public class ControlInstruDaoImpl implements ControlInstruDao {
      * @return
      */
     @Override
-    public List<ControlInstru> findControlInstru(ControlInstruQuery controlInstruQuery) throws ParseException {
+    public List<ControlInstru> findControlInstru(ControlInstruQuery controlInstruQuery,String userId) throws ParseException {
         Query query = new Query();
+        if(StringUtils.isNotBlank(userId)){
+            query.addCriteria(Criteria.where("userId").is(userId));
+        }
         if (StringUtils.isNotBlank(controlInstruQuery.getGatewayName())){
             Pattern pattern = Pattern.compile("^" + controlInstruQuery.getGatewayName() + ".*$", Pattern.CASE_INSENSITIVE);
             query.addCriteria(Criteria.where("gatewayName").regex(pattern));

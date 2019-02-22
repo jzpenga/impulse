@@ -26,9 +26,9 @@ public class ControlInstruService {
      * @param controlInstruQuery
      * @return
      */
-    public BaseResponse findControlInstru(ControlInstruQuery controlInstruQuery) throws ParseException {
+    public BaseResponse findControlInstru(ControlInstruQuery controlInstruQuery,String userId) throws ParseException {
         BaseResponse response=new BaseResponse();
-        List<ControlInstru> controlInstruList= controlInstruDao.findControlInstru(controlInstruQuery);
+        List<ControlInstru> controlInstruList= controlInstruDao.findControlInstru(controlInstruQuery,userId);
         response.setData(controlInstruList);
         response.setResponseCode(ResponseCode.OK.getCode());
         response.setResponseMsg(ResponseCode.OK.getMessage());

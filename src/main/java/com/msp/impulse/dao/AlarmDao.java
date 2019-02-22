@@ -7,7 +7,7 @@ import java.text.ParseException;
 import java.util.List;
 
 public interface AlarmDao {
-    List<Alarm> findAlarm(AlarmQuery alarmQuery) throws ParseException;
-
     List<Alarm> getAlarmList();
+
+    List<Alarm> findAlarm(AlarmQuery alarmQuery,String userId) throws ParseException;
 }
