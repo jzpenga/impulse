@@ -7,6 +7,7 @@ import com.iotplatform.client.invokeapi.Authentication;
 import com.iotplatform.client.invokeapi.SubscriptionManagement;
 import com.iotplatform.utils.PropertyUtil;
 import com.msp.impulse.nb.utils.AuthUtil;
+import com.sun.corba.se.spi.ior.IdentifiableFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -29,28 +30,6 @@ public class ApplicationMessageReceiver implements ApplicationListener<Applicati
             AuthOutDTO authOutDTO = authentication.getAuthToken();
             String accessToken = authOutDTO.getAccessToken();
 
-            /**---------------------sub deviceAdded notification------------------------*/
-            //note: 10.X.X.X is a LAN IP, not a public IP, so subscription callbackUrl's IP cannot be 10.X.X.X
-            System.out.println("======subscribe to device business data notification======");
-            String callbackUrl = "http://39.105.86.90:8072/v1.0.0/messageReceiver";//this is a test callbackUrl
-            SubscriptionDTO subDTO = subDeviceData(subscriptionManagement, "deviceAdded", callbackUrl, accessToken);
-            subDeviceData(subscriptionManagement, "deviceDataChanged", callbackUrl, accessToken);
-
-            /**---------------------sub device upgrade result notification------------------------*/
-            System.out.println("\n======subscribe to device management data notification======");
-            subDeviceManagementData(subscriptionManagement, "swUpgradeResultNotify", callbackUrl, accessToken);
-
-            if (subDTO != null) {
-                /**---------------------query single subscription------------------------*/
-                System.out.println("\n======query single subscription======");
-                SubscriptionDTO subDTO2 = subscriptionManagement.querySingleSubscription(subDTO.getSubscriptionId(), null, accessToken);
-                System.out.println(subDTO2.toString());
-
-                /**---------------------delete single subscription------------------------*/
-                System.out.println("\n======delete single subscription======");
-                subscriptionManagement.deleteSingleSubscription(subDTO.getSubscriptionId(), null, accessToken);
-                System.out.println("delete single subscription succeeds");
-            }
 
             /**---------------------query batch subscriptions------------------------*/
             System.out.println("\n======query batch subscriptions======");
@@ -59,18 +38,16 @@ public class ApplicationMessageReceiver implements ApplicationListener<Applicati
             QueryBatchSubOutDTO qbsOutDTO = subscriptionManagement.queryBatchSubscriptions(qbsInDTO, accessToken);
             System.out.println(qbsOutDTO.toString());
 
-            /**---------------------delete batch subscriptions------------------------*/
-            System.out.println("\n======delete batch subscriptions======");
-            DeleteBatchSubInDTO dbsInDTO = new DeleteBatchSubInDTO();
-            dbsInDTO.setAppId(PropertyUtil.getProperty("appId"));
-            try {
-                subscriptionManagement.deleteBatchSubscriptions(dbsInDTO, accessToken);
-                System.out.println("delete batch subscriptions succeeds");
-            } catch (NorthApiException e) {
-                if ("200001".equals(e.getError_code())) {
-                    System.out.println("there's no subscription any more");
-                }
+
+            if (qbsOutDTO.getTotalCount()<=0){
+                /**---------------------sub deviceAdded notification------------------------*/
+                //note: 10.X.X.X is a LAN IP, not a public IP, so subscription callbackUrl's IP cannot be 10.X.X.X
+                System.out.println("======subscribe to device business data notification======");
+                String callbackUrl = "http://39.105.86.90:8072/v1.0.0/messageReceiver";//this is a test callbackUrl
+                subDeviceData(subscriptionManagement, "deviceAdded", callbackUrl, accessToken);
+                subDeviceData(subscriptionManagement, "deviceDataChanged", callbackUrl, accessToken);
             }
+
         }catch (Exception e){
             logger.error("订阅出错"+e.getMessage());
             e.printStackTrace();
