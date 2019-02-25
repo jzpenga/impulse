@@ -2,6 +2,9 @@ package com.msp.impulse.nb;
 
 import com.iotplatform.client.dto.*;
 import com.iotplatform.utils.JsonUtil;
+import com.msp.impulse.controller.UserController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -9,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @EnableAutoConfiguration
 public class PushMessageReceiver {
+    private static Logger logger = LoggerFactory.getLogger(PushMessageReceiver.class);
+
     private final String callbackurl = "/v1.0.0/messageReceiver";
     private final String callbackurl_nbcmd = "/v1.0.0/messageReceiver/cmd";
 
@@ -128,11 +133,13 @@ public class PushMessageReceiver {
     }
 
     public void handleDeviceDataChanged(NotifyDeviceDataChangedDTO body) {
-        System.out.println("deviceDataChanged ==> " + body);
+        //System.out.println("deviceDataChanged ==> " + body);
+        logger.info("deviceDataChanged ==> " + body);
     }
 
     public void handleDeviceDatasChanged(NotifyDeviceDatasChangedDTO body) {
-        System.out.println("deviceDatasChanged ==> " + body);
+        //System.out.println("deviceDatasChanged ==> " + body);
+        logger.info("deviceDatasChanged ==> " + body);
     }
 
     public void handleServiceInfoChanged(NotifyServiceInfoChangedDTO body) {
