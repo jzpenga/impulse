@@ -1,14 +1,13 @@
-package com.msp.impulse.entity;
+package com.msp.impulse.query;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.data.annotation.Id;
 
-import java.io.Serializable;
 import java.util.Date;
 
-@ApiModel(value = "公司", description = "公司")
-public class Company  implements Serializable {
+@ApiModel("用户管理查询")
+public class AdminUserQuery {
     @Id
     @ApiModelProperty(name = "id", value = "id", example = "id", required = true)
     private String id;
@@ -37,9 +36,13 @@ public class Company  implements Serializable {
         this.id = id;
     }
 
-    public String getCompanyName() { return companyName; }
+    public String getCompanyName() {
+        return companyName;
+    }
 
-    public void setCompanyName(String companyName) { this.companyName = companyName; }
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
 
     public String getProvince() {
         return province;
@@ -65,9 +68,13 @@ public class Company  implements Serializable {
         this.detailedAdd = detailedAdd;
     }
 
-    public String getLoginName() { return loginName; }
+    public String getLoginName() {
+        return loginName;
+    }
 
-    public void setLoginName(String loginName) { this.loginName = loginName; }
+    public void setLoginName(String loginName) {
+        this.loginName = loginName;
+    }
 
     public String getPassword() {
         return password;

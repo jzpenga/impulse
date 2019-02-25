@@ -35,6 +35,8 @@ public class Sensor {
     @DBRef
     @ApiModelProperty(name = "gateway", value = "网管", example = "网关", required = true)
     private Gateway gateway;
+    @ApiModelProperty(name = "userId", value = "用户id", example = "5a31bhjb123333123dsada", required = true)
+    private String userId;
 
 
     public String getId() { return id; }
@@ -105,5 +107,13 @@ public class Sensor {
 
     public void setGateway(Gateway gateway) {
         this.gateway = gateway;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

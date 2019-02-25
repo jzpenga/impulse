@@ -10,7 +10,7 @@ import java.util.List;
 public interface ControlInstruDao {
     void  save(ControlInstru controlInstru);
 
-    List<ControlInstru> findControlInstru(ControlInstruQuery controlInstruQuery) throws ParseException;
+    List<ControlInstru> findControlInstru(ControlInstruQuery controlInstruQuery,String userId) throws ParseException;
 
     List<ControlInstru> getControlInstruList();
 

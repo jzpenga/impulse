@@ -39,6 +39,8 @@ public class Pass  {
     private  String  SensorName;
     @ApiModelProperty(name="SensorType",value = "传感类型",example = "")
     private  String  SensorType;
+    @ApiModelProperty(name = "userId", value = "用户id", example = "5a31bhjb123333123dsada", required = true)
+    private String userId;
 
     public String getId() {
         return id;
@@ -157,5 +159,13 @@ public class Pass  {
 
     public void setSensorType(String sensorType) {
         SensorType = sensorType;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

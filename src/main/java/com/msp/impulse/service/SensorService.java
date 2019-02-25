@@ -29,7 +29,7 @@ public class SensorService {
      * @param sensor
      * @return
      */
-    public BaseResponse saveSensor(Sensor sensor) {
+    public BaseResponse saveSensor(Sensor sensor,String  userId) {
         BaseResponse response=new BaseResponse();
         //名称必输
         if (StringUtils.isBlank(sensor.getName())) {
@@ -54,6 +54,10 @@ public class SensorService {
             Pass passReturn = passDao.save(pass);
             passList.add(passReturn);
         }
+        //用户id
+        if(StringUtils.isNotBlank(userId)){
+            sensor.setUserId(userId);
+        }
         sensor.setPassList(passList);
         sensor.setCreateTime(new Date());
         sensorDao.save(sensor);
@@ -67,7 +71,7 @@ public class SensorService {
      * @param sensorQuery
      * @return
      */
-    public BaseResponse<List<Sensor>> queryBySensorAndGateway(SensorQuery sensorQuery) {
+    public BaseResponse<List<Sensor>> queryBySensorAndGateway(SensorQuery sensorQuery,String userId) {
 
         BaseResponse<List<Sensor>> response=new BaseResponse<>();
         //最小页为第一页
@@ -77,7 +81,7 @@ public class SensorService {
         if (sensorQuery.getPageSize() == null || sensorQuery.getPageSize() < 1) {
             sensorQuery.setPageSize(10);
         }
-        List<Sensor> sensorList=sensorDao.queryBySensorAndGateway(sensorQuery);
+        List<Sensor> sensorList=sensorDao.queryBySensorAndGateway(sensorQuery, userId);
         response.setData(sensorList);
         response.setResponseCode(ResponseCode.OK.getCode());
         response.setResponseMsg(ResponseCode.OK.getMessage());

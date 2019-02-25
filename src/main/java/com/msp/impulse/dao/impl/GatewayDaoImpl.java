@@ -35,9 +35,11 @@ public class GatewayDaoImpl implements GatewayDao {
     }
 
     @Override
-    public List<Gateway> findGatewayByCondition(GatewayQuery gatewayQuery) {
+    public List<Gateway> findGatewayByCondition(GatewayQuery gatewayQuery,String id) {
         Query query = new Query();
-
+        if(StringUtils.isNotBlank(id)){
+            query.addCriteria(Criteria.where("userId").is(id));
+        }
         if (StringUtils.isNotBlank(gatewayQuery.getEquipmentName())) {
             Pattern pattern = Pattern.compile("^" + gatewayQuery.getEquipmentName() + ".*$", Pattern.CASE_INSENSITIVE);
             query.addCriteria(Criteria.where("equipmentName").regex(pattern));

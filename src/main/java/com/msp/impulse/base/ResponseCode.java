@@ -19,6 +19,7 @@ public enum ResponseCode {
     RELAY_NOT_EXSIST(3012,"网关对应的继电器不存在！"),
     LOGINNAME_EXSIST(3013,"登录名已存在！"),
     INPUT_COMPAY(3014,"请输入公司相关信息！"),
+    ADMINNAME_NULL(3015,"请输入管理员登录名"),
     ;
 
 
