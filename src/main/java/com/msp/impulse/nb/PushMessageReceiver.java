@@ -22,7 +22,7 @@ public class PushMessageReceiver {
     @ResponseBody
     public String receive(@RequestBody String body) throws Exception {
         this.handleBody(body);
-        System.out.println(body);
+        //System.out.println(body);
         if (body.contains("\"notifyType\":\"deviceAdded\"")) {
             this.handleDeviceAdded((NotifyDeviceAddedDTO) JsonUtil.jsonString2SimpleObj(body, NotifyDeviceAddedDTO.class));
         }
