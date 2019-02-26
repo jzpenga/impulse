@@ -16,10 +16,9 @@ public class DataReportEntity {
     //设备序列号
     private String equipmentNo;
 
-
-    private String C130;
-    private String C242;
-    private String C256;
+    private String dataKey;
+    private String dataValue;
+    private String dataMark;
 
 
     public String getDeviceId() {
@@ -62,27 +61,28 @@ public class DataReportEntity {
         this.equipmentNo = equipmentNo;
     }
 
-    public String getC130() {
-        return C130;
+
+    public String getDataKey() {
+        return dataKey;
     }
 
-    public void setC130(String c130) {
-        C130 = c130;
+    public void setDataKey(String dataKey) {
+        this.dataKey = dataKey;
     }
 
-    public String getC242() {
-        return C242;
+    public String getDataValue() {
+        return dataValue;
     }
 
-    public void setC242(String c242) {
-        C242 = c242;
+    public void setDataValue(String dataValue) {
+        this.dataValue = dataValue;
     }
 
-    public String getC256() {
-        return C256;
+    public String getDataMark() {
+        return dataMark;
     }
 
-    public void setC256(String c256) {
-        C256 = c256;
+    public void setDataMark(String dataMark) {
+        this.dataMark = dataMark;
     }
 }
