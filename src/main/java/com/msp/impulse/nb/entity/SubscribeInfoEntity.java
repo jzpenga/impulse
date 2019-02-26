@@ -3,7 +3,7 @@ package com.msp.impulse.nb.entity;
 public class SubscribeInfoEntity {
 
     private String callbackUrl;
-    private String userName;
+    private String loginName;
 
     public String getCallbackUrl() {
         return callbackUrl;
@@ -13,11 +13,11 @@ public class SubscribeInfoEntity {
         this.callbackUrl = callbackUrl;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getLoginName() {
+        return loginName;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setLoginName(String loginName) {
+        this.loginName = loginName;
     }
 }
