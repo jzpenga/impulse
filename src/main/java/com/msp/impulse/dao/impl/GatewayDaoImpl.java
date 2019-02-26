@@ -103,4 +103,11 @@ public class GatewayDaoImpl implements GatewayDao {
         }
         return null;
     }
+
+    @Override
+    public List<Gateway> findGatewayByUserId(String userId) {
+        Query query=new Query();
+        query.addCriteria(Criteria.where("userId").is(userId));
+        return mongoTemplate.find(query,Gateway.class);
+    }
 }

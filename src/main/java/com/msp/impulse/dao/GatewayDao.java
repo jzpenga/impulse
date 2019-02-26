@@ -18,4 +18,6 @@ public interface GatewayDao {
     Gateway findGatewayById(String id);
 
     Relay findByNameAndWay(String gatewayName, Integer wayNo);
+
+    List<Gateway> findGatewayByUserId(String userId);
 }

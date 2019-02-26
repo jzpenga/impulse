@@ -25,10 +25,10 @@ public class UserController {
 
     @PostMapping("addUser")
     @ApiOperation(value = "添加用户", notes = "新增用户", tags = "用户操作", httpMethod = "POST")
-    public BaseResponse<User> addUser(@RequestBody PersonalInfoQuery personalInfoQuery) {
-        BaseResponse<User> response;
+    public BaseResponse<Company> addUser(@RequestBody Company company) {
+        BaseResponse<Company> response;
         try {
-            response = userService.addUser(personalInfoQuery);
+            response = userService.addUser(company);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             response = new BaseResponse<>();
