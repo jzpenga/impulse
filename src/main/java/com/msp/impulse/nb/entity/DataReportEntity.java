@@ -85,4 +85,19 @@ public class DataReportEntity {
     public void setDataMark(String dataMark) {
         this.dataMark = dataMark;
     }
+
+
+    @Override
+    public String toString() {
+        return "DataReportEntity{" +
+                "deviceId='" + deviceId + '\'' +
+                ", serviceId='" + serviceId + '\'' +
+                ", serviceType='" + serviceType + '\'' +
+                ", eventTime='" + eventTime + '\'' +
+                ", equipmentNo='" + equipmentNo + '\'' +
+                ", dataKey='" + dataKey + '\'' +
+                ", dataValue='" + dataValue + '\'' +
+                ", dataMark='" + dataMark + '\'' +
+                '}';
+    }
 }

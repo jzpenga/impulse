@@ -1,23 +1,28 @@
-package com.msp.impulse.nb;
+package com.msp.impulse.nb.controller;
 
 import com.iotplatform.client.dto.*;
 import com.iotplatform.utils.JsonUtil;
-import com.msp.impulse.controller.UserController;
+import com.msp.impulse.nb.handler.DeviceDataChangeHandler;
+import com.msp.impulse.nb.handler.IDataHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
 @EnableAutoConfiguration
-public class PushMessageReceiver {
-    private static Logger logger = LoggerFactory.getLogger(PushMessageReceiver.class);
+public class PushMessageReceiverController {
+    private static Logger logger = LoggerFactory.getLogger(PushMessageReceiverController.class);
 
     private final String callbackurl = "/v1.0.0/messageReceiver";
     private final String callbackurl_nbcmd = "/v1.0.0/messageReceiver/cmd";
 
-    public PushMessageReceiver() {
+
+    private IDataHandler<NotifyDeviceDataChangedDTO> dataChangedDTOIDataHandler  = new DeviceDataChangeHandler();
+
+    public PushMessageReceiverController() {
     }
 
     @RequestMapping(
@@ -133,8 +138,9 @@ public class PushMessageReceiver {
     }
 
     public void handleDeviceDataChanged(NotifyDeviceDataChangedDTO body) {
-        //System.out.println("deviceDataChanged ==> " + body);
-        logger.info("deviceDataChanged ==> " + body);
+        System.out.println("deviceDataChanged ==> " + body);
+        //logger.info("deviceDataChanged ==> " + body);
+        dataChangedDTOIDataHandler.handler(body);
     }
 
     public void handleDeviceDatasChanged(NotifyDeviceDatasChangedDTO body) {
