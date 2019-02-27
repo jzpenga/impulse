@@ -29,6 +29,8 @@ public class GatewayService {
     private RelayDao relayDao;
     @Autowired
     private ControlInstruDao controlInstruDao;
+    @Autowired
+    private UserDao userDao;
 
     /**
      * 新增网关
@@ -37,7 +39,7 @@ public class GatewayService {
      * @return
      */
     @Transactional
-    public BaseResponse addGateway(Gateway gateway,String userId) {
+    public BaseResponse addGateway(Gateway gateway, String userId) {
         BaseResponse response = new BaseResponse<>();
         //名称必输
         if (StringUtils.isBlank(gateway.getEquipmentName())) {
@@ -83,14 +85,14 @@ public class GatewayService {
                 Relay returnRelay = relayDao.save(relay);
                 relayList.add(returnRelay);
                 //记录继电器控制指令
-                if(StringUtils.isBlank(relay.getDealStatus())){
+                if (StringUtils.isBlank(relay.getDealStatus())) {
                     throw new MyException("请输入控制指令进行继电器的开关操作");
                 }
-                if(relay.getWayNo()==null){
+                if (relay.getWayNo() == null) {
                     throw new MyException("请确认继电器路数");
                 }
                 //登记控制指令
-                ControlInstru controlInstru=new ControlInstru();
+                ControlInstru controlInstru = new ControlInstru();
                 controlInstru.setRelay(relay);
                 controlInstru.setDownTime(new Date());//下发时间
                 controlInstru.setDealStatus(relay.getDealStatus());//处理状态0-开 1-关
@@ -107,7 +109,7 @@ public class GatewayService {
             gateway.setRelayList(relayList);
         }
         //用户id
-        if(StringUtils.isNotBlank(userId)){
+        if (StringUtils.isNotBlank(userId)) {
             gateway.setUserId(userId);
         }
         gateway.setCreateTime(new Date());
@@ -124,7 +126,7 @@ public class GatewayService {
      * @param gatewayQuery
      * @return
      */
-    public BaseResponse<List<Gateway>> findGatewayByCondition(@RequestBody GatewayQuery gatewayQuery,String id) {
+    public BaseResponse<List<Gateway>> findGatewayByCondition(@RequestBody GatewayQuery gatewayQuery, String id) {
         BaseResponse<List<Gateway>> response = new BaseResponse<>();
         //最小页为第一页
         if (gatewayQuery.getPageNo() == null || gatewayQuery.getPageNo() < 1) {
@@ -133,7 +135,7 @@ public class GatewayService {
         if (gatewayQuery.getPageSize() == null || gatewayQuery.getPageSize() < 1) {
             gatewayQuery.setPageSize(10);
         }
-        response.setData(gatewayDao.findGatewayByCondition(gatewayQuery,id));
+        response.setData(gatewayDao.findGatewayByCondition(gatewayQuery, id));
         response.setResponseCode(ResponseCode.OK.getCode());
         response.setResponseMsg(ResponseCode.OK.getMessage());
 
@@ -171,17 +173,38 @@ public class GatewayService {
 
     /**
      * 批量删除网关数据
+     *
      * @param ids
      * @return
      */
     @Transactional
     public BaseResponse deleteGatewayBatch(List<String> ids) {
         BaseResponse response = new BaseResponse<>();
-        for (String id:ids) {
+        for (String id : ids) {
             gatewayDao.findAndRemove(id);
         }
         response.setResponseCode(ResponseCode.OK.getCode());
         response.setResponseMsg(ResponseCode.OK.getMessage());
         return response;
+    }
+
+    /**
+     * 更改company表的网关数
+     *
+     * @param userId
+     * @param changeNumber 删除传负数
+     */
+    public synchronized void changeGatewayNumber(String userId, Integer changeNumber) {
+        //根据userId查询当前gatewayNumber
+        Company company = userDao.findById(userId);
+        if(company!=null){
+            Integer  gatewayNumber = company.getGatewayNumber();
+            if(gatewayNumber>0){
+                gatewayNumber=gatewayNumber-changeNumber;
+                //改变网关个数
+                company.setGatewayNumber(gatewayNumber);
+                userDao.save(company);
+            }
+        }
     }
 }

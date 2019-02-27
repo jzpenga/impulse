@@ -3,15 +3,28 @@ package com.msp.impulse.service;
 import com.msp.impulse.base.BaseResponse;
 import com.msp.impulse.base.ResponseCode;
 import com.msp.impulse.dao.AdminDao;
+import com.msp.impulse.dao.GatewayDao;
+import com.msp.impulse.dao.SensorDao;
+import com.msp.impulse.dao.UserDao;
 import com.msp.impulse.entity.Admin;
+import com.msp.impulse.entity.Company;
+import com.msp.impulse.entity.Gateway;
+import com.msp.impulse.entity.Sensor;
+import com.msp.impulse.vo.CompanyDetailVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
+
+import java.util.List;
 
 @Service
 public class AdminService {
     @Autowired
     private AdminDao adminDao;
+    @Autowired
+    private GatewayDao gatewayDao;
+    @Autowired
+    private SensorDao sensorDao;
 
     /**
      * 新增修改admin
@@ -90,6 +103,46 @@ public class AdminService {
             return response;
         }
         response.setData(admin);
+        response.setResponseCode(ResponseCode.OK.getCode());
+        response.setResponseMsg(ResponseCode.OK.getMessage());
+        return response;
+    }
+
+    /**
+     * 用户信息查询
+     * @param company
+     * @return
+     */
+    public BaseResponse<List<Company>> findUser(Company company) {
+        BaseResponse response = new BaseResponse<>();
+        List<Company> companyList=adminDao.findUser(company);
+        response.setData(companyList);
+        response.setResponseCode(ResponseCode.OK.getCode());
+        response.setResponseMsg(ResponseCode.OK.getMessage());
+        return response;
+    }
+
+    /**
+     * 根据用户id查询
+     * @param userId
+     * @return
+     */
+    public BaseResponse<CompanyDetailVo> findUserById(String userId) {
+        BaseResponse response = new BaseResponse<>();
+        CompanyDetailVo companyDetailVo=new  CompanyDetailVo();
+        Company company=adminDao.findUserById(userId);
+        if(company!=null) {
+            companyDetailVo.setCompany(company);
+        }
+        List<Gateway> gateways=gatewayDao.findGatewayByUserId(userId);
+        if(!gateways.isEmpty()){
+            companyDetailVo.setGatewayList(gateways);
+        }
+        List<Sensor> sensorList=sensorDao.findSensorByUserId(userId);
+        if(!sensorList.isEmpty()){
+            companyDetailVo.setSensorList(sensorList);
+        }
+        response.setData(companyDetailVo);
         response.setResponseCode(ResponseCode.OK.getCode());
         response.setResponseMsg(ResponseCode.OK.getMessage());
         return response;

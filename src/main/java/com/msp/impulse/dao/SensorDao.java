@@ -19,4 +19,8 @@ public interface SensorDao {
     Pass queryByPassNoAndGatewayName(PassQuery passQuery);
 
     void findAndRemove(String id);
+
+    List<Sensor> findSensorByUserId(String userId);
+
+    String findByDeviceId(String deviceId);
 }

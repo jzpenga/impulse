@@ -83,12 +83,6 @@ public class GatewayDaoImpl implements GatewayDao {
         return mongoTemplate.findOne(query, Gateway.class);
     }
 
-    @Override
-    public Gateway findGatewayByDeviceId(String deviceId) {
-        Query query=new Query();
-        query.addCriteria(Criteria.where("deviceId").is(deviceId));
-        return mongoTemplate.findOne(query, Gateway.class);
-    }
 
     /**
      * 通过网关名称和路数查询继电器
@@ -109,5 +103,12 @@ public class GatewayDaoImpl implements GatewayDao {
             }
         }
         return null;
+    }
+
+    @Override
+    public List<Gateway> findGatewayByUserId(String userId) {
+        Query query=new Query();
+        query.addCriteria(Criteria.where("userId").is(userId));
+        return mongoTemplate.find(query,Gateway.class);
     }
 }

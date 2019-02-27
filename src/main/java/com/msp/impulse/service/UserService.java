@@ -21,26 +21,16 @@ public class UserService {
     private UserDao userDao;
 
     @Transactional
-    public BaseResponse addUser(PersonalInfoQuery personalInfoQuery) {
+    public BaseResponse<Company> addUser(Company company) {
         BaseResponse response = new BaseResponse<>();
-        if(personalInfoQuery.getUser()==null){
-            response.setResponseCode(ResponseCode.USERNAME_NULL.getCode());
-            response.setResponseMsg(ResponseCode.USERNAME_NULL.getMessage());
-            return response;
-        }
-        if(personalInfoQuery.getCompany()==null){
-            response.setResponseCode(ResponseCode.INPUT_COMPAY.getCode());
-            response.setResponseMsg(ResponseCode.INPUT_COMPAY.getMessage());
-            return response;
-        }
-        if(StringUtils.isBlank(personalInfoQuery.getCompany().getLoginName())){
+        if(StringUtils.isBlank(company.getLoginName())){
             response.setResponseCode(ResponseCode.USERNAME_NULL.getCode());
             response.setResponseMsg(ResponseCode.USERNAME_NULL.getMessage());
             return response;
         }
 
         //判断登录名是否存在
-        List<Company> companyList=userDao.findByName(personalInfoQuery.getCompany().getLoginName());
+        List<Company> companyList=userDao.findByName(company.getLoginName());
         if(!companyList.isEmpty()){
             response.setResponseCode(ResponseCode.LOGINNAME_EXSIST.getCode());
             response.setResponseMsg(ResponseCode.LOGINNAME_EXSIST.getMessage());
@@ -48,15 +38,11 @@ public class UserService {
         }
 
         String pwd = DigestUtils.md5DigestAsHex("123456".getBytes());//默认密码
-        Company company = personalInfoQuery.getCompany();
         company.setPassword(pwd);
         company.setCreateTime(new Date());
         Company saveCompany = userDao.save(company);
 
-        User user = personalInfoQuery.getUser();
-        user.setCompany(saveCompany);
-        userDao.save(user);
-
+        response.setData(saveCompany);
         response.setResponseCode(ResponseCode.OK.getCode());
         response.setResponseMsg(ResponseCode.OK.getMessage());
         return response;

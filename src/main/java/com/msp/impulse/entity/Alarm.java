@@ -32,6 +32,8 @@ public class Alarm implements Serializable {
     private Date createTime;
     @ApiModelProperty(name = "userId", value = "用户id", example = "5a31bhjb123333123dsada", required = true)
     private String userId;
+    @ApiModelProperty(name = "userName", value = "用户名称", example = "xxt", required = true)
+    private String userName;
 
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
@@ -114,5 +116,14 @@ public class Alarm implements Serializable {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }
