@@ -42,14 +42,14 @@ public class GatewayService {
     public BaseResponse addGateway(Gateway gateway, String userId) {
         BaseResponse response = new BaseResponse<>();
         //名称必输
-        if (StringUtils.isBlank(gateway.getEquipmentName())) {
+        if (StringUtils.isBlank(gateway.getGatewayName())) {
             response.setResponseCode(ResponseCode.GATEWAYNAME_NULL.getCode());
             response.setResponseMsg(ResponseCode.GATEWAYNAME_NULL.getMessage());
             return response;
         }
         if (StringUtils.isBlank(gateway.getId())) {
             //判断网关名称是否唯一
-            if (gatewayDao.findByName(gateway.getEquipmentName())) {
+            if (gatewayDao.findByName(gateway.getGatewayName())) {
                 response.setResponseCode(ResponseCode.GATEWAYNAME_REPEAT.getCode());
                 response.setResponseMsg(ResponseCode.GATEWAYNAME_REPEAT.getMessage());
                 return response;
@@ -99,7 +99,7 @@ public class GatewayService {
 //                controlInstru.setExecuteTime();//执行时间
 //                controlInstru.setReturnStatus();//返回状态
 //                controlInstru.setExtraMessage();//附件信息
-                controlInstru.setGatewayName(gateway.getEquipmentName());//网关名称
+                controlInstru.setGatewayName(gateway.getGatewayName());//网关名称
                 controlInstru.setWayNo(relay.getWayNo());//网关路数
 //                controlInstru.setUpdateTime();//更新时间
 //                controlInstru.setFinalStatus();//最终状态

@@ -14,14 +14,14 @@ public class Gateway implements Serializable {
     @Id
     @ApiModelProperty(name = "id", value = "网关ID", example = "1")
     private String id;
-    @ApiModelProperty(name = "equipmentName", value = "设备名称", example = "")
-    private String equipmentName;
-    @ApiModelProperty(name = "equipmentNo", value = "设备序列号", example = "")
-    private Integer equipmentNo;
-    @ApiModelProperty(name = "equipmentType", value = "设备类型", example = "")
-    private String equipmentType;
-    @ApiModelProperty(name = "equipmentModel", value = "设备型号", example = "")
-    private String equipmentModel;
+    @ApiModelProperty(name = "gatewayName", value = "设备名称", example = "")
+    private String gatewayName;
+    @ApiModelProperty(name = "gatewayNo", value = "设备序列号", example = "")
+    private Integer gatewayNo;
+    @ApiModelProperty(name = "gatewayType", value = "设备类型", example = "")
+    private String gatewayType;
+    @ApiModelProperty(name = "gatewayModel", value = "设备型号", example = "")
+    private String gatewayModel;
 
 //    @ApiModelProperty(name = "totalPass", value = "总通道数", example = "100")
 //    private Integer totalPass;
@@ -80,36 +80,36 @@ public class Gateway implements Serializable {
         this.id = id;
     }
 
-    public String getEquipmentName() {
-        return equipmentName;
+    public String getGatewayName() {
+        return gatewayName;
     }
 
-    public void setEquipmentName(String equipmentName) {
-        this.equipmentName = equipmentName;
+    public void setGatewayName(String gatewayName) {
+        this.gatewayName = gatewayName;
     }
 
-    public Integer getEquipmentNo() {
-        return equipmentNo;
+    public Integer getGatewayNo() {
+        return gatewayNo;
     }
 
-    public void setEquipmentNo(Integer equipmentNo) {
-        this.equipmentNo = equipmentNo;
+    public void setGatewayNo(Integer gatewayNo) {
+        this.gatewayNo = gatewayNo;
     }
 
-    public String getEquipmentType() {
-        return equipmentType;
+    public String getGatewayType() {
+        return gatewayType;
     }
 
-    public void setEquipmentType(String equipmentType) {
-        this.equipmentType = equipmentType;
+    public void setGatewayType(String gatewayType) {
+        this.gatewayType = gatewayType;
     }
 
-    public String getEquipmentModel() {
-        return equipmentModel;
+    public String getGatewayModel() {
+        return gatewayModel;
     }
 
-    public void setEquipmentModel(String equipmentModel) {
-        this.equipmentModel = equipmentModel;
+    public void setGatewayModel(String gatewayModel) {
+        this.gatewayModel = gatewayModel;
     }
 
     public String getLongitude() {

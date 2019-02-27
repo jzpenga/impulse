@@ -6,39 +6,39 @@ import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel("网关查询")
 public class GatewayQuery  extends BaseRequest {
-    @ApiModelProperty(name = "equipmentName", value = "设备名称", example = "")
-    private String equipmentName;
-    @ApiModelProperty(name = "equipmentType", value = "设备类型", example = "")
-    private String equipmentType;
-    @ApiModelProperty(name = "equipmentModel", value = "设备型号", example = "")
-    private String equipmentModel;
+    @ApiModelProperty(name = "gatewayName", value = "网关名称", example = "")
+    private String gatewayName;
+    @ApiModelProperty(name = "gatewayType", value = "网关类型", example = "")
+    private String gatewayType;
+    @ApiModelProperty(name = "gatewayModel", value = "网关型号", example = "")
+    private String gatewayModel;
     @ApiModelProperty(name = "workModel", value = "工作模式", example = "")
     private String workModel;
     @ApiModelProperty(name = "workStatus", value = "工作状态", example = "")
     private String workStatus;
 
-    public String getEquipmentName() {
-        return equipmentName;
+    public String getGatewayName() {
+        return gatewayName;
     }
 
-    public void setEquipmentName(String equipmentName) {
-        this.equipmentName = equipmentName;
+    public void setGatewayName(String gatewayName) {
+        this.gatewayName = gatewayName;
     }
 
-    public String getEquipmentType() {
-        return equipmentType;
+    public String getGatewayType() {
+        return gatewayType;
     }
 
-    public void setEquipmentType(String equipmentType) {
-        this.equipmentType = equipmentType;
+    public void setGatewayType(String gatewayType) {
+        this.gatewayType = gatewayType;
     }
 
-    public String getEquipmentModel() {
-        return equipmentModel;
+    public String getGatewayModel() {
+        return gatewayModel;
     }
 
-    public void setEquipmentModel(String equipmentModel) {
-        this.equipmentModel = equipmentModel;
+    public void setGatewayModel(String gatewayModel) {
+        this.gatewayModel = gatewayModel;
     }
 
     public String getWorkModel() {

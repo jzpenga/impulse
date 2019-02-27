@@ -40,25 +40,25 @@ public class GatewayDaoImpl implements GatewayDao {
         if(StringUtils.isNotBlank(id)){
             query.addCriteria(Criteria.where("userId").is(id));
         }
-        if (StringUtils.isNotBlank(gatewayQuery.getEquipmentName())) {
-            Pattern pattern = Pattern.compile("^" + gatewayQuery.getEquipmentName() + ".*$", Pattern.CASE_INSENSITIVE);
-            query.addCriteria(Criteria.where("equipmentName").regex(pattern));
+        if (StringUtils.isNotBlank(gatewayQuery.getGatewayName())) {
+            Pattern pattern = Pattern.compile("^" + gatewayQuery.getGatewayName() + ".*$", Pattern.CASE_INSENSITIVE);
+            query.addCriteria(Criteria.where("gatewayName").regex(pattern));
         }
         if (StringUtils.isNotBlank(gatewayQuery.getWorkModel())) {
             query.addCriteria(Criteria.where("workModel").is(gatewayQuery.getWorkModel()));
         }
-        if (StringUtils.isNotBlank(gatewayQuery.getEquipmentType())) {
-            query.addCriteria(Criteria.where("equipmentType").is(gatewayQuery.getEquipmentType()));
+        if (StringUtils.isNotBlank(gatewayQuery.getGatewayType())) {
+            query.addCriteria(Criteria.where("gatewayType").is(gatewayQuery.getGatewayType()));
         }
-        if (StringUtils.isNotBlank(gatewayQuery.getEquipmentModel())) {
-            query.addCriteria(Criteria.where("equipmentModel").is(gatewayQuery.getEquipmentModel()));
+        if (StringUtils.isNotBlank(gatewayQuery.getGatewayModel())) {
+            query.addCriteria(Criteria.where("gatewayModel").is(gatewayQuery.getGatewayModel()));
         }
         if (StringUtils.isNotBlank(gatewayQuery.getWorkStatus())) {
             query.addCriteria(Criteria.where("workStatus").is(gatewayQuery.getWorkStatus()));
         }
         Pageable pageable=new PageRequest(gatewayQuery.getPageNo(),gatewayQuery.getPageSize());
         query.with(pageable);
-        query.with(Sort.by(Sort.Order.desc("equipmentNo")));
+        query.with(Sort.by(Sort.Order.desc("gatewayNo")));
         List<Gateway> gateways = mongoTemplate.find(query, Gateway.class);
 
         return gateways;
@@ -68,7 +68,7 @@ public class GatewayDaoImpl implements GatewayDao {
     @Override
     public boolean findByName(String gatewayName) {
         Query query = new Query();
-        query.addCriteria(Criteria.where("equipmentName").is(gatewayName));
+        query.addCriteria(Criteria.where("gatewayName").is(gatewayName));
         List<Gateway> gateways = mongoTemplate.find(query, Gateway.class);
         if (gateways.size() > 0) {
             return true;
@@ -93,7 +93,7 @@ public class GatewayDaoImpl implements GatewayDao {
     @Override
     public Relay findByNameAndWay(String gatewayName, Integer wayNo) {
         Query query=new Query();
-        query.addCriteria(Criteria.where("equipmentName").is(gatewayName));
+        query.addCriteria(Criteria.where("gatewayName").is(gatewayName));
         Gateway gateway = mongoTemplate.findOne(query, Gateway.class);
         if(gateway!=null) {
             for (Relay relay : gateway.getRelayList()) {
