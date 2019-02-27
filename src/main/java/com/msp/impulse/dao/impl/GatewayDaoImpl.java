@@ -83,6 +83,13 @@ public class GatewayDaoImpl implements GatewayDao {
         return mongoTemplate.findOne(query, Gateway.class);
     }
 
+    @Override
+    public Gateway findGatewayByDeviceId(String deviceId) {
+        Query query=new Query();
+        query.addCriteria(Criteria.where("deviceId").is(deviceId));
+        return mongoTemplate.findOne(query, Gateway.class);
+    }
+
     /**
      * 通过网关名称和路数查询继电器
      * @param gatewayName
