@@ -139,4 +139,10 @@ public class SensorDaoImpl implements SensorDao {
         }
         return null;
     }
+
+    @Override
+    public Sensor findSensorByDeviceId(String deviceId) {
+        Query query = new Query(Criteria.where("deviceId").is(deviceId));
+        return mongoTemplate.findOne(query, Sensor.class);
+    }
 }

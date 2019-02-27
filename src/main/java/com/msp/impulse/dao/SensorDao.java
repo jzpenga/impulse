@@ -23,4 +23,6 @@ public interface SensorDao {
     List<Sensor> findSensorByUserId(String userId);
 
     String findByDeviceId(String deviceId);
+
+    Sensor findSensorByDeviceId(String deviceId);
 }
