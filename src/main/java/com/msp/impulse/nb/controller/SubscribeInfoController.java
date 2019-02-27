@@ -10,8 +10,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 @RequestMapping("/v1.0.0/subscribeData")
 public class SubscribeInfoController {
 
@@ -26,7 +27,7 @@ public class SubscribeInfoController {
      * 503调用callbaseUrl接口失败，注册接口失败
      */
     @PostMapping
-    public BaseResponse subscribeData(@RequestBody SubscribeInfoEntity subscribeInfoEntity){
+    public BaseResponse<Object> subscribeData(@RequestBody SubscribeInfoEntity subscribeInfoEntity){
         BaseResponse<Object> baseResponse = new BaseResponse<>();
         if (StringUtils.isEmpty(subscribeInfoEntity.getCallbackUrl())){
             baseResponse.setResponseCode(400);
@@ -38,7 +39,7 @@ public class SubscribeInfoController {
             //验证成功
             String TEST_JSON = "www";
             String response = HttpClientUtil.doPostJson(subscribeInfoEntity.getCallbackUrl(), TEST_JSON);
-            if (StringUtils.isEmpty(response)){
+            if (StringUtils.isEmpty(response) || "{".equals(response)){
                 //调用接口失败
                 baseResponse.setResponseCode(503);
                 baseResponse.setResponseMsg("接口调用失败！");
