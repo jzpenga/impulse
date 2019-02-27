@@ -8,6 +8,7 @@ public class SubscribeInfoEntity {
     private String id;
     private String callbackUrl;
     private String loginName;
+    private String password;
 
     public String getId() {
         return id;
@@ -31,5 +32,13 @@ public class SubscribeInfoEntity {
 
     public void setLoginName(String loginName) {
         this.loginName = loginName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

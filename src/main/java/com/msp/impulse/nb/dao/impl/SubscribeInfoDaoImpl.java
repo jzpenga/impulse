@@ -16,6 +16,13 @@ public class SubscribeInfoDaoImpl implements SubscribeInfoDao {
 
     @Override
     public SubscribeInfoEntity save(SubscribeInfoEntity subscribeInfoEntity) {
+
+        Query query = new Query();
+        query.addCriteria(Criteria.where("loginName").is(subscribeInfoEntity.getLoginName()));
+        SubscribeInfoEntity infoEntity = mongoTemplate.findOne(query, SubscribeInfoEntity.class);
+        if (infoEntity!=null){
+            subscribeInfoEntity.setId(infoEntity.getId());
+        }
         mongoTemplate.save(subscribeInfoEntity);
         return subscribeInfoEntity;
     }
