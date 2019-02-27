@@ -20,7 +20,8 @@ public class PushMessageReceiverController {
     private final String callbackurl_nbcmd = "/v1.0.0/messageReceiver/cmd";
 
 
-    private IDataHandler<NotifyDeviceDataChangedDTO> dataChangedDTOIDataHandler  = new DeviceDataChangeHandler();
+    @Autowired
+    private IDataHandler<NotifyDeviceDataChangedDTO> dataChangedDTOIDataHandler;
 
     public PushMessageReceiverController() {
     }
