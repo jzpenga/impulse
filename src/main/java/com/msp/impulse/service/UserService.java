@@ -90,8 +90,8 @@ public class UserService {
         return response;
     }
 
-    public BaseResponse findByNameAndPwd(String loginName, String password) {
-        BaseResponse response = new BaseResponse<>();
+    public BaseResponse<Company> findByNameAndPwd(String loginName, String password) {
+        BaseResponse<Company> response = new BaseResponse<>();
         String pwd = DigestUtils.md5DigestAsHex(password.getBytes());//默认密码
         Company company= userDao.findByNameAndPwd(loginName,pwd);
         if(company==null){

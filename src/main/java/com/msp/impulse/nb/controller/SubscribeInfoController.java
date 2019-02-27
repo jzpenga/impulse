@@ -1,12 +1,13 @@
 package com.msp.impulse.nb.controller;
 
 import com.msp.impulse.base.BaseResponse;
+import com.msp.impulse.entity.Company;
 import com.msp.impulse.nb.entity.SubscribeInfoEntity;
 import com.msp.impulse.nb.service.SubscribeInfoService;
+import com.msp.impulse.service.UserService;
 import com.msp.impulse.util.HttpClientUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,9 @@ public class SubscribeInfoController {
 
     @Autowired
     private SubscribeInfoService subscribeInfoService;
+
+    @Autowired
+    private UserService userService;
     /**
      * 200成功
      *
@@ -34,8 +38,9 @@ public class SubscribeInfoController {
             baseResponse.setResponseMsg("接口调用失败！");
             return baseResponse;
         }
-        if (("hyadmin01".equals(subscribeInfoEntity.getLoginName()) || "hyadmin02".equals(subscribeInfoEntity.getLoginName()) )
-                && "wdefedeokijiuh".equals(subscribeInfoEntity.getPassword())){
+
+        Company company = userService.findByNameAndPwd(subscribeInfoEntity.getLoginName(), subscribeInfoEntity.getPassword()).getData();
+        if (company!=null){
             //验证成功
             String TEST_JSON = "www";
             String response = HttpClientUtil.doPostJson(subscribeInfoEntity.getCallbackUrl(), TEST_JSON);
