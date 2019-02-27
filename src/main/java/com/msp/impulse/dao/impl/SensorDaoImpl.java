@@ -118,8 +118,25 @@ public class SensorDaoImpl implements SensorDao {
     }
 
     @Override
-    public void findSensorByUserId(String userId) {
+    public  List<Sensor> findSensorByUserId(String userId) {
         Query query = new Query(Criteria.where("userId").is(userId));
+        List<Sensor> sensorList = mongoTemplate.find(query, Sensor.class);
+        return sensorList;
+    }
 
+    /**
+     *
+     * 根据deviceId查找序列号
+     * @param deviceId
+     * @return
+     */
+    @Override
+    public String findByDeviceId(String deviceId) {
+        Query query = new Query(Criteria.where("deviceId").is(deviceId));
+        Sensor sensor = mongoTemplate.findOne(query, Sensor.class);
+        if(sensor!=null){
+            return sensor.getSensorNo();
+        }
+        return null;
     }
 }

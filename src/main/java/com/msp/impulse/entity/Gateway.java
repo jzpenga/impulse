@@ -61,18 +61,8 @@ public class Gateway implements Serializable {
     private Date createTime;
     @ApiModelProperty(name = "userId", value = "用户id", example = "5a31bhjb123333123dsada", required = true)
     private String userId;
-
-    private String deviceId;
+    @ApiModelProperty(name = "loginName", value = "登录名", example = "小红", required = true)
     private String loginName;
-
-
-    public String getDeviceId() {
-        return deviceId;
-    }
-
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
-    }
 
     public String getLoginName() {
         return loginName;
@@ -221,4 +211,5 @@ public class Gateway implements Serializable {
     public void setUserId(String userId) {
         this.userId = userId;
     }
+
 }

@@ -21,4 +21,6 @@ public interface SensorDao {
     void findAndRemove(String id);
 
     List<Sensor> findSensorByUserId(String userId);
+
+    String findByDeviceId(String deviceId);
 }

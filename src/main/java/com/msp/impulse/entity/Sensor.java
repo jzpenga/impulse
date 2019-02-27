@@ -37,6 +37,10 @@ public class Sensor {
     private Gateway gateway;
     @ApiModelProperty(name = "userId", value = "用户id", example = "5a31bhjb123333123dsada", required = true)
     private String userId;
+    @ApiModelProperty(name = "deviceId", value = "设备id", example = "5a31bhjb123333123dsada", required = true)
+    private String deviceId;
+    @ApiModelProperty(name = "loginName", value = "登录名", example = "小红", required = true)
+    private String loginName;
 
 
     public String getId() { return id; }
@@ -115,5 +119,21 @@ public class Sensor {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
+
+    public String getLoginName() {
+        return loginName;
+    }
+
+    public void setLoginName(String loginName) {
+        this.loginName = loginName;
     }
 }
