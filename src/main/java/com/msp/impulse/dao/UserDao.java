@@ -11,7 +11,7 @@ public interface UserDao {
 
     Company findByNameAndPwd(String loginName, String password);
 
-    List<Company> findByName(String loginName);
+    Company findByName(String loginName);
 
     Company findById(String userId);
 }

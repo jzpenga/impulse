@@ -30,8 +30,8 @@ public class UserService {
         }
 
         //判断登录名是否存在
-        List<Company> companyList=userDao.findByName(company.getLoginName());
-        if(!companyList.isEmpty()){
+        Company com=userDao.findByName(company.getLoginName());
+        if(com==null){
             response.setResponseCode(ResponseCode.LOGINNAME_EXSIST.getCode());
             response.setResponseMsg(ResponseCode.LOGINNAME_EXSIST.getMessage());
             return response;

@@ -1,6 +1,5 @@
 package com.msp.impulse.dao.impl;
 
-
 import com.msp.impulse.dao.SensorDao;
 import com.msp.impulse.entity.Gateway;
 import com.msp.impulse.entity.Pass;
@@ -144,5 +143,11 @@ public class SensorDaoImpl implements SensorDao {
     public Sensor findSensorByDeviceId(String deviceId) {
         Query query = new Query(Criteria.where("deviceId").is(deviceId));
         return mongoTemplate.findOne(query, Sensor.class);
+    }
+
+    @Override
+    public List<Sensor> findByLoginName(String loginName) {
+        Query query = new Query(Criteria.where("loginName").is(loginName));
+        return mongoTemplate.find(query, Sensor.class);
     }
 }

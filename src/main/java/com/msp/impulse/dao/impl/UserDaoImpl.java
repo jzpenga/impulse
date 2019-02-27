@@ -30,10 +30,10 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public List<Company> findByName(String loginName) {
+    public Company findByName(String loginName) {
         Query query = new Query(Criteria.where("loginName").is(loginName));
-        List<Company> companies = mongoTemplate.find(query, Company.class);
-        return companies;
+        Company company = mongoTemplate.findOne(query, Company.class);
+        return company;
     }
 
     @Override

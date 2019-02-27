@@ -4,6 +4,8 @@ import com.msp.impulse.base.BaseResponse;
 import com.msp.impulse.base.ResponseCode;
 import com.msp.impulse.dao.PassDao;
 import com.msp.impulse.dao.SensorDao;
+import com.msp.impulse.dao.UserDao;
+import com.msp.impulse.entity.Company;
 import com.msp.impulse.entity.Pass;
 import com.msp.impulse.entity.Sensor;
 import com.msp.impulse.query.PassQuery;
@@ -23,6 +25,8 @@ public class SensorService {
     private SensorDao sensorDao;
     @Autowired
     private PassDao passDao;
+    @Autowired
+    private UserDao userDao;
 
     /**
      * 新增传感器
@@ -142,5 +146,23 @@ public class SensorService {
         response.setResponseCode(ResponseCode.OK.getCode());
         response.setResponseMsg(ResponseCode.OK.getMessage());
         return response;
+    }
+
+    /**
+     * 根据loginName查询所有设备
+     */
+    public List<Sensor> getDeviceList(String loginName){
+        //检验是否为空
+        if(StringUtils.isBlank(loginName)){
+            throw new RuntimeException("登录名为空！！！");
+    }
+        //判断登录名是否存在
+        Company company= userDao.findByName(loginName);
+        if(company==null){
+            throw new RuntimeException("登录名不存在！！！");
+        }
+
+        List<Sensor> sensorList=sensorDao.findByLoginName(loginName);
+        return sensorList;
     }
 }
