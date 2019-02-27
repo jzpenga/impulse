@@ -1,9 +1,21 @@
 package com.msp.impulse.nb.entity;
 
+import org.springframework.data.annotation.Id;
+
 public class SubscribeInfoEntity {
 
+    @Id
+    private String id;
     private String callbackUrl;
     private String loginName;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getCallbackUrl() {
         return callbackUrl;
