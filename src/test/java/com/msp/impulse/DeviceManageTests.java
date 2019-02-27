@@ -11,10 +11,10 @@ import java.util.Random;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class ImpulseApplicationTests {
+public class DeviceManageTests {
 
     @Test
-    public void contextLoads() {
+    public void testRegDevice() {
         DeviceInfo deviceInfo = new DeviceInfo();
         deviceInfo.setName("AAAA");
         deviceInfo.setDeviceType("WaterMeter");
