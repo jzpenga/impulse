@@ -36,7 +36,7 @@ public class SubscribeInfoController {
         if (("hyadmin01".equals(subscribeInfoEntity.getLoginName()) || "hyadmin02".equals(subscribeInfoEntity.getLoginName()) )
                 && "wdefedeokijiuh".equals(subscribeInfoEntity.getPassword())){
             //验证成功
-            String TEST_JSON = "";
+            String TEST_JSON = "www";
             String response = HttpClientUtil.doPostJson(subscribeInfoEntity.getCallbackUrl(), TEST_JSON);
             if (StringUtils.isEmpty(response)){
                 //调用接口失败
