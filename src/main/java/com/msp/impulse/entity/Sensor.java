@@ -30,6 +30,10 @@ public class Sensor {
     private String workStatus;
     @ApiModelProperty(name="deleteFlag",value = "删除标志",example = "0-使用1-删除")
     private  String  deleteFlag;
+    @ApiModelProperty(name = "sensorType", value = "设备类型", example = "")
+    private String sensorType;
+    @ApiModelProperty(name = "sensorModel", value = "设备型号", example = "")
+    private String sensorModel;
     @ApiModelProperty(name = "createTime", value = "创建时间", example = "2019-01-01 00:00:00", required = true)
     private Date createTime;
     @DBRef
@@ -135,5 +139,21 @@ public class Sensor {
 
     public void setLoginName(String loginName) {
         this.loginName = loginName;
+    }
+
+    public String getSensorType() {
+        return sensorType;
+    }
+
+    public void setSensorType(String sensorType) {
+        this.sensorType = sensorType;
+    }
+
+    public String getSensorModel() {
+        return sensorModel;
+    }
+
+    public void setSensorModel(String sensorModel) {
+        this.sensorModel = sensorModel;
     }
 }
