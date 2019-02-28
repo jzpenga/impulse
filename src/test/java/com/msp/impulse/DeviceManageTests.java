@@ -22,7 +22,7 @@ public class DeviceManageTests {
 
         Random random = new Random();
         String nodeid = "testdemo" + (random.nextInt(9000000) + 1000000); //this is a test imei
-        deviceInfo.setNodeId(nodeid);
+        deviceInfo.setNodeId(nodeid);// mac 地址
 
         NBDXManager.registerDevice(deviceInfo);
     }
