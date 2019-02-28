@@ -27,5 +27,9 @@ public class DeviceManageTests {
         NBDXManager.registerDevice(deviceInfo);
     }
 
+    @Test
+    public void testDeleteDevice() {
+        NBDXManager.deleteDevice("a54fa376-ca46-4292-bb19-07e83efb817e");
+    }
 
 }
