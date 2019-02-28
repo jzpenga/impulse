@@ -62,11 +62,35 @@ public class DeviceDataChangeHandler implements IDataHandler<NotifyDeviceDataCha
     }
 
     public static void main(String[] args) {
-        String json = "{\"notifyType\":\"deviceDataChanged\",\"requestId\":null,\"deviceId\":\"baeffdea-a3b6-4a74-bc4b-ed6dd1f310b2\",\"gatewayId\":\"baeffdea-a3b6-4a74-bc4b-ed6dd1f310b2\",\"service\":{\"serviceId\":\"Pressure\",\"serviceType\":\"Pressure\",\"data\":{\"C130\":\"000.00\",\"C242\":\"3.6\",\"C256\":\"13\"},\"eventTime\":\"20190225T061821Z\"}}";
-        NotifyDeviceDataChangedDTO dto = JsonUtil.jsonString2SimpleObj(json, NotifyDeviceDataChangedDTO.class);
+        //String json = "{\"notifyType\":\"deviceDataChanged\",\"requestId\":null,\"deviceId\":\"baeffdea-a3b6-4a74-bc4b-ed6dd1f310b2\",\"gatewayId\":\"baeffdea-a3b6-4a74-bc4b-ed6dd1f310b2\",\"service\":{\"serviceId\":\"Pressure\",\"serviceType\":\"Pressure\",\"data\":{\"C130\":\"000.00\",\"C242\":\"3.6\",\"C256\":\"13\"},\"eventTime\":\"20190225T061821Z\"}}";
+        //NotifyDeviceDataChangedDTO dto = JsonUtil.jsonString2SimpleObj(json, NotifyDeviceDataChangedDTO.class);
 
 //        System.out.println(dto.toString());
 //        String response = HttpClientUtil.doPostJson("http://39.105.86.90:8072/v1.0.0/messageReceiver", json);
 //        System.out.println(response);
+
+        /*new Thread(DeviceDataChangeHandler::task).start();
+        new Thread(DeviceDataChangeHandler::task).start();
+        new Thread(DeviceDataChangeHandler::task).start();
+        new Thread(DeviceDataChangeHandler::task).start();
+        new Thread(DeviceDataChangeHandler::task).start();*/
+
+        for (int i = 0; i < 5; i++) {
+            new Thread(DeviceDataChangeHandler::task).start();
+        }
+
+    }
+
+    private  static void task() {
+        String json = "{\"notifyType\":\"deviceDataChanged\",\"requestId\":null,\"deviceId\":\"baeffdea-a3b6-4a74-bc4b-ed6dd1f310b2\",\"gatewayId\":\"baeffdea-a3b6-4a74-bc4b-ed6dd1f310b2\",\"service\":{\"serviceId\":\"Pressure\",\"serviceType\":\"Pressure\",\"data\":{\"C130\":\"000.00\",\"C242\":\"3.6\",\"C256\":\"13\"},\"eventTime\":\"20190225T061821Z\"}}";
+        NotifyDeviceDataChangedDTO dto = JsonUtil.jsonString2SimpleObj(json, NotifyDeviceDataChangedDTO.class);
+        String s = JSONObject.toJSONString(dto);
+        for (int i = 0; i < 10; i++) {
+            long startTime = System.currentTimeMillis();
+            String response = HttpClientUtil.doPostJson("http://localhost:8072/v1.0.0/messageReceiver", s);
+            long endTime = System.currentTimeMillis();
+            System.out.println(Thread.currentThread().getName()+"执行第 "+i+" 次耗时 "+(endTime-startTime)/1000f+"秒");
+            //LoggerFactory.getLogger(DeviceDataChangeHandler.class).info(Thread.currentThread().getName()+"执行第 "+i+" 次耗时 "+(endTime-startTime)/1000f+"秒");
+        }
     }
 }
