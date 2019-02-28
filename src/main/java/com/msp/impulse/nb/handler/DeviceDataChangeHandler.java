@@ -1,33 +1,29 @@
 package com.msp.impulse.nb.handler;
 
+import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.iotplatform.client.dto.NotifyDeviceDataChangedDTO;
 import com.iotplatform.utils.JsonUtil;
-import com.msp.impulse.dao.DataReportDao;
-import com.msp.impulse.dao.UserDao;
-import com.msp.impulse.entity.User;
 import com.msp.impulse.nb.entity.DataReportEntity;
-import com.msp.impulse.nb.entity.SubscribeInfoEntity;
 import com.msp.impulse.nb.service.SubscribeInfoService;
 import com.msp.impulse.service.DataReportService;
-import com.msp.impulse.service.UserService;
 import com.msp.impulse.util.HttpClientUtil;
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Component
 public class DeviceDataChangeHandler implements IDataHandler<NotifyDeviceDataChangedDTO>{
 
+    private Logger logger = LoggerFactory.getLogger(DeviceDataChangeHandler.class);
     @Autowired
     private DataReportService dataReportService;
+    @Autowired
+    private SubscribeInfoService subscribeInfoService;
 
     @Override
     public void handler(NotifyDeviceDataChangedDTO dto) {
@@ -43,14 +39,23 @@ public class DeviceDataChangeHandler implements IDataHandler<NotifyDeviceDataCha
                 dataReportEntity.setServiceType(dto.getService().getServiceType());
                 dataReportEntity.setEventTime(dto.getService().getEventTime());
                 dataReportEntity.setDataKey(fileName);
-                dataReportEntity.setDataValue(data.get(fileName).toString());
+                dataReportEntity.setDataValue(data.get(fileName).textValue());
                 dataReportEntity.setDataMark(dataMark);
-                System.out.println(dataReportEntity);
                 dataReportEntities.add(dataReportEntity);
             });
             //入库
-            System.out.println(dataReportService.toString());
-            //调用相关接口
+            boolean success = dataReportService.insertDateReport(dataReportEntities);
+            if (success){
+                //调用相关接口
+                String callbackUrl = subscribeInfoService.getSubscribeInfoByDeviceId(dto.getDeviceId()).getCallbackUrl();
+                HashMap<String, Object> stringObjectHashMap = dataReportService.messageReceiver(dataMark);
+                String s = JSONObject.toJSONString(stringObjectHashMap);
+                String response = HttpClientUtil.doPostJson(callbackUrl, s);
+                if (!StringUtils.isEmpty(response)){
+                    logger.info(dto.getDeviceId()+" send "+dto.getService().getEventTime()+" data ====>  success!");
+                }
+            }
+
         }catch (Exception e){
             e.printStackTrace();
         }

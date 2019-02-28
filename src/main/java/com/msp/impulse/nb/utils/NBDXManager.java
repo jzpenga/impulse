@@ -66,4 +66,26 @@ public class NBDXManager {
             System.out.println(e.toString());
         }
     }
+
+    public static boolean deleteDevice(String deviceId){
+        try {
+            /**---------------------initialize northApiClient------------------------*/
+            NorthApiClient northApiClient = AuthUtil.initApiClient();
+            DeviceManagement deviceManagement = new DeviceManagement(northApiClient);
+
+            /**---------------------get accessToken at first------------------------*/
+            Authentication authentication = new Authentication(northApiClient);
+            AuthOutDTO authOutDTO = authentication.getAuthToken();
+            String accessToken = authOutDTO.getAccessToken();
+
+            deviceManagement.deleteDirectDevice(deviceId, true, null, accessToken);
+            logger.info("delete device  succeeded =====>"+deviceId);
+
+            return true;
+        } catch (NorthApiException e) {
+            System.out.println(e.toString());
+        }
+        return false;
+    }
+
 }
