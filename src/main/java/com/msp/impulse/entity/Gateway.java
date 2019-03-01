@@ -14,13 +14,13 @@ public class Gateway implements Serializable {
     @Id
     @ApiModelProperty(name = "id", value = "网关ID", example = "1")
     private String id;
-    @ApiModelProperty(name = "gatewayName", value = "设备名称", example = "")
+    @ApiModelProperty(name = "gatewayName", value = "传感器名称", example = "")
     private String gatewayName;
-    @ApiModelProperty(name = "gatewayNo", value = "设备序列号", example = "")
+    @ApiModelProperty(name = "gatewayNo", value = "传感器序列号", example = "")
     private Integer gatewayNo;
-    @ApiModelProperty(name = "gatewayType", value = "设备类型", example = "")
+    @ApiModelProperty(name = "gatewayType", value = "传感器类型", example = "")
     private String gatewayType;
-    @ApiModelProperty(name = "gatewayModel", value = "设备型号", example = "")
+    @ApiModelProperty(name = "gatewayModel", value = "传感器型号", example = "")
     private String gatewayModel;
 
 //    @ApiModelProperty(name = "totalPass", value = "总通道数", example = "100")
