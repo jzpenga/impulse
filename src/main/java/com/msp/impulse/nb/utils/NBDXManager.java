@@ -41,17 +41,26 @@ public class NBDXManager {
             RegDirectDeviceOutDTO rddod = deviceManagement.regDirectDevice(rddid, null, accessToken);
             logger.info("register success=====> "+rddod.toString());
 
-            modifyDeviceInfo(deviceManagement,accessToken,rddod.getDeviceId(),infoEntity);
-
+            boolean modifyInfoFlag = false;
+            for (int i = 0; i < 3; i++) {
+                modifyInfoFlag = modifyDeviceInfo(deviceManagement,accessToken,rddod.getDeviceId(),infoEntity);
+               if (modifyInfoFlag) break;
+            }
+            if (!modifyInfoFlag){
+                logger.info("modify fail =====> "+rddod.getDeviceId() +" delete Device ");
+                deleteDevice(rddod.getDeviceId());
+                return null;
+            }
             return rddod;
         } catch (Exception e) {
-            System.out.println(e.toString());
+           // System.out.println(e.toString());
+            logger.error(e.toString());
         }
         return null;
     }
 
 
-    private static  void modifyDeviceInfo(DeviceManagement deviceManagement, String accessToken,String deviceId, DeviceInfo deviceInfo) {
+    private static  boolean modifyDeviceInfo(DeviceManagement deviceManagement, String accessToken,String deviceId, DeviceInfo deviceInfo) {
         ModifyDeviceInforInDTO mdiInDTO = new ModifyDeviceInforInDTO();
         mdiInDTO.setName(deviceInfo.getName());
         mdiInDTO.setDeviceType(deviceInfo.getDeviceType());
@@ -62,9 +71,11 @@ public class NBDXManager {
         try {
             deviceManagement.modifyDeviceInfo(mdiInDTO, deviceId, null, accessToken);
             logger.info("modify device info succeeded =====>"+deviceId);
+            return true;
         } catch (NorthApiException e) {
-            System.out.println(e.toString());
+            logger.error("modify device info succeeded =====>"+deviceId);
         }
+        return  false;
     }
 
     public static boolean deleteDevice(String deviceId){
