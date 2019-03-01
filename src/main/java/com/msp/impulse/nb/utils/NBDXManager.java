@@ -36,7 +36,7 @@ public class NBDXManager {
             RegDirectDeviceInDTO2 rddid = new RegDirectDeviceInDTO2();
             rddid.setNodeId(infoEntity.getNodeId());
             rddid.setVerifyCode(infoEntity.getNodeId());
-            rddid.setTimeout(3000);
+            rddid.setTimeout(0);
 
             RegDirectDeviceOutDTO rddod = deviceManagement.regDirectDevice(rddid, null, accessToken);
             logger.info("register success=====> "+rddod.toString());

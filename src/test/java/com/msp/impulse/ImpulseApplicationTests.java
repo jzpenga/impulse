@@ -1,13 +1,13 @@
 package com.msp.impulse;
 
-import com.iotplatform.client.dto.DeviceInfo;
-import com.msp.impulse.nb.utils.NBDXManager;
+import com.alibaba.fastjson.JSONObject;
+import com.iotplatform.client.dto.NotifyDeviceDataChangedDTO;
+import com.iotplatform.utils.JsonUtil;
+import com.msp.impulse.util.HttpClientUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.util.Random;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -15,17 +15,24 @@ public class ImpulseApplicationTests {
 
     @Test
     public void contextLoads() {
-        DeviceInfo deviceInfo = new DeviceInfo();
-        deviceInfo.setName("AAAA");
-        deviceInfo.setDeviceType("WaterMeter");
-        deviceInfo.setModel("HY600");
 
-        Random random = new Random();
-        String nodeid = "testdemo" + (random.nextInt(9000000) + 1000000); //this is a test imei
-        deviceInfo.setNodeId(nodeid);
-
-        NBDXManager.registerDevice(deviceInfo);
+        new Thread(ImpulseApplicationTests::task).start();
+        new Thread(ImpulseApplicationTests::task).start();
+        new Thread(ImpulseApplicationTests::task).start();
+        new Thread(ImpulseApplicationTests::task).start();
+        new Thread(ImpulseApplicationTests::task).start();
     }
 
+    public static void task() {
+        String json = "{\"notifyType\":\"deviceDataChanged\",\"requestId\":null,\"deviceId\":\"baeffdea-a3b6-4a74-bc4b-ed6dd1f310b2\",\"gatewayId\":\"baeffdea-a3b6-4a74-bc4b-ed6dd1f310b2\",\"service\":{\"serviceId\":\"Pressure\",\"serviceType\":\"Pressure\",\"data\":{\"C130\":\"000.00\",\"C242\":\"3.6\",\"C256\":\"13\"},\"eventTime\":\"20190225T061821Z\"}}";
+        NotifyDeviceDataChangedDTO dto = JsonUtil.jsonString2SimpleObj(json, NotifyDeviceDataChangedDTO.class);
+        String s = JSONObject.toJSONString(dto);
+        for (int i = 0; i < 1000; i++) {
+            long startTime = System.currentTimeMillis();
+            String response = HttpClientUtil.doPostJson("http://localhost:8072/v1.0.0/messageReceiver", s);
+            long endTime = System.currentTimeMillis();
+            System.out.println(Thread.currentThread().getName()+"执行第 "+i+" 次耗时 "+(endTime-startTime)/1000f+"秒");
+        }
+    }
 
 }

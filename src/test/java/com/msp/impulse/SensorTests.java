@@ -24,6 +24,8 @@ public class SensorTests {
         sensor.setDeviceId("baeffdea-a3b6-4a74-bc4b-ed6dd1f310b2");
         sensor.setLoginName("tom");
         sensor.setSensorNo("a3b6-4a74-bc4b-ed6dd1f310b2");
+        sensor.setSensorType("WaterMeter");
+        sensor.setSensorModel("HY600");
         sensor.setPassList(new ArrayList<>());
         sensorService.saveSensor(sensor,"");
     }
