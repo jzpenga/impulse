@@ -30,11 +30,12 @@ public class SensorService {
 
     /**
      * 新增传感器
+     *
      * @param sensor
      * @return
      */
-    public BaseResponse saveSensor(Sensor sensor,String  userId) {
-        BaseResponse response=new BaseResponse();
+    public BaseResponse saveSensor(Sensor sensor, String userId) {
+        BaseResponse response = new BaseResponse();
         //名称必输
         if (StringUtils.isBlank(sensor.getName())) {
             response.setResponseCode(ResponseCode.SENSOR_NULL.getCode());
@@ -50,16 +51,16 @@ public class SensorService {
             }
         }
         //新增通道
-        List<Pass> passList=new ArrayList<>();
-        for (Pass pass:sensor.getPassList()) {
-            if(StringUtils.isNotBlank(sensor.getName())){
+        List<Pass> passList = new ArrayList<>();
+        for (Pass pass : sensor.getPassList()) {
+            if (StringUtils.isNotBlank(sensor.getName())) {
                 pass.setSensorName(sensor.getName());
             }
             Pass passReturn = passDao.save(pass);
             passList.add(passReturn);
         }
         //用户id
-        if(StringUtils.isNotBlank(userId)){
+        if (StringUtils.isNotBlank(userId)) {
             sensor.setUserId(userId);
         }
         sensor.setPassList(passList);
@@ -72,12 +73,13 @@ public class SensorService {
 
     /**
      * 根据传感器名称和网关查询传感器信息
+     *
      * @param sensorQuery
      * @return
      */
-    public BaseResponse<List<Sensor>> queryBySensorAndGateway(SensorQuery sensorQuery,String userId) {
+    public BaseResponse<List<Sensor>> queryBySensorAndGateway(SensorQuery sensorQuery, String userId) {
 
-        BaseResponse<List<Sensor>> response=new BaseResponse<>();
+        BaseResponse<List<Sensor>> response = new BaseResponse<>();
         //最小页为第一页
         if (sensorQuery.getPageNo() == null || sensorQuery.getPageNo() < 1) {
             sensorQuery.setPageNo(0);
@@ -85,7 +87,7 @@ public class SensorService {
         if (sensorQuery.getPageSize() == null || sensorQuery.getPageSize() < 1) {
             sensorQuery.setPageSize(10);
         }
-        List<Sensor> sensorList=sensorDao.queryBySensorAndGateway(sensorQuery, userId);
+        List<Sensor> sensorList = sensorDao.queryBySensorAndGateway(sensorQuery, userId);
         response.setData(sensorList);
         response.setResponseCode(ResponseCode.OK.getCode());
         response.setResponseMsg(ResponseCode.OK.getMessage());
@@ -93,12 +95,13 @@ public class SensorService {
     }
 
     /**
-     *根据id查询传感器
+     * 根据id查询传感器
+     *
      * @param id
      * @return
      */
     public BaseResponse<Sensor> querySensorById(String id) {
-        BaseResponse<Sensor> response=new BaseResponse<>();
+        BaseResponse<Sensor> response = new BaseResponse<>();
         Sensor sensor = sensorDao.findOne(id);
         response.setData(sensor);
         response.setResponseCode(ResponseCode.OK.getCode());
@@ -108,12 +111,13 @@ public class SensorService {
 
     /**
      * 根据网关名称，通道号查询通道信息
+     *
      * @param passQuery
      * @return
      */
     public BaseResponse<Pass> queryByPassNoAndGatewayName(PassQuery passQuery) {
-        BaseResponse response=new BaseResponse();
-        Pass pass=sensorDao.queryByPassNoAndGatewayName(passQuery);
+        BaseResponse response = new BaseResponse();
+        Pass pass = sensorDao.queryByPassNoAndGatewayName(passQuery);
         response.setData(pass);
         response.setResponseCode(ResponseCode.OK.getCode());
         response.setResponseMsg(ResponseCode.OK.getMessage());
@@ -122,6 +126,7 @@ public class SensorService {
 
     /**
      * 删除传感器
+     *
      * @param id
      * @return
      */
@@ -132,15 +137,17 @@ public class SensorService {
         response.setResponseMsg(ResponseCode.OK.getMessage());
         return response;
     }
+
     /**
      * 删除传感器
+     *
      * @param ids
      * @return
      */
     @Transactional
     public BaseResponse deleteSensorBatch(List<String> ids) {
         BaseResponse response = new BaseResponse();
-        for (String id:ids) {
+        for (String id : ids) {
             sensorDao.findAndRemove(id);
         }
         response.setResponseCode(ResponseCode.OK.getCode());
@@ -151,18 +158,32 @@ public class SensorService {
     /**
      * 根据loginName查询所有设备
      */
-    public List<Sensor> getDeviceList(String loginName){
+    public List<Sensor> getDeviceList(String loginName) {
         //检验是否为空
-        if(StringUtils.isBlank(loginName)){
+        if (StringUtils.isBlank(loginName)) {
             throw new RuntimeException("登录名为空！！！");
-    }
+        }
         //判断登录名是否存在
-        Company company= userDao.findByName(loginName);
-        if(company==null){
+        Company company = userDao.findByName(loginName);
+        if (company == null) {
             throw new RuntimeException("登录名不存在！！！");
         }
 
-        List<Sensor> sensorList=sensorDao.findByLoginName(loginName);
+        List<Sensor> sensorList = sensorDao.findByLoginName(loginName);
         return sensorList;
+    }
+
+    /**
+     * 查询未被关联的传感器
+     *
+     * @return
+     */
+    public BaseResponse<List<Sensor>> querySensorNotRelation() {
+        BaseResponse response = new BaseResponse();
+        List<Sensor> sensorList = sensorDao.querySensorNotRelation();
+        response.setData(sensorList);
+        response.setResponseCode(ResponseCode.OK.getCode());
+        response.setResponseMsg(ResponseCode.OK.getMessage());
+        return response;
     }
 }

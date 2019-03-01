@@ -27,4 +27,6 @@ public interface SensorDao {
     Sensor findSensorByDeviceId(String deviceId);
 
     List<Sensor> findByLoginName(String loginName);
+
+    List<Sensor> querySensorNotRelation();
 }

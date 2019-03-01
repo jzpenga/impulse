@@ -12,9 +12,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
+import org.bson.Document;
 
 import java.util.List;
 import java.util.regex.Pattern;
@@ -149,5 +151,12 @@ public class SensorDaoImpl implements SensorDao {
     public List<Sensor> findByLoginName(String loginName) {
         Query query = new Query(Criteria.where("loginName").is(loginName));
         return mongoTemplate.find(query, Sensor.class);
+    }
+
+    @Override
+    public List<Sensor> querySensorNotRelation() {
+        Query query = new Query(Criteria.where("userId").exists(false));
+        List<Sensor> sensorList = mongoTemplate.find(query, Sensor.class);
+        return  sensorList;
     }
 }
