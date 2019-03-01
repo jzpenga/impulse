@@ -20,6 +20,7 @@ public enum ResponseCode {
     LOGINNAME_EXSIST(3013,"登录名已存在！"),
     INPUT_COMPAY(3014,"请输入公司相关信息！"),
     ADMINNAME_NULL(3015,"请输入管理员登录名"),
+    SENSOR_NO_MUST_INPUT(3016,"请输入传感器序列号!"),
     ;
 
 

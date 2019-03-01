@@ -1,5 +1,7 @@
 package com.msp.impulse.service;
 
+import com.iotplatform.client.dto.DeviceInfo;
+import com.iotplatform.client.dto.RegDirectDeviceOutDTO;
 import com.msp.impulse.base.BaseResponse;
 import com.msp.impulse.base.ResponseCode;
 import com.msp.impulse.dao.PassDao;
@@ -8,6 +10,7 @@ import com.msp.impulse.dao.UserDao;
 import com.msp.impulse.entity.Company;
 import com.msp.impulse.entity.Pass;
 import com.msp.impulse.entity.Sensor;
+import com.msp.impulse.nb.utils.NBDXManager;
 import com.msp.impulse.query.PassQuery;
 import com.msp.impulse.query.SensorQuery;
 import org.apache.commons.lang.StringUtils;
@@ -18,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class SensorService {
@@ -34,8 +38,35 @@ public class SensorService {
      * @param sensor
      * @return
      */
+    @Transactional
     public BaseResponse saveSensor(Sensor sensor, String userId) {
         BaseResponse response = new BaseResponse();
+        //注册电信运营商
+        DeviceInfo deviceInfo = new DeviceInfo();
+        deviceInfo.setName("AAAA");
+        deviceInfo.setDeviceType("WaterMeter");
+        deviceInfo.setModel("HY600");
+
+        Random random = new Random();
+        //获取传感器序列号
+        if(StringUtils.isBlank(sensor.getSensorNo())){
+            response.setResponseCode(ResponseCode.SENSOR_NO_MUST_INPUT.getCode());
+            response.setResponseMsg(ResponseCode.SENSOR_NO_MUST_INPUT.getMessage());
+            return response;
+        }
+
+        String nodeid = sensor.getSensorNo() + (random.nextInt(9000000) + 1000000); //this is a test imei
+        deviceInfo.setNodeId(nodeid);// mac 地址
+
+        RegDirectDeviceOutDTO regDirectDeviceOutDTO = NBDXManager.registerDevice(deviceInfo);
+        if(regDirectDeviceOutDTO==null){
+            throw  new RuntimeException("注册失败");
+        }
+        if(StringUtils.isBlank(regDirectDeviceOutDTO.getDeviceId())){
+            throw  new RuntimeException("注册失败");
+        }
+        sensor.setDeviceId(regDirectDeviceOutDTO.getDeviceId());
+
         //名称必输
         if (StringUtils.isBlank(sensor.getName())) {
             response.setResponseCode(ResponseCode.SENSOR_NULL.getCode());
@@ -182,6 +213,27 @@ public class SensorService {
         BaseResponse response = new BaseResponse();
         List<Sensor> sensorList = sensorDao.querySensorNotRelation();
         response.setData(sensorList);
+        response.setResponseCode(ResponseCode.OK.getCode());
+        response.setResponseMsg(ResponseCode.OK.getMessage());
+        return response;
+    }
+
+    /**
+     * 关联传感器与用户
+     * @param userId
+     * @param sensorName
+     * @return
+     */
+    public BaseResponse relationSensorAndUser(String userId, String sensorName) {
+        BaseResponse response = new BaseResponse();
+        //根据用户id查询用户信息
+        Company company = userDao.findById(userId);
+        //根据传感器名称查询传感器信息
+        Sensor sensor=sensorDao.findBySensorName(sensorName);
+        //关联
+        sensor.setUserId(company.getId());
+        sensor.setLoginName(company.getLoginName());
+        sensorDao.save(sensor);
         response.setResponseCode(ResponseCode.OK.getCode());
         response.setResponseMsg(ResponseCode.OK.getMessage());
         return response;

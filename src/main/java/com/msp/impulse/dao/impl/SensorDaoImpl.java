@@ -159,4 +159,11 @@ public class SensorDaoImpl implements SensorDao {
         List<Sensor> sensorList = mongoTemplate.find(query, Sensor.class);
         return  sensorList;
     }
+
+    @Override
+    public Sensor findBySensorName(String sensorName) {
+        Query query = new Query(Criteria.where("name").is(sensorName));
+        Sensor sensor = mongoTemplate.findOne(query, Sensor.class);
+        return  sensor;
+    }
 }

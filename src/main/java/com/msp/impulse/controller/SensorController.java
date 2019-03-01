@@ -164,4 +164,23 @@ public class SensorController {
         }
         return response;
     }
+    @GetMapping("relationSensorAndUser")
+    @ApiOperation(value = "传感器与用户关联", notes = "查询未被用户关联的传感器", tags = "传感器操作", httpMethod = "GET")
+    public BaseResponse relationSensorAndUser(String userId,String sensorName) {
+        BaseResponse response;
+        try {
+            response = sensorService.relationSensorAndUser(userId,sensorName);
+        } catch (MyException e) {
+            logger.error(e.getMessage(), e);
+            response = new BaseResponse();
+            response.setResponseCode(ResponseCode.SERVER_FAILED.getCode());
+            response.setResponseMsg(ResponseCode.SERVER_FAILED.getMessage());
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            response = new BaseResponse();
+            response.setResponseCode(ResponseCode.SERVER_FAILED.getCode());
+            response.setResponseMsg(ResponseCode.SERVER_FAILED.getMessage());
+        }
+        return response;
+    }
 }

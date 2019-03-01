@@ -2,8 +2,9 @@ package com.msp.impulse.controller;
 
 import com.msp.impulse.base.BaseResponse;
 import com.msp.impulse.base.ResponseCode;
-import com.msp.impulse.entity.Company;
-import com.msp.impulse.service.AdminService;
+import com.msp.impulse.entity.PageBean;
+import com.msp.impulse.query.FindUserQuery;
+import com.msp.impulse.service.AdminUserService;
 import com.msp.impulse.vo.CompanyDetailVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -20,14 +21,14 @@ import java.util.List;
 public class AdminUserController {
     private static Logger logger = LoggerFactory.getLogger(UserController.class);
     @Autowired
-    private AdminService adminService;
+    private AdminUserService adminUserService;
 
     @PostMapping("findUser")
     @ApiOperation(value = "查询用户数据", notes = "查询用户数据", tags = "用户管理", httpMethod = "POST")
-    public BaseResponse<List<Company>> findUser(@RequestBody Company company) {
-        BaseResponse<List<Company>> response;
+    public BaseResponse<PageBean> findUser(@RequestBody FindUserQuery userQuery) {
+        BaseResponse<PageBean> response;
         try {
-            response = adminService.findUser(company);
+            response = adminUserService.findUser(userQuery);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             response = new BaseResponse<>();
@@ -41,7 +42,7 @@ public class AdminUserController {
     public BaseResponse<CompanyDetailVo> findUserById(@PathVariable String userId) {
         BaseResponse<CompanyDetailVo> response;
         try {
-            response = adminService.findUserById(userId);
+            response = adminUserService.findUserById(userId);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             response = new BaseResponse<>();

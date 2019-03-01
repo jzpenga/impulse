@@ -2,6 +2,8 @@ package com.msp.impulse.dao;
 
 import com.msp.impulse.entity.Admin;
 import com.msp.impulse.entity.Company;
+import com.msp.impulse.entity.PageBean;
+import com.msp.impulse.query.FindUserQuery;
 
 import java.util.List;
 
@@ -16,7 +18,5 @@ public interface AdminDao {
 
     Admin finAdminByLoginName(String loginName);
 
-    List<Company> findUser(Company company);
 
-    Company findUserById(String id);
 }
