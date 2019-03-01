@@ -14,7 +14,8 @@ public class PageBean<T> {
     //将每页要显示的数据放在list集合中
     private List<T> list;
 
-
+    public PageBean() {
+    }
 
     //通过pageNum，pageSize，totalRecord计算得来tatalPage和startIndex
     //构造方法中将pageNum，pageSize，totalRecord获得
@@ -22,12 +23,6 @@ public class PageBean<T> {
         this.pageNum = pageNum;
         this.pageSize = pageSize;
         this.totalRecord = totalRecord;
-        if(pageNum<=0){
-            pageNum=1;
-        }
-        if(pageSize<=0){
-            pageSize=10;
-        }
         //totalPage 总页数
         if(totalRecord%pageSize==0){
             //说明整除，正好每页显示pageSize条数据，没有多余一页要显示少于pageSize条数据的

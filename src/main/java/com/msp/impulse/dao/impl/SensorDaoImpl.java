@@ -2,6 +2,7 @@ package com.msp.impulse.dao.impl;
 
 import com.msp.impulse.dao.SensorDao;
 import com.msp.impulse.entity.Gateway;
+import com.msp.impulse.entity.PageBean;
 import com.msp.impulse.entity.Pass;
 import com.msp.impulse.entity.Sensor;
 import com.msp.impulse.query.PassQuery;
@@ -12,11 +13,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
-import org.bson.Document;
 
 import java.util.List;
 import java.util.regex.Pattern;
@@ -119,10 +118,17 @@ public class SensorDaoImpl implements SensorDao {
     }
 
     @Override
-    public  List<Sensor> findSensorByUserId(String userId) {
+    public PageBean findSensorByUserId(String userId) {
         Query query = new Query(Criteria.where("userId").is(userId));
-        List<Sensor> sensorList = mongoTemplate.find(query, Sensor.class);
-        return sensorList;
+        Sort sort = new Sort(Sort.Direction.DESC, "createTime");
+        //总条数
+        Long count = mongoTemplate.count(query, Sensor.class);
+        //分页
+        Pageable pageable = new PageRequest(0, 10, sort);
+        PageBean pageBean = new PageBean(1,10, count.intValue());
+        List<Sensor> sensorList = mongoTemplate.find(query.with(pageable), Sensor.class);
+        pageBean.setList(sensorList);
+        return pageBean;
     }
 
     /**

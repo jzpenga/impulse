@@ -2,6 +2,7 @@ package com.msp.impulse.dao.impl;
 
 import com.msp.impulse.dao.GatewayDao;
 import com.msp.impulse.entity.Gateway;
+import com.msp.impulse.entity.PageBean;
 import com.msp.impulse.entity.Relay;
 import com.msp.impulse.query.GatewayQuery;
 import org.apache.commons.lang.StringUtils;
@@ -106,9 +107,17 @@ public class GatewayDaoImpl implements GatewayDao {
     }
 
     @Override
-    public List<Gateway> findGatewayByUserId(String userId) {
+    public  PageBean findGatewayByUserId(String userId) {
         Query query=new Query();
         query.addCriteria(Criteria.where("userId").is(userId));
-        return mongoTemplate.find(query,Gateway.class);
+        Sort sort = new Sort(Sort.Direction.DESC, "createTime");
+        //总条数
+        Long count = mongoTemplate.count(query, Gateway.class);
+        //分页
+        Pageable pageable = new PageRequest(0, 10, sort);
+        PageBean pageBean = new PageBean(1,10, count.intValue());
+        List<Gateway> gateways = mongoTemplate.find(query.with(pageable), Gateway.class);
+        pageBean.setList(gateways);
+        return pageBean;
     }
 }

@@ -2,8 +2,11 @@ package com.msp.impulse.dao.impl;
 
 import com.msp.impulse.dao.AdminUserDao;
 import com.msp.impulse.entity.Company;
+import com.msp.impulse.entity.Gateway;
 import com.msp.impulse.entity.PageBean;
+import com.msp.impulse.entity.Sensor;
 import com.msp.impulse.query.FindUserQuery;
+import com.msp.impulse.query.GateSenPageQuery;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -62,7 +65,13 @@ public class AdminUserDaoImpl implements AdminUserDao {
         //查询总条数
         Long totalRecord = mongoTemplate.count(query, Company.class);
         Sort sort = new Sort(Sort.Direction.DESC, "createTime");
-        Pageable pageable = new PageRequest(findUserQuery.getPageNo(), findUserQuery.getPageSize(), sort);
+        if(findUserQuery.getPageNo()==null){
+            findUserQuery.setPageNo(1);
+        }
+        if(findUserQuery.getPageSize()==null){
+            findUserQuery.setPageSize(10);
+        }
+        Pageable pageable = new PageRequest(findUserQuery.getPageNo()-1, findUserQuery.getPageSize(), sort);
         List<Company> companyList = mongoTemplate.find(query.with(pageable), Company.class);
 
         PageBean pageBean = new PageBean(findUserQuery.getPageNo(), findUserQuery.getPageSize(), totalRecord.intValue());
@@ -81,6 +90,58 @@ public class AdminUserDaoImpl implements AdminUserDao {
         query.addCriteria(Criteria.where("id").is(userId));
         Company company = mongoTemplate.findOne(query, Company.class);
         return company;
+    }
+
+    @Override
+    public void save(Company company) {
+        mongoTemplate.save(company);
+    }
+
+    @Override
+    public void deleteUserById(String userId) {
+        Query query=new Query();
+        query.addCriteria(Criteria.where("id").is(userId));
+        mongoTemplate.findAndRemove(query,Company.class);
+    }
+
+    @Override
+    public PageBean findGatewayByUserId(GateSenPageQuery gateSenPageQuery) {
+        Query query=new Query();
+        //查询总条数
+        Long totalRecord = mongoTemplate.count(query, Gateway.class);
+        Sort sort = new Sort(Sort.Direction.DESC, "createTime");
+        if(gateSenPageQuery.getPageNo()==null){
+            gateSenPageQuery.setPageNo(1);
+        }
+        if(gateSenPageQuery.getPageSize()==null){
+            gateSenPageQuery.setPageSize(10);
+        }
+        Pageable pageable = new PageRequest(gateSenPageQuery.getPageNo()-1, gateSenPageQuery.getPageSize(), sort);
+        List<Gateway> gatewayList = mongoTemplate.find(query.with(pageable), Gateway.class);
+
+        PageBean pageBean = new PageBean(gateSenPageQuery.getPageNo(), gateSenPageQuery.getPageSize(), totalRecord.intValue());
+        pageBean.setList(gatewayList);
+        return  pageBean;
+    }
+
+    @Override
+    public PageBean findSensorByUserId(GateSenPageQuery gateSenPageQuery) {
+        Query query=new Query();
+        //查询总条数
+        Long totalRecord = mongoTemplate.count(query, Sensor.class);
+        Sort sort = new Sort(Sort.Direction.DESC, "createTime");
+        if(gateSenPageQuery.getPageNo()==null){
+            gateSenPageQuery.setPageNo(1);
+        }
+        if(gateSenPageQuery.getPageSize()==null){
+            gateSenPageQuery.setPageSize(10);
+        }
+        Pageable pageable = new PageRequest(gateSenPageQuery.getPageNo()-1, gateSenPageQuery.getPageSize(), sort);
+        List<Sensor> sensorList = mongoTemplate.find(query.with(pageable), Sensor.class);
+
+        PageBean pageBean = new PageBean(gateSenPageQuery.getPageNo(), gateSenPageQuery.getPageSize(), totalRecord.intValue());
+        pageBean.setList(sensorList);
+        return  pageBean;
     }
 
 }

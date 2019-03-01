@@ -1,5 +1,6 @@
 package com.msp.impulse.dao;
 
+import com.msp.impulse.entity.PageBean;
 import com.msp.impulse.entity.Pass;
 import com.msp.impulse.entity.Sensor;
 import com.msp.impulse.query.PassQuery;
@@ -20,7 +21,7 @@ public interface SensorDao {
 
     void findAndRemove(String id);
 
-    List<Sensor> findSensorByUserId(String userId);
+    PageBean findSensorByUserId(String userId);
 
     String findByDeviceId(String deviceId);
 
