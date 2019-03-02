@@ -126,15 +126,8 @@ public class GatewayService {
      * @param gatewayQuery
      * @return
      */
-    public BaseResponse<List<Gateway>> findGatewayByCondition(@RequestBody GatewayQuery gatewayQuery, String id) {
-        BaseResponse<List<Gateway>> response = new BaseResponse<>();
-        //最小页为第一页
-        if (gatewayQuery.getPageNo() == null || gatewayQuery.getPageNo() < 1) {
-            gatewayQuery.setPageNo(0);
-        }
-        if (gatewayQuery.getPageSize() == null || gatewayQuery.getPageSize() < 1) {
-            gatewayQuery.setPageSize(10);
-        }
+    public BaseResponse<PageBean> findGatewayByCondition(@RequestBody GatewayQuery gatewayQuery, String id) {
+        BaseResponse<PageBean> response = new BaseResponse<>();
         response.setData(gatewayDao.findGatewayByCondition(gatewayQuery, id));
         response.setResponseCode(ResponseCode.OK.getCode());
         response.setResponseMsg(ResponseCode.OK.getMessage());

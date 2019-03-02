@@ -36,7 +36,7 @@ public class GatewayDaoImpl implements GatewayDao {
     }
 
     @Override
-    public List<Gateway> findGatewayByCondition(GatewayQuery gatewayQuery,String id) {
+    public PageBean findGatewayByCondition(GatewayQuery gatewayQuery, String id) {
         Query query = new Query();
         if(StringUtils.isNotBlank(id)){
             query.addCriteria(Criteria.where("userId").is(id));
@@ -57,12 +57,21 @@ public class GatewayDaoImpl implements GatewayDao {
         if (StringUtils.isNotBlank(gatewayQuery.getWorkStatus())) {
             query.addCriteria(Criteria.where("workStatus").is(gatewayQuery.getWorkStatus()));
         }
-        Pageable pageable=new PageRequest(gatewayQuery.getPageNo(),gatewayQuery.getPageSize());
-        query.with(pageable);
-        query.with(Sort.by(Sort.Order.desc("gatewayNo")));
-        List<Gateway> gateways = mongoTemplate.find(query, Gateway.class);
+        //查询总条数
+        Long totalRecord = mongoTemplate.count(query, Gateway.class);
+        Sort sort = new Sort(Sort.Direction.DESC, "gatewayNo");
+        if(gatewayQuery.getPageNo()==null){
+            gatewayQuery.setPageNo(1);
+        }
+        if(gatewayQuery.getPageSize()==null){
+            gatewayQuery.setPageSize(10);
+        }
+        Pageable pageable = new PageRequest(gatewayQuery.getPageNo()-1, gatewayQuery.getPageSize(), sort);
+        List<Gateway> gatewayList= mongoTemplate.find(query.with(pageable), Gateway.class);
 
-        return gateways;
+        PageBean pageBean = new PageBean(gatewayQuery.getPageNo(), gatewayQuery.getPageSize(), totalRecord.intValue());
+        pageBean.setList(gatewayList);
+        return pageBean;
 
     }
 

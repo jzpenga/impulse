@@ -67,7 +67,7 @@ public class SensorDaoImpl implements SensorDao {
      * @return
      */
     @Override
-    public List<Sensor> queryBySensorAndGateway(SensorQuery sensorQuery,String userId) {
+    public PageBean queryBySensorAndGateway(SensorQuery sensorQuery,String userId) {
 
         Query query =new Query();
         if(StringUtils.isNotBlank(userId)){
@@ -81,11 +81,22 @@ public class SensorDaoImpl implements SensorDao {
             Pattern pattern = Pattern.compile("^" + sensorQuery.getSensorName() + ".*$", Pattern.CASE_INSENSITIVE);
             query.addCriteria(Criteria.where("name").regex(pattern));
         }
-        Pageable pageable=new PageRequest(sensorQuery.getPageNo(),sensorQuery.getPageSize());
-        query.with(pageable);
-        query.with(Sort.by(Sort.Order.desc("sensorNo")));
-        List<Sensor> sensorList = mongoTemplate.find(query, Sensor.class);
-        return sensorList;
+        //查询总条数
+        Long totalRecord = mongoTemplate.count(query, Sensor.class);
+        Sort sort = new Sort(Sort.Direction.DESC, "sensorNo");
+        if(sensorQuery.getPageNo()==null){
+            sensorQuery.setPageNo(1);
+        }
+        if(sensorQuery.getPageSize()==null){
+            sensorQuery.setPageSize(10);
+        }
+        Pageable pageable = new PageRequest(sensorQuery.getPageNo()-1, sensorQuery.getPageSize(), sort);
+        List<Sensor> sensorList= mongoTemplate.find(query.with(pageable), Sensor.class);
+
+        PageBean pageBean = new PageBean(sensorQuery.getPageNo(), sensorQuery.getPageSize(), totalRecord.intValue());
+        pageBean.setList(sensorList);
+
+        return pageBean;
     }
 
     /**

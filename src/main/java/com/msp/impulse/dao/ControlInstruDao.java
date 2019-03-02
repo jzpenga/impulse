@@ -1,6 +1,7 @@
 package com.msp.impulse.dao;
 
 import com.msp.impulse.entity.ControlInstru;
+import com.msp.impulse.entity.PageBean;
 import com.msp.impulse.query.ControlInstruQuery;
 import com.msp.impulse.query.ControllnstruUpdateQuery;
 
@@ -10,7 +11,7 @@ import java.util.List;
 public interface ControlInstruDao {
     void  save(ControlInstru controlInstru);
 
-    List<ControlInstru> findControlInstru(ControlInstruQuery controlInstruQuery,String userId) throws ParseException;
+    PageBean findControlInstru(ControlInstruQuery controlInstruQuery, String userId) throws ParseException;
 
     List<ControlInstru> getControlInstruList();
 

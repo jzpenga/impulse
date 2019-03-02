@@ -3,6 +3,7 @@ package com.msp.impulse.controller;
 import com.msp.impulse.base.BaseResponse;
 import com.msp.impulse.base.ResponseCode;
 import com.msp.impulse.entity.Company;
+import com.msp.impulse.entity.PageBean;
 import com.msp.impulse.entity.Pass;
 import com.msp.impulse.entity.Sensor;
 import com.msp.impulse.exception.MyException;
@@ -68,8 +69,8 @@ public class SensorController {
 
     @PostMapping("searchSensor")
     @ApiOperation(value = "查询", notes = "查询传感器相关信息", tags = "传感器操作", httpMethod = "POST")
-    public BaseResponse<List<Sensor>> queryBySensorAndGateway(@RequestBody SensorQuery sensorQuery, HttpSession session){
-        BaseResponse<List<Sensor>> response;
+    public BaseResponse<PageBean> queryBySensorAndGateway(@RequestBody SensorQuery sensorQuery, HttpSession session){
+        BaseResponse<PageBean> response;
         try{
             //获取用户id
             String  userId="";

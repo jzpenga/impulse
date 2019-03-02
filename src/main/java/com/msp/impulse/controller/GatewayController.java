@@ -4,6 +4,7 @@ import com.msp.impulse.base.BaseResponse;
 import com.msp.impulse.base.ResponseCode;
 import com.msp.impulse.entity.Company;
 import com.msp.impulse.entity.Gateway;
+import com.msp.impulse.entity.PageBean;
 import com.msp.impulse.exception.MyException;
 import com.msp.impulse.query.GatewayQuery;
 import com.msp.impulse.service.GatewayService;
@@ -28,8 +29,8 @@ public class GatewayController {
 
     @PostMapping("findGatewayByCondition")
     @ApiOperation(value = "根据条件查询网关", notes = "根据条件查询网关", tags = "网关管理", httpMethod = "POST")
-    public BaseResponse<List<Gateway>> findGatewayByCondition(@RequestBody GatewayQuery gatewayQuery,HttpSession session) {
-        BaseResponse<List<Gateway>> response;
+    public BaseResponse<PageBean> findGatewayByCondition(@RequestBody GatewayQuery gatewayQuery, HttpSession session) {
+        BaseResponse<PageBean> response;
         try {
             //获取用户id
             String  id="";

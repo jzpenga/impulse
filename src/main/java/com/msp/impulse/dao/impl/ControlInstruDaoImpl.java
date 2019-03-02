@@ -2,11 +2,16 @@ package com.msp.impulse.dao.impl;
 
 import com.msp.impulse.dao.ControlInstruDao;
 import com.msp.impulse.entity.ControlInstru;
+import com.msp.impulse.entity.PageBean;
+import com.msp.impulse.entity.Sensor;
 import com.msp.impulse.query.ControlInstruQuery;
 import com.msp.impulse.query.ControllnstruUpdateQuery;
 import com.msp.impulse.util.DateUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -31,7 +36,7 @@ public class ControlInstruDaoImpl implements ControlInstruDao {
      * @return
      */
     @Override
-    public List<ControlInstru> findControlInstru(ControlInstruQuery controlInstruQuery,String userId) throws ParseException {
+    public PageBean findControlInstru(ControlInstruQuery controlInstruQuery, String userId) throws ParseException {
         Query query = new Query();
         if(StringUtils.isNotBlank(userId)){
             query.addCriteria(Criteria.where("userId").is(userId));
@@ -72,8 +77,21 @@ public class ControlInstruDaoImpl implements ControlInstruDao {
         if(executeTime!=null){
             query.addCriteria(executeTime);
         }
-        List<ControlInstru> controlInstrus = mongoTemplate.find(query, ControlInstru.class);
-        return controlInstrus;
+        //查询总条数
+        Long totalRecord = mongoTemplate.count(query, ControlInstru.class);
+        Sort sort = new Sort(Sort.Direction.DESC, "downTime");
+        if(controlInstruQuery.getPageNo()==null){
+            controlInstruQuery.setPageNo(1);
+        }
+        if(controlInstruQuery.getPageSize()==null){
+            controlInstruQuery.setPageSize(10);
+        }
+        Pageable pageable = new PageRequest(controlInstruQuery.getPageNo()-1, controlInstruQuery.getPageSize(), sort);
+        List<ControlInstru> controlInstruList= mongoTemplate.find(query.with(pageable), ControlInstru.class);
+
+        PageBean pageBean = new PageBean(controlInstruQuery.getPageNo(), controlInstruQuery.getPageSize(), totalRecord.intValue());
+        pageBean.setList(controlInstruList);
+        return pageBean;
     }
 
     @Override

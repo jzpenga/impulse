@@ -15,7 +15,7 @@ public interface SensorDao {
 
     boolean findByName(String name);
 
-    List<Sensor> queryBySensorAndGateway(SensorQuery sensorQuery,String userId);
+    PageBean queryBySensorAndGateway(SensorQuery sensorQuery,String userId);
 
     Pass queryByPassNoAndGatewayName(PassQuery passQuery);
 

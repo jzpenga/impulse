@@ -2,7 +2,6 @@ package com.msp.impulse.controller;
 
 import com.msp.impulse.base.BaseResponse;
 import com.msp.impulse.base.ResponseCode;
-import com.msp.impulse.entity.Company;
 import com.msp.impulse.entity.PageBean;
 import com.msp.impulse.query.FindUserQuery;
 import com.msp.impulse.query.GateSenPageQuery;

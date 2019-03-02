@@ -5,6 +5,7 @@ import com.msp.impulse.base.ResponseCode;
 import com.msp.impulse.dao.ControlInstruDao;
 import com.msp.impulse.dao.GatewayDao;
 import com.msp.impulse.entity.ControlInstru;
+import com.msp.impulse.entity.PageBean;
 import com.msp.impulse.entity.Relay;
 import com.msp.impulse.query.ControlInstruQuery;
 import com.msp.impulse.query.ControllnstruUpdateQuery;
@@ -28,8 +29,8 @@ public class ControlInstruService {
      */
     public BaseResponse findControlInstru(ControlInstruQuery controlInstruQuery,String userId) throws ParseException {
         BaseResponse response=new BaseResponse();
-        List<ControlInstru> controlInstruList= controlInstruDao.findControlInstru(controlInstruQuery,userId);
-        response.setData(controlInstruList);
+        PageBean pageBean= controlInstruDao.findControlInstru(controlInstruQuery,userId);
+        response.setData(pageBean);
         response.setResponseCode(ResponseCode.OK.getCode());
         response.setResponseMsg(ResponseCode.OK.getMessage());
         return response;

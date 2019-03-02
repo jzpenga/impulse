@@ -8,6 +8,7 @@ import com.msp.impulse.dao.PassDao;
 import com.msp.impulse.dao.SensorDao;
 import com.msp.impulse.dao.UserDao;
 import com.msp.impulse.entity.Company;
+import com.msp.impulse.entity.PageBean;
 import com.msp.impulse.entity.Pass;
 import com.msp.impulse.entity.Sensor;
 import com.msp.impulse.nb.utils.NBDXManager;
@@ -108,18 +109,11 @@ public class SensorService {
      * @param sensorQuery
      * @return
      */
-    public BaseResponse<List<Sensor>> queryBySensorAndGateway(SensorQuery sensorQuery, String userId) {
+    public BaseResponse<PageBean> queryBySensorAndGateway(SensorQuery sensorQuery, String userId) {
 
-        BaseResponse<List<Sensor>> response = new BaseResponse<>();
-        //最小页为第一页
-        if (sensorQuery.getPageNo() == null || sensorQuery.getPageNo() < 1) {
-            sensorQuery.setPageNo(0);
-        }
-        if (sensorQuery.getPageSize() == null || sensorQuery.getPageSize() < 1) {
-            sensorQuery.setPageSize(10);
-        }
-        List<Sensor> sensorList = sensorDao.queryBySensorAndGateway(sensorQuery, userId);
-        response.setData(sensorList);
+        BaseResponse<PageBean> response = new BaseResponse<>();
+        PageBean pageBean = sensorDao.queryBySensorAndGateway(sensorQuery, userId);
+        response.setData(pageBean);
         response.setResponseCode(ResponseCode.OK.getCode());
         response.setResponseMsg(ResponseCode.OK.getMessage());
         return response;
