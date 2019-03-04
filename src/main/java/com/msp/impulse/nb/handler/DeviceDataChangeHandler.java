@@ -43,10 +43,10 @@ public class DeviceDataChangeHandler implements IDataHandler<NotifyDeviceDataCha
                 dataReportEntity.setDataMark(dataMark);
                 dataReportEntities.add(dataReportEntity);
             });
-            System.out.println("入库数据 ====》 "+dataReportEntities);
+            //System.out.println("入库数据 ====》 "+dataReportEntities);
             //入库
             boolean success = dataReportService.insertDateReport(dataReportEntities);
-            System.out.println("入库 ===》 "+success);
+            //System.out.println("入库 ===》 "+success);
             if (success){
                 //调用相关接口
                 String callbackUrl = subscribeInfoService.getSubscribeInfoByDeviceId(dto.getDeviceId()).getCallbackUrl();
