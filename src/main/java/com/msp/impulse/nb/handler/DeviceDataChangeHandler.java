@@ -60,6 +60,7 @@ public class DeviceDataChangeHandler implements IDataHandler<NotifyDeviceDataCha
 
         }catch (Exception e){
             e.printStackTrace();
+            System.out.println(e);
         }
     }
 
