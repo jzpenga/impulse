@@ -1,10 +1,14 @@
 package com.msp.impulse.nb.entity;
 
+import org.springframework.data.annotation.Id;
+
 /**
  * 设备数据上报实体类
  */
 public class DataReportEntity {
 
+    @Id
+    private String id;
     private String deviceId;
 
     private String serviceId;
@@ -20,6 +24,18 @@ public class DataReportEntity {
     private String dataValue;
     private String dataMark;
 
+    private String typeName;//key对应的真实名字
+    private String sensorName;
+    private String gatewayName;
+
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getDeviceId() {
         return deviceId;
@@ -86,6 +102,29 @@ public class DataReportEntity {
         this.dataMark = dataMark;
     }
 
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
+    }
+
+    public String getSensorName() {
+        return sensorName;
+    }
+
+    public void setSensorName(String sensorName) {
+        this.sensorName = sensorName;
+    }
+
+    public String getGatewayName() {
+        return gatewayName;
+    }
+
+    public void setGatewayName(String gatewayName) {
+        this.gatewayName = gatewayName;
+    }
 
     @Override
     public String toString() {
