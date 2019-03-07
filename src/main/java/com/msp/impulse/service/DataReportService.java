@@ -43,6 +43,10 @@ public class DataReportService {
                 if (StringUtils.isNotBlank(sensorNo)) {
                     dataReportEntity.setEquipmentNo(sensorNo);
                 }
+                dataReportEntity.setSensorName(sensor.getName());
+                if(StringUtils.isNotBlank(dataReportEntity.getGatewayName())){
+                    dataReportEntity.setGatewayName(dataReportEntity.getGatewayName());
+                }
                 dataReportDao.save(dataReportEntity);
             }
             return true;
