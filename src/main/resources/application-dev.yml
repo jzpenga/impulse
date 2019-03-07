@@ -1,6 +1,16 @@
 spring:
   application:
     name: impulse    # 项目名称尽量用小写
+  datasource:
+    name: mysql
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      #监控统计拦截的filters
+      filters: stat
+      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://127.0.0.1:3306/huanyu?characterEncoding=utf-8&useSSL=false&useCursorFetch=true
+      username: root
+      password: root
   data:
     mongodb:
       custom:
@@ -14,9 +24,13 @@ spring:
       FAIL_ON_UNKNOWN_PROPERTIES: false
     default-property-inclusion: non_null
 
+mybatis:
+  typeAliasesPackage: com.msp.impluse.entity.*
+  mapperLocations: classpath:/mapper/*.xml  #指定*Mapper.xml的位置
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 server:
   port: 8080
-
 
 logging:
   level:
