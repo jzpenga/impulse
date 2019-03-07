@@ -11,7 +11,10 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
@@ -143,51 +146,60 @@ public class DataManageDaoImpl implements DataManageDao {
 
     @Override
     public PageBean findRealTimeData(DataHistoryQuery dataHistoryQuery) throws ParseException {
-        Query query=new Query();
+        Criteria criteria=new Criteria();
         //用户id
         if(dataHistoryQuery.getUserId()!=null){
-            query.addCriteria(Criteria.where("userId").is(dataHistoryQuery.getUserId()));
+            criteria.where("userId").is(dataHistoryQuery.getUserId());
         }
         //网关名称
-        if(!StringUtils.isEmpty(dataHistoryQuery.getGatewayName())){
+        if(StringUtils.isNotBlank(dataHistoryQuery.getGatewayName())){
             Pattern pattern = Pattern.compile("^" + dataHistoryQuery.getGatewayName() + ".*$", Pattern.CASE_INSENSITIVE);
-            query.addCriteria(Criteria.where("gatewayName").regex(pattern));
+            criteria.where("gatewayName").regex(pattern);
         }
         //传感器名称
-        if(!StringUtils.isEmpty(dataHistoryQuery.getSensorName())){
+        if(StringUtils.isNotBlank(dataHistoryQuery.getSensorName())){
             Pattern pattern = Pattern.compile("^" + dataHistoryQuery.getSensorName() + ".*$", Pattern.CASE_INSENSITIVE);
-            query.addCriteria(Criteria.where("sensorName").regex(pattern));
+            criteria.where("sensorName").regex(pattern);
         }
-        Criteria reportDate=null;
         //上报时间
         if(!StringUtils.isEmpty(dataHistoryQuery.getReportDateFrom())){//上报时间 From
-             reportDate = Criteria.where("reportDate").gte(DateUtil.dateToISODate(dataHistoryQuery.getReportDateFrom()));
+            criteria.where("reportDate").gte(DateUtil.dateToISODate(dataHistoryQuery.getReportDateFrom()));
         }
         if(!StringUtils.isEmpty(dataHistoryQuery.getReportDateTo())){//上报时间to
-            reportDate.lte(DateUtil.dateToISODate(dataHistoryQuery.getReportDateTo()));
-        }
-        if(reportDate!=null) {
-            query.addCriteria(reportDate);
+            criteria.lte(DateUtil.dateToISODate(dataHistoryQuery.getReportDateTo()));
         }
         if(dataHistoryQuery.getSensorType()!=null){
-            query.addCriteria(Criteria.where("SensorType").is(dataHistoryQuery.getSensorType()));
+            criteria.where("SensorType").is(dataHistoryQuery.getSensorType());
         }
-        //List<DataHistory> dataHistoryList = mongoTemplate.find(query, DataHistory.class);
-
         //查询总条数
-        Long totalRecord = mongoTemplate.count(query, DataReportEntity.class);
-        //Sort sort = new Sort(Sort.Direction.DESC, "gatewayNo");
         if(dataHistoryQuery.getPageNo()==null){
             dataHistoryQuery.setPageNo(1);
         }
         if(dataHistoryQuery.getPageSize()==null){
             dataHistoryQuery.setPageSize(10);
         }
-        Pageable pageable = new PageRequest(dataHistoryQuery.getPageNo()-1, dataHistoryQuery.getPageSize());
-        List<DataReportEntity> gatewayList= mongoTemplate.find(query.with(pageable), DataReportEntity.class);
+        Aggregation agg = Aggregation.newAggregation(
+                Aggregation.match(criteria),//条件
+                Aggregation.group("deviceId","dataKey").max("eventTime").as("eventTime"),//分组字段
+                Aggregation.limit(dataHistoryQuery.getPageSize())//页数
+                ,Aggregation.skip((dataHistoryQuery.getPageNo()-1)*dataHistoryQuery.getPageSize())
+        );
+        AggregationResults<DataReportEntity> outputType=mongoTemplate.aggregate(agg,"dataReportEntity",DataReportEntity.class);
+        List<DataReportEntity> list=outputType.getMappedResults();
 
-        PageBean pageBean = new PageBean(dataHistoryQuery.getPageNo(), dataHistoryQuery.getPageSize(), totalRecord.intValue());
-        pageBean.setList(gatewayList);
+        List<DataReportEntity> returnEntityList=new ArrayList<>() ;
+        //根据时间，deviceId serviceType查询数据,根据时间排序，取第一条
+        for(DataReportEntity dataReportEntity:list){
+            Query queryData=new Query();
+            Criteria criteriaData=new Criteria();
+            queryData.addCriteria(criteriaData.where("deviceId").is(dataReportEntity.getDeviceId()).and("dataKey").is(dataReportEntity.getDataKey())
+                    .and("eventTime").is(dataReportEntity.getEventTime()));
+            List<DataReportEntity> dataReportEntity1 = mongoTemplate.find(queryData,DataReportEntity.class);
+            returnEntityList.add(dataReportEntity1.get(0));
+        }
+
+        PageBean pageBean = new PageBean(dataHistoryQuery.getPageNo(), dataHistoryQuery.getPageSize(), list.size());
+        pageBean.setList(returnEntityList);
         return pageBean;
     }
 }
