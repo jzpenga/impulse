@@ -11,7 +11,6 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -150,21 +149,21 @@ public class DataManageDaoImpl implements DataManageDao {
             query.addCriteria(Criteria.where("userId").is(dataHistoryQuery.getUserId()));
         }
         //网关名称
-        if(StringUtils.isNotBlank(dataHistoryQuery.getGatewayName())){
+        if(!StringUtils.isEmpty(dataHistoryQuery.getGatewayName())){
             Pattern pattern = Pattern.compile("^" + dataHistoryQuery.getGatewayName() + ".*$", Pattern.CASE_INSENSITIVE);
             query.addCriteria(Criteria.where("gatewayName").regex(pattern));
         }
         //传感器名称
-        if(StringUtils.isNotBlank(dataHistoryQuery.getSensorName())){
+        if(!StringUtils.isEmpty(dataHistoryQuery.getSensorName())){
             Pattern pattern = Pattern.compile("^" + dataHistoryQuery.getSensorName() + ".*$", Pattern.CASE_INSENSITIVE);
             query.addCriteria(Criteria.where("sensorName").regex(pattern));
         }
         Criteria reportDate=null;
         //上报时间
-        if(StringUtils.isNotBlank(dataHistoryQuery.getReportDateFrom())){//上报时间 From
+        if(!StringUtils.isEmpty(dataHistoryQuery.getReportDateFrom())){//上报时间 From
              reportDate = Criteria.where("reportDate").gte(DateUtil.dateToISODate(dataHistoryQuery.getReportDateFrom()));
         }
-        if(StringUtils.isNotBlank(dataHistoryQuery.getReportDateTo())){//上报时间to
+        if(!StringUtils.isEmpty(dataHistoryQuery.getReportDateTo())){//上报时间to
             reportDate.lte(DateUtil.dateToISODate(dataHistoryQuery.getReportDateTo()));
         }
         if(reportDate!=null) {
@@ -173,18 +172,18 @@ public class DataManageDaoImpl implements DataManageDao {
         if(dataHistoryQuery.getSensorType()!=null){
             query.addCriteria(Criteria.where("SensorType").is(dataHistoryQuery.getSensorType()));
         }
-        List<DataHistory> dataHistoryList = mongoTemplate.find(query, DataHistory.class);
+        //List<DataHistory> dataHistoryList = mongoTemplate.find(query, DataHistory.class);
 
         //查询总条数
-        Long totalRecord = mongoTemplate.count(query, Gateway.class);
-        Sort sort = new Sort(Sort.Direction.DESC, "gatewayNo");
+        Long totalRecord = mongoTemplate.count(query, DataReportEntity.class);
+        //Sort sort = new Sort(Sort.Direction.DESC, "gatewayNo");
         if(dataHistoryQuery.getPageNo()==null){
             dataHistoryQuery.setPageNo(1);
         }
         if(dataHistoryQuery.getPageSize()==null){
             dataHistoryQuery.setPageSize(10);
         }
-        Pageable pageable = new PageRequest(dataHistoryQuery.getPageNo()-1, dataHistoryQuery.getPageSize(), sort);
+        Pageable pageable = new PageRequest(dataHistoryQuery.getPageNo()-1, dataHistoryQuery.getPageSize());
         List<DataReportEntity> gatewayList= mongoTemplate.find(query.with(pageable), DataReportEntity.class);
 
         PageBean pageBean = new PageBean(dataHistoryQuery.getPageNo(), dataHistoryQuery.getPageSize(), totalRecord.intValue());

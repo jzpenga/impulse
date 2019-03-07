@@ -30,7 +30,7 @@ mybatis:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 server:
-  port: 8080
+  port: 8072
 
 logging:
   level:
