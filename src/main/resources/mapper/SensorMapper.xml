@@ -481,9 +481,10 @@
   </select>
   <select id="findSensorByDeviceId" parameterType="string" resultType="com.msp.impulse.entity.Sensor">
       select
-        s.create_time,s.create_user,s.device_id,s.flag,s.flag,s.gateway_name,
-        s.id,s.latitude,s.longitude,s.`name`,s.pass_no,s.pass_number,s.sensor_model,s.sensor_no,s.sensor_type
-       ,s.state,s.update_time,s.update_user,s.user_id,s.user_name,s.work_status
+        s.create_time createTime,s.create_user createUser,s.device_id deviceId,s.flag,s.flag,s.gateway_name gatewayName,
+        s.id,s.latitude,s.longitude,s.`name`,s.pass_no passNo,s.pass_number passNumber,s.sensor_model sensorModel,s.sensor_no
+        sensorNo,s.sensor_type sensorType
+       ,s.state,s.update_time updateTime,s.update_user updateUser,s.user_id userId,s.user_name userName,s.work_status workStatus
       from  sensor  where device_id=#{deviceId}
   </select>
   <select id="findByDeviceId" parameterType="string" resultType="string">
