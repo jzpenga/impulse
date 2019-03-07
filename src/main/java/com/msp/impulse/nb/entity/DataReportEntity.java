@@ -20,6 +20,7 @@ public class DataReportEntity {
     //设备序列号
     private String equipmentNo;
 
+    private  String dataKeyName;
     private String dataKey;
     private String dataValue;
     private String dataMark;
@@ -28,6 +29,7 @@ public class DataReportEntity {
     private String sensorName;
     private String gatewayName;
     private  Integer userId;
+    private  String userName;
 
 
     public String getId() {
@@ -133,6 +135,22 @@ public class DataReportEntity {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+
+    public String getDataKeyName() {
+        return dataKeyName;
+    }
+
+    public void setDataKeyName(String dataKeyName) {
+        this.dataKeyName = dataKeyName;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     @Override
