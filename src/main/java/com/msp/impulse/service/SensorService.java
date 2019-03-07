@@ -182,7 +182,8 @@ public class SensorService {
     /**
      * 根据网关名称，通道号查询通道信息
      *
-     * @param passQuery
+     * @param gatewayName
+     * @param  passNo
      * @return
      */
     public BaseResponse<Pass> queryByPassNoAndGatewayName(String gatewayName,Integer passNo) {

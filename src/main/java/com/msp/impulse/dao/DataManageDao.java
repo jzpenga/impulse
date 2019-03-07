@@ -1,6 +1,7 @@
 package com.msp.impulse.dao;
 
 import com.msp.impulse.entity.DataHistory;
+import com.msp.impulse.entity.PageBean;
 import com.msp.impulse.query.DataHistoryQuery;
 import com.msp.impulse.vo.HomePageDataVo;
 
@@ -16,5 +17,5 @@ public interface DataManageDao {
 
     List<DataHistory> findHistoryData(DataHistoryQuery dataHistoryQuery) throws ParseException;
 
-    List<DataHistory> findRealTimeData(DataHistoryQuery dataHistoryQuery) throws ParseException;
+    PageBean findRealTimeData(DataHistoryQuery dataHistoryQuery) throws ParseException;
 }

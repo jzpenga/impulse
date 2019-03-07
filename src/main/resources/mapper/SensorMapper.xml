@@ -489,6 +489,6 @@
   <select id="findByDeviceId" parameterType="string" resultType="string">
      select
         s.sensor_no
-     from  sensor  where device_id=#{deviceId}
+     from  sensor  s where s.device_id=#{deviceId}
   </select>
 </mapper>

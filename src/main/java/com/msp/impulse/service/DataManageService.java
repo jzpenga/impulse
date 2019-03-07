@@ -1,7 +1,5 @@
 package com.msp.impulse.service;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.msp.impulse.base.BaseResponse;
 import com.msp.impulse.base.ResponseCode;
 import com.msp.impulse.dao.AlarmDao;
@@ -10,7 +8,7 @@ import com.msp.impulse.dao.DataManageDao;
 import com.msp.impulse.entity.Alarm;
 import com.msp.impulse.entity.Controlinstru;
 import com.msp.impulse.entity.DataHistory;
-import com.msp.impulse.entity.Gateway;
+import com.msp.impulse.entity.PageBean;
 import com.msp.impulse.query.DataHistoryQuery;
 import com.msp.impulse.vo.HomePageDataVo;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -19,6 +17,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.ServletOutputStream;
@@ -189,18 +188,9 @@ public class DataManageService {
      * @return
      */
     public BaseResponse findRealTimeData(DataHistoryQuery dataHistoryQuery) throws ParseException {
-        BaseResponse<PageInfo> response = new BaseResponse<>();
-        if (dataHistoryQuery.getPageNo() == null) {
-            dataHistoryQuery.setPageNo(1);
-        }
-        if (dataHistoryQuery.getPageSize() == null) {
-            dataHistoryQuery.setPageSize(10);
-        }
-        PageHelper.startPage(dataHistoryQuery.getPageNo(), dataHistoryQuery.getPageSize());
-        List<DataHistory> dataHistoryList = dataManageDao.findRealTimeData(dataHistoryQuery);
-        PageInfo<DataHistory> pageInfo = new PageInfo<>(dataHistoryList);
-        pageInfo.setList(dataHistoryList);
-        response.setData(pageInfo);
+        BaseResponse response=new BaseResponse();
+        PageBean pageBean = dataManageDao.findRealTimeData(dataHistoryQuery);
+        response.setData(pageBean);
         response.setResponseMsg(ResponseCode.OK.getMessage());
         response.setResponseCode(ResponseCode.OK.getCode());
         return response;

@@ -8,6 +8,9 @@ import com.msp.impulse.util.DateUtil;
 import com.msp.impulse.vo.HomePageDataVo;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -139,7 +142,7 @@ public class DataManageDaoImpl implements DataManageDao {
     }
 
     @Override
-    public List<DataHistory> findRealTimeData(DataHistoryQuery dataHistoryQuery) throws ParseException {
+    public PageBean findRealTimeData(DataHistoryQuery dataHistoryQuery) throws ParseException {
         Query query=new Query();
         //网关名称
         if(StringUtils.isNotBlank(dataHistoryQuery.getGatewayName())){
@@ -166,6 +169,21 @@ public class DataManageDaoImpl implements DataManageDao {
             query.addCriteria(Criteria.where("SensorType").is(dataHistoryQuery.getSensorType()));
         }
         List<DataHistory> dataHistoryList = mongoTemplate.find(query, DataHistory.class);
-        return dataHistoryList;
+
+        //查询总条数
+        Long totalRecord = mongoTemplate.count(query, Gateway.class);
+        Sort sort = new Sort(Sort.Direction.DESC, "gatewayNo");
+        if(dataHistoryQuery.getPageNo()==null){
+            dataHistoryQuery.setPageNo(1);
+        }
+        if(dataHistoryQuery.getPageSize()==null){
+            dataHistoryQuery.setPageSize(10);
+        }
+        Pageable pageable = new PageRequest(dataHistoryQuery.getPageNo()-1, dataHistoryQuery.getPageSize(), sort);
+        List<Gateway> gatewayList= mongoTemplate.find(query.with(pageable), Gateway.class);
+
+        PageBean pageBean = new PageBean(dataHistoryQuery.getPageNo(), dataHistoryQuery.getPageSize(), totalRecord.intValue());
+        pageBean.setList(gatewayList);
+        return pageBean;
     }
 }
