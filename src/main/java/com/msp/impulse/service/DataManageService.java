@@ -1,5 +1,6 @@
 package com.msp.impulse.service;
 
+import com.github.pagehelper.PageInfo;
 import com.msp.impulse.base.BaseResponse;
 import com.msp.impulse.base.ResponseCode;
 import com.msp.impulse.dao.AlarmDao;
@@ -189,8 +190,8 @@ public class DataManageService {
      */
     public BaseResponse findRealTimeData(DataHistoryQuery dataHistoryQuery) throws ParseException {
         BaseResponse response=new BaseResponse();
-        PageBean pageBean = dataManageDao.findRealTimeData(dataHistoryQuery);
-        response.setData(pageBean);
+        PageInfo pageInfo = dataManageDao.findRealTimeData(dataHistoryQuery);
+        response.setData(pageInfo);
         response.setResponseMsg(ResponseCode.OK.getMessage());
         response.setResponseCode(ResponseCode.OK.getCode());
         return response;
