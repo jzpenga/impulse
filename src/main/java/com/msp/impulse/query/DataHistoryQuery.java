@@ -22,6 +22,25 @@ public class DataHistoryQuery {
     @ApiModelProperty(name = "wayNo", value = "通道号", example = "")
     private Integer wayNo;
 
+    private String pageNo;
+    private String pageSize;
+
+    public String getPageNo() {
+        return pageNo;
+    }
+
+    public void setPageNo(String pageNo) {
+        this.pageNo = pageNo;
+    }
+
+    public String getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(String pageSize) {
+        this.pageSize = pageSize;
+    }
+
     public String getGatewayName() {
         return gatewayName;
     }

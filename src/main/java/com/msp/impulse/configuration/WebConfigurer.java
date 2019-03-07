@@ -25,6 +25,7 @@ public class WebConfigurer implements WebMvcConfigurer {
         // excludePathPatterns("/login", "/register") 表示除了登陆与注册之外，因为登陆注册不需要登陆也可以访问
         registry.addInterceptor(loginInterceptor).addPathPatterns("/**").excludePathPatterns("/impulse/user/login")
         .excludePathPatterns("/swagger-resources/**", "/webjars/**", "/v2/**", "/swagger-ui.html/**","/v1.0.0/**")
+        .excludePathPatterns("/dataManage/**")//暂时先不拦截
                 .excludePathPatterns("/admin/adminManage/adminLogin").excludePathPatterns("/admin/adminManage/addAdmin");
     }
 }
