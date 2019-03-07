@@ -161,10 +161,10 @@ public class DataManageDaoImpl implements DataManageDao {
         }
         Criteria reportDate=null;
         //上报时间
-        if(dataHistoryQuery.getReportDateFrom()!=null){//上报时间 From
+        if(StringUtils.isNotBlank(dataHistoryQuery.getReportDateFrom())){//上报时间 From
              reportDate = Criteria.where("reportDate").gte(DateUtil.dateToISODate(dataHistoryQuery.getReportDateFrom()));
         }
-        if(dataHistoryQuery.getReportDateTo()!=null){//上报时间to
+        if(StringUtils.isNotBlank(dataHistoryQuery.getReportDateTo())){//上报时间to
             reportDate.lte(DateUtil.dateToISODate(dataHistoryQuery.getReportDateTo()));
         }
         if(reportDate!=null) {
