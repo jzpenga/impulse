@@ -31,7 +31,7 @@
 //        BaseResponse response;
 //        try {
 //            //获取用户id
-//            String  userId="";
+//            Integer  userId=null;
 //            Company company= (Company)session.getAttribute("loginUser");
 //            if(company!=null){
 //                userId=company.getId();

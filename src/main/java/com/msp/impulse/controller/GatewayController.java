@@ -33,7 +33,7 @@ public class GatewayController {
         BaseResponse<PageInfo> response;
         try {
             //获取用户id
-            Integer id=0;
+            Integer id=null;
             Company company= (Company)session.getAttribute("loginUser");
             if(company!=null){
                 id=company.getId();
@@ -80,7 +80,7 @@ public class GatewayController {
         BaseResponse response;
         try {
             //获取用户id
-            Integer userId = 0;
+            Integer userId = null;
             Company company = (Company) session.getAttribute("loginUser");
             if (company != null) {
                 userId = company.getId();

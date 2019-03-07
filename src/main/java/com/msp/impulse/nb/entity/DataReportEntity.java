@@ -27,6 +27,7 @@ public class DataReportEntity {
     private String typeName;//key对应的真实名字
     private String sensorName;
     private String gatewayName;
+    private  Integer userId;
 
 
     public String getId() {
@@ -124,6 +125,14 @@ public class DataReportEntity {
 
     public void setGatewayName(String gatewayName) {
         this.gatewayName = gatewayName;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     @Override

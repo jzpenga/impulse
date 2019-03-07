@@ -22,6 +22,8 @@ public class DataHistoryQuery extends BaseRequest {
     private String SensorType;
     @ApiModelProperty(name = "wayNo", value = "通道号", example = "")
     private Integer wayNo;
+    @ApiModelProperty(name = "userId", value = "用户id", example = "")
+    private Integer userId;
 
     public String getGatewayName() {
         return gatewayName;
@@ -77,5 +79,13 @@ public class DataHistoryQuery extends BaseRequest {
 
     public void setWayNo(Integer wayNo) {
         this.wayNo = wayNo;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 }

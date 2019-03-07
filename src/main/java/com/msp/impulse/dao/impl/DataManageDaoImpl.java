@@ -3,6 +3,7 @@ package com.msp.impulse.dao.impl;
 import com.msp.impulse.constants.Constants;
 import com.msp.impulse.dao.DataManageDao;
 import com.msp.impulse.entity.*;
+import com.msp.impulse.nb.entity.DataReportEntity;
 import com.msp.impulse.query.DataHistoryQuery;
 import com.msp.impulse.util.DateUtil;
 import com.msp.impulse.vo.HomePageDataVo;
@@ -144,6 +145,10 @@ public class DataManageDaoImpl implements DataManageDao {
     @Override
     public PageBean findRealTimeData(DataHistoryQuery dataHistoryQuery) throws ParseException {
         Query query=new Query();
+        //用户id
+        if(dataHistoryQuery.getUserId()!=null){
+            query.addCriteria(Criteria.where("userId").is(dataHistoryQuery.getUserId()));
+        }
         //网关名称
         if(StringUtils.isNotBlank(dataHistoryQuery.getGatewayName())){
             Pattern pattern = Pattern.compile("^" + dataHistoryQuery.getGatewayName() + ".*$", Pattern.CASE_INSENSITIVE);
@@ -180,7 +185,7 @@ public class DataManageDaoImpl implements DataManageDao {
             dataHistoryQuery.setPageSize(10);
         }
         Pageable pageable = new PageRequest(dataHistoryQuery.getPageNo()-1, dataHistoryQuery.getPageSize(), sort);
-        List<Gateway> gatewayList= mongoTemplate.find(query.with(pageable), Gateway.class);
+        List<DataReportEntity> gatewayList= mongoTemplate.find(query.with(pageable), DataReportEntity.class);
 
         PageBean pageBean = new PageBean(dataHistoryQuery.getPageNo(), dataHistoryQuery.getPageSize(), totalRecord.intValue());
         pageBean.setList(gatewayList);

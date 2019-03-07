@@ -38,7 +38,7 @@ public class SensorController {
         BaseResponse response;
         try{
             //获取用户id
-            Integer  userId=0;
+            Integer  userId=null;
             Company company= (Company)session.getAttribute("loginUser");
             if(company!=null){
                 userId=company.getId();
@@ -86,7 +86,7 @@ public class SensorController {
         BaseResponse<PageInfo> response;
         try{
             //获取用户id
-            Integer  userId=0;
+            Integer  userId=null;
             Company company= (Company)session.getAttribute("loginUser");
             if(company!=null){
                 userId=company.getId();
@@ -134,7 +134,7 @@ public class SensorController {
 //        BaseResponse response;
 //        try {
 //            //获取用户id
-//            Integer  userId=0;
+//            Integer  userId=null;
 //            Company company= (Company)session.getAttribute("loginUser");
 //            if(company!=null){
 //                userId=company.getId();
@@ -162,7 +162,7 @@ public class SensorController {
 //        BaseResponse response;
 //        try {
 //            //获取用户id
-//            Integer  userId=0;
+//            Integer  userId=null;
 //            Company company= (Company)session.getAttribute("loginUser");
 //            if(company!=null){
 //                userId=company.getId();

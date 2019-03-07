@@ -304,11 +304,11 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="finAdminByLoginName" parameterType="string" resultType="com.msp.impulse.entity.Admin">
-    select *  from admin
-    where login_name = #{loginName}
+  select *  from admin
+  where login_name = #{loginName}
   </select>
   <select id="findByNameAndPwd" parameterType="string" resultType="com.msp.impulse.entity.Admin">
-    select *  from admin
-    where login_name = #{loginName} and password=#{pwd}
+  select *  from admin
+  where login_name = #{loginName} and password=#{pwd}
   </select>
 </mapper>

@@ -1,6 +1,8 @@
 package com.msp.impulse.service;
 
 import com.msp.impulse.dao.DataReportDao;
+import com.msp.impulse.entity.Sensor;
+import com.msp.impulse.exception.MyException;
 import com.msp.impulse.mapper.SensorMapper;
 import com.msp.impulse.nb.entity.DataReportEntity;
 import org.apache.commons.lang.StringUtils;
@@ -9,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.HashMap;
 import java.util.List;
 
@@ -27,7 +28,16 @@ public class DataReportService {
     @Transactional
     public boolean insertDateReport(List<DataReportEntity> dataReportEntityList) {
         try {
+            //查询usrId
+            Sensor sensor = sensorMapper.findSensorByDeviceId(dataReportEntityList.get(0).getDeviceId());
+            if(sensor==null){
+                throw  new MyException("请输入传感器信息");
+            }
+            Integer userId=sensor.getUserId();
             for (DataReportEntity dataReportEntity : dataReportEntityList) {
+                if(userId!=null){
+                    dataReportEntity.setUserId(userId);
+                }
                 //根据deviceId查找序列号
                 String sensorNo = sensorMapper.findByDeviceId(dataReportEntity.getDeviceId());
                 if (StringUtils.isNotBlank(sensorNo)) {
