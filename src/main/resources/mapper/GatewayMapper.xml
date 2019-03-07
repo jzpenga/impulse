@@ -1,0 +1,482 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.msp.impulse.mapper.GatewayMapper">
+  <resultMap id="BaseResultMap" type="com.msp.impulse.entity.Gateway">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="gateway_name" jdbcType="VARCHAR" property="gatewayName" />
+    <result column="gateway_no" jdbcType="INTEGER" property="gatewayNo" />
+    <result column="gateway_type" jdbcType="VARCHAR" property="gatewayType" />
+    <result column="gateway_model" jdbcType="VARCHAR" property="gatewayModel" />
+    <result column="longitude" jdbcType="VARCHAR" property="longitude" />
+    <result column="latitude" jdbcType="VARCHAR" property="latitude" />
+    <result column="work_model" jdbcType="VARCHAR" property="workModel" />
+    <result column="port" jdbcType="VARCHAR" property="port" />
+    <result column="poll_period" jdbcType="VARCHAR" property="pollPeriod" />
+    <result column="overtime_period" jdbcType="VARCHAR" property="overtimePeriod" />
+    <result column="work_status" jdbcType="VARCHAR" property="workStatus" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="login_name" jdbcType="VARCHAR" property="loginName" />
+    <result column="flag" jdbcType="VARCHAR" property="flag" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="create_user" jdbcType="INTEGER" property="createUser" />
+    <result column="update_user" jdbcType="INTEGER" property="updateUser" />
+    <result column="state" jdbcType="VARCHAR" property="state" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, gateway_name, gateway_no, gateway_type, gateway_model, longitude, latitude, work_model, 
+    port, poll_period, overtime_period, work_status, user_id, login_name, flag, create_time, 
+    update_time, create_user, update_user, state
+  </sql>
+  <select id="selectByExample" parameterType="com.msp.impulse.entity.GatewayExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from gateway
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from gateway
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from gateway
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.msp.impulse.entity.GatewayExample">
+    delete from gateway
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.msp.impulse.entity.Gateway">
+    insert into gateway (id, gateway_name, gateway_no, 
+      gateway_type, gateway_model, longitude, 
+      latitude, work_model, port, 
+      poll_period, overtime_period, work_status, 
+      user_id, login_name, flag, 
+      create_time, update_time, create_user, 
+      update_user, state)
+    values (#{id,jdbcType=INTEGER}, #{gatewayName,jdbcType=VARCHAR}, #{gatewayNo,jdbcType=INTEGER}, 
+      #{gatewayType,jdbcType=VARCHAR}, #{gatewayModel,jdbcType=VARCHAR}, #{longitude,jdbcType=VARCHAR}, 
+      #{latitude,jdbcType=VARCHAR}, #{workModel,jdbcType=VARCHAR}, #{port,jdbcType=VARCHAR}, 
+      #{pollPeriod,jdbcType=VARCHAR}, #{overtimePeriod,jdbcType=VARCHAR}, #{workStatus,jdbcType=VARCHAR}, 
+      #{userId,jdbcType=INTEGER}, #{loginName,jdbcType=VARCHAR}, #{flag,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=INTEGER}, 
+      #{updateUser,jdbcType=INTEGER}, #{state,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.msp.impulse.entity.Gateway">
+    <selectKey keyColumn="id" keyProperty="id" order="AFTER"
+               resultType="int">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into gateway
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="gatewayName != null">
+        gateway_name,
+      </if>
+      <if test="gatewayNo != null">
+        gateway_no,
+      </if>
+      <if test="gatewayType != null">
+        gateway_type,
+      </if>
+      <if test="gatewayModel != null">
+        gateway_model,
+      </if>
+      <if test="longitude != null">
+        longitude,
+      </if>
+      <if test="latitude != null">
+        latitude,
+      </if>
+      <if test="workModel != null">
+        work_model,
+      </if>
+      <if test="port != null">
+        port,
+      </if>
+      <if test="pollPeriod != null">
+        poll_period,
+      </if>
+      <if test="overtimePeriod != null">
+        overtime_period,
+      </if>
+      <if test="workStatus != null">
+        work_status,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="loginName != null">
+        login_name,
+      </if>
+      <if test="flag != null">
+        flag,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="createUser != null">
+        create_user,
+      </if>
+      <if test="updateUser != null">
+        update_user,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="gatewayName != null">
+        #{gatewayName,jdbcType=VARCHAR},
+      </if>
+      <if test="gatewayNo != null">
+        #{gatewayNo,jdbcType=INTEGER},
+      </if>
+      <if test="gatewayType != null">
+        #{gatewayType,jdbcType=VARCHAR},
+      </if>
+      <if test="gatewayModel != null">
+        #{gatewayModel,jdbcType=VARCHAR},
+      </if>
+      <if test="longitude != null">
+        #{longitude,jdbcType=VARCHAR},
+      </if>
+      <if test="latitude != null">
+        #{latitude,jdbcType=VARCHAR},
+      </if>
+      <if test="workModel != null">
+        #{workModel,jdbcType=VARCHAR},
+      </if>
+      <if test="port != null">
+        #{port,jdbcType=VARCHAR},
+      </if>
+      <if test="pollPeriod != null">
+        #{pollPeriod,jdbcType=VARCHAR},
+      </if>
+      <if test="overtimePeriod != null">
+        #{overtimePeriod,jdbcType=VARCHAR},
+      </if>
+      <if test="workStatus != null">
+        #{workStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="loginName != null">
+        #{loginName,jdbcType=VARCHAR},
+      </if>
+      <if test="flag != null">
+        #{flag,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null">
+        #{createUser,jdbcType=INTEGER},
+      </if>
+      <if test="updateUser != null">
+        #{updateUser,jdbcType=INTEGER},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.msp.impulse.entity.GatewayExample" resultType="java.lang.Long">
+    select count(*) from gateway
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update gateway
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.gatewayName != null">
+        gateway_name = #{record.gatewayName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gatewayNo != null">
+        gateway_no = #{record.gatewayNo,jdbcType=INTEGER},
+      </if>
+      <if test="record.gatewayType != null">
+        gateway_type = #{record.gatewayType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gatewayModel != null">
+        gateway_model = #{record.gatewayModel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.longitude != null">
+        longitude = #{record.longitude,jdbcType=VARCHAR},
+      </if>
+      <if test="record.latitude != null">
+        latitude = #{record.latitude,jdbcType=VARCHAR},
+      </if>
+      <if test="record.workModel != null">
+        work_model = #{record.workModel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.port != null">
+        port = #{record.port,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pollPeriod != null">
+        poll_period = #{record.pollPeriod,jdbcType=VARCHAR},
+      </if>
+      <if test="record.overtimePeriod != null">
+        overtime_period = #{record.overtimePeriod,jdbcType=VARCHAR},
+      </if>
+      <if test="record.workStatus != null">
+        work_status = #{record.workStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.loginName != null">
+        login_name = #{record.loginName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.flag != null">
+        flag = #{record.flag,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createUser != null">
+        create_user = #{record.createUser,jdbcType=INTEGER},
+      </if>
+      <if test="record.updateUser != null">
+        update_user = #{record.updateUser,jdbcType=INTEGER},
+      </if>
+      <if test="record.state != null">
+        state = #{record.state,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update gateway
+    set id = #{record.id,jdbcType=INTEGER},
+      gateway_name = #{record.gatewayName,jdbcType=VARCHAR},
+      gateway_no = #{record.gatewayNo,jdbcType=INTEGER},
+      gateway_type = #{record.gatewayType,jdbcType=VARCHAR},
+      gateway_model = #{record.gatewayModel,jdbcType=VARCHAR},
+      longitude = #{record.longitude,jdbcType=VARCHAR},
+      latitude = #{record.latitude,jdbcType=VARCHAR},
+      work_model = #{record.workModel,jdbcType=VARCHAR},
+      port = #{record.port,jdbcType=VARCHAR},
+      poll_period = #{record.pollPeriod,jdbcType=VARCHAR},
+      overtime_period = #{record.overtimePeriod,jdbcType=VARCHAR},
+      work_status = #{record.workStatus,jdbcType=VARCHAR},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      login_name = #{record.loginName,jdbcType=VARCHAR},
+      flag = #{record.flag,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      create_user = #{record.createUser,jdbcType=INTEGER},
+      update_user = #{record.updateUser,jdbcType=INTEGER},
+      state = #{record.state,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.msp.impulse.entity.Gateway">
+    update gateway
+    <set>
+      <if test="gatewayName != null">
+        gateway_name = #{gatewayName,jdbcType=VARCHAR},
+      </if>
+      <if test="gatewayNo != null">
+        gateway_no = #{gatewayNo,jdbcType=INTEGER},
+      </if>
+      <if test="gatewayType != null">
+        gateway_type = #{gatewayType,jdbcType=VARCHAR},
+      </if>
+      <if test="gatewayModel != null">
+        gateway_model = #{gatewayModel,jdbcType=VARCHAR},
+      </if>
+      <if test="longitude != null">
+        longitude = #{longitude,jdbcType=VARCHAR},
+      </if>
+      <if test="latitude != null">
+        latitude = #{latitude,jdbcType=VARCHAR},
+      </if>
+      <if test="workModel != null">
+        work_model = #{workModel,jdbcType=VARCHAR},
+      </if>
+      <if test="port != null">
+        port = #{port,jdbcType=VARCHAR},
+      </if>
+      <if test="pollPeriod != null">
+        poll_period = #{pollPeriod,jdbcType=VARCHAR},
+      </if>
+      <if test="overtimePeriod != null">
+        overtime_period = #{overtimePeriod,jdbcType=VARCHAR},
+      </if>
+      <if test="workStatus != null">
+        work_status = #{workStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="loginName != null">
+        login_name = #{loginName,jdbcType=VARCHAR},
+      </if>
+      <if test="flag != null">
+        flag = #{flag,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null">
+        create_user = #{createUser,jdbcType=INTEGER},
+      </if>
+      <if test="updateUser != null">
+        update_user = #{updateUser,jdbcType=INTEGER},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.msp.impulse.entity.Gateway">
+    update gateway
+    set gateway_name = #{gatewayName,jdbcType=VARCHAR},
+      gateway_no = #{gatewayNo,jdbcType=INTEGER},
+      gateway_type = #{gatewayType,jdbcType=VARCHAR},
+      gateway_model = #{gatewayModel,jdbcType=VARCHAR},
+      longitude = #{longitude,jdbcType=VARCHAR},
+      latitude = #{latitude,jdbcType=VARCHAR},
+      work_model = #{workModel,jdbcType=VARCHAR},
+      port = #{port,jdbcType=VARCHAR},
+      poll_period = #{pollPeriod,jdbcType=VARCHAR},
+      overtime_period = #{overtimePeriod,jdbcType=VARCHAR},
+      work_status = #{workStatus,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=INTEGER},
+      login_name = #{loginName,jdbcType=VARCHAR},
+      flag = #{flag,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      create_user = #{createUser,jdbcType=INTEGER},
+      update_user = #{updateUser,jdbcType=INTEGER},
+      state = #{state,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="findGatewayName" parameterType="string" resultType="int">
+    select count(*) from gateway
+    where gateway_name=#{gatewayName}
+  </select>
+  <select id="selectGatewayfo" parameterType="com.msp.impulse.query.GatewayQuery" resultType="com.msp.impulse.entity.Gateway">
+    SELECT
+    g.create_time createTime,g.create_user createUser,g.flag,g.gateway_model gatewayModel,
+    g.gateway_name gatewayName,g.gateway_no gatewayNo,
+    g.gateway_type gatewayType,g.id,g.latitude,g.login_name loginName,g.longitude,
+    g.overtime_period overtimePeriod,g.poll_period pollPeriod,
+    g.`port`,g.state,g.update_time updateTime,g.update_user updateUser,
+    g.user_id userId,g.work_model workModel,g.work_status workStatus
+    FROM
+    gateway g
+    where 1=1
+    <if test="gatewayName != null">
+      and g.gateway_name  like "%"#{gatewayName}"%"
+    </if>
+    <if test="gatewayType != null">
+      AND g.gateway_type = #{gatewayType}
+    </if>
+    <if test="gatewayModel != null">
+      AND g.gateway_model = #{gatewayModel}
+    </if>
+    <if test="workStatus != null">
+      AND g.work_status = #{workStatus}
+    </if>
+      AND g.flag!="1"
+    ORDER BY g.create_time DESC
+  </select>
+</mapper>

@@ -1,0 +1,486 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.msp.impulse.mapper.SensorMapper">
+  <resultMap id="BaseResultMap" type="com.msp.impulse.entity.Sensor">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="sensor_no" jdbcType="VARCHAR" property="sensorNo" />
+    <result column="pass_number" jdbcType="INTEGER" property="passNumber" />
+    <result column="longitude" jdbcType="VARCHAR" property="longitude" />
+    <result column="latitude" jdbcType="VARCHAR" property="latitude" />
+    <result column="work_status" jdbcType="VARCHAR" property="workStatus" />
+    <result column="sensor_type" jdbcType="VARCHAR" property="sensorType" />
+    <result column="sensor_model" jdbcType="VARCHAR" property="sensorModel" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="device_id" jdbcType="VARCHAR" property="deviceId" />
+    <result column="gateway_name" jdbcType="VARCHAR" property="gatewayName" />
+    <result column="pass_no" jdbcType="VARCHAR" property="passNo" />
+    <result column="flag" jdbcType="VARCHAR" property="flag" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="create_user" jdbcType="INTEGER" property="createUser" />
+    <result column="update_user" jdbcType="INTEGER" property="updateUser" />
+    <result column="state" jdbcType="VARCHAR" property="state" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, name, sensor_no, pass_number, longitude, latitude, work_status, sensor_type, 
+    sensor_model, user_id, user_name, device_id, gateway_name, pass_no, flag, create_time, 
+    update_time, create_user, update_user, state
+  </sql>
+  <select id="selectByExample" parameterType="com.msp.impulse.entity.SensorExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sensor
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sensor
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sensor
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.msp.impulse.entity.SensorExample">
+    delete from sensor
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.msp.impulse.entity.Sensor">
+    insert into sensor (id, name, sensor_no, 
+      pass_number, longitude, latitude, 
+      work_status, sensor_type, sensor_model, 
+      user_id, user_name, device_id, 
+      gateway_name, pass_no, flag, 
+      create_time, update_time, create_user, 
+      update_user, state)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{sensorNo,jdbcType=VARCHAR}, 
+      #{passNumber,jdbcType=INTEGER}, #{longitude,jdbcType=VARCHAR}, #{latitude,jdbcType=VARCHAR}, 
+      #{workStatus,jdbcType=VARCHAR}, #{sensorType,jdbcType=VARCHAR}, #{sensorModel,jdbcType=VARCHAR}, 
+      #{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{deviceId,jdbcType=VARCHAR}, 
+      #{gatewayName,jdbcType=VARCHAR}, #{passNo,jdbcType=VARCHAR}, #{flag,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=INTEGER}, 
+      #{updateUser,jdbcType=INTEGER}, #{state,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.msp.impulse.entity.Sensor">
+    <selectKey keyColumn="id" keyProperty="id" order="AFTER"
+               resultType="int">
+    SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into sensor
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="sensorNo != null">
+        sensor_no,
+      </if>
+      <if test="passNumber != null">
+        pass_number,
+      </if>
+      <if test="longitude != null">
+        longitude,
+      </if>
+      <if test="latitude != null">
+        latitude,
+      </if>
+      <if test="workStatus != null">
+        work_status,
+      </if>
+      <if test="sensorType != null">
+        sensor_type,
+      </if>
+      <if test="sensorModel != null">
+        sensor_model,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="userName != null">
+        user_name,
+      </if>
+      <if test="deviceId != null">
+        device_id,
+      </if>
+      <if test="gatewayName != null">
+        gateway_name,
+      </if>
+      <if test="passNo != null">
+        pass_no,
+      </if>
+      <if test="flag != null">
+        flag,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="createUser != null">
+        create_user,
+      </if>
+      <if test="updateUser != null">
+        update_user,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="sensorNo != null">
+        #{sensorNo,jdbcType=VARCHAR},
+      </if>
+      <if test="passNumber != null">
+        #{passNumber,jdbcType=INTEGER},
+      </if>
+      <if test="longitude != null">
+        #{longitude,jdbcType=VARCHAR},
+      </if>
+      <if test="latitude != null">
+        #{latitude,jdbcType=VARCHAR},
+      </if>
+      <if test="workStatus != null">
+        #{workStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="sensorType != null">
+        #{sensorType,jdbcType=VARCHAR},
+      </if>
+      <if test="sensorModel != null">
+        #{sensorModel,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceId != null">
+        #{deviceId,jdbcType=VARCHAR},
+      </if>
+      <if test="gatewayName != null">
+        #{gatewayName,jdbcType=VARCHAR},
+      </if>
+      <if test="passNo != null">
+        #{passNo,jdbcType=VARCHAR},
+      </if>
+      <if test="flag != null">
+        #{flag,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null">
+        #{createUser,jdbcType=INTEGER},
+      </if>
+      <if test="updateUser != null">
+        #{updateUser,jdbcType=INTEGER},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.msp.impulse.entity.SensorExample" resultType="java.lang.Long">
+    select count(*) from sensor
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update sensor
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.name != null">
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sensorNo != null">
+        sensor_no = #{record.sensorNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.passNumber != null">
+        pass_number = #{record.passNumber,jdbcType=INTEGER},
+      </if>
+      <if test="record.longitude != null">
+        longitude = #{record.longitude,jdbcType=VARCHAR},
+      </if>
+      <if test="record.latitude != null">
+        latitude = #{record.latitude,jdbcType=VARCHAR},
+      </if>
+      <if test="record.workStatus != null">
+        work_status = #{record.workStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sensorType != null">
+        sensor_type = #{record.sensorType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sensorModel != null">
+        sensor_model = #{record.sensorModel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.userName != null">
+        user_name = #{record.userName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deviceId != null">
+        device_id = #{record.deviceId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gatewayName != null">
+        gateway_name = #{record.gatewayName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.passNo != null">
+        pass_no = #{record.passNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.flag != null">
+        flag = #{record.flag,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createUser != null">
+        create_user = #{record.createUser,jdbcType=INTEGER},
+      </if>
+      <if test="record.updateUser != null">
+        update_user = #{record.updateUser,jdbcType=INTEGER},
+      </if>
+      <if test="record.state != null">
+        state = #{record.state,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update sensor
+    set id = #{record.id,jdbcType=INTEGER},
+      name = #{record.name,jdbcType=VARCHAR},
+      sensor_no = #{record.sensorNo,jdbcType=VARCHAR},
+      pass_number = #{record.passNumber,jdbcType=INTEGER},
+      longitude = #{record.longitude,jdbcType=VARCHAR},
+      latitude = #{record.latitude,jdbcType=VARCHAR},
+      work_status = #{record.workStatus,jdbcType=VARCHAR},
+      sensor_type = #{record.sensorType,jdbcType=VARCHAR},
+      sensor_model = #{record.sensorModel,jdbcType=VARCHAR},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      user_name = #{record.userName,jdbcType=VARCHAR},
+      device_id = #{record.deviceId,jdbcType=VARCHAR},
+      gateway_name = #{record.gatewayName,jdbcType=VARCHAR},
+      pass_no = #{record.passNo,jdbcType=VARCHAR},
+      flag = #{record.flag,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      create_user = #{record.createUser,jdbcType=INTEGER},
+      update_user = #{record.updateUser,jdbcType=INTEGER},
+      state = #{record.state,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.msp.impulse.entity.Sensor">
+    update sensor
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="sensorNo != null">
+        sensor_no = #{sensorNo,jdbcType=VARCHAR},
+      </if>
+      <if test="passNumber != null">
+        pass_number = #{passNumber,jdbcType=INTEGER},
+      </if>
+      <if test="longitude != null">
+        longitude = #{longitude,jdbcType=VARCHAR},
+      </if>
+      <if test="latitude != null">
+        latitude = #{latitude,jdbcType=VARCHAR},
+      </if>
+      <if test="workStatus != null">
+        work_status = #{workStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="sensorType != null">
+        sensor_type = #{sensorType,jdbcType=VARCHAR},
+      </if>
+      <if test="sensorModel != null">
+        sensor_model = #{sensorModel,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null">
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceId != null">
+        device_id = #{deviceId,jdbcType=VARCHAR},
+      </if>
+      <if test="gatewayName != null">
+        gateway_name = #{gatewayName,jdbcType=VARCHAR},
+      </if>
+      <if test="passNo != null">
+        pass_no = #{passNo,jdbcType=VARCHAR},
+      </if>
+      <if test="flag != null">
+        flag = #{flag,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null">
+        create_user = #{createUser,jdbcType=INTEGER},
+      </if>
+      <if test="updateUser != null">
+        update_user = #{updateUser,jdbcType=INTEGER},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.msp.impulse.entity.Sensor">
+    update sensor
+    set name = #{name,jdbcType=VARCHAR},
+      sensor_no = #{sensorNo,jdbcType=VARCHAR},
+      pass_number = #{passNumber,jdbcType=INTEGER},
+      longitude = #{longitude,jdbcType=VARCHAR},
+      latitude = #{latitude,jdbcType=VARCHAR},
+      work_status = #{workStatus,jdbcType=VARCHAR},
+      sensor_type = #{sensorType,jdbcType=VARCHAR},
+      sensor_model = #{sensorModel,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=INTEGER},
+      user_name = #{userName,jdbcType=VARCHAR},
+      device_id = #{deviceId,jdbcType=VARCHAR},
+      gateway_name = #{gatewayName,jdbcType=VARCHAR},
+      pass_no = #{passNo,jdbcType=VARCHAR},
+      flag = #{flag,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      create_user = #{createUser,jdbcType=INTEGER},
+      update_user = #{updateUser,jdbcType=INTEGER},
+      state = #{state,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="findBySensorName" parameterType="string" resultType="int">
+    select
+      count(*)
+    from sensor
+    where
+     name= #{name}
+</select>
+  <select id="selectSensorInfo" parameterType="com.msp.impulse.query.SensorQuery" resultType="com.msp.impulse.entity.Sensor">
+    SELECT
+    s.id,s.gateway_name gatewayName,s.name ,pass_no passNo,
+    s.sensor_no sensorNo,s.user_name userName
+    from
+    sensor s
+    where 1=1
+    <if test="name != null">
+      and s.name  like "%"#{name}"%"
+    </if>
+    <if test="gatewayName != null">
+      AND s.gateway_name like "%"#{gatewayName}"%"
+    </if>
+    AND s.flag!="1"
+    ORDER BY s.create_time DESC
+  </select>
+  <select id="getDeviceList" parameterType="string" resultType="com.msp.impulse.entity.Sensor">
+      select
+        s.create_time,s.create_user,s.device_id,s.flag,s.flag,s.gateway_name,
+        s.id,s.latitude,s.longitude,s.`name`,s.pass_no,s.pass_number,s.sensor_model,s.sensor_no,s.sensor_type
+       ,s.state,s.update_time,s.update_user,s.user_id,s.user_name,s.work_status
+      from  sensor  where user_name=#{loginName}
+  </select>
+  <select id="findSensorByDeviceId" parameterType="" resultType="com.msp.impulse.entity.Sensor">
+
+  </select>
+  <select id="findByDeviceId" parameterType="" resultType="string"></select>
+</mapper>
