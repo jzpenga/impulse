@@ -1,11 +1,11 @@
 package com.msp.impulse.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.msp.impulse.base.BaseResponse;
 import com.msp.impulse.base.ResponseCode;
 import com.msp.impulse.nb.entity.DataReportEntity;
 import com.msp.impulse.query.DataHistoryQuery;
 import com.msp.impulse.service.DataManageService;
-import com.msp.impulse.vo.RealDataVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -63,46 +63,46 @@ public class DataManageController {
 
     @PostMapping("findRealTimeData")
     @ApiOperation(value = "查询实时数据", notes = "查询实时数据", tags = "数据管理", httpMethod = "POST")
-    public BaseResponse<RealDataVo> findRealTimeData(@RequestBody DataHistoryQuery dataHistoryQuery) {
-        BaseResponse<RealDataVo> response = new BaseResponse<>();
-        if ("1".equals(dataHistoryQuery.getPageNo())){
-            RealDataVo realDataVo = new RealDataVo();
-            realDataVo.setTotal(2L);
-            List<DataReportEntity> dataReportEntities = new ArrayList<>();
-            DataReportEntity dataReportEntity = new DataReportEntity();
-            dataReportEntity.setDataValue("3.6");
-            dataReportEntity.setId("1");
-            dataReportEntity.setEventTime("2019-09-07 09:09:07");
-            dataReportEntity.setSensorName("智能压力液位变送器");
-            dataReportEntity.setTypeName("电池");
-            dataReportEntity.setGatewayName("智能");
-            dataReportEntities.add(dataReportEntity);
-            realDataVo.setList(dataReportEntities);
-            response.setData(realDataVo);
-        }
-        if ("2".equals(dataHistoryQuery.getPageNo())){
-            RealDataVo realDataVo = new RealDataVo();
-            realDataVo.setTotal(2L);
-            List<DataReportEntity> dataReportEntities = new ArrayList<>();
-            DataReportEntity dataReportEntity = new DataReportEntity();
-            dataReportEntity.setDataValue("18");
-            dataReportEntity.setId("2");
-            dataReportEntity.setEventTime("2019-09-07 09:10:07");
-            dataReportEntity.setSensorName("智能压力液位变送器");
-            dataReportEntity.setTypeName("信号强度");
-            dataReportEntity.setGatewayName("智能");
-            dataReportEntities.add(dataReportEntity);
-            realDataVo.setList(dataReportEntities);
-            response.setData(realDataVo);
-        }
-        /*try {
+    public BaseResponse<PageInfo> findRealTimeData(@RequestBody DataHistoryQuery dataHistoryQuery) {
+        BaseResponse<PageInfo> response = new BaseResponse<>();
+//        if ("1".equals(dataHistoryQuery.getPageNo())){
+//            RealDataVo realDataVo = new RealDataVo();
+//            realDataVo.setTotal(2L);
+//            List<DataReportEntity> dataReportEntities = new ArrayList<>();
+//            DataReportEntity dataReportEntity = new DataReportEntity();
+//            dataReportEntity.setDataValue("3.6");
+//            dataReportEntity.setId("1");
+//            dataReportEntity.setEventTime("2019-09-07 09:09:07");
+//            dataReportEntity.setSensorName("智能压力液位变送器");
+//            dataReportEntity.setTypeName("电池");
+//            dataReportEntity.setGatewayName("智能");
+//            dataReportEntities.add(dataReportEntity);
+//            realDataVo.setList(dataReportEntities);
+//            response.setData(realDataVo);
+//        }
+//        if ("2".equals(dataHistoryQuery.getPageNo())){
+//            RealDataVo realDataVo = new RealDataVo();
+//            realDataVo.setTotal(2L);
+//            List<DataReportEntity> dataReportEntities = new ArrayList<>();
+//            DataReportEntity dataReportEntity = new DataReportEntity();
+//            dataReportEntity.setDataValue("18");
+//            dataReportEntity.setId("2");
+//            dataReportEntity.setEventTime("2019-09-07 09:10:07");
+//            dataReportEntity.setSensorName("智能压力液位变送器");
+//            dataReportEntity.setTypeName("信号强度");
+//            dataReportEntity.setGatewayName("智能");
+//            dataReportEntities.add(dataReportEntity);
+//            realDataVo.setList(dataReportEntities);
+//            response.setData(realDataVo);
+//        }
+        try {
             response = dataManageService.findRealTimeData(dataHistoryQuery);
         } catch (Exception e) {
             logger.error(e.getMessage(),e);
             response = new BaseResponse();
             response.setResponseCode(ResponseCode.SERVER_FAILED.getCode());
             response.setResponseMsg(ResponseCode.SERVER_FAILED.getMessage());
-        }*/
+        }
         response.setResponseMsg("success");
         response.setResponseCode(200);
         return response;

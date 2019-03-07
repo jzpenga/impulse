@@ -1,12 +1,13 @@
 package com.msp.impulse.query;
 
+import com.msp.impulse.base.BaseRequest;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.math.BigDecimal;
 
 @ApiModel("实时数据查询")
-public class DataHistoryQuery {
+public class DataHistoryQuery extends BaseRequest {
     @ApiModelProperty(name = "gatewayName", value = "网关名称", example = "", required = true)
     private  String   gatewayName;
     @ApiModelProperty(name = "sensorName", value = "传感器名称", example = "", required = true)
@@ -21,25 +22,6 @@ public class DataHistoryQuery {
     private String SensorType;
     @ApiModelProperty(name = "wayNo", value = "通道号", example = "")
     private Integer wayNo;
-
-    private String pageNo;
-    private String pageSize;
-
-    public String getPageNo() {
-        return pageNo;
-    }
-
-    public void setPageNo(String pageNo) {
-        this.pageNo = pageNo;
-    }
-
-    public String getPageSize() {
-        return pageSize;
-    }
-
-    public void setPageSize(String pageSize) {
-        this.pageSize = pageSize;
-    }
 
     public String getGatewayName() {
         return gatewayName;
