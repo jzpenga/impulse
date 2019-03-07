@@ -1,47 +1,51 @@
 package com.msp.impulse.entity;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-
 import java.io.Serializable;
 import java.util.Date;
 
-@ApiModel(value = "控制指令", description = "控制指令")
-public class ControlInstru implements Serializable {
+public class Controlinstru implements Serializable {
+    private Integer id;
 
-    @DBRef
-    @ApiModelProperty(name = "relay", value = "继电器", example = "", required = true)
-    private Relay relay;
-    @ApiModelProperty(name = "dealStatus", value = "处理状态", example = "0-开 1-关", required = true)
-    private String  dealStatus;
-    @ApiModelProperty(name = "returnStatus", value = "返回状态", example = "0-失败 1-成功", required = true)
-    private String  returnStatus;
-    @ApiModelProperty(name = "downTime", value = "下发时间", example = "", required = true)
-    private  Date  downTime;
-    @ApiModelProperty(name = "executeTime", value = "执行时间", example = "", required = true)
-    private  Date  executeTime;
-    @ApiModelProperty(name = "executeTime", value = "附加信息", example = "", required = true)
-    private  String   extraMessage;
-    @ApiModelProperty(name = "gatewayName", value = "网关名称", example = "", required = true)
-    private  String   gatewayName;
-    @ApiModelProperty(name = "wayNo", value = "路数", example = "", required = true)
-    private  Integer   wayNo;
-    @ApiModelProperty(name = "finalStatus", value = "最终状态", example = "0-开 1-关", required = true)
-    private String  finalStatus;
-    @ApiModelProperty(name = "updateTime", value = "更新时间", example = "2019-01-01 00:00:00", required = true)
-    private Date updateTime;
-    @ApiModelProperty(name = "createTime", value = "创建时间", example = "2019-01-01 00:00:00", required = true)
+    private String dealStatus;
+
+    private String returnStatus;
+
+    private Date downTime;
+
+    private Date executeTime;
+
+    private String extraMessage;
+
+    private String gatewayName;
+
+    private Integer wayNo;
+
+    private String finalStatus;
+
+    private Integer userId;
+
+    private Integer relayId;
+
+    private String flag;
+
     private Date createTime;
-    @ApiModelProperty(name = "userId", value = "用户id", example = "5a31bhjb123333123dsada", required = true)
-    private String userId;
 
-    public Relay getRelay() {
-        return relay;
+    private Date updateTime;
+
+    private Integer createUser;
+
+    private Integer updateUser;
+
+    private String state;
+
+    private static final long serialVersionUID = 1L;
+
+    public Integer getId() {
+        return id;
     }
 
-    public void setRelay(Relay relay) {
-        this.relay = relay;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getDealStatus() {
@@ -49,7 +53,7 @@ public class ControlInstru implements Serializable {
     }
 
     public void setDealStatus(String dealStatus) {
-        this.dealStatus = dealStatus;
+        this.dealStatus = dealStatus == null ? null : dealStatus.trim();
     }
 
     public String getReturnStatus() {
@@ -57,7 +61,7 @@ public class ControlInstru implements Serializable {
     }
 
     public void setReturnStatus(String returnStatus) {
-        this.returnStatus = returnStatus;
+        this.returnStatus = returnStatus == null ? null : returnStatus.trim();
     }
 
     public Date getDownTime() {
@@ -81,7 +85,7 @@ public class ControlInstru implements Serializable {
     }
 
     public void setExtraMessage(String extraMessage) {
-        this.extraMessage = extraMessage;
+        this.extraMessage = extraMessage == null ? null : extraMessage.trim();
     }
 
     public String getGatewayName() {
@@ -89,7 +93,7 @@ public class ControlInstru implements Serializable {
     }
 
     public void setGatewayName(String gatewayName) {
-        this.gatewayName = gatewayName;
+        this.gatewayName = gatewayName == null ? null : gatewayName.trim();
     }
 
     public Integer getWayNo() {
@@ -105,15 +109,31 @@ public class ControlInstru implements Serializable {
     }
 
     public void setFinalStatus(String finalStatus) {
-        this.finalStatus = finalStatus;
+        this.finalStatus = finalStatus == null ? null : finalStatus.trim();
     }
 
-    public Date getUpdateTime() {
-        return updateTime;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public Integer getRelayId() {
+        return relayId;
+    }
+
+    public void setRelayId(Integer relayId) {
+        this.relayId = relayId;
+    }
+
+    public String getFlag() {
+        return flag;
+    }
+
+    public void setFlag(String flag) {
+        this.flag = flag == null ? null : flag.trim();
     }
 
     public Date getCreateTime() {
@@ -124,11 +144,35 @@ public class ControlInstru implements Serializable {
         this.createTime = createTime;
     }
 
-    public String getUserId() {
-        return userId;
+    public Date getUpdateTime() {
+        return updateTime;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public Integer getCreateUser() {
+        return createUser;
+    }
+
+    public void setCreateUser(Integer createUser) {
+        this.createUser = createUser;
+    }
+
+    public Integer getUpdateUser() {
+        return updateUser;
+    }
+
+    public void setUpdateUser(Integer updateUser) {
+        this.updateUser = updateUser;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state == null ? null : state.trim();
     }
 }

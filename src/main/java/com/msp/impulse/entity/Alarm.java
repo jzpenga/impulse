@@ -9,9 +9,8 @@ import java.util.Date;
 
 @ApiModel(value = "警报", description = "警报")
 public class Alarm implements Serializable {
-    @Id
     @ApiModelProperty(name = "id", value = "警报id", example = "1")
-    private String id;
+    private Integer id;
     @ApiModelProperty(name = "gatewayName", value = "网关名称", example = "1")
     private String gatewayName;
     @ApiModelProperty(name = "sensorName", value = "传感器名称", example = "1")
@@ -35,8 +34,13 @@ public class Alarm implements Serializable {
     @ApiModelProperty(name = "userName", value = "用户名称", example = "xxt", required = true)
     private String userName;
 
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getGatewayName() {
         return gatewayName;

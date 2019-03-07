@@ -1,9 +1,7 @@
 package com.msp.impulse.nb.service;
 
-import com.msp.impulse.dao.GatewayDao;
-import com.msp.impulse.dao.SensorDao;
-import com.msp.impulse.entity.Gateway;
 import com.msp.impulse.entity.Sensor;
+import com.msp.impulse.mapper.SensorMapper;
 import com.msp.impulse.nb.dao.SubscribeInfoDao;
 import com.msp.impulse.nb.entity.SubscribeInfoEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +14,11 @@ public class SubscribeInfoService {
     private SubscribeInfoDao subscribeInfoDao;
 
     @Autowired
-    private SensorDao sensorDao;
+    private SensorMapper sensorMapper;
 
     public SubscribeInfoEntity getSubscribeInfoByDeviceId(String deviceId){
-        Sensor sensor = sensorDao.findSensorByDeviceId(deviceId);
-        return subscribeInfoDao.findByLoginName(sensor.getLoginName());
+        Sensor sensor = sensorMapper.findSensorByDeviceId(deviceId);
+        return subscribeInfoDao.findByLoginName(sensor.getUserName());
     }
 
     public SubscribeInfoEntity saveSubscribeInfo(SubscribeInfoEntity subscribeInfoEntity){

@@ -1,6 +1,7 @@
 package com.msp.impulse;
 
 import com.msp.impulse.nb.listener.ApplicationMessageReceiver;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
@@ -10,7 +11,8 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @EnableSwagger2
-@SpringBootApplication(exclude={MongoAutoConfiguration.class, DataSourceAutoConfiguration.class})
+@SpringBootApplication(exclude={DataSourceAutoConfiguration.class,MongoAutoConfiguration.class})
+@MapperScan(value = "com.msp.impulse.mapper")
 @ComponentScan(basePackages = {"com.msp.impulse.*"})
 @EnableMongoRepositories
 public class ImpulseApplication {
@@ -18,6 +20,6 @@ public class ImpulseApplication {
         SpringApplication application = new SpringApplication(ImpulseApplication.class);
         application.addListeners(new ApplicationMessageReceiver());
         application.run(args);
-       // SpringApplication.run(ImpulseApplication.class, args);
+        SpringApplication.run(ImpulseApplication.class, args);
     }
 }

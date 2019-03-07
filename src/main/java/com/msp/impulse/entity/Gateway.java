@@ -1,82 +1,56 @@
 package com.msp.impulse.entity;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
-@ApiModel(value = "网关", description = "网关")
 public class Gateway implements Serializable {
-    @Id
-    @ApiModelProperty(name = "id", value = "网关ID", example = "1")
-    private String id;
-    @ApiModelProperty(name = "gatewayName", value = "传感器名称", example = "")
+    private Integer id;
+
     private String gatewayName;
-    @ApiModelProperty(name = "gatewayNo", value = "传感器序列号", example = "")
+
     private Integer gatewayNo;
-    @ApiModelProperty(name = "gatewayType", value = "传感器类型", example = "")
+
     private String gatewayType;
-    @ApiModelProperty(name = "gatewayModel", value = "传感器型号", example = "")
+
     private String gatewayModel;
 
-//    @ApiModelProperty(name = "totalPass", value = "总通道数", example = "100")
-//    private Integer totalPass;
-//    @ApiModelProperty(name = "usablePass", value = "可用通道数", example = "50")
-//    private Integer usablePass;
-
-    @ApiModelProperty(name = "longitude", value = "经度", example = "116.46176")
     private String longitude;
-    @ApiModelProperty(name = "latitude", value = "纬度", example = "39.905859")
+
     private String latitude;
-    @ApiModelProperty(name = "workModel", value = "工作模式", example = "")
+
     private String workModel;
-    @ApiModelProperty(name = "port", value = "端口号", example = "8080")
+
     private String port;
 
-//    @ApiModelProperty(name = "relayNumber", value = "继电器数量", example = "")
-//    private Integer relayNumber;
-
-    @ApiModelProperty(name = "pollPeriod", value = "轮询周期", example = "")
     private String pollPeriod;
-    @ApiModelProperty(name = "overtimePeriod", value = "超时周期", example = "")
+
     private String overtimePeriod;
-    @DBRef
-    @ApiModelProperty(name = "pass", value = "通道参数", example = "[]")
-    private List<Pass> passList;
-    @DBRef
-    @ApiModelProperty(name = "extPass", value = "外接通道参数", example = "[]")
-    private ExtPass extPass;
-    @DBRef
-    @ApiModelProperty(name = "relayList", value = "继电器", example = "[]")
-    private  List<Relay> relayList;
-    @ApiModelProperty(name = "workStatus", value = "工作状态", example = "0-开 1-关")
+
     private String workStatus;
-    @ApiModelProperty(name="deleteFlag",value = "删除标志",example = "0-使用1-删除")
-    private  String  deleteFlag;
-    @ApiModelProperty(name = "createTime", value = "创建时间", example = "2019-01-01 00:00:00", required = true)
-    private Date createTime;
-    @ApiModelProperty(name = "userId", value = "用户id", example = "5a31bhjb123333123dsada", required = true)
-    private String userId;
-    @ApiModelProperty(name = "loginName", value = "登录名", example = "小红", required = true)
+
+    private Integer userId;
+
     private String loginName;
 
-    public String getLoginName() {
-        return loginName;
-    }
+    private String flag;
 
-    public void setLoginName(String loginName) {
-        this.loginName = loginName;
-    }
+    private Date createTime;
 
-    public String getId() {
+    private Date updateTime;
+
+    private Integer createUser;
+
+    private Integer updateUser;
+
+    private String state;
+
+    private static final long serialVersionUID = 1L;
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -85,7 +59,7 @@ public class Gateway implements Serializable {
     }
 
     public void setGatewayName(String gatewayName) {
-        this.gatewayName = gatewayName;
+        this.gatewayName = gatewayName == null ? null : gatewayName.trim();
     }
 
     public Integer getGatewayNo() {
@@ -101,7 +75,7 @@ public class Gateway implements Serializable {
     }
 
     public void setGatewayType(String gatewayType) {
-        this.gatewayType = gatewayType;
+        this.gatewayType = gatewayType == null ? null : gatewayType.trim();
     }
 
     public String getGatewayModel() {
@@ -109,7 +83,7 @@ public class Gateway implements Serializable {
     }
 
     public void setGatewayModel(String gatewayModel) {
-        this.gatewayModel = gatewayModel;
+        this.gatewayModel = gatewayModel == null ? null : gatewayModel.trim();
     }
 
     public String getLongitude() {
@@ -117,7 +91,7 @@ public class Gateway implements Serializable {
     }
 
     public void setLongitude(String longitude) {
-        this.longitude = longitude;
+        this.longitude = longitude == null ? null : longitude.trim();
     }
 
     public String getLatitude() {
@@ -125,7 +99,7 @@ public class Gateway implements Serializable {
     }
 
     public void setLatitude(String latitude) {
-        this.latitude = latitude;
+        this.latitude = latitude == null ? null : latitude.trim();
     }
 
     public String getWorkModel() {
@@ -133,7 +107,7 @@ public class Gateway implements Serializable {
     }
 
     public void setWorkModel(String workModel) {
-        this.workModel = workModel;
+        this.workModel = workModel == null ? null : workModel.trim();
     }
 
     public String getPort() {
@@ -141,15 +115,7 @@ public class Gateway implements Serializable {
     }
 
     public void setPort(String port) {
-        this.port = port;
-    }
-
-    public String getWorkStatus() {
-        return workStatus;
-    }
-
-    public void setWorkStatus(String workStatus) {
-        this.workStatus = workStatus;
+        this.port = port == null ? null : port.trim();
     }
 
     public String getPollPeriod() {
@@ -157,7 +123,7 @@ public class Gateway implements Serializable {
     }
 
     public void setPollPeriod(String pollPeriod) {
-        this.pollPeriod = pollPeriod;
+        this.pollPeriod = pollPeriod == null ? null : pollPeriod.trim();
     }
 
     public String getOvertimePeriod() {
@@ -165,35 +131,39 @@ public class Gateway implements Serializable {
     }
 
     public void setOvertimePeriod(String overtimePeriod) {
-        this.overtimePeriod = overtimePeriod;
+        this.overtimePeriod = overtimePeriod == null ? null : overtimePeriod.trim();
     }
 
-    public List<Pass> getPassList() {
-        return passList;
+    public String getWorkStatus() {
+        return workStatus;
     }
 
-    public void setPassList(List<Pass> passList) {
-        this.passList = passList;
+    public void setWorkStatus(String workStatus) {
+        this.workStatus = workStatus == null ? null : workStatus.trim();
     }
 
-    public ExtPass getExtPass() {
-        return extPass;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setExtPass(ExtPass extPass) {
-        this.extPass = extPass;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
-    public List<Relay> getRelayList() { return relayList; }
-
-    public void setRelayList(List<Relay> relayList) { this.relayList = relayList; }
-
-    public String getDeleteFlag() {
-        return deleteFlag;
+    public String getLoginName() {
+        return loginName;
     }
 
-    public void setDeleteFlag(String deleteFlag) {
-        this.deleteFlag = deleteFlag;
+    public void setLoginName(String loginName) {
+        this.loginName = loginName == null ? null : loginName.trim();
+    }
+
+    public String getFlag() {
+        return flag;
+    }
+
+    public void setFlag(String flag) {
+        this.flag = flag == null ? null : flag.trim();
     }
 
     public Date getCreateTime() {
@@ -204,12 +174,35 @@ public class Gateway implements Serializable {
         this.createTime = createTime;
     }
 
-    public String getUserId() {
-        return userId;
+    public Date getUpdateTime() {
+        return updateTime;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 
+    public Integer getCreateUser() {
+        return createUser;
+    }
+
+    public void setCreateUser(Integer createUser) {
+        this.createUser = createUser;
+    }
+
+    public Integer getUpdateUser() {
+        return updateUser;
+    }
+
+    public void setUpdateUser(Integer updateUser) {
+        this.updateUser = updateUser;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state == null ? null : state.trim();
+    }
 }

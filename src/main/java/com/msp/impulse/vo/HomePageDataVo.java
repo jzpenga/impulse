@@ -2,7 +2,7 @@ package com.msp.impulse.vo;
 
 import com.msp.impulse.base.BaseResponse;
 import com.msp.impulse.entity.Alarm;
-import com.msp.impulse.entity.ControlInstru;
+import com.msp.impulse.entity.Controlinstru;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -27,14 +27,14 @@ public class HomePageDataVo extends BaseResponse {
     @ApiModelProperty(name = "alarmList", value = "警报", example = "")
     private List<Alarm> alarmList;
     @ApiModelProperty(name = "controlInstruList", value = "操作指令", example = "")
-    private List<ControlInstru> controlInstruList;
+    private List<Controlinstru> controlInstruList;
 
     public HomePageDataVo() {
     }
 
     public HomePageDataVo(Integer gatewayNumber, Integer gatewayOnNumber, Integer gatewayOffNumber, Integer sensorNumber,
                           Integer sensorOnNumber, Integer sensorOffNumber, Integer alarmNumber,
-                          List<Alarm> alarmList, List<ControlInstru> controlInstruList) {
+                          List<Alarm> alarmList, List<Controlinstru> controlInstruList) {
         this.gatewayNumber = gatewayNumber;
         this.gatewayOnNumber = gatewayOnNumber;
         this.gatewayOffNumber = gatewayOffNumber;
@@ -110,11 +110,11 @@ public class HomePageDataVo extends BaseResponse {
         this.alarmList = alarmList;
     }
 
-    public List<ControlInstru> getControlInstruList() {
+    public List<Controlinstru> getControlInstruList() {
         return controlInstruList;
     }
 
-    public void setControlInstruList(List<ControlInstru> controlInstruList) {
+    public void setControlInstruList(List<Controlinstru> controlInstruList) {
         this.controlInstruList = controlInstruList;
     }
 }

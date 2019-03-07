@@ -1,43 +1,57 @@
 package com.msp.impulse.entity;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import org.springframework.data.annotation.Id;
-
 import java.io.Serializable;
 import java.util.Date;
 
-@ApiModel(value = "继电器", description = "继电器")
 public class Relay implements Serializable {
-    @Id
-    @ApiModelProperty(name = "id", value = "继电器id", example = "1")
-    private String id;
-    @ApiModelProperty(name = "wayNo", value = "路数", example = "{}")
-    private  Integer wayNo;
-    @ApiModelProperty(name = "dealStatus", value = "处理状态", example = "0-开 1-关", required = true)
-    private String  dealStatus;
-    @ApiModelProperty(name = "finalStatus", value = "最终状态", example = "0-开  1-关")
-    private  String finalStatus;
-    @ApiModelProperty(name = "updateTime", value = "更新时间", example = "2019-01-01 00:00:00", required = true)
-    private Date updateTime;
-    @ApiModelProperty(name = "createTime", value = "创建时间", example = "2019-01-01 00:00:00", required = true)
+    private Integer id;
+
+    private Integer wayNo;
+
+    private String dealStatus;
+
+    private String finalStatus;
+
+    private Integer userId;
+
+    private Integer gatewayId;
+
+    private String flag;
+
     private Date createTime;
-    @ApiModelProperty(name = "userId", value = "用户id", example = "5a31bhjb123333123dsada", required = true)
-    private String userId;
 
-    public String getId() {return id; }
-    public void setId(String id) { this.id = id;}
+    private Date updateTime;
 
-    public Integer getWayNo() { return wayNo; }
+    private Integer createUser;
 
-    public void setWayNo(Integer wayNo) { this.wayNo = wayNo; }
+    private Integer updateUser;
+
+    private String state;
+
+    private static final long serialVersionUID = 1L;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getWayNo() {
+        return wayNo;
+    }
+
+    public void setWayNo(Integer wayNo) {
+        this.wayNo = wayNo;
+    }
 
     public String getDealStatus() {
         return dealStatus;
     }
 
     public void setDealStatus(String dealStatus) {
-        this.dealStatus = dealStatus;
+        this.dealStatus = dealStatus == null ? null : dealStatus.trim();
     }
 
     public String getFinalStatus() {
@@ -45,15 +59,31 @@ public class Relay implements Serializable {
     }
 
     public void setFinalStatus(String finalStatus) {
-        this.finalStatus = finalStatus;
+        this.finalStatus = finalStatus == null ? null : finalStatus.trim();
     }
 
-    public Date getUpdateTime() {
-        return updateTime;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public Integer getGatewayId() {
+        return gatewayId;
+    }
+
+    public void setGatewayId(Integer gatewayId) {
+        this.gatewayId = gatewayId;
+    }
+
+    public String getFlag() {
+        return flag;
+    }
+
+    public void setFlag(String flag) {
+        this.flag = flag == null ? null : flag.trim();
     }
 
     public Date getCreateTime() {
@@ -64,11 +94,35 @@ public class Relay implements Serializable {
         this.createTime = createTime;
     }
 
-    public String getUserId() {
-        return userId;
+    public Date getUpdateTime() {
+        return updateTime;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public Integer getCreateUser() {
+        return createUser;
+    }
+
+    public void setCreateUser(Integer createUser) {
+        this.createUser = createUser;
+    }
+
+    public Integer getUpdateUser() {
+        return updateUser;
+    }
+
+    public void setUpdateUser(Integer updateUser) {
+        this.updateUser = updateUser;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state == null ? null : state.trim();
     }
 }

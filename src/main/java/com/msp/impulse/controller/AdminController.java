@@ -17,7 +17,7 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("admin/adminManage")
 @Api(value = "管理员信息", tags = "管理员信息管理", description = "管理员信息管理")
 public class AdminController {
-    private static Logger logger = LoggerFactory.getLogger(UserController.class);
+    private static Logger logger = LoggerFactory.getLogger(AdminController.class);
     @Autowired
     private  AdminService adminService;
 
@@ -36,35 +36,35 @@ public class AdminController {
         return response;
     }
 
-    @GetMapping("findAdminById/{id}")
-    @ApiOperation(value = "根据id查询管理员", notes = "根据id查询管理员", tags = "管理员操作", httpMethod = "POST")
-    public BaseResponse<Admin> findAdminById(@PathVariable String id) {
-        BaseResponse<Admin> response;
-        try {
-            response = adminService.findAdminById(id);
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-            response = new BaseResponse<>();
-            response.setResponseCode(ResponseCode.SERVER_FAILED.getCode());
-            response.setResponseMsg(ResponseCode.SERVER_FAILED.getMessage());
-        }
-        return response;
-    }
+//    @GetMapping("findAdminById/{id}")
+//    @ApiOperation(value = "根据id查询管理员", notes = "根据id查询管理员", tags = "管理员操作", httpMethod = "POST")
+//    public BaseResponse<Admin> findAdminById(@PathVariable String id) {
+//        BaseResponse<Admin> response;
+//        try {
+//            response = adminService.findAdminById(id);
+//        } catch (Exception e) {
+//            logger.error(e.getMessage(), e);
+//            response = new BaseResponse<>();
+//            response.setResponseCode(ResponseCode.SERVER_FAILED.getCode());
+//            response.setResponseMsg(ResponseCode.SERVER_FAILED.getMessage());
+//        }
+//        return response;
+//    }
 
-    @GetMapping("deleteAdminById/{id}")
-    @ApiOperation(value = "根据id删除管理员", notes = "根据id删除管理员", tags = "管理员操作", httpMethod = "POST")
-    public BaseResponse deleteAdminById(@PathVariable String id) {
-        BaseResponse response;
-        try {
-            response = adminService.deleteAdminById(id);
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-            response = new BaseResponse<>();
-            response.setResponseCode(ResponseCode.SERVER_FAILED.getCode());
-            response.setResponseMsg(ResponseCode.SERVER_FAILED.getMessage());
-        }
-        return response;
-    }
+//    @GetMapping("deleteAdminById/{id}")
+//    @ApiOperation(value = "根据id删除管理员", notes = "根据id删除管理员", tags = "管理员操作", httpMethod = "POST")
+//    public BaseResponse deleteAdminById(@PathVariable String id) {
+//        BaseResponse response;
+//        try {
+//            response = adminService.deleteAdminById(id);
+//        } catch (Exception e) {
+//            logger.error(e.getMessage(), e);
+//            response = new BaseResponse<>();
+//            response.setResponseCode(ResponseCode.SERVER_FAILED.getCode());
+//            response.setResponseMsg(ResponseCode.SERVER_FAILED.getMessage());
+//        }
+//        return response;
+//    }
 
     @PostMapping("adminLogin")
     @ApiOperation(value = "管理员登录", notes = "管理员登录", tags = "管理员操作", httpMethod = "POST")

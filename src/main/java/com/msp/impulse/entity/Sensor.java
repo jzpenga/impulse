@@ -1,65 +1,78 @@
 package com.msp.impulse.entity;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-
+import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
-@ApiModel(value = "传感器", description = "传感器")
-public class Sensor {
-    @Id
-    @ApiModelProperty(name = "id", value = "传感器ID", example = "5be402294932ff3690e3f4ba")
-    private  String id;
-    @ApiModelProperty(name = "name", value = "传感器名称", example = "温度传感器", required = true)
+public class Sensor implements Serializable {
+    private Integer id;
+
     private String name;
-    @ApiModelProperty(name = "sensorNo", value = "传感器序列号", example = "",required = true)
-    private  String sensorNo;
-    @ApiModelProperty(name = "passNumber", value = "通道数", example = "1", required = true)
+
+    private String sensorNo;
+
     private Integer passNumber;
-    @ApiModelProperty(name = "longitude", value = "经度", example = "116.46176")
-    private  String  longitude;
-    @ApiModelProperty(name = "latitude", value = "纬度", example = "39.905859")
+
+    private String longitude;
+
     private String latitude;
-    @DBRef
-    @ApiModelProperty(name = "pass", value = "通道参数", example = "[]")
-    private List<Pass> passList;
-    @ApiModelProperty(name = "workStatus", value = "工作状态", example = "0-开 1-关")
+
     private String workStatus;
-    @ApiModelProperty(name="deleteFlag",value = "删除标志",example = "0-使用1-删除")
-    private  String  deleteFlag;
-    @ApiModelProperty(name = "sensorType", value = "设备类型", example = "")
+
     private String sensorType;
-    @ApiModelProperty(name = "sensorModel", value = "设备型号", example = "")
+
     private String sensorModel;
-    @ApiModelProperty(name = "createTime", value = "创建时间", example = "2019-01-01 00:00:00", required = true)
-    private Date createTime;
-    @DBRef
-    @ApiModelProperty(name = "gateway", value = "网管", example = "网关", required = true)
-    private Gateway gateway;
-    @ApiModelProperty(name = "userId", value = "用户id", example = "5a31bhjb123333123dsada", required = true)
-    private String userId;
-    @ApiModelProperty(name = "deviceId", value = "设备id", example = "5a31bhjb123333123dsada", required = true)
+
+    private Integer userId;
+
+    private String userName;
+
     private String deviceId;
-    @ApiModelProperty(name = "loginName", value = "登录名", example = "小红", required = true)
-    private String loginName;
 
+    private String gatewayName;
 
-    public String getId() { return id; }
+    private String passNo;
 
-    public void setId(String id) {this.id = id; }
+    private String flag;
 
-    public String getSensorNo() { return sensorNo; }
+    private Date createTime;
 
-    public void setSensorNo(String sensorNo) { this.sensorNo = sensorNo; }
+    private Date updateTime;
 
-    public String getName() { return name; }
+    private Integer createUser;
 
-    public void setName(String name) { this.name = name; }
+    private Integer updateUser;
 
-    public Integer getPassNumber() { return passNumber; }
+    private String state;
+
+    private static final long serialVersionUID = 1L;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
+    }
+
+    public String getSensorNo() {
+        return sensorNo;
+    }
+
+    public void setSensorNo(String sensorNo) {
+        this.sensorNo = sensorNo == null ? null : sensorNo.trim();
+    }
+
+    public Integer getPassNumber() {
+        return passNumber;
+    }
 
     public void setPassNumber(Integer passNumber) {
         this.passNumber = passNumber;
@@ -70,7 +83,7 @@ public class Sensor {
     }
 
     public void setLongitude(String longitude) {
-        this.longitude = longitude;
+        this.longitude = longitude == null ? null : longitude.trim();
     }
 
     public String getLatitude() {
@@ -78,15 +91,7 @@ public class Sensor {
     }
 
     public void setLatitude(String latitude) {
-        this.latitude = latitude;
-    }
-
-    public List<Pass> getPassList() {
-        return passList;
-    }
-
-    public void setPassList(List<Pass> passList) {
-        this.passList = passList;
+        this.latitude = latitude == null ? null : latitude.trim();
     }
 
     public String getWorkStatus() {
@@ -94,12 +99,72 @@ public class Sensor {
     }
 
     public void setWorkStatus(String workStatus) {
-        this.workStatus = workStatus;
+        this.workStatus = workStatus == null ? null : workStatus.trim();
     }
 
-    public String getDeleteFlag() { return deleteFlag; }
+    public String getSensorType() {
+        return sensorType;
+    }
 
-    public void setDeleteFlag(String deleteFlag) { this.deleteFlag = deleteFlag; }
+    public void setSensorType(String sensorType) {
+        this.sensorType = sensorType == null ? null : sensorType.trim();
+    }
+
+    public String getSensorModel() {
+        return sensorModel;
+    }
+
+    public void setSensorModel(String sensorModel) {
+        this.sensorModel = sensorModel == null ? null : sensorModel.trim();
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName == null ? null : userName.trim();
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId == null ? null : deviceId.trim();
+    }
+
+    public String getGatewayName() {
+        return gatewayName;
+    }
+
+    public void setGatewayName(String gatewayName) {
+        this.gatewayName = gatewayName == null ? null : gatewayName.trim();
+    }
+
+    public String getPassNo() {
+        return passNo;
+    }
+
+    public void setPassNo(String passNo) {
+        this.passNo = passNo == null ? null : passNo.trim();
+    }
+
+    public String getFlag() {
+        return flag;
+    }
+
+    public void setFlag(String flag) {
+        this.flag = flag == null ? null : flag.trim();
+    }
 
     public Date getCreateTime() {
         return createTime;
@@ -109,51 +174,35 @@ public class Sensor {
         this.createTime = createTime;
     }
 
-    public Gateway getGateway() {
-        return gateway;
+    public Date getUpdateTime() {
+        return updateTime;
     }
 
-    public void setGateway(Gateway gateway) {
-        this.gateway = gateway;
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 
-    public String getUserId() {
-        return userId;
+    public Integer getCreateUser() {
+        return createUser;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setCreateUser(Integer createUser) {
+        this.createUser = createUser;
     }
 
-    public String getDeviceId() {
-        return deviceId;
+    public Integer getUpdateUser() {
+        return updateUser;
     }
 
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
+    public void setUpdateUser(Integer updateUser) {
+        this.updateUser = updateUser;
     }
 
-    public String getLoginName() {
-        return loginName;
+    public String getState() {
+        return state;
     }
 
-    public void setLoginName(String loginName) {
-        this.loginName = loginName;
-    }
-
-    public String getSensorType() {
-        return sensorType;
-    }
-
-    public void setSensorType(String sensorType) {
-        this.sensorType = sensorType;
-    }
-
-    public String getSensorModel() {
-        return sensorModel;
-    }
-
-    public void setSensorModel(String sensorModel) {
-        this.sensorModel = sensorModel;
+    public void setState(String state) {
+        this.state = state == null ? null : state.trim();
     }
 }

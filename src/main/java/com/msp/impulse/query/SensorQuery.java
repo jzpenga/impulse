@@ -6,17 +6,19 @@ import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel("网关查询")
 public class SensorQuery extends BaseRequest {
-    @ApiModelProperty(name = "sensorName", value = "传感器名称", example = "")
-    private String sensorName;
+    @ApiModelProperty(name = "name", value = "传感器名称", example = "")
+    private String name;
     @ApiModelProperty(name = "gatewayName", value = "网关名称", example = "")
     private String gatewayName;
+    @ApiModelProperty(name = "userId", value = "用户id", example = "")
+    private Integer userId;
 
-    public String getSensorName() {
-        return sensorName;
+    public String getName() {
+        return name;
     }
 
-    public void setSensorName(String sensorName) {
-        this.sensorName = sensorName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getGatewayName() {
@@ -25,6 +27,14 @@ public class SensorQuery extends BaseRequest {
 
     public void setGatewayName(String gatewayName) {
         this.gatewayName = gatewayName;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 }
 

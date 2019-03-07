@@ -3,6 +3,7 @@ package com.msp.impulse.nb.controller;
 import com.msp.impulse.base.BaseResponse;
 import com.msp.impulse.entity.Company;
 import com.msp.impulse.entity.Sensor;
+import com.msp.impulse.mapper.SensorMapper;
 import com.msp.impulse.service.SensorService;
 import com.msp.impulse.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ import java.util.List;
 public class DeviceController {
 
     @Autowired
-    private SensorService sensorService;
+    private SensorMapper sensorMapper;
 
     @Autowired
     private UserService userService;
@@ -28,7 +29,7 @@ public class DeviceController {
         BaseResponse<List<Sensor>> baseResponse = new BaseResponse<>();
         Company company = userService.findByNameAndPwd(para.getLoginName(), para.getPassword()).getData();
         if (company!=null){
-            List<Sensor> deviceList = sensorService.getDeviceList(company.getLoginName());
+            List<Sensor> deviceList = sensorMapper.getDeviceList(company.getLoginName());
             baseResponse.setResponseCode(200);
             baseResponse.setResponseMsg("success");
             baseResponse.setData(deviceList);

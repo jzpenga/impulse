@@ -3,8 +3,7 @@ package com.msp.impulse.controller;
 import com.msp.impulse.base.BaseResponse;
 import com.msp.impulse.base.ResponseCode;
 import com.msp.impulse.entity.Company;
-import com.msp.impulse.entity.User;
-import com.msp.impulse.query.PersonalInfoQuery;
+import com.msp.impulse.query.SaveUserQuery;
 import com.msp.impulse.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -22,21 +21,6 @@ public class UserController {
     private static Logger logger = LoggerFactory.getLogger(UserController.class);
     @Autowired
     UserService userService;
-
-    @PostMapping("addUser")
-    @ApiOperation(value = "添加用户", notes = "新增用户", tags = "用户操作", httpMethod = "POST")
-    public BaseResponse<Company> addUser(@RequestBody Company company) {
-        BaseResponse<Company> response;
-        try {
-            response = userService.addUser(company);
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-            response = new BaseResponse<>();
-            response.setResponseCode(ResponseCode.SERVER_FAILED.getCode());
-            response.setResponseMsg(ResponseCode.SERVER_FAILED.getMessage());
-        }
-        return response;
-    }
 
     @PostMapping("login")
     @ApiOperation(value = "用户登录", notes = "用户登录", tags = "登录登出", httpMethod = "POST")

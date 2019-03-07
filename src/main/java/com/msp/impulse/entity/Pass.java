@@ -1,59 +1,78 @@
 package com.msp.impulse.entity;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import org.springframework.data.annotation.Id;
-
+import java.io.Serializable;
 import java.util.Date;
 
-@ApiModel(value = "通道", description = "通道")
-public class Pass  {
-    @Id
-    @ApiModelProperty(name = "id", value = "通道id", example = "5be402294932ff3690e3f4ba")
-    private  String id;
-    @ApiModelProperty(name = "passNo", value = "通道号", example = "")
-    private  String passNo;
-    @ApiModelProperty(name = "alarmCeil", value = "报警上限", example = "")
-    private  String alarmCeil;
-    @ApiModelProperty(name = "alarmFloor", value = "报警下限", example = "")
-    private  String alarmFloor;
-    @ApiModelProperty(name = "ceilStatus", value = "上限状态", example = "")
-    private  String ceilStatus;
-    @ApiModelProperty(name = "floorStatus", value = "下限状态", example = "")
-    private  String floorStatus;
-    @ApiModelProperty(name = "analogZero", value = "模拟信号量程-零度", example = "")
-    private  String analogZero;
-    @ApiModelProperty(name = "analogFull", value = "模拟信号量程-满点", example = "")
-    private  String analogFull;
-    @ApiModelProperty(name = "sensorZero", value = "传感器量程-零度", example = "")
-    private  String sensorZero;
-    @ApiModelProperty(name = "sensorFull", value = "传感器量程-满点", example = "")
-    private  String sensorFull;
-    @ApiModelProperty(name = "decimalPlaces", value = "小数点位数", example = "3")
-    private  String decimalPlaces;
-    @ApiModelProperty(name="deleteFlag",value = "删除标志",example = "0-使用1-删除")
-    private  String  deleteFlag;
-    @ApiModelProperty(name = "createTime", value = "创建时间", example = "2019-01-01 00:00:00", required = true)
-    private Date createTime;
-    @ApiModelProperty(name="SensorName",value = "传感器名称",example = "")
-    private  String  SensorName;
-    @ApiModelProperty(name="SensorType",value = "传感类型",example = "")
-    private  String  SensorType;
-    @ApiModelProperty(name = "userId", value = "用户id", example = "5a31bhjb123333123dsada", required = true)
-    private String userId;
+public class Pass implements Serializable {
+    private Integer id;
 
-    public String getId() {
+    private Integer passNo;
+
+    private String alarmCeil;
+
+    private String alarmFloor;
+
+    private String ceilStatus;
+
+    private String floorStatus;
+
+    private String analogZero;
+
+    private String analogFull;
+
+    private String sensorZero;
+
+    private String sensorFull;
+
+    private String decimalPlaces;
+
+    private Integer gatewayId;
+
+    private String gatewayName;
+
+    private Integer sensorId;
+
+    private String sensorName;
+
+    private String sensorType;
+
+    private Integer userId;
+
+    private String userName;
+
+    private Integer extPassId;
+
+    private String extPassFlag;
+
+    private String extPassAddress;
+
+    private String flag;
+
+    private Date createTime;
+
+    private Date updateTime;
+
+    private Integer createUser;
+
+    private Integer updateUser;
+
+    private String state;
+
+    private static final long serialVersionUID = 1L;
+
+    public Integer getId() {
         return id;
     }
-    public void setId(String id) {
+
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public String getPassNo() {
+    public Integer getPassNo() {
         return passNo;
     }
 
-    public void setPassNo(String passNo) {
+    public void setPassNo(Integer passNo) {
         this.passNo = passNo;
     }
 
@@ -62,7 +81,7 @@ public class Pass  {
     }
 
     public void setAlarmCeil(String alarmCeil) {
-        this.alarmCeil = alarmCeil;
+        this.alarmCeil = alarmCeil == null ? null : alarmCeil.trim();
     }
 
     public String getAlarmFloor() {
@@ -70,7 +89,7 @@ public class Pass  {
     }
 
     public void setAlarmFloor(String alarmFloor) {
-        this.alarmFloor = alarmFloor;
+        this.alarmFloor = alarmFloor == null ? null : alarmFloor.trim();
     }
 
     public String getCeilStatus() {
@@ -78,7 +97,7 @@ public class Pass  {
     }
 
     public void setCeilStatus(String ceilStatus) {
-        this.ceilStatus = ceilStatus;
+        this.ceilStatus = ceilStatus == null ? null : ceilStatus.trim();
     }
 
     public String getFloorStatus() {
@@ -86,7 +105,7 @@ public class Pass  {
     }
 
     public void setFloorStatus(String floorStatus) {
-        this.floorStatus = floorStatus;
+        this.floorStatus = floorStatus == null ? null : floorStatus.trim();
     }
 
     public String getAnalogZero() {
@@ -94,7 +113,7 @@ public class Pass  {
     }
 
     public void setAnalogZero(String analogZero) {
-        this.analogZero = analogZero;
+        this.analogZero = analogZero == null ? null : analogZero.trim();
     }
 
     public String getAnalogFull() {
@@ -102,7 +121,7 @@ public class Pass  {
     }
 
     public void setAnalogFull(String analogFull) {
-        this.analogFull = analogFull;
+        this.analogFull = analogFull == null ? null : analogFull.trim();
     }
 
     public String getSensorZero() {
@@ -110,7 +129,7 @@ public class Pass  {
     }
 
     public void setSensorZero(String sensorZero) {
-        this.sensorZero = sensorZero;
+        this.sensorZero = sensorZero == null ? null : sensorZero.trim();
     }
 
     public String getSensorFull() {
@@ -118,7 +137,7 @@ public class Pass  {
     }
 
     public void setSensorFull(String sensorFull) {
-        this.sensorFull = sensorFull;
+        this.sensorFull = sensorFull == null ? null : sensorFull.trim();
     }
 
     public String getDecimalPlaces() {
@@ -126,15 +145,95 @@ public class Pass  {
     }
 
     public void setDecimalPlaces(String decimalPlaces) {
-        this.decimalPlaces = decimalPlaces;
+        this.decimalPlaces = decimalPlaces == null ? null : decimalPlaces.trim();
     }
 
-    public String getDeleteFlag() {
-        return deleteFlag;
+    public Integer getGatewayId() {
+        return gatewayId;
     }
 
-    public void setDeleteFlag(String deleteFlag) {
-        this.deleteFlag = deleteFlag;
+    public void setGatewayId(Integer gatewayId) {
+        this.gatewayId = gatewayId;
+    }
+
+    public String getGatewayName() {
+        return gatewayName;
+    }
+
+    public void setGatewayName(String gatewayName) {
+        this.gatewayName = gatewayName == null ? null : gatewayName.trim();
+    }
+
+    public Integer getSensorId() {
+        return sensorId;
+    }
+
+    public void setSensorId(Integer sensorId) {
+        this.sensorId = sensorId;
+    }
+
+    public String getSensorName() {
+        return sensorName;
+    }
+
+    public void setSensorName(String sensorName) {
+        this.sensorName = sensorName == null ? null : sensorName.trim();
+    }
+
+    public String getSensorType() {
+        return sensorType;
+    }
+
+    public void setSensorType(String sensorType) {
+        this.sensorType = sensorType == null ? null : sensorType.trim();
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName == null ? null : userName.trim();
+    }
+
+    public Integer getExtPassId() {
+        return extPassId;
+    }
+
+    public void setExtPassId(Integer extPassId) {
+        this.extPassId = extPassId;
+    }
+
+    public String getExtPassFlag() {
+        return extPassFlag;
+    }
+
+    public void setExtPassFlag(String extPassFlag) {
+        this.extPassFlag = extPassFlag == null ? null : extPassFlag.trim();
+    }
+
+    public String getExtPassAddress() {
+        return extPassAddress;
+    }
+
+    public void setExtPassAddress(String extPassAddress) {
+        this.extPassAddress = extPassAddress == null ? null : extPassAddress.trim();
+    }
+
+    public String getFlag() {
+        return flag;
+    }
+
+    public void setFlag(String flag) {
+        this.flag = flag == null ? null : flag.trim();
     }
 
     public Date getCreateTime() {
@@ -145,27 +244,35 @@ public class Pass  {
         this.createTime = createTime;
     }
 
-    public String getSensorName() {
-        return SensorName;
+    public Date getUpdateTime() {
+        return updateTime;
     }
 
-    public void setSensorName(String sensorName) {
-        SensorName = sensorName;
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 
-    public String getSensorType() {
-        return SensorType;
+    public Integer getCreateUser() {
+        return createUser;
     }
 
-    public void setSensorType(String sensorType) {
-        SensorType = sensorType;
+    public void setCreateUser(Integer createUser) {
+        this.createUser = createUser;
     }
 
-    public String getUserId() {
-        return userId;
+    public Integer getUpdateUser() {
+        return updateUser;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUpdateUser(Integer updateUser) {
+        this.updateUser = updateUser;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state == null ? null : state.trim();
     }
 }

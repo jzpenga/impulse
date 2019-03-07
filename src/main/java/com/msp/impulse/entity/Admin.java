@@ -1,35 +1,38 @@
 package com.msp.impulse.entity;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import org.springframework.data.annotation.Id;
-
+import java.io.Serializable;
 import java.util.Date;
 
-@ApiModel(value = "管理员", description = "管理员")
-public class Admin {
-    @Id
-    @ApiModelProperty(name = "id", value = "id", example = "1")
-    private String id;
-    @ApiModelProperty(name = "loginName", value = "登录名", example = "xaioa")
+public class Admin implements Serializable {
+    private Integer id;
+
     private String loginName;
-    @ApiModelProperty(name = "password", value = "密码", example = "123456")
+
     private String password;
-    @ApiModelProperty(name = "phoneNo", value = "手机号", example = "13333333333")
+
     private String phoneNo;
-    @ApiModelProperty(name = "email", value = "邮箱", example = "1326199999@163.com")
+
     private String email;
-    @ApiModelProperty(name = "deleteFlag", value = "停用标志", example = "0-停用 1-启用")
-    private String deleteFlag;
-    @ApiModelProperty(name = "createTime", value = "注册时间", example = "2019-01-01 00:00:00")
+
+    private String flag;
+
     private Date createTime;
 
+    private Date updateTime;
 
-    public String getId() {
+    private Integer createUser;
+
+    private Integer updateUser;
+
+    private String state;
+
+    private static final long serialVersionUID = 1L;
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -38,7 +41,7 @@ public class Admin {
     }
 
     public void setLoginName(String loginName) {
-        this.loginName = loginName;
+        this.loginName = loginName == null ? null : loginName.trim();
     }
 
     public String getPassword() {
@@ -46,7 +49,7 @@ public class Admin {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.password = password == null ? null : password.trim();
     }
 
     public String getPhoneNo() {
@@ -54,7 +57,7 @@ public class Admin {
     }
 
     public void setPhoneNo(String phoneNo) {
-        this.phoneNo = phoneNo;
+        this.phoneNo = phoneNo == null ? null : phoneNo.trim();
     }
 
     public String getEmail() {
@@ -62,15 +65,15 @@ public class Admin {
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email = email == null ? null : email.trim();
     }
 
-    public String getDeleteFlag() {
-        return deleteFlag;
+    public String getFlag() {
+        return flag;
     }
 
-    public void setDeleteFlag(String deleteFlag) {
-        this.deleteFlag = deleteFlag;
+    public void setFlag(String flag) {
+        this.flag = flag == null ? null : flag.trim();
     }
 
     public Date getCreateTime() {
@@ -79,5 +82,37 @@ public class Admin {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public Integer getCreateUser() {
+        return createUser;
+    }
+
+    public void setCreateUser(Integer createUser) {
+        this.createUser = createUser;
+    }
+
+    public Integer getUpdateUser() {
+        return updateUser;
+    }
+
+    public void setUpdateUser(Integer updateUser) {
+        this.updateUser = updateUser;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state == null ? null : state.trim();
     }
 }

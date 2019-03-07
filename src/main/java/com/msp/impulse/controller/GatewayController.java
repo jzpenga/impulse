@@ -1,11 +1,12 @@
 package com.msp.impulse.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.msp.impulse.base.BaseResponse;
 import com.msp.impulse.base.ResponseCode;
 import com.msp.impulse.entity.Company;
 import com.msp.impulse.entity.Gateway;
-import com.msp.impulse.entity.PageBean;
 import com.msp.impulse.exception.MyException;
+import com.msp.impulse.query.GatewayAddQuery;
 import com.msp.impulse.query.GatewayQuery;
 import com.msp.impulse.service.GatewayService;
 import io.swagger.annotations.Api;
@@ -15,7 +16,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -29,16 +29,21 @@ public class GatewayController {
 
     @PostMapping("findGatewayByCondition")
     @ApiOperation(value = "根据条件查询网关", notes = "根据条件查询网关", tags = "网关管理", httpMethod = "POST")
-    public BaseResponse<PageBean> findGatewayByCondition(@RequestBody GatewayQuery gatewayQuery, HttpSession session) {
-        BaseResponse<PageBean> response;
+    public BaseResponse<PageInfo> findGatewayByCondition(@RequestBody GatewayQuery gatewayQuery, HttpSession session) {
+        BaseResponse<PageInfo> response;
         try {
             //获取用户id
-            String  id="";
+            Integer id=0;
             Company company= (Company)session.getAttribute("loginUser");
             if(company!=null){
                 id=company.getId();
             }
             response = gatewayService.findGatewayByCondition(gatewayQuery,id);
+        } catch (MyException e) {
+            logger.error(e.getMessage());
+            response = new BaseResponse();
+            response.setResponseCode(ResponseCode.PARAMETER_VALIDATION_FAILED.getCode());
+            response.setResponseMsg(e.getMessage());
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             response = new BaseResponse<>();
@@ -51,10 +56,15 @@ public class GatewayController {
     @GetMapping("findGatewayById/{id}")
     @ApiOperation(value = "根据id查询网关", notes = "根据id查询网关", tags = "网关管理", httpMethod = "GET")
     @ApiImplicitParam(name = "id", value = "网关ID", example = "1", required = true, dataType = "string")
-    public BaseResponse<Gateway> findGatewayById(@PathVariable String id) {
+    public BaseResponse<Gateway> findGatewayById(@PathVariable Integer id) {
         BaseResponse<Gateway> response;
         try {
             response = gatewayService.findGatewayById(id);
+        } catch (MyException e) {
+            logger.error(e.getMessage());
+            response = new BaseResponse();
+            response.setResponseCode(ResponseCode.PARAMETER_VALIDATION_FAILED.getCode());
+            response.setResponseMsg(e.getMessage());
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             response = new BaseResponse<>();
@@ -66,16 +76,21 @@ public class GatewayController {
 
     @PostMapping("saveGateway")
     @ApiOperation(value = "新增修改网关信息", notes = "新增修改网关信息", tags = "网关管理", httpMethod = "POST")
-    public BaseResponse addGateway(@RequestBody Gateway gateway,HttpSession session) {
+    public BaseResponse addGateway(@RequestBody GatewayAddQuery gatewayAddQuery, HttpSession session) {
         BaseResponse response;
         try {
             //获取用户id
-            String  userId="";
-            Company company= (Company)session.getAttribute("loginUser");
-            if(company!=null){
-                userId=company.getId();
+            Integer userId = 0;
+            Company company = (Company) session.getAttribute("loginUser");
+            if (company != null) {
+                userId = company.getId();
             }
-            response = gatewayService.addGateway(gateway,userId);
+            response = gatewayService.saveGateway(gatewayAddQuery, userId);
+        } catch (MyException e) {
+            logger.error(e.getMessage());
+            response = new BaseResponse();
+            response.setResponseCode(ResponseCode.PARAMETER_VALIDATION_FAILED.getCode());
+            response.setResponseMsg(e.getMessage());
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             response = new BaseResponse();
@@ -88,7 +103,7 @@ public class GatewayController {
     @GetMapping("deleteGateway/{id}")
     @ApiOperation(value = "根据id删除网关信息", notes = "根据id删除网关信息", tags = "网关管理", httpMethod = "GET")
     @ApiImplicitParam(name = "id", value = "网关ID", example = "1", required = true, dataType = "string")
-    public BaseResponse deleteGateway(@PathVariable String id) {
+    public BaseResponse deleteGateway(@PathVariable Integer id) {
         BaseResponse response;
         try {
             response = gatewayService.deleteGateway(id);
@@ -107,10 +122,10 @@ public class GatewayController {
 
     }
 
-    @GetMapping("deleteGateway")
-    @ApiOperation(value = "批量删除网关信息", notes = "批量删除网关信息", tags = "网关管理", httpMethod = "GET")
+    @PostMapping("deleteGatewayBatch")
+    @ApiOperation(value = "批量删除网关信息", notes = "批量删除网关信息", tags = "网关管理", httpMethod = "POST")
     @ApiImplicitParam(name = "ids", value = "网关ID集合", example = "1，3,4", required = true, dataType = "string")
-    public BaseResponse deleteGatewayBatch(@RequestBody List<String> ids) {
+    public BaseResponse deleteGatewayBatch(@RequestBody List<Integer> ids) {
         BaseResponse response;
         try {
             response = gatewayService.deleteGatewayBatch(ids);
@@ -126,6 +141,5 @@ public class GatewayController {
             response.setResponseMsg(ResponseCode.SERVER_FAILED.getMessage());
         }
         return response;
-
     }
 }

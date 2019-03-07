@@ -11,7 +11,7 @@ public interface AdminUserDao {
 
     Company findUserById(String id);
 
-    void save(Company company);
+    Company save(Company company);
 
     void deleteUserById(String userId);
 

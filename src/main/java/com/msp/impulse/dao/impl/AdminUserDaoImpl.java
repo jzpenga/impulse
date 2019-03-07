@@ -46,7 +46,7 @@ public class AdminUserDaoImpl implements AdminUserDao {
         }
         //联系人
         if (StringUtils.isNotBlank(findUserQuery.getName())) {
-            Pattern pattern = Pattern.compile("^" + findUserQuery.getCompanyName() + ".*$", Pattern.CASE_INSENSITIVE);
+            Pattern pattern = Pattern.compile("^" + findUserQuery.getName()+ ".*$", Pattern.CASE_INSENSITIVE);
             query.addCriteria(Criteria.where("name").regex(pattern));
         }
         //联系人电话
@@ -59,8 +59,8 @@ public class AdminUserDaoImpl implements AdminUserDao {
             query.addCriteria(Criteria.where("province").is(findUserQuery.getProvince()));
         }
         //市
-        if (StringUtils.isNotBlank(findUserQuery.getProvince())) {
-            query.addCriteria(Criteria.where("province").is(findUserQuery.getProvince()));
+        if (StringUtils.isNotBlank(findUserQuery.getCity())) {
+            query.addCriteria(Criteria.where("city").is(findUserQuery.getCity()));
         }
         //查询总条数
         Long totalRecord = mongoTemplate.count(query, Company.class);
@@ -93,8 +93,9 @@ public class AdminUserDaoImpl implements AdminUserDao {
     }
 
     @Override
-    public void save(Company company) {
+    public Company save(Company company) {
         mongoTemplate.save(company);
+        return company;
     }
 
     @Override
