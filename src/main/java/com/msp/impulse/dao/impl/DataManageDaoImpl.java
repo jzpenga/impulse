@@ -1,5 +1,8 @@
 package com.msp.impulse.dao.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.msp.impulse.constants.Constants;
 import com.msp.impulse.dao.DataManageDao;
 import com.msp.impulse.entity.*;
@@ -142,7 +145,7 @@ public class DataManageDaoImpl implements DataManageDao {
     }
 
     @Override
-    public PageBean findRealTimeData(DataHistoryQuery dataHistoryQuery) throws ParseException {
+    public PageInfo findRealTimeData(DataHistoryQuery dataHistoryQuery) throws ParseException {
         Criteria criteria=new Criteria();
         //用户id
         if(dataHistoryQuery.getUserId()!=null){
@@ -175,6 +178,7 @@ public class DataManageDaoImpl implements DataManageDao {
         if(dataHistoryQuery.getPageSize()==null){
             dataHistoryQuery.setPageSize(10);
         }
+        PageHelper.startPage(dataHistoryQuery.getPageNo(),dataHistoryQuery.getPageSize());
         Aggregation agg = Aggregation.newAggregation(
                 Aggregation.match(criteria),//条件
                 Aggregation.group("deviceId","dataKey").max("eventTime").as("eventTime"),//分组字段
@@ -195,8 +199,17 @@ public class DataManageDaoImpl implements DataManageDao {
             List<DataReportEntity> dataReportEntity1 = mongoTemplate.find(queryData,DataReportEntity.class);
             returnEntityList.add(dataReportEntity1.get(0));
         }
-        PageBean pageBean = new PageBean(dataHistoryQuery.getPageNo(), dataHistoryQuery.getPageSize(), list.size());
-        pageBean.setList(returnEntityList);
-        return pageBean;
+        PageInfo pageInfo=new PageInfo(returnEntityList);
+
+        Aggregation aggCount = Aggregation.newAggregation(
+                Aggregation.match(criteria),//条件
+                Aggregation.group("deviceId","dataKey").max("eventTime").as("eventTime"),//分组字段
+                Aggregation.sort(new Sort(Sort.Direction.DESC,"eventTime"))
+        );
+        AggregationResults<DataReportEntity> outputTypeCount=mongoTemplate.aggregate(aggCount,"dataReportEntity",DataReportEntity.class);
+        List<DataReportEntity> list1=outputTypeCount.getMappedResults();
+        pageInfo.setTotal(list1.size());
+
+        return pageInfo;
     }
 }
