@@ -20,10 +20,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Pattern;
 
 @Repository
@@ -181,7 +178,8 @@ public class DataManageDaoImpl implements DataManageDao {
         Aggregation agg = Aggregation.newAggregation(
                 Aggregation.match(criteria),//条件
                 Aggregation.group("deviceId","dataKey").max("eventTime").as("eventTime"),//分组字段
-                Aggregation.limit(dataHistoryQuery.getPageSize())//页数
+                Aggregation.limit(dataHistoryQuery.getPageSize()),//页数
+                Aggregation.sort(new Sort(Sort.Direction.DESC,"eventTime"))
                 ,Aggregation.skip((dataHistoryQuery.getPageNo()-1)*dataHistoryQuery.getPageSize())
         );
         AggregationResults<DataReportEntity> outputType=mongoTemplate.aggregate(agg,"dataReportEntity",DataReportEntity.class);
@@ -194,10 +192,9 @@ public class DataManageDaoImpl implements DataManageDao {
             Criteria criteriaData=new Criteria();
             queryData.addCriteria(criteriaData.where("deviceId").is(dataReportEntity.getDeviceId()).and("dataKey").is(dataReportEntity.getDataKey())
                     .and("eventTime").is(dataReportEntity.getEventTime()));
-            List<DataReportEntity> dataReportEntity1 = mongoTemplate.find(queryData.with(new Sort(Sort.Direction.DESC,"eventTime")),DataReportEntity.class);
+            List<DataReportEntity> dataReportEntity1 = mongoTemplate.find(queryData,DataReportEntity.class);
             returnEntityList.add(dataReportEntity1.get(0));
         }
-
         PageBean pageBean = new PageBean(dataHistoryQuery.getPageNo(), dataHistoryQuery.getPageSize(), list.size());
         pageBean.setList(returnEntityList);
         return pageBean;
