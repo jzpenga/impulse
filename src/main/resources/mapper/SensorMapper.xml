@@ -485,7 +485,7 @@
         s.id,s.latitude,s.longitude,s.`name`,s.pass_no passNo,s.pass_number passNumber,s.sensor_model sensorModel,s.sensor_no
         sensorNo,s.sensor_type sensorType
        ,s.state,s.update_time updateTime,s.update_user updateUser,s.user_id userId,s.user_name userName,s.work_status workStatus
-      from  sensor  where device_id=#{deviceId}
+      from  sensor s where s.device_id=#{deviceId}
   </select>
   <select id="findByDeviceId" parameterType="string" resultType="string">
      select
