@@ -183,6 +183,7 @@ public class DataManageDaoImpl implements DataManageDao {
                 Aggregation.match(criteria),//条件
                 Aggregation.group("deviceId","dataKey").max("eventTime").as("eventTime"),//分组字段
                 Aggregation.limit(dataHistoryQuery.getPageSize()),//页数
+                Aggregation.sort(new Sort(Sort.Direction.DESC,"dataKey")),
                 Aggregation.sort(new Sort(Sort.Direction.DESC,"eventTime"))
                 ,Aggregation.skip((dataHistoryQuery.getPageNo()-1)*dataHistoryQuery.getPageSize())
         );
