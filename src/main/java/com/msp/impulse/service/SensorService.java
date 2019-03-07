@@ -12,7 +12,6 @@ import com.msp.impulse.mapper.CompanyMapper;
 import com.msp.impulse.mapper.PassMapper;
 import com.msp.impulse.mapper.SensorMapper;
 import com.msp.impulse.nb.utils.NBDXManager;
-import com.msp.impulse.query.PassQuery;
 import com.msp.impulse.query.SensorAddQuery;
 import com.msp.impulse.query.SensorQuery;
 import org.apache.commons.lang.StringUtils;
@@ -106,8 +105,7 @@ public class SensorService {
             deviceInfo.setModel(sensor.getSensorModel());
             Random random = new Random();
 
-            String nodeid = sensor.getSensorNo() + (random.nextInt(9000000) + 1000000); //this is a test imei
-            deviceInfo.setNodeId(nodeid);// mac 地址
+            deviceInfo.setNodeId(sensor.getSensorNo());// mac 地址
 
             RegDirectDeviceOutDTO regDirectDeviceOutDTO = NBDXManager.registerDevice(deviceInfo);
             if(regDirectDeviceOutDTO==null){
