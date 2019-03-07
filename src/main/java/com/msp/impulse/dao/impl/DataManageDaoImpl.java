@@ -194,7 +194,7 @@ public class DataManageDaoImpl implements DataManageDao {
             Criteria criteriaData=new Criteria();
             queryData.addCriteria(criteriaData.where("deviceId").is(dataReportEntity.getDeviceId()).and("dataKey").is(dataReportEntity.getDataKey())
                     .and("eventTime").is(dataReportEntity.getEventTime()));
-            List<DataReportEntity> dataReportEntity1 = mongoTemplate.find(queryData,DataReportEntity.class);
+            List<DataReportEntity> dataReportEntity1 = mongoTemplate.find(queryData.with(new Sort(Sort.Direction.DESC,"eventTime")),DataReportEntity.class);
             returnEntityList.add(dataReportEntity1.get(0));
         }
 
