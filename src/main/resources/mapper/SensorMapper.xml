@@ -491,4 +491,18 @@
         s.sensor_no
      from  sensor  s where s.device_id=#{deviceId}
   </select>
+  <select id="querySensorNotRelation" resultType="com.msp.impulse.entity.Sensor">
+     select
+      s.create_time,s.create_user,s.device_id,s.flag,s.flag,s.gateway_name,
+        s.id,s.latitude,s.longitude,s.`name`,s.pass_no,s.pass_number,s.sensor_model,s.sensor_no,s.sensor_type
+       ,s.state,s.update_time,s.update_user,s.user_id,s.user_name,s.work_status
+      from sensor s where s.user_id is null
+  </select>
+   <select id="findSensorBySensorName" parameterType="string" resultType="com.msp.impulse.entity.Sensor">
+     select
+      s.create_time,s.create_user,s.device_id,s.flag,s.flag,s.gateway_name,
+        s.id,s.latitude,s.longitude,s.`name`,s.pass_no,s.pass_number,s.sensor_model,s.sensor_no,s.sensor_type
+       ,s.state,s.update_time,s.update_user,s.user_id,s.user_name,s.work_status
+      from sensor s where s.name=#{sensorName}
+   </select>
 </mapper>

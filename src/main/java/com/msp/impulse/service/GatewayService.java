@@ -193,8 +193,10 @@ public class GatewayService {
                     passMapper.updateByPrimaryKey(pass1);
                 }else{
                     //新增通道
-                    Integer passNo = queryPassNo(gateway.getGatewayName());
-                    pass.setPassNo(passNo);
+                    if(gateway!=null&&StringUtils.isNotBlank(gateway.getGatewayName())) {
+                        Integer passNo = queryPassNo(gateway.getGatewayName());
+                        pass.setPassNo(passNo);
+                    }
                     pass.setFlag("0");
                     if(gateway!=null){
                         pass.setGatewayId(gateway.getId());

@@ -195,73 +195,54 @@ public class SensorService {
         return response;
     }
 
-//    /**
-//     * 删除传感器
-//     *
-//     * @param id
-//     * @return
-//     */
-//    @Transactional
-//    public BaseResponse deleteSensor(String id,Integer userId) {
-//        BaseResponse response = new BaseResponse();
-//        //删除运营商传感器
-//        deleteNBDXSensor(id);
-//        //删除传感器
-//        sensorDao.findAndRemove(id);
-//        response.setResponseCode(ResponseCode.OK.getCode());
-//        response.setResponseMsg(ResponseCode.OK.getMessage());
-//        return response;
-//    }
-//    /**
-//     * 更改company表的传感器数
-//     *
-//     * @param userId
-//     * @param changeNumber 删除传负数
-//     */
-//    public synchronized void changeSensorNumber(String userId, Integer changeNumber) {
-//        //根据userId查询当前gatewayNumber
-//        Company company = userDao.findById(userId);
-//        if(company!=null){
-//            Integer  sensorNumber = company.getSensorNumber();
-//            if(sensorNumber>0){
-//                sensorNumber=sensorNumber-changeNumber;
-//                //改变网关个数
-//                company.setSensorNumber(sensorNumber);
-//                userDao.save(company);
-//            }
-//        }
-//    }
-//    /**
-//     * 删除电信运营商设备
-//     */
-//    public void deleteNBDXSensor(String sensorId) {
-//        Sensor sensor= sensorDao.findOne(sensorId);
-//        NBDXManager.deleteDevice(sensor.getDeviceId());
-//    }
+    /**
+     * 删除传感器
+     *
+     * @param id
+     * @return
+     */
+    @Transactional
+    public BaseResponse deleteSensor(Integer id) {
+        BaseResponse response = new BaseResponse();
+        //删除运营商传感器
+        deleteNBDXSensor(id);
+        //更新传感器flag为1
+        Sensor sensor = sensorMapper.selectByPrimaryKey(id);
+        sensor.setFlag("1");
+        sensorMapper.updateByPrimaryKey(sensor);
+        response.setResponseCode(ResponseCode.OK.getCode());
+        response.setResponseMsg(ResponseCode.OK.getMessage());
+        return response;
+    }
+    /**
+     * 删除电信运营商设备
+     */
+    public void deleteNBDXSensor(Integer sensorId) {
+        Sensor sensor= sensorMapper.selectByPrimaryKey(sensorId);
+        NBDXManager.deleteDevice(sensor.getDeviceId());
+    }
 
-//    /**
-//     * 批量删除传感器
-//     *
-//     * @param ids
-//     * @return
-//     */
-//    @Transactional
-//    public BaseResponse deleteSensorBatch(List<String> ids,Integer userId) {
-//        BaseResponse response = new BaseResponse();
-//        for (String id : ids) {
-//            //删除运营商传感器
-//            deleteNBDXSensor(id);
-//            //删除传感器
-//            sensorDao.findAndRemove(id);
-//            //更新用户传感器个数
-//            if(StringUtils.isNotBlank(userId)){
-//                changeSensorNumber(userId,-1);
-//            }
-//        }
-//        response.setResponseCode(ResponseCode.OK.getCode());
-//        response.setResponseMsg(ResponseCode.OK.getMessage());
-//        return response;
-//    }
+    /**
+     * 批量删除传感器
+     *
+     * @param ids
+     * @return
+     */
+    @Transactional
+    public BaseResponse deleteSensorBatch(List<Integer> ids) {
+        BaseResponse response = new BaseResponse();
+        for (Integer id : ids) {
+            //删除运营商传感器
+            deleteNBDXSensor(id);
+            //删除传感器
+            Sensor sensor = sensorMapper.selectByPrimaryKey(id);
+            sensor.setFlag("1");
+            sensorMapper.updateByPrimaryKey(sensor);
+        }
+        response.setResponseCode(ResponseCode.OK.getCode());
+        response.setResponseMsg(ResponseCode.OK.getMessage());
+        return response;
+    }
 
 //    /**
 //     * 根据loginName查询所有设备
@@ -280,39 +261,39 @@ public class SensorService {
 //        List<Sensor> sensorList = sensorDao.findByLoginName(loginName);
 //        return sensorList;
 //    }
-//
-//    /**
-//     * 查询未被关联的传感器
-//     *
-//     * @return
-//     */
-//    public BaseResponse<List<Sensor>> querySensorNotRelation() {
-//        BaseResponse response = new BaseResponse();
-//        List<Sensor> sensorList = sensorDao.querySensorNotRelation();
-//        response.setData(sensorList);
-//        response.setResponseCode(ResponseCode.OK.getCode());
-//        response.setResponseMsg(ResponseCode.OK.getMessage());
-//        return response;
-//    }
 
-//    /**
-//     * 关联传感器与用户
-//     * @param userId
-//     * @param sensorName
-//     * @return
-//     */
-//    public BaseResponse relationSensorAndUser(String userId, String sensorName) {
-//        BaseResponse response = new BaseResponse();
-//        //根据用户id查询用户信息
-//        Company company = userDao.findById(userId);
-//        //根据传感器名称查询传感器信息
-//        Sensor sensor=sensorDao.findBySensorName(sensorName);
-//        //关联
-//        sensor.setUserId(company.getId());
-//        sensor.setLoginName(company.getLoginName());
-//        sensorDao.save(sensor);
-//        response.setResponseCode(ResponseCode.OK.getCode());
-//        response.setResponseMsg(ResponseCode.OK.getMessage());
-//        return response;
-//    }
+    /**
+     * 查询未被关联的传感器
+     *
+     * @return
+     */
+    public BaseResponse<List<Sensor>> querySensorNotRelation() {
+        BaseResponse response = new BaseResponse();
+        List<Sensor> sensorList = sensorMapper.querySensorNotRelation();
+        response.setData(sensorList);
+        response.setResponseCode(ResponseCode.OK.getCode());
+        response.setResponseMsg(ResponseCode.OK.getMessage());
+        return response;
+    }
+
+    /**
+     * 关联传感器与用户
+     * @param userId
+     * @param sensorName
+     * @return
+     */
+    public BaseResponse relationSensorAndUser(Integer userId, String sensorName) {
+        BaseResponse response = new BaseResponse();
+        //根据用户id查询用户信息
+        Company company = companyMapper.selectByPrimaryKey(userId);
+        //根据传感器名称查询传感器信息
+        Sensor sensor=sensorMapper.findSensorBySensorName(sensorName);
+        //关联
+        sensor.setUserId(company.getId());
+        sensor.setUserName(company.getLoginName());
+        sensorMapper.updateByPrimaryKey(sensor);
+        response.setResponseCode(ResponseCode.OK.getCode());
+        response.setResponseMsg(ResponseCode.OK.getMessage());
+        return response;
+    }
 }

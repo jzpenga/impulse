@@ -127,96 +127,84 @@ public class SensorController {
         return response;
     }
 
-//    @GetMapping("deleteSerson/{id}")
-//    @ApiOperation(value = "根据id删除传感器信息", notes = "根据id删除传感器信息", tags = "传感器操作", httpMethod = "GET")
-//    @ApiImplicitParam(name = "id", value = "传感器ID", example = "1", required = true, dataType = "string")
-//    public BaseResponse deleteSensor(@PathVariable String id,HttpSession session) {
-//        BaseResponse response;
-//        try {
-//            //获取用户id
-//            Integer  userId=null;
-//            Company company= (Company)session.getAttribute("loginUser");
-//            if(company!=null){
-//                userId=company.getId();
-//            }
-//            response = sensorService.deleteSensor(id,userId);
-//        } catch (MyException e) {
-//            logger.error(e.getMessage(), e);
-//            response = new BaseResponse();
-//            response.setResponseCode(ResponseCode.SERVER_FAILED.getCode());
-//            response.setResponseMsg(ResponseCode.SERVER_FAILED.getMessage());
-//        } catch (Exception e) {
-//            logger.error(e.getMessage(), e);
-//            response = new BaseResponse();
-//            response.setResponseCode(ResponseCode.SERVER_FAILED.getCode());
-//            response.setResponseMsg(ResponseCode.SERVER_FAILED.getMessage());
-//        }
-//        return response;
-//
-//    }
-//
-//    @GetMapping("deleteSensorBatch")
-//    @ApiOperation(value = "批量删除传感器信息", notes = "批量删除传感器信息", tags = "传感器操作", httpMethod = "GET")
-//    @ApiImplicitParam(name = "ids", value = "网关ID集合", example = "1，3,4", required = true, dataType = "string")
-//    public BaseResponse deleteSensorBatch(@RequestBody List<String> ids,HttpSession session) {
-//        BaseResponse response;
-//        try {
-//            //获取用户id
-//            Integer  userId=null;
-//            Company company= (Company)session.getAttribute("loginUser");
-//            if(company!=null){
-//                userId=company.getId();
-//            }
-//            response = sensorService.deleteSensorBatch(ids,userId);
-//        } catch (MyException e) {
-//            logger.error(e.getMessage(), e);
-//            response = new BaseResponse();
-//            response.setResponseCode(ResponseCode.SERVER_FAILED.getCode());
-//            response.setResponseMsg(ResponseCode.SERVER_FAILED.getMessage());
-//        } catch (Exception e) {
-//            logger.error(e.getMessage(), e);
-//            response = new BaseResponse();
-//            response.setResponseCode(ResponseCode.SERVER_FAILED.getCode());
-//            response.setResponseMsg(ResponseCode.SERVER_FAILED.getMessage());
-//        }
-//        return response;
-//    }
-//    @GetMapping("querySensorNotRelation")
-//    @ApiOperation(value = "查询未被用户关联的传感器", notes = "查询未被用户关联的传感器", tags = "传感器操作", httpMethod = "GET")
-//    public BaseResponse<List<Sensor>> querySensorNotRelation() {
-//        BaseResponse<List<Sensor>> response;
-//        try {
-//            response = sensorService.querySensorNotRelation();
-//        } catch (MyException e) {
-//            logger.error(e.getMessage(), e);
-//            response = new BaseResponse();
-//            response.setResponseCode(ResponseCode.SERVER_FAILED.getCode());
-//            response.setResponseMsg(ResponseCode.SERVER_FAILED.getMessage());
-//        } catch (Exception e) {
-//            logger.error(e.getMessage(), e);
-//            response = new BaseResponse();
-//            response.setResponseCode(ResponseCode.SERVER_FAILED.getCode());
-//            response.setResponseMsg(ResponseCode.SERVER_FAILED.getMessage());
-//        }
-//        return response;
-//    }
-//    @GetMapping("relationSensorAndUser")
-//    @ApiOperation(value = "传感器与用户关联", notes = "查询未被用户关联的传感器", tags = "传感器操作", httpMethod = "GET")
-//    public BaseResponse relationSensorAndUser(String userId,String sensorName) {
-//        BaseResponse response;
-//        try {
-//            response = sensorService.relationSensorAndUser(userId,sensorName);
-//        } catch (MyException e) {
-//            logger.error(e.getMessage(), e);
-//            response = new BaseResponse();
-//            response.setResponseCode(ResponseCode.SERVER_FAILED.getCode());
-//            response.setResponseMsg(ResponseCode.SERVER_FAILED.getMessage());
-//        } catch (Exception e) {
-//            logger.error(e.getMessage(), e);
-//            response = new BaseResponse();
-//            response.setResponseCode(ResponseCode.SERVER_FAILED.getCode());
-//            response.setResponseMsg(ResponseCode.SERVER_FAILED.getMessage());
-//        }
-//        return response;
-//    }
+    @GetMapping("deleteSerson/{id}")
+    @ApiOperation(value = "根据id删除传感器信息", notes = "根据id删除传感器信息", tags = "传感器操作", httpMethod = "GET")
+    @ApiImplicitParam(name = "id", value = "传感器ID", example = "1", required = true, dataType = "string")
+    public BaseResponse deleteSensor(@PathVariable Integer id) {
+        BaseResponse response;
+        try {
+            response = sensorService.deleteSensor(id);
+        } catch (MyException e) {
+            logger.error(e.getMessage(), e);
+            response = new BaseResponse();
+            response.setResponseCode(ResponseCode.SERVER_FAILED.getCode());
+            response.setResponseMsg(ResponseCode.SERVER_FAILED.getMessage());
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            response = new BaseResponse();
+            response.setResponseCode(ResponseCode.SERVER_FAILED.getCode());
+            response.setResponseMsg(ResponseCode.SERVER_FAILED.getMessage());
+        }
+        return response;
+
+    }
+
+    @GetMapping("deleteSensorBatch")
+    @ApiOperation(value = "批量删除传感器信息", notes = "批量删除传感器信息", tags = "传感器操作", httpMethod = "GET")
+    @ApiImplicitParam(name = "ids", value = "网关ID集合", example = "1，3,4", required = true, dataType = "string")
+    public BaseResponse deleteSensorBatch(@RequestBody List<Integer> ids) {
+        BaseResponse response;
+        try {
+            response = sensorService.deleteSensorBatch(ids);
+        } catch (MyException e) {
+            logger.error(e.getMessage(), e);
+            response = new BaseResponse();
+            response.setResponseCode(ResponseCode.SERVER_FAILED.getCode());
+            response.setResponseMsg(ResponseCode.SERVER_FAILED.getMessage());
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            response = new BaseResponse();
+            response.setResponseCode(ResponseCode.SERVER_FAILED.getCode());
+            response.setResponseMsg(ResponseCode.SERVER_FAILED.getMessage());
+        }
+        return response;
+    }
+    @GetMapping("querySensorNotRelation")
+    @ApiOperation(value = "查询未被用户关联的传感器", notes = "查询未被用户关联的传感器", tags = "传感器操作", httpMethod = "GET")
+    public BaseResponse<List<Sensor>> querySensorNotRelation() {
+        BaseResponse<List<Sensor>> response;
+        try {
+            response = sensorService.querySensorNotRelation();
+        } catch (MyException e) {
+            logger.error(e.getMessage(), e);
+            response = new BaseResponse();
+            response.setResponseCode(ResponseCode.SERVER_FAILED.getCode());
+            response.setResponseMsg(ResponseCode.SERVER_FAILED.getMessage());
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            response = new BaseResponse();
+            response.setResponseCode(ResponseCode.SERVER_FAILED.getCode());
+            response.setResponseMsg(ResponseCode.SERVER_FAILED.getMessage());
+        }
+        return response;
+    }
+    @GetMapping("relationSensorAndUser")
+    @ApiOperation(value = "传感器与用户关联", notes = "查询未被用户关联的传感器", tags = "传感器操作", httpMethod = "GET")
+    public BaseResponse relationSensorAndUser(Integer userId,String sensorName) {
+        BaseResponse response;
+        try {
+            response = sensorService.relationSensorAndUser(userId,sensorName);
+        } catch (MyException e) {
+            logger.error(e.getMessage(), e);
+            response = new BaseResponse();
+            response.setResponseCode(ResponseCode.SERVER_FAILED.getCode());
+            response.setResponseMsg(ResponseCode.SERVER_FAILED.getMessage());
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            response = new BaseResponse();
+            response.setResponseCode(ResponseCode.SERVER_FAILED.getCode());
+            response.setResponseMsg(ResponseCode.SERVER_FAILED.getMessage());
+        }
+        return response;
+    }
 }
