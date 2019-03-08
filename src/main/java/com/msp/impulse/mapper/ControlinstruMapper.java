@@ -2,9 +2,8 @@ package com.msp.impulse.mapper;
 
 import com.msp.impulse.entity.Controlinstru;
 import com.msp.impulse.entity.ControlinstruExample;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface ControlinstruMapper {
     long countByExample(ControlinstruExample example);
