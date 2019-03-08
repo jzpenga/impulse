@@ -49,6 +49,13 @@ public class SensorTests {
         sensor4.setSensorType("WaterMeter");
         sensor4.setSensorModel("HY600");
 
+        Sensor sensor5 = new Sensor();
+        sensor5.setName("智能压力液位变送器703452");
+        sensor5.setDeviceId("09de02cb-7aa0-483a-b63d-37a9aeaa7f8e");
+        sensor5.setSensorNo("868744030703452");
+        sensor5.setSensorType("WaterMeter");
+        sensor5.setSensorModel("HY600");
+
         SensorAddQuery sensorAddQuery1 = new SensorAddQuery();
         sensorAddQuery1.setSensor(sensor1);
         sensorAddQuery1.setPassList(new ArrayList<>());
@@ -65,11 +72,17 @@ public class SensorTests {
         sensorAddQuery4.setSensor(sensor4);
         sensorAddQuery4.setPassList(new ArrayList<>());
 
+        SensorAddQuery sensorAddQuery5 = new SensorAddQuery();
+        sensorAddQuery5.setSensor(sensor5);
+        sensorAddQuery5.setPassList(new ArrayList<>());
+
+
         //sensor.setPassList(new ArrayList<>());
 //        sensorService.saveSensor(sensorAddQuery1,7);
 //        sensorService.saveSensor(sensorAddQuery2,7);
 //        sensorService.saveSensor(sensorAddQuery3,7);
 //        sensorService.saveSensor(sensorAddQuery4,7);
+        //sensorService.saveSensor(sensorAddQuery5,7);
     }
 
 

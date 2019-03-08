@@ -6,8 +6,6 @@ import com.msp.impulse.base.ResponseCode;
 import com.msp.impulse.dao.AlarmDao;
 import com.msp.impulse.dao.ControlInstruDao;
 import com.msp.impulse.dao.DataManageDao;
-import com.msp.impulse.entity.Sensor;
-import com.msp.impulse.nb.entity.DataReportEntity;
 import com.msp.impulse.query.DataHistoryQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
-import java.util.List;
 
 @Service
 public class DataManageService {
@@ -181,14 +178,14 @@ public class DataManageService {
     public BaseResponse findRealTimeData(DataHistoryQuery dataHistoryQuery) throws ParseException {
         BaseResponse response=new BaseResponse();
         PageInfo pageInfo = dataManageDao.findRealTimeData(dataHistoryQuery);
-        List<DataReportEntity> list = pageInfo.getList();
+        /*List<DataReportEntity> list = pageInfo.getList();
         for (DataReportEntity dataReportEntity : list) {
             if (!dataReportEntity.getEventTime().contains("20190304")) {
             }else {
                 dataReportEntity.setSensorName("智能压力液位变送器150240");
             }
             dataReportEntity.setUserName("环宇智谷测试");
-        }
+        }*/
 
         response.setData(pageInfo);
         response.setResponseMsg(ResponseCode.OK.getMessage());
