@@ -8,9 +8,9 @@ spring:
       #监控统计拦截的filters
       filters: stat
       driver-class-name: com.mysql.jdbc.Driver
-      url: jdbc:mysql://39.105.86.90/huanyu_admin?characterEncoding=utf-8&useSSL=false&useCursorFetch=true
+      url: jdbc:mysql://39.105.86.90:3306/huanyu_admin?characterEncoding=utf-8&useSSL=false&useCursorFetch=true&allowPublicKeyRetrieval=true
       username: root
-      password: 12345678
+      password: 123456
   data:
     mongodb:
       custom:
