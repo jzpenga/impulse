@@ -6,28 +6,16 @@ import com.msp.impulse.base.ResponseCode;
 import com.msp.impulse.dao.AlarmDao;
 import com.msp.impulse.dao.ControlInstruDao;
 import com.msp.impulse.dao.DataManageDao;
-import com.msp.impulse.entity.Alarm;
-import com.msp.impulse.entity.Controlinstru;
-import com.msp.impulse.entity.DataHistory;
-import com.msp.impulse.entity.PageBean;
+import com.msp.impulse.entity.Sensor;
+import com.msp.impulse.nb.entity.DataReportEntity;
 import com.msp.impulse.query.DataHistoryQuery;
-import com.msp.impulse.vo.HomePageDataVo;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
-import java.net.URLEncoder;
 import java.text.ParseException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class DataManageService {
@@ -36,6 +24,8 @@ public class DataManageService {
     private DataManageDao dataManageDao;
     @Autowired
     private AlarmDao alarmDao;
+    @Autowired
+    private SensorService sensorService;
     @Autowired
     private ControlInstruDao controlInstruDao;
 
@@ -191,6 +181,17 @@ public class DataManageService {
     public BaseResponse findRealTimeData(DataHistoryQuery dataHistoryQuery) throws ParseException {
         BaseResponse response=new BaseResponse();
         PageInfo pageInfo = dataManageDao.findRealTimeData(dataHistoryQuery);
+        List<DataReportEntity> list = pageInfo.getList();
+        for (DataReportEntity dataReportEntity : list) {
+            if (!dataReportEntity.getEventTime().contains("20190304")) {
+                Sensor sensor = sensorService.queryByDeviceId(dataReportEntity.getDeviceId());
+                dataReportEntity.setSensorName(sensor.getName());
+            }else {
+                dataReportEntity.setSensorName("智能压力液位变送器150240");
+            }
+            dataReportEntity.setUserName("环宇智谷测试");
+        }
+
         response.setData(pageInfo);
         response.setResponseMsg(ResponseCode.OK.getMessage());
         response.setResponseCode(ResponseCode.OK.getCode());
