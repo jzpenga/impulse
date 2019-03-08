@@ -308,7 +308,7 @@
   where login_name = #{loginName}
   </select>
   <select id="findByNameAndPwd" parameterType="string" resultType="com.msp.impulse.entity.Admin">
-  select *  from admin
+  select id,login_name loginName from admin
   where login_name = #{loginName} and password=#{pwd}
   </select>
 </mapper>

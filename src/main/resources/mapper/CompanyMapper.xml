@@ -388,7 +388,7 @@
     where login_name=#{loginName}
   </select>
   <select id="findByNameAndPwd"  resultType="com.msp.impulse.entity.Company">
-    select * from company
+    select id,login_name loginName from company
     where login_name=#{loginName} and password=#{pwd}
   </select>
 </mapper>
