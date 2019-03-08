@@ -163,15 +163,15 @@ public class DataManageDaoImpl implements DataManageDao {
             criteria.and("sensorName").regex(pattern);
         }
 
-      Criteria c=new Criteria();
+        Criteria eventTime = criteria.and("eventTime");
         //上报时间
         if(!StringUtils.isEmpty(dataHistoryQuery.getReportDateFrom())){//上报时间 From
-            Criteria.where("eventTime").gte(dataHistoryQuery.getReportDateFrom());
+            eventTime.gte(dataHistoryQuery.getReportDateFrom());
         }
         if(!StringUtils.isEmpty(dataHistoryQuery.getReportDateTo())){//上报时间to
-            Criteria.where("eventTime").lte(dataHistoryQuery.getReportDateTo());
+            eventTime.lte(dataHistoryQuery.getReportDateTo());
         }
-        criteria.andOperator(c);
+        criteria.andOperator(eventTime);
         if(dataHistoryQuery.getSensorType()!=null){
             criteria.and("dataKey").is(dataHistoryQuery.getSensorType());
         }
