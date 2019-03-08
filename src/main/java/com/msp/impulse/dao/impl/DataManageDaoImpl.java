@@ -149,24 +149,24 @@ public class DataManageDaoImpl implements DataManageDao {
         Criteria criteria=new Criteria();
         //用户id
         if(dataHistoryQuery.getUserId()!=null){
-            criteria.where("userId").is(dataHistoryQuery.getUserId());
+            criteria.and("userId").is(dataHistoryQuery.getUserId());
         }
         //网关名称
         if(StringUtils.isNotBlank(dataHistoryQuery.getGatewayName())){
-            Pattern pattern = Pattern.compile("^" + dataHistoryQuery.getGatewayName() + ".*$", Pattern.CASE_INSENSITIVE);
+            Pattern pattern = Pattern.compile("^.*" + dataHistoryQuery.getGatewayName() + ".*$", Pattern.CASE_INSENSITIVE);
             criteria.and("gatewayName").regex(pattern);
         }
         //传感器名称
         if(StringUtils.isNotBlank(dataHistoryQuery.getSensorName())){
-            Pattern pattern = Pattern.compile("^" + dataHistoryQuery.getSensorName() + ".*$", Pattern.CASE_INSENSITIVE);
+            Pattern pattern = Pattern.compile("^.*"+ dataHistoryQuery.getSensorName() + ".*$", Pattern.CASE_INSENSITIVE);
             criteria.and("sensorName").regex(pattern);
         }
         //上报时间
         if(!StringUtils.isEmpty(dataHistoryQuery.getReportDateFrom())){//上报时间 From
-            criteria.and("eventTime").gte(DateUtil.dateToISODate(dataHistoryQuery.getReportDateFrom()));
+            criteria.and("eventTime").gte(DateUtil.dateToTZDate(dataHistoryQuery.getReportDateFrom()));
         }
         if(!StringUtils.isEmpty(dataHistoryQuery.getReportDateTo())){//上报时间to
-            criteria.and("eventTime").lte(DateUtil.dateToISODate(dataHistoryQuery.getReportDateTo()));
+            criteria.and("eventTime").lte(DateUtil.dateToTZDate(dataHistoryQuery.getReportDateTo()));
         }
         if(dataHistoryQuery.getSensorType()!=null){
             criteria.and("dataKey").is(dataHistoryQuery.getSensorType());
