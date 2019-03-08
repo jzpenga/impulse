@@ -6,7 +6,9 @@ import com.iotplatform.client.dto.DeviceInfo;
 import com.iotplatform.client.dto.RegDirectDeviceOutDTO;
 import com.msp.impulse.base.BaseResponse;
 import com.msp.impulse.base.ResponseCode;
-import com.msp.impulse.entity.*;
+import com.msp.impulse.entity.Company;
+import com.msp.impulse.entity.Pass;
+import com.msp.impulse.entity.Sensor;
 import com.msp.impulse.exception.MyException;
 import com.msp.impulse.mapper.CompanyMapper;
 import com.msp.impulse.mapper.PassMapper;
@@ -18,6 +20,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -115,6 +118,7 @@ public class SensorService {
                 throw  new MyException("注册失败");
             }
             sensor.setDeviceId(regDirectDeviceOutDTO.getDeviceId());
+            //sensor.setDeviceId(sensor.getDeviceId());
 
             sensor.setFlag("0");
             sensor.setCreateTime(new Date());
@@ -293,5 +297,9 @@ public class SensorService {
         response.setResponseCode(ResponseCode.OK.getCode());
         response.setResponseMsg(ResponseCode.OK.getMessage());
         return response;
+    }
+
+    public Sensor queryByDeviceId(String deviceId){
+        return sensorMapper.findSensorByDeviceId(deviceId);
     }
 }
