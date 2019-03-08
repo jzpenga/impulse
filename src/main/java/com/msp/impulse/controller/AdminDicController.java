@@ -14,7 +14,7 @@
 //import java.util.List;
 //
 //@RestController
-//@RequestMapping("admin/dicManage")
+//@RequestMapping("impulse/admin/dicManage")
 //@Api(value = "数据字典管理", tags = "数据字典管理", description = "数据字典管理")
 //public class AdminDicController {
 //    private static Logger logger = LoggerFactory.getLogger(UserController.class);

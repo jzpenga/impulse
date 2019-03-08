@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 
 @RestController
-@RequestMapping("admin/adminManage")
+@RequestMapping("impulse/admin/adminManage")
 @Api(value = "管理员信息", tags = "管理员信息管理", description = "管理员信息管理")
 public class AdminController {
     private static Logger logger = LoggerFactory.getLogger(AdminController.class);
