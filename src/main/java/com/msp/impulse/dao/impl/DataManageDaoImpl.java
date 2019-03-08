@@ -154,22 +154,22 @@ public class DataManageDaoImpl implements DataManageDao {
         //网关名称
         if(StringUtils.isNotBlank(dataHistoryQuery.getGatewayName())){
             Pattern pattern = Pattern.compile("^" + dataHistoryQuery.getGatewayName() + ".*$", Pattern.CASE_INSENSITIVE);
-            criteria.where("gatewayName").regex(pattern);
+            criteria.and("gatewayName").regex(pattern);
         }
         //传感器名称
         if(StringUtils.isNotBlank(dataHistoryQuery.getSensorName())){
             Pattern pattern = Pattern.compile("^" + dataHistoryQuery.getSensorName() + ".*$", Pattern.CASE_INSENSITIVE);
-            criteria.where("sensorName").regex(pattern);
+            criteria.and("sensorName").regex(pattern);
         }
         //上报时间
         if(!StringUtils.isEmpty(dataHistoryQuery.getReportDateFrom())){//上报时间 From
-            criteria.where("reportDate").gte(DateUtil.dateToISODate(dataHistoryQuery.getReportDateFrom()));
+            criteria.and("eventTime").gte(DateUtil.dateToISODate(dataHistoryQuery.getReportDateFrom()));
         }
         if(!StringUtils.isEmpty(dataHistoryQuery.getReportDateTo())){//上报时间to
-            criteria.lte(DateUtil.dateToISODate(dataHistoryQuery.getReportDateTo()));
+            criteria.and("eventTime").lte(DateUtil.dateToISODate(dataHistoryQuery.getReportDateTo()));
         }
         if(dataHistoryQuery.getSensorType()!=null){
-            criteria.where("SensorType").is(dataHistoryQuery.getSensorType());
+            criteria.and("dataKey").is(dataHistoryQuery.getSensorType());
         }
         //查询总条数
         if(dataHistoryQuery.getPageNo()==null){
@@ -178,13 +178,13 @@ public class DataManageDaoImpl implements DataManageDao {
         if(dataHistoryQuery.getPageSize()==null){
             dataHistoryQuery.setPageSize(10);
         }
+        Sort sort = new Sort(Sort.Direction.DESC,"deviceId")
+                .and(new Sort(Sort.Direction.DESC,"dataKey"));
         PageHelper.startPage(dataHistoryQuery.getPageNo(),dataHistoryQuery.getPageSize());
         Aggregation agg = Aggregation.newAggregation(
                 Aggregation.match(criteria),//条件
                 Aggregation.group("deviceId","dataKey").max("eventTime").as("eventTime"),//分组字段
-
-                Aggregation.sort(new Sort(Sort.Direction.DESC,"dataKey")),
-                Aggregation.sort(new Sort(Sort.Direction.DESC,"eventTime"))
+                Aggregation.sort(sort)
                 ,Aggregation.skip((dataHistoryQuery.getPageNo()>1?(dataHistoryQuery.getPageNo()-1)*dataHistoryQuery.getPageSize():0)),
                 Aggregation.limit(dataHistoryQuery.getPageSize())//页数
                 );
