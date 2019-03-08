@@ -14,4 +14,10 @@ public class DateUtil {
         Date parse = sdf.parse(dateStr);
         return parse;
     }
+
+    public static Date dateToTZDate(String dateStr) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd'T'HHmmss'Z'");
+        Date parse = sdf.parse(dateStr);
+        return parse;
+    }
 }

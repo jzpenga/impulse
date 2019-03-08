@@ -18,8 +18,8 @@ public class DataHistoryQuery extends BaseRequest {
     private String reportDateFrom;
     @ApiModelProperty(name = "reportDateTo", value = "上报日期to", example = "2019-01-01", required = true)
     private String reportDateTo;
-    @ApiModelProperty(name = "SensorType", value = "检测类别", example = "", required = true)
-    private String SensorType;
+    @ApiModelProperty(name = "sensorType", value = "检测类别", example = "", required = true)
+    private String sensorType;
     @ApiModelProperty(name = "wayNo", value = "通道号", example = "")
     private Integer wayNo;
     @ApiModelProperty(name = "userId", value = "用户id", example = "")
@@ -66,11 +66,11 @@ public class DataHistoryQuery extends BaseRequest {
     }
 
     public String getSensorType() {
-        return SensorType;
+        return sensorType;
     }
 
     public void setSensorType(String sensorType) {
-        SensorType = sensorType;
+        this.sensorType = sensorType;
     }
 
     public Integer getWayNo() {
