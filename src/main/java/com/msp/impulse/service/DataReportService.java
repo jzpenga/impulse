@@ -1,8 +1,10 @@
 package com.msp.impulse.service;
 
 import com.msp.impulse.dao.DataReportDao;
+import com.msp.impulse.entity.Company;
 import com.msp.impulse.entity.Sensor;
 import com.msp.impulse.exception.MyException;
+import com.msp.impulse.mapper.CompanyMapper;
 import com.msp.impulse.mapper.SensorMapper;
 import com.msp.impulse.nb.entity.DataReportEntity;
 import org.apache.commons.lang.StringUtils;
@@ -21,6 +23,8 @@ public class DataReportService {
     private DataReportDao dataReportDao;
     @Autowired
     private SensorMapper sensorMapper;
+    @Autowired
+    private CompanyMapper companyMapper;
 
     /**
      * 入库
@@ -37,6 +41,12 @@ public class DataReportService {
             for (DataReportEntity dataReportEntity : dataReportEntityList) {
                 if(userId!=null){
                     dataReportEntity.setUserId(userId);
+                    //根据userId查询用户名
+                    Company company = companyMapper.selectByPrimaryKey(userId);
+                    dataReportEntity.setUserName(company.getCompanyName());
+                }
+                if(StringUtils.isNotBlank(dataReportEntity.getDataKey())){
+                    //TODO 查询码表，插入字段
                 }
                 //根据deviceId查找序列号
                 String sensorNo = sensorMapper.findByDeviceId(dataReportEntity.getDeviceId());

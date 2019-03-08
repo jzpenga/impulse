@@ -28,20 +28,20 @@ public class AdminUserController {
     @Autowired
     private AdminUserService adminUserService;
 
-//    @PostMapping("findUser")
-//    @ApiOperation(value = "查询用户数据", notes = "查询用户数据", tags = "用户管理", httpMethod = "POST")
-//    public BaseResponse<PageBean> findUser(@RequestBody FindUserQuery userQuery) {
-//        BaseResponse<PageBean> response;
-//        try {
-//            response = adminUserService.findUser(userQuery);
-//        } catch (Exception e) {
-//            logger.error(e.getMessage(), e);
-//            response = new BaseResponse<>();
-//            response.setResponseCode(ResponseCode.SERVER_FAILED.getCode());
-//            response.setResponseMsg(ResponseCode.SERVER_FAILED.getMessage());
-//        }
-//        return response;
-//    }
+    @PostMapping("findUser")
+    @ApiOperation(value = "查询用户数据", notes = "查询用户数据", tags = "用户管理", httpMethod = "POST")
+    public BaseResponse<PageBean> findUser(@RequestBody FindUserQuery userQuery) {
+        BaseResponse<PageBean> response;
+        try {
+            response = adminUserService.findUser(userQuery);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            response = new BaseResponse<>();
+            response.setResponseCode(ResponseCode.SERVER_FAILED.getCode());
+            response.setResponseMsg(ResponseCode.SERVER_FAILED.getMessage());
+        }
+        return response;
+    }
 //    @GetMapping("findUserById/{userId}")
 //    @ApiOperation(value = "根据id查询用户数据", notes = "根据id查询用户数据", tags = "用户管理", httpMethod = "POST")
 //    public BaseResponse<CompanyDetailVo> findUserById(@PathVariable String userId) {

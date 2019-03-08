@@ -1,5 +1,7 @@
 package com.msp.impulse.service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.msp.impulse.base.BaseResponse;
 import com.msp.impulse.base.ResponseCode;
 import com.msp.impulse.dao.*;
@@ -11,6 +13,7 @@ import com.msp.impulse.query.FindUserQuery;
 import com.msp.impulse.query.GateSenPageQuery;
 import com.msp.impulse.query.SaveUserQuery;
 import com.msp.impulse.vo.CompanyDetailVo;
+import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,20 +31,29 @@ public class AdminUserService {
     @Autowired
     private LinkmanMapper linkmanMapper;
 
-//    /**
-//     * 用户信息查询
-//     *
-//     * @param findUserQuery
-//     * @return
-//     */
-//    public BaseResponse<PageBean> findUser(FindUserQuery findUserQuery) {
-//        BaseResponse response = new BaseResponse<>();
-//        PageBean pageBean = adminUserDao.findUser(findUserQuery);
-//        response.setData(pageBean);
-//        response.setResponseCode(ResponseCode.OK.getCode());
-//        response.setResponseMsg(ResponseCode.OK.getMessage());
-//        return response;
-//    }
+    /**
+     * 用户信息查询
+     *
+     * @param findUserQuery
+     * @return
+     */
+    public BaseResponse<PageBean> findUser(FindUserQuery findUserQuery) {
+        BaseResponse<PageInfo> response = new BaseResponse<>();
+        if (findUserQuery.getPageNo() == null) {
+            findUserQuery.setPageNo(1);
+        }
+        if (findUserQuery.getPageSize() == null) {
+            findUserQuery.setPageSize(10);
+        }
+        PageHelper.startPage(findUserQuery.getPageNo(), findUserQuery.getPageSize());
+//        List<Company> gatewayList = companyMapper.findUser(findUserQuery);
+//        PageInfo<Company> pageInfo = new PageInfo<>(gatewayList);
+
+//        response.setData(pageInfo);
+        response.setResponseCode(ResponseCode.OK.getCode());
+        response.setResponseMsg(ResponseCode.OK.getMessage());
+        return null;
+    }
 
 //    /**
 //     * 根据用户id查询
