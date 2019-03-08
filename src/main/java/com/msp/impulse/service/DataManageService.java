@@ -184,8 +184,6 @@ public class DataManageService {
         List<DataReportEntity> list = pageInfo.getList();
         for (DataReportEntity dataReportEntity : list) {
             if (!dataReportEntity.getEventTime().contains("20190304")) {
-                Sensor sensor = sensorService.queryByDeviceId(dataReportEntity.getDeviceId());
-                dataReportEntity.setSensorName(sensor.getName());
             }else {
                 dataReportEntity.setSensorName("智能压力液位变送器150240");
             }
