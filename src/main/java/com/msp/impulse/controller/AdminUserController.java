@@ -2,26 +2,23 @@ package com.msp.impulse.controller;
 
 import com.msp.impulse.base.BaseResponse;
 import com.msp.impulse.base.ResponseCode;
-import com.msp.impulse.entity.Company;
 import com.msp.impulse.entity.PageBean;
 import com.msp.impulse.exception.MyException;
 import com.msp.impulse.query.FindUserQuery;
-import com.msp.impulse.query.GateSenPageQuery;
 import com.msp.impulse.query.SaveUserQuery;
 import com.msp.impulse.service.AdminUserService;
-import com.msp.impulse.vo.CompanyDetailVo;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("admin/user")
+@RequestMapping("impulse/admin/user")
 @Api(value = "用户管理接口", tags = "用户管理接口", description = "用户管理接口API")
 public class AdminUserController {
     private static Logger logger = LoggerFactory.getLogger(AdminUserController.class);
