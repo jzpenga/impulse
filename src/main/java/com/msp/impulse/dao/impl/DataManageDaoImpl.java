@@ -12,8 +12,6 @@ import com.msp.impulse.util.DateUtil;
 import com.msp.impulse.vo.HomePageDataVo;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
@@ -21,8 +19,6 @@ import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
-
-import javax.xml.crypto.Data;
 import java.text.ParseException;
 import java.util.*;
 import java.util.regex.Pattern;
@@ -163,7 +159,7 @@ public class DataManageDaoImpl implements DataManageDao {
             criteria.and("sensorName").regex(pattern);
         }
 
-        Criteria eventTime = criteria.and("eventTime");
+        Criteria eventTime = criteria.and("eventTime").nin("0");
         //上报时间
         if(!StringUtils.isEmpty(dataHistoryQuery.getReportDateFrom())){//上报时间 From
             eventTime.gte(dataHistoryQuery.getReportDateFrom());
@@ -172,7 +168,7 @@ public class DataManageDaoImpl implements DataManageDao {
             eventTime.lte(dataHistoryQuery.getReportDateTo());
         }
         criteria.andOperator(eventTime);
-        if(dataHistoryQuery.getSensorType()!=null){
+        if(StringUtils.isNotBlank(dataHistoryQuery.getSensorType())){
             criteria.and("dataKey").is(dataHistoryQuery.getSensorType());
         }
         //查询总条数
