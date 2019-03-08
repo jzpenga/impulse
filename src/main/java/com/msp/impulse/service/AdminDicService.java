@@ -1,46 +1,46 @@
-//package com.msp.impulse.service;
-//
-//import com.msp.impulse.base.BaseResponse;
-//import com.msp.impulse.base.ResponseCode;
-//import com.msp.impulse.dao.AdminDicDao;
-//import com.msp.impulse.entity.DataDictionary;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.stereotype.Service;
-//
-//import java.util.List;
-//
-//@Service
-//public class AdminDicService {
-//    @Autowired
-//    private AdminDicDao adminDicDao;
-//
-//    /**
-//     *根据分组
-//     * @param groupCode
-//     * @return
-//     */
-//    public BaseResponse<List<DataDictionary>> findDicByGroupCode(String groupCode) {
-//        BaseResponse<List<DataDictionary>> response = new BaseResponse<>();
-//        List<DataDictionary> dataDictionaryList= adminDicDao.findDicByGroupCode(groupCode);
-//        response.setData(dataDictionaryList);
-//        response.setResponseCode(ResponseCode.OK.getCode());
-//        response.setResponseMsg(ResponseCode.OK.getMessage());
-//        return response;
-//    }
-//
-//    /**
-//     * 新增数据字典
-//     * @param dataDictionary
-//     * @return
-//     */
-//    public BaseResponse addDictionary(DataDictionary dataDictionary) {
-//        BaseResponse response = new BaseResponse<>();
-//        adminDicDao.save(dataDictionary);
-//        response.setResponseCode(ResponseCode.OK.getCode());
-//        response.setResponseMsg(ResponseCode.OK.getMessage());
-//        return response;
-//    }
-//
+package com.msp.impulse.service;
+
+import com.msp.impulse.base.BaseResponse;
+import com.msp.impulse.base.ResponseCode;
+import com.msp.impulse.entity.Dictionary;
+import com.msp.impulse.mapper.DictionaryMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class AdminDicService {
+    @Autowired
+    private DictionaryMapper dictionaryMapper;
+
+    /**
+     *根据分组
+     * @param id
+     * @return
+     */
+    public BaseResponse<Dictionary> findDicByGroupCode(Integer id) {
+        BaseResponse<Dictionary> response = new BaseResponse<>();
+        Dictionary dictionary= dictionaryMapper.selectByPrimaryKey(id);
+        response.setData(dictionary);
+        response.setResponseCode(ResponseCode.OK.getCode());
+        response.setResponseMsg(ResponseCode.OK.getMessage());
+        return response;
+    }
+
+    /**
+     * 新增数据字典
+     * @param dictionary
+     * @return
+     */
+    public BaseResponse addDictionary(Dictionary dictionary) {
+        BaseResponse response = new BaseResponse<>();
+        dictionaryMapper.insertSelective(dictionary);
+        response.setResponseCode(ResponseCode.OK.getCode());
+        response.setResponseMsg(ResponseCode.OK.getMessage());
+        return response;
+    }
+
 //    /**
 //     * 根据id查询
 //     * @param id
@@ -52,4 +52,4 @@
 //        response.setResponseMsg(ResponseCode.OK.getMessage());
 //        return response;
 //    }
-//}
+}
