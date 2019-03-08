@@ -5,7 +5,7 @@ import com.msp.impulse.nb.entity.SubscribeInfoEntity;
 public interface SubscribeInfoDao {
 
     SubscribeInfoEntity save(SubscribeInfoEntity subscribeInfoEntity);
-    SubscribeInfoEntity findByLoginName(String  loginName);
+    SubscribeInfoEntity findByCompanyName(String  companyName);
 
 
 

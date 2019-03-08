@@ -391,4 +391,9 @@
     select id,login_name loginName from company
     where login_name=#{loginName} and password=#{pwd}
   </select>
+  <select id="findCompanyNameByLoginName" parameterType="string" resultType="string">
+    select c.company_name companyName from company c
+    where login_name=#{loginName}
+  </select>
+
 </mapper>

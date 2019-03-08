@@ -2,8 +2,9 @@ package com.msp.impulse.mapper;
 
 import com.msp.impulse.entity.Company;
 import com.msp.impulse.entity.CompanyExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface CompanyMapper {
     long countByExample(CompanyExample example);
@@ -31,4 +32,6 @@ public interface CompanyMapper {
     Company findByName(String loginName);
 
     Company findByNameAndPwd(@Param("loginName")String loginName, @Param("pwd")String pwd);
+
+    String findCompanyNameByLoginName(String loginName);
 }

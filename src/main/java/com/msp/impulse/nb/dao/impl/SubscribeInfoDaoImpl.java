@@ -28,9 +28,9 @@ public class SubscribeInfoDaoImpl implements SubscribeInfoDao {
     }
 
     @Override
-    public SubscribeInfoEntity findByLoginName(String loginName) {
+    public SubscribeInfoEntity findByCompanyName(String companyName) {
         Query query = new Query();
-        query.addCriteria(Criteria.where("loginName").is(loginName));
+        query.addCriteria(Criteria.where("companyName").is(companyName));
         return mongoTemplate.findOne(query, SubscribeInfoEntity.class);
     }
 }
