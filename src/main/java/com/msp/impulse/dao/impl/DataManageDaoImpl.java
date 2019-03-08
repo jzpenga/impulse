@@ -22,6 +22,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
+import javax.xml.crypto.Data;
 import java.text.ParseException;
 import java.util.*;
 import java.util.regex.Pattern;
@@ -165,11 +166,10 @@ public class DataManageDaoImpl implements DataManageDao {
       Criteria c=new Criteria();
         //上报时间
         if(!StringUtils.isEmpty(dataHistoryQuery.getReportDateFrom())){//上报时间 From
-            String date = DateUtil.dateToTZDate(dataHistoryQuery.getReportDateFrom());
-            c.is("eventTime").gte(date);
+            Criteria.where("eventTime").gte(dataHistoryQuery.getReportDateFrom());
         }
         if(!StringUtils.isEmpty(dataHistoryQuery.getReportDateTo())){//上报时间to
-            c.and("eventTime").lte(DateUtil.dateToTZDate(dataHistoryQuery.getReportDateTo()));
+            Criteria.where("eventTime").lte(dataHistoryQuery.getReportDateTo());
         }
         criteria.andOperator(c);
         if(dataHistoryQuery.getSensorType()!=null){
