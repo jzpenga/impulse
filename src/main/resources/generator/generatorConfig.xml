@@ -45,9 +45,9 @@
         </commentGenerator>
 
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://127.0.0.1:3306/huanyu?characterEncoding=utf-8"
+                        connectionURL="jdbc:mysql://39.105.86.90:3306/huanyu_admin?characterEncoding=utf-8"
                         userId="root"
-                        password="root">
+                        password="123456">
             <!-- 针对mysql数据库 -->
             <property name="useInformationSchema" value="true"/>
         </jdbcConnection>
@@ -99,8 +99,8 @@
     <!--   <table tableName="ext_pass"  domainObjectName="ExtPass" delimitIdentifiers="false" />-->
        <!--<table tableName="company"  domainObjectName="Company" delimitIdentifiers="false" />-->
     <!--    <table tableName="admin" domainObjectName="Admin" delimitIdentifiers="false"/>-->
-        <table tableName="controlinstru" domainObjectName="Controlinstru" delimitIdentifiers="false"/>
-
+       <!-- <table tableName="controlinstru" domainObjectName="Controlinstru" delimitIdentifiers="false"/>-->
+        <!--<table tableName="test_message_receiver" domainObjectName="TestMessageReceiver" delimitIdentifiers="false"/>-->
 
     </context>
 </generatorConfiguration>

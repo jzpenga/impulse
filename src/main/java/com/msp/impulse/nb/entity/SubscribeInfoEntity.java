@@ -9,6 +9,16 @@ public class SubscribeInfoEntity {
     private String callbackUrl;
     private String loginName;
     private String password;
+    private String companyName;
+
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
 
     public String getId() {
         return id;

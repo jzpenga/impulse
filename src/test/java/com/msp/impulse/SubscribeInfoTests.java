@@ -19,9 +19,9 @@ public class SubscribeInfoTests {
         SubscribeInfoEntity subscribeInfoEntity = new SubscribeInfoEntity();
         subscribeInfoEntity.setLoginName("tom");
         subscribeInfoEntity.setCallbackUrl("http://39.105.86.90:8072/v1.0.0/messageReceiver");
-        subscribeInfoDao.save(subscribeInfoEntity);
+        //subscribeInfoDao.save(subscribeInfoEntity);
 
-        SubscribeInfoEntity tom = subscribeInfoDao.findByLoginName("tom");
-        System.out.println(tom.getCallbackUrl());
+        //SubscribeInfoEntity tom = subscribeInfoDao.findByCompanyName("tom");
+        //System.out.println(tom.getCallbackUrl());
     }
 }

@@ -5,18 +5,17 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.iotplatform.client.dto.NotifyDeviceDataChangedDTO;
 import com.iotplatform.utils.JsonUtil;
 import com.msp.impulse.nb.entity.DataReportEntity;
+import com.msp.impulse.nb.entity.SubscribeInfoEntity;
 import com.msp.impulse.nb.service.SubscribeInfoService;
 import com.msp.impulse.service.DataReportService;
 import com.msp.impulse.util.HttpClientUtil;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Component
 public class DeviceDataChangeHandler implements IDataHandler<NotifyDeviceDataChangedDTO>{
@@ -48,17 +47,24 @@ public class DeviceDataChangeHandler implements IDataHandler<NotifyDeviceDataCha
             //System.out.println("入库数据 ====》 "+dataReportEntities);
             //入库
             boolean success = dataReportService.insertDateReport(dataReportEntities);
+
             //System.out.println("入库 ===》 "+success);
-//            if (success){
-//                //调用相关接口
-//                String callbackUrl = subscribeInfoService.getSubscribeInfoByDeviceId(dto.getDeviceId()).getCallbackUrl();
-//                HashMap<String, Object> stringObjectHashMap = dataReportService.messageReceiver(dataMark);
-//                String s = JSONObject.toJSONString(stringObjectHashMap);
-//                String response = HttpClientUtil.doPostJson(callbackUrl, s);
-//                if (!StringUtils.isEmpty(response)){
-//                    logger.info(dto.getDeviceId()+" send "+dto.getService().getEventTime()+" data ====>  success!");
-//                }
-//            }
+            if (success){
+                //调用相关接口
+                SubscribeInfoEntity subscribeInfoByDeviceId = subscribeInfoService.getSubscribeInfoByDeviceId(dto.getDeviceId());
+                if (subscribeInfoByDeviceId!=null){
+                    String callbackUrl = subscribeInfoByDeviceId.getCallbackUrl();
+                    HashMap<String, Object> stringObjectHashMap = dataReportService.messageReceiver(dataMark);
+                    //HashMap<String, Object> stringObjectHashMap = dataReportService.messageReceiver("0972d42d-5f8b-42db-ac68-7705584422f6");
+                    String s = JSONObject.toJSONString(stringObjectHashMap);
+                    String response = HttpClientUtil.doPostJson(callbackUrl, s);
+                    if (!StringUtils.isEmpty(response)){
+                        logger.info(dto.getDeviceId()+" send "+dto.getService().getEventTime()+" data ====>  success!");
+                    }
+                }else {
+                    logger.info(dto.getDeviceId()+"====>未被订阅");
+                }
+            }
 
         }catch (Exception e){
             e.printStackTrace();

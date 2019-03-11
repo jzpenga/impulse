@@ -427,4 +427,9 @@
     </if>
     AND c.flag!="1"
   </select>
+  <select id="findCompanyNameByLoginName" parameterType="string" resultType="string">
+    select c.company_name companyName from company c
+    where login_name=#{loginName}
+  </select>
+
 </mapper>
