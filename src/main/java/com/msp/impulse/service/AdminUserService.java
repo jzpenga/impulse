@@ -4,14 +4,13 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.msp.impulse.base.BaseResponse;
 import com.msp.impulse.base.ResponseCode;
-import com.msp.impulse.dao.*;
 import com.msp.impulse.entity.*;
 import com.msp.impulse.exception.MyException;
 import com.msp.impulse.mapper.CompanyMapper;
+import com.msp.impulse.mapper.GatewayMapper;
 import com.msp.impulse.mapper.LinkmanMapper;
-import com.msp.impulse.query.FindUserQuery;
-import com.msp.impulse.query.GateSenPageQuery;
-import com.msp.impulse.query.SaveUserQuery;
+import com.msp.impulse.mapper.SensorMapper;
+import com.msp.impulse.query.*;
 import com.msp.impulse.vo.CompanyDetailVo;
 import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang.StringUtils;
@@ -19,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
-
 import java.util.Date;
 import java.util.List;
 
@@ -30,6 +28,10 @@ public class AdminUserService {
     private CompanyMapper companyMapper;
     @Autowired
     private LinkmanMapper linkmanMapper;
+    @Autowired
+    private GatewayMapper gatewayMapper;
+    @Autowired
+    private SensorMapper  sensorMapper;
 
     /**
      * 用户信息查询
@@ -37,7 +39,7 @@ public class AdminUserService {
      * @param findUserQuery
      * @return
      */
-    public BaseResponse<PageBean> findUser(FindUserQuery findUserQuery) {
+    public BaseResponse<PageInfo> findUser(FindUserQuery findUserQuery) {
         BaseResponse<PageInfo> response = new BaseResponse<>();
         if (findUserQuery.getPageNo() == null) {
             findUserQuery.setPageNo(1);
@@ -46,42 +48,71 @@ public class AdminUserService {
             findUserQuery.setPageSize(10);
         }
         PageHelper.startPage(findUserQuery.getPageNo(), findUserQuery.getPageSize());
-//        List<Company> gatewayList = companyMapper.findUser(findUserQuery);
-//        PageInfo<Company> pageInfo = new PageInfo<>(gatewayList);
+        List<Company> gatewayList = companyMapper.findUser(findUserQuery);
+        PageInfo<Company> pageInfo = new PageInfo<>(gatewayList);
 
-//        response.setData(pageInfo);
+        response.setData(pageInfo);
         response.setResponseCode(ResponseCode.OK.getCode());
         response.setResponseMsg(ResponseCode.OK.getMessage());
-        return null;
+        return response;
     }
 
-//    /**
-//     * 根据用户id查询
-//     *
-//     * @param userId
-//     * @return
-//     */
-//    public BaseResponse<CompanyDetailVo> findUserById(String userId) {
-//        BaseResponse response = new BaseResponse<>();
-//        CompanyDetailVo companyDetailVo = new CompanyDetailVo();
-//        Company company = adminUserDao.findUserById(userId);
-//        if (company != null) {
-//            companyDetailVo.setCompany(company);
-//        }
-//
-//        PageBean pageBeanGateway = gatewayDao.findGatewayByUserId(userId);
-//        if (pageBeanGateway != null) {
-//            companyDetailVo.setPageBeanGateway(pageBeanGateway);
-//        }
-//        PageBean pageBeanSensor = sensorDao.findSensorByUserId(userId);
-//        if (pageBeanSensor != null) {
-//            companyDetailVo.setPageBeanSensor(pageBeanSensor);
-//        }
-//        response.setData(companyDetailVo);
-//        response.setResponseCode(ResponseCode.OK.getCode());
-//        response.setResponseMsg(ResponseCode.OK.getMessage());
-//        return response;
-//    }
+    /**
+     * 根据用户id查询
+     *
+     * @param findUserByIdQuery
+     * @return
+     */
+    public BaseResponse<CompanyDetailVo> findUserById(FindUserByIdQuery findUserByIdQuery) {
+        BaseResponse response = new BaseResponse<>();
+        if(findUserByIdQuery.getUserId()==null){
+           throw  new MyException("用户id必输!");
+        }
+        Integer userId = findUserByIdQuery.getUserId();//用户id
+
+        CompanyDetailVo companyDetailVo=new CompanyDetailVo();
+        //查询公司
+        Company company = companyMapper.selectByPrimaryKey(userId);
+        if(company!=null){
+            companyDetailVo.setCompany(company);
+        }
+        //查询联系人
+        Linkman linkman=linkmanMapper.selectByCompanyId(userId);
+        if(linkman!=null){
+            companyDetailVo.setLinkman(linkman);
+        }
+        //查询网关
+        GatewayQuery gatewayQuery=new GatewayQuery();
+        gatewayQuery.setUserId(userId);
+        if (findUserByIdQuery.getPageNoGate() == null) {
+            findUserByIdQuery.setPageNoGate(1);
+        }
+        if (findUserByIdQuery.getPageSizeGate() == null) {
+            findUserByIdQuery.setPageSizeGate(2);
+        }
+        PageHelper.startPage(findUserByIdQuery.getPageNoGate(), findUserByIdQuery.getPageSizeGate());
+        List<Gateway> gatewayList = gatewayMapper.selectGatewayfo(gatewayQuery);
+        PageInfo<Gateway> pageInfoGate = new PageInfo<>(gatewayList);
+        companyDetailVo.setPageBeanGateway(pageInfoGate);
+        //查询传感器
+        SensorQuery sensorQuery=new SensorQuery();
+        sensorQuery.setUserId(userId);
+        if (findUserByIdQuery.getPageNoSensor() == null) {
+            findUserByIdQuery.setPageNoSensor(1);
+        }
+        if (findUserByIdQuery.getPageSizeSensor() == null) {
+            findUserByIdQuery.setPageSizeSensor(2);
+        }
+        PageHelper.startPage(findUserByIdQuery.getPageNoSensor(), findUserByIdQuery.getPageSizeSensor());
+        List<Sensor> sensorList = sensorMapper.selectSensorInfo(sensorQuery);
+        PageInfo<Sensor> pageInfo = new PageInfo<>(sensorList);
+        companyDetailVo.setPageBeanSensor(pageInfo);
+
+        response.setData(companyDetailVo);
+        response.setResponseCode(ResponseCode.OK.getCode());
+        response.setResponseMsg(ResponseCode.OK.getMessage());
+        return response;
+    }
 
     /**
      * 新增或修改用户数据
@@ -142,6 +173,7 @@ public class AdminUserService {
             //保存公司信息
             company.setGatewayNumber(0);
             company.setSensorNumber(0);
+            company.setFlag("0");
             company.setCreateTime(new Date());
             companyMapper.insertSelective(company);
             //保存联系人信息
@@ -153,6 +185,7 @@ public class AdminUserService {
             }
             Linkman linkman = saveUserQuery.getLinkman();
             linkman.setCreateTime(new Date());
+            linkman.setFlag("0");
             linkmanMapper.insertSelective(linkman);
         }
         response.setResponseCode(ResponseCode.OK.getCode());
@@ -160,58 +193,22 @@ public class AdminUserService {
         return response;
     }
 
-//    /**
-//     * 根据用户id删除数据
-//     *
-//     * @param userId
-//     * @return
-//     */
-//    public BaseResponse deleteUserById(String userId) {
-//        BaseResponse response = new BaseResponse<>();
-//        adminUserDao.deleteUserById(userId);
-//        response.setResponseCode(ResponseCode.OK.getCode());
-//        response.setResponseMsg(ResponseCode.OK.getMessage());
-//        return response;
-//    }
-
-//    /**
-//     * 批量删除数据
-//     *
-//     * @param ids
-//     * @return
-//     */
-//    @Transactional
-//    public BaseResponse deleteUserBatch(List<String> ids) {
-//        BaseResponse response = new BaseResponse<>();
-//        for (String id : ids) {
-//            adminUserDao.deleteUserById(id);
-//        }
-//        response.setResponseCode(ResponseCode.OK.getCode());
-//        response.setResponseMsg(ResponseCode.OK.getMessage());
-//        return response;
-//    }
-
-//    /**
-//     * 根据用户id对网关进行分页查询
-//     *
-//     * @param gateSenPageQuery
-//     * @return
-//     */
-//    public BaseResponse findGatewayByUserId(GateSenPageQuery gateSenPageQuery) {
-//        BaseResponse response = new BaseResponse<>();
-//        PageBean pageBean = adminUserDao.findGatewayByUserId(gateSenPageQuery);
-//        response.setData(pageBean);
-//        response.setResponseCode(ResponseCode.OK.getCode());
-//        response.setResponseMsg(ResponseCode.OK.getMessage());
-//        return response;
-//    }
-
-//    public BaseResponse findSensorByUserId(GateSenPageQuery gateSenPageQuery) {
-//        BaseResponse response = new BaseResponse<>();
-//        PageBean pageBean = adminUserDao.findSensorByUserId(gateSenPageQuery);
-//        response.setData(pageBean);
-//        response.setResponseCode(ResponseCode.OK.getCode());
-//        response.setResponseMsg(ResponseCode.OK.getMessage());
-//        return response;
-//    }
+    /**
+     * 批量删除数据
+     *
+     * @param ids
+     * @return
+     */
+    @Transactional
+    public BaseResponse deleteUserBatch(List<Integer> ids) {
+        BaseResponse response = new BaseResponse<>();
+        for (Integer id : ids) {
+            Company company = companyMapper.selectByPrimaryKey(id);
+            company.setFlag("1");
+            companyMapper.updateByPrimaryKey(company);
+        }
+        response.setResponseCode(ResponseCode.OK.getCode());
+        response.setResponseMsg(ResponseCode.OK.getMessage());
+        return response;
+    }
 }

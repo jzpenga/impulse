@@ -16,6 +16,8 @@ public class GatewayQuery  extends BaseRequest {
     private String workModel;
     @ApiModelProperty(name = "workStatus", value = "工作状态", example = "")
     private String workStatus;
+    @ApiModelProperty(name = "userId", value = "用户id", example = "")
+    private Integer userId;
 
     public String getGatewayName() {
         return gatewayName;
@@ -57,4 +59,11 @@ public class GatewayQuery  extends BaseRequest {
         this.workStatus = workStatus;
     }
 
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
 }

@@ -391,4 +391,40 @@
     select id,login_name loginName from company
     where login_name=#{loginName} and password=#{pwd}
   </select>
+  <resultMap type="com.msp.impulse.entity.CompanyAndLink" id="userResultMap">
+    <id property="id" column="id" />  <!--公司id-->
+    <result property="loginName" column="login_name" />
+    <result property="companyName" column="company_name" />
+    <result property="province" column="province" />
+    <result property="city" column="city" />
+    <result property="name" column="name" />
+    <result property="phoneNo" column="phone_no" />
+    <result property="gatewayNumber" column="gateway_number" />
+    <result property="sensorNumber" column="sensor_number" />
+  </resultMap>
+  <select id="findUser" parameterType="com.msp.impulse.query.FindUserQuery" resultMap="userResultMap">
+     select  c.company_name,c.gateway_number,c.province,c.city,c.sensor_number,
+    c.login_name ,k.`name`,k.phone_no,c.flag
+     from company c left join linkman  k on  c.id=k.company_id
+     where 1=1
+    <if test="companyName != null">
+      and c.company_name ="%"#{companyName}"%"
+    </if>
+    <if test="province != null">
+      and c.province  like "%"#{province}"%"
+    </if>
+    <if test="city != null">
+      AND c.city like "%"#{city}"%"
+    </if>
+    <if test="loginName != null">
+      AND c.login_name like "%"#{loginName}"%"
+    </if>
+    <if test="name != null">
+      AND c.name like "%"#{name}"%"
+    </if>
+    <if test="phoneNo != null">
+      AND c.phone_no like "%"#{phoneNo}"%"
+    </if>
+    AND c.flag!="1"
+  </select>
 </mapper>

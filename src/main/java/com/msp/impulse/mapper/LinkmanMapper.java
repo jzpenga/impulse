@@ -31,4 +31,5 @@ public interface LinkmanMapper {
 
     int updateByPrimaryKey(Linkman record);
 
+    Linkman selectByCompanyId(Integer companyId);
 }

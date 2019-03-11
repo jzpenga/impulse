@@ -28,4 +28,6 @@ public interface DictionaryMapper {
     int updateByPrimaryKeySelective(Dictionary record);
 
     int updateByPrimaryKey(Dictionary record);
+
+    List<Dictionary> findDicByCondition(@Param("dicName")String dicName,@Param("dicCode") String dicCode);
 }

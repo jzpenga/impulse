@@ -335,4 +335,9 @@
       state = #{state,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectByCompanyId" parameterType="int" resultType="com.msp.impulse.entity.Linkman">
+    select  l.account,l.company_id companyId,l.create_time createTime,l.create_user createUser,l.email
+     ,l.flag,l.gender,l.id,l.`name`,l.phone_no phoneNo,l.state,l.update_time updateTime,l.update_user updateUser
+    from linkman l where company_id=#{companyId}
+  </select>
 </mapper>

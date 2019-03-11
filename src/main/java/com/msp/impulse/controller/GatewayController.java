@@ -33,12 +33,13 @@ public class GatewayController {
         BaseResponse<PageInfo> response;
         try {
             //获取用户id
-            Integer id=null;
+            Integer userId=null;
             Company company= (Company)session.getAttribute("loginUser");
-            if(company!=null){
-                id=company.getId();
+            if(company!=null&&gatewayQuery.getUserId()!=null){
+                userId=company.getId();
+                gatewayQuery.setUserId(userId);
             }
-            response = gatewayService.findGatewayByCondition(gatewayQuery,id);
+            response = gatewayService.findGatewayByCondition(gatewayQuery);
         } catch (MyException e) {
             logger.error(e.getMessage());
             response = new BaseResponse();
@@ -103,10 +104,16 @@ public class GatewayController {
     @GetMapping("deleteGateway/{id}")
     @ApiOperation(value = "根据id删除网关信息", notes = "根据id删除网关信息", tags = "网关管理", httpMethod = "GET")
     @ApiImplicitParam(name = "id", value = "网关ID", example = "1", required = true, dataType = "string")
-    public BaseResponse deleteGateway(@PathVariable Integer id) {
+    public BaseResponse deleteGateway(@PathVariable Integer id,HttpSession session) {
         BaseResponse response;
         try {
-            response = gatewayService.deleteGateway(id);
+            //获取用户id
+            Integer userId = null;
+            Company company = (Company) session.getAttribute("loginUser");
+            if (company != null) {
+                userId = company.getId();
+            }
+            response = gatewayService.deleteGateway(id,userId);
         } catch (MyException e) {
             logger.error(e.getMessage(), e);
             response = new BaseResponse();
@@ -125,10 +132,16 @@ public class GatewayController {
     @PostMapping("deleteGatewayBatch")
     @ApiOperation(value = "批量删除网关信息", notes = "批量删除网关信息", tags = "网关管理", httpMethod = "POST")
     @ApiImplicitParam(name = "ids", value = "网关ID集合", example = "1，3,4", required = true, dataType = "string")
-    public BaseResponse deleteGatewayBatch(@RequestBody List<Integer> ids) {
+    public BaseResponse deleteGatewayBatch(@RequestBody List<Integer> ids,HttpSession session) {
         BaseResponse response;
         try {
-            response = gatewayService.deleteGatewayBatch(ids);
+            //获取用户id
+            Integer userId = null;
+            Company company = (Company) session.getAttribute("loginUser");
+            if (company != null) {
+                userId = company.getId();
+            }
+            response = gatewayService.deleteGatewayBatch(ids,userId);
         } catch (MyException e) {
             logger.error(e.getMessage(), e);
             response = new BaseResponse();

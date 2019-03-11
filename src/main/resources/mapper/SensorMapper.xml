@@ -459,10 +459,13 @@
   <select id="selectSensorInfo" parameterType="com.msp.impulse.query.SensorQuery" resultType="com.msp.impulse.entity.Sensor">
     SELECT
     s.id,s.gateway_name gatewayName,s.name ,pass_no passNo,
-    s.sensor_no sensorNo,s.user_name userName
+    s.sensor_no sensorNo,s.user_name userName,s.user_id userId
     from
     sensor s
     where 1=1
+    <if test="userId != null">
+      and s.user_id =#{userId}
+    </if>
     <if test="name != null">
       and s.name  like "%"#{name}"%"
     </if>

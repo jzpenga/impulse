@@ -3,6 +3,8 @@ package com.msp.impulse.mapper;
 import com.msp.impulse.entity.Company;
 import com.msp.impulse.entity.CompanyExample;
 import java.util.List;
+
+import com.msp.impulse.query.FindUserQuery;
 import org.apache.ibatis.annotations.Param;
 
 public interface CompanyMapper {
@@ -31,4 +33,6 @@ public interface CompanyMapper {
     Company findByName(String loginName);
 
     Company findByNameAndPwd(@Param("loginName")String loginName, @Param("pwd")String pwd);
+
+    List<Company> findUser(FindUserQuery findUserQuery);
 }

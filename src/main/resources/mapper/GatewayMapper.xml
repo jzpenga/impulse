@@ -464,6 +464,9 @@
     FROM
     gateway g
     where 1=1
+    <if test="userId != null">
+      and g.user_id = #{userId}
+    </if>
     <if test="gatewayName != null">
       and g.gateway_name  like "%"#{gatewayName}"%"
     </if>

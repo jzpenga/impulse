@@ -192,6 +192,9 @@ public class GatewayService {
                     }
                     passMapper.updateByPrimaryKey(pass1);
                 }else{
+                    if(userId!=null) {
+                        changeGatewayNumber(userId, 1);
+                    }
                     //新增通道
                     if(gateway!=null&&StringUtils.isNotBlank(gateway.getGatewayName())) {
                         Integer passNo = queryPassNo(gateway.getGatewayName());
@@ -240,7 +243,7 @@ public class GatewayService {
      * @param gatewayQuery
      * @return
      */
-    public BaseResponse<PageInfo> findGatewayByCondition(@RequestBody GatewayQuery gatewayQuery, Integer userId) {
+    public BaseResponse<PageInfo> findGatewayByCondition(@RequestBody GatewayQuery gatewayQuery) {
         BaseResponse<PageInfo> response = new BaseResponse<>();
         if (gatewayQuery.getPageNo() == null) {
             gatewayQuery.setPageNo(1);
@@ -265,8 +268,12 @@ public class GatewayService {
      * @param id
      * @return
      */
-    public BaseResponse deleteGateway(Integer id) {
+    @Transactional
+    public BaseResponse deleteGateway(Integer id,Integer userId) {
         BaseResponse response = new BaseResponse();
+        if(userId!=null) {
+            changeGatewayNumber(userId, -1);
+        }
         Gateway gateway = gatewayMapper.selectByPrimaryKey(id);
         gateway.setFlag("1");
         gatewayMapper.updateByPrimaryKey(gateway);
@@ -297,9 +304,12 @@ public class GatewayService {
      * @return
      */
     @Transactional
-    public BaseResponse deleteGatewayBatch(List<Integer> ids) {
+    public BaseResponse deleteGatewayBatch(List<Integer> ids,Integer userId) {
         BaseResponse response = new BaseResponse<>();
         for (Integer id : ids) {
+            if(userId!=null) {
+                changeGatewayNumber(userId, -1);
+            }
             Gateway gateway = gatewayMapper.selectByPrimaryKey(id);
             gateway.setFlag("1");
             gatewayMapper.updateByPrimaryKey(gateway);
@@ -307,5 +317,27 @@ public class GatewayService {
         response.setResponseCode(ResponseCode.OK.getCode());
         response.setResponseMsg(ResponseCode.OK.getMessage());
         return response;
+    }
+
+    /**
+     * 更改company表的网关数.
+     *
+     * @param userId
+     * @param changeNumber 删除传负数
+     */
+    public synchronized void changeGatewayNumber(Integer userId, Integer changeNumber) {
+        //根据userId查询当前sensorNumber
+        Company company = companyMapper.selectByPrimaryKey(userId);
+        Integer gatewayNumber;
+        if(company!=null){
+            if(company.getGatewayNumber()==null){
+                gatewayNumber=0;
+            }else {
+                gatewayNumber = company.getGatewayNumber();
+                gatewayNumber = gatewayNumber - changeNumber;
+            }
+            company.setGatewayNumber(gatewayNumber);
+            companyMapper.insertSelective(company);
+        }
     }
 }

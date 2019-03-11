@@ -1,9 +1,7 @@
 package com.msp.impulse.vo;
 
-import com.msp.impulse.entity.Company;
-import com.msp.impulse.entity.Gateway;
-import com.msp.impulse.entity.PageBean;
-import com.msp.impulse.entity.Sensor;
+import com.github.pagehelper.PageInfo;
+import com.msp.impulse.entity.*;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -13,10 +11,12 @@ import java.util.List;
 public class CompanyDetailVo {
     @ApiModelProperty(name = "company", value = "公司", example = "公司", required = true)
     private Company company;
+    @ApiModelProperty(name = "linkman", value = "联系人", example = "联系人", required = true)
+    private Linkman linkman;
     @ApiModelProperty(name = "pageBeanGateway", value = "网关列表分页", example = "网关列表分页", required = true)
-    private PageBean<Gateway> pageBeanGateway;
+    private PageInfo<Gateway> pageBeanGateway;
     @ApiModelProperty(name = "pageBeanSensor", value = "传感器列表分页", example = "传感器列表分页", required = true)
-    private PageBean<Sensor> pageBeanSensor;
+    private PageInfo<Sensor> pageBeanSensor;
 
     public Company getCompany() {
         return company;
@@ -26,19 +26,27 @@ public class CompanyDetailVo {
         this.company = company;
     }
 
-    public PageBean<Gateway> getPageBeanGateway() {
+    public Linkman getLinkman() {
+        return linkman;
+    }
+
+    public void setLinkman(Linkman linkman) {
+        this.linkman = linkman;
+    }
+
+    public PageInfo<Gateway> getPageBeanGateway() {
         return pageBeanGateway;
     }
 
-    public void setPageBeanGateway(PageBean<Gateway> pageBeanGateway) {
+    public void setPageBeanGateway(PageInfo<Gateway> pageBeanGateway) {
         this.pageBeanGateway = pageBeanGateway;
     }
 
-    public PageBean<Sensor> getPageBeanSensor() {
+    public PageInfo<Sensor> getPageBeanSensor() {
         return pageBeanSensor;
     }
 
-    public void setPageBeanSensor(PageBean<Sensor> pageBeanSensor) {
+    public void setPageBeanSensor(PageInfo<Sensor> pageBeanSensor) {
         this.pageBeanSensor = pageBeanSensor;
     }
 }

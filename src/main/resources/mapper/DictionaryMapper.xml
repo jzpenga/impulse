@@ -117,6 +117,10 @@
       #{state,jdbcType=VARCHAR}, #{flag,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.msp.impulse.entity.Dictionary">
+    <selectKey keyColumn="id" keyProperty="id" order="AFTER"
+               resultType="int">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into dictionary
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -303,4 +307,17 @@
       flag = #{flag,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="findDicByCondition" resultType="com.msp.impulse.entity.Dictionary">
+    select d.create_time createTime,d.create_user createUser,d.dic_code dicCode,
+      d.dic_name dicName,d.flag,d.hierarchy,d.id,d.parent_id parentId,d.state,d.update_time updateTime
+     ,d.update_user updateUser
+    from  dictionary d
+    where 1=1
+    <if test="dicName != null">
+    and d.dic_name like "%"#{dicName}"%"
+    </if>
+    <if test="dicCode != null">
+    and d.dic_code=#{dicCode}
+    </if>
+  </select>
 </mapper>

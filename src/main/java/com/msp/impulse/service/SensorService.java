@@ -59,7 +59,6 @@ public class SensorService {
         if (StringUtils.isBlank(sensor.getName())) {
           throw  new MyException("传感器名称不能为空!");
         }
-        Integer sensorId=0;
         if (sensor.getId()!=null) {//修改
             //查询传感器
             Sensor sensorUp= sensorMapper.selectByPrimaryKey(sensor.getId());
@@ -80,7 +79,6 @@ public class SensorService {
             sensorUp.setLongitude(sensor.getLongitude());
             sensorUp.setPassNumber(sensor.getPassNumber());
             sensorMapper.updateByPrimaryKey(sensorUp);
-            sensorId=sensor.getId();
 
         }else{//新增
             //获取传感器序列号
@@ -106,8 +104,6 @@ public class SensorService {
             deviceInfo.setName(sensor.getName());
             deviceInfo.setDeviceType(sensor.getSensorType());
             deviceInfo.setModel(sensor.getSensorModel());
-            Random random = new Random();
-
             deviceInfo.setNodeId(sensor.getSensorNo());// mac 地址
 
             RegDirectDeviceOutDTO regDirectDeviceOutDTO = NBDXManager.registerDevice(deviceInfo);
@@ -127,15 +123,37 @@ public class SensorService {
                 sensor.setUserName(company.getCompanyName());
                 sensor.setCreateUser(userId);
                 sensor.setUserId(userId);
-
             }
             sensorMapper.insertSelective(sensor);
-            sensorId=sensor.getId();
+        }
+        if(userId!=null) {//传感器数加1
+            changeSensorNumber(userId, 1);
         }
 
         List<Pass> passList= sensorAddQuery.getPassList();
         if(passList!=null) {
             gatewayService.savePass(passList,userId,sensor,null);
+        }
+    }
+    /**
+     * 更改company表的传感器数
+     *
+     * @param userId
+     * @param changeNumber 删除传负数
+     */
+    public synchronized void changeSensorNumber(Integer userId, Integer changeNumber) {
+        //根据userId查询当前sensorNumber
+        Company company = companyMapper.selectByPrimaryKey(userId);
+        Integer sensorNumber;
+        if(company!=null){
+            if(company.getSensorNumber()==null){
+                sensorNumber=0;
+            }else {
+                sensorNumber = company.getSensorNumber();
+                sensorNumber = sensorNumber - changeNumber;
+            }
+            company.setSensorNumber(sensorNumber);
+            companyMapper.insertSelective(company);
         }
     }
     /**
@@ -204,10 +222,14 @@ public class SensorService {
      * @return
      */
     @Transactional
-    public BaseResponse deleteSensor(Integer id) {
+    public BaseResponse deleteSensor(Integer id,Integer userId) {
         BaseResponse response = new BaseResponse();
         //删除运营商传感器
         deleteNBDXSensor(id);
+        //传感器数减一
+        if(userId!=null){
+            changeSensorNumber(userId,-1);
+        }
         //更新传感器flag为1
         Sensor sensor = sensorMapper.selectByPrimaryKey(id);
         sensor.setFlag("1");
@@ -231,11 +253,15 @@ public class SensorService {
      * @return
      */
     @Transactional
-    public BaseResponse deleteSensorBatch(List<Integer> ids) {
+    public BaseResponse deleteSensorBatch(List<Integer> ids,Integer userId) {
         BaseResponse response = new BaseResponse();
         for (Integer id : ids) {
             //删除运营商传感器
             deleteNBDXSensor(id);
+            //传感器数减一
+            if(userId!=null){
+                changeSensorNumber(userId,-1);
+            }
             //删除传感器
             Sensor sensor = sensorMapper.selectByPrimaryKey(id);
             sensor.setFlag("1");
