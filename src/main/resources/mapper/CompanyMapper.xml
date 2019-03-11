@@ -408,7 +408,7 @@
      from company c left join linkman  k on  c.id=k.company_id
      where 1=1
     <if test="companyName != null">
-      and c.company_name ="%"#{companyName}"%"
+      and c.company_name like "%"#{companyName}"%"
     </if>
     <if test="province != null">
       and c.province  like "%"#{province}"%"
