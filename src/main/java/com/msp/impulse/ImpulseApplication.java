@@ -11,7 +11,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @EnableSwagger2
-@SpringBootApplication(exclude={DataSourceAutoConfiguration.class,MongoAutoConfiguration.class})
+@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class, MongoAutoConfiguration.class})
 @MapperScan(value = "com.msp.impulse.mapper")
 @ComponentScan(basePackages = {"com.msp.impulse.*"})
 @EnableMongoRepositories

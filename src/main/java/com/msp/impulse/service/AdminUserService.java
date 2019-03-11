@@ -88,7 +88,7 @@ public class AdminUserService {
             findUserByIdQuery.setPageNoGate(1);
         }
         if (findUserByIdQuery.getPageSizeGate() == null) {
-            findUserByIdQuery.setPageSizeGate(2);
+            findUserByIdQuery.setPageSizeGate(10);
         }
         PageHelper.startPage(findUserByIdQuery.getPageNoGate(), findUserByIdQuery.getPageSizeGate());
         List<Gateway> gatewayList = gatewayMapper.selectGatewayfo(gatewayQuery);
@@ -101,7 +101,7 @@ public class AdminUserService {
             findUserByIdQuery.setPageNoSensor(1);
         }
         if (findUserByIdQuery.getPageSizeSensor() == null) {
-            findUserByIdQuery.setPageSizeSensor(2);
+            findUserByIdQuery.setPageSizeSensor(10);
         }
         PageHelper.startPage(findUserByIdQuery.getPageNoSensor(), findUserByIdQuery.getPageSizeSensor());
         List<Sensor> sensorList = sensorMapper.selectSensorInfo(sensorQuery);

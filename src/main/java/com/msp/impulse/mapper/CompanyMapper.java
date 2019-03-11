@@ -34,4 +34,6 @@ public interface CompanyMapper {
     Company findByNameAndPwd(@Param("loginName")String loginName, @Param("pwd")String pwd);
 
     List<Company> findUser(FindUserQuery findUserQuery);
+
+    String findCompanyNameByLoginName(String loginName);
 }
