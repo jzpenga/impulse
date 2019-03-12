@@ -326,14 +326,14 @@
       d.create_time createTime,d.create_user createUser,d.dic_code dicCode,
       d.dic_name dicName,d.flag,d.hierarchy,d.id,d.parent_id parentId,d.state,d.update_time updateTime
      ,d.update_user updateUser
-    from dictionary d where d.parent_id=#{id}
+    from dictionary d where d.parent_id=#{id} and d.flag!="1"
   </select>
   <select id="findDicByDicCode" parameterType="string" resultType="com.msp.impulse.entity.Dictionary">
      select
       d.create_time createTime,d.create_user createUser,d.dic_code dicCode,
       d.dic_name dicName,d.flag,d.hierarchy,d.id,d.parent_id parentId,d.state,d.update_time updateTime
      ,d.update_user updateUser
-    from dictionary d where d.dic_code=#{dicCode}
+    from dictionary d where d.dic_code=#{dicCode} and d.flag!="1"
   </select>
 
   <select id="findDicByDicName" parameterType="string" resultType="com.msp.impulse.entity.Dictionary">
@@ -341,6 +341,6 @@
       d.create_time createTime,d.create_user createUser,d.dic_code dicCode,
       d.dic_name dicName,d.flag,d.hierarchy,d.id,d.parent_id parentId,d.state,d.update_time updateTime
      ,d.update_user updateUser
-    from dictionary d where d.dic_name=#{dicName}
+    from dictionary d where d.dic_name=#{dicName} and d.flag!="1"
   </select>
 </mapper>
