@@ -3,6 +3,7 @@ package com.msp.impulse.controller;
 import com.msp.impulse.base.BaseResponse;
 import com.msp.impulse.base.ResponseCode;
 import com.msp.impulse.entity.Company;
+import com.msp.impulse.exception.MyException;
 import com.msp.impulse.query.SaveUserQuery;
 import com.msp.impulse.service.UserService;
 import io.swagger.annotations.Api;
@@ -31,7 +32,12 @@ public class UserController {
             response = userService.findByNameAndPwd(company.getLoginName(), company.getPassword());
             //记录登录状态
             session.setAttribute("loginUser", response.getData());
-        } catch (Exception e) {
+        } catch (MyException e) {
+            logger.error(e.getMessage());
+            response = new BaseResponse();
+            response.setResponseCode(ResponseCode.PARAMETER_VALIDATION_FAILED.getCode());
+            response.setResponseMsg(e.getMessage());
+        }catch (Exception e) {
             logger.error(e.getMessage(), e);
             e.printStackTrace();
             response.setResponseCode(ResponseCode.SERVER_FAILED.getCode());
@@ -60,7 +66,12 @@ public class UserController {
             Company company = (Company) session.getAttribute("loginUser");
             //更新密码
             response = userService.modifyPwd(company, oPwd, newPwd);
-        } catch (Exception e) {
+        } catch (MyException e) {
+            logger.error(e.getMessage());
+            response = new BaseResponse();
+            response.setResponseCode(ResponseCode.PARAMETER_VALIDATION_FAILED.getCode());
+            response.setResponseMsg(e.getMessage());
+        }catch (Exception e) {
             logger.error(e.getMessage(), e);
             e.printStackTrace();
             response.setResponseCode(ResponseCode.SERVER_FAILED.getCode());

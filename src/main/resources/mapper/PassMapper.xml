@@ -561,6 +561,6 @@
     select  max(pass_no) from  pass  where gateway_name =#{gatewayName}
   </select>
   <select id="queryByPassNoAndGatewayName"  resultType="com.msp.impulse.entity.Pass">
-      select  from  pass where gateway_name=#{gatewayName} and pass_no=#{passNo}
+      select  * from  pass where gateway_name=#{gatewayName} and pass_no=#{passNo} and flag!="1"
   </select>
 </mapper>

@@ -47,6 +47,7 @@ public class AdminService {
         if(admin.getId()==null){
             //新增
             admin.setCreateTime(new Date());
+            admin.setFlag("0");
             adminMapper.insertSelective(admin);
         }else{
             //修改

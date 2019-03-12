@@ -307,7 +307,7 @@
       flag = #{flag,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="findDicByCondition" resultType="com.msp.impulse.entity.Dictionary">
+  <select id="findDicByCondition" parameterType="com.msp.impulse.query.DicQuery" resultType="com.msp.impulse.entity.Dictionary">
     select d.create_time createTime,d.create_user createUser,d.dic_code dicCode,
       d.dic_name dicName,d.flag,d.hierarchy,d.id,d.parent_id parentId,d.state,d.update_time updateTime
      ,d.update_user updateUser
@@ -319,5 +319,6 @@
     <if test="dicCode != null">
     and d.dic_code=#{dicCode}
     </if>
+    and d.flag!="1"
   </select>
 </mapper>

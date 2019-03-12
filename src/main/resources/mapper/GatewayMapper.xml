@@ -451,7 +451,7 @@
   </update>
   <select id="findGatewayName" parameterType="string" resultType="int">
     select count(*) from gateway
-    where gateway_name=#{gatewayName}
+    where gateway_name=#{gatewayName} and flag!="1"
   </select>
   <select id="selectGatewayfo" parameterType="com.msp.impulse.query.GatewayQuery" resultType="com.msp.impulse.entity.Gateway">
     SELECT

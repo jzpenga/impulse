@@ -4,18 +4,15 @@ import com.github.pagehelper.PageInfo;
 import com.msp.impulse.base.BaseResponse;
 import com.msp.impulse.base.ResponseCode;
 import com.msp.impulse.entity.Company;
-import com.msp.impulse.entity.PageBean;
 import com.msp.impulse.entity.Pass;
 import com.msp.impulse.entity.Sensor;
 import com.msp.impulse.exception.MyException;
-import com.msp.impulse.query.PassQuery;
 import com.msp.impulse.query.SensorAddQuery;
 import com.msp.impulse.query.SensorQuery;
 import com.msp.impulse.service.SensorService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.models.auth.In;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -183,10 +180,10 @@ public class SensorController {
     }
     @GetMapping("querySensorNotRelation")
     @ApiOperation(value = "查询未被用户关联的传感器", notes = "查询未被用户关联的传感器", tags = "传感器操作", httpMethod = "GET")
-    public BaseResponse<List<Sensor>> querySensorNotRelation() {
+    public BaseResponse<List<Sensor>> querySensorNotRelation(String sensorName) {
         BaseResponse<List<Sensor>> response;
         try {
-            response = sensorService.querySensorNotRelation();
+            response = sensorService.querySensorNotRelation(sensorName);
         } catch (MyException e) {
             logger.error(e.getMessage(), e);
             response = new BaseResponse();
@@ -201,7 +198,7 @@ public class SensorController {
         return response;
     }
     @GetMapping("relationSensorAndUser")
-    @ApiOperation(value = "传感器与用户关联", notes = "查询未被用户关联的传感器", tags = "传感器操作", httpMethod = "GET")
+    @ApiOperation(value = "传感器与用户关联", notes = "传感器与用户关联", tags = "传感器操作", httpMethod = "GET")
     public BaseResponse relationSensorAndUser(Integer userId,String sensorName) {
         BaseResponse response;
         try {

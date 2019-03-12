@@ -385,11 +385,11 @@
   </update>
   <select id="findByName" parameterType="string" resultType="com.msp.impulse.entity.Company">
     select * from company
-    where login_name=#{loginName}
+    where login_name=#{loginName} and flag!="1"
   </select>
   <select id="findByNameAndPwd"  resultType="com.msp.impulse.entity.Company">
     select id,login_name loginName from company
-    where login_name=#{loginName} and password=#{pwd}
+    where login_name=#{loginName} and password=#{pwd} and flag!="1"
   </select>
   <resultMap type="com.msp.impulse.entity.CompanyAndLink" id="userResultMap">
     <id property="id" column="id" />  <!--公司id-->
@@ -430,6 +430,10 @@
   <select id="findCompanyNameByLoginName" parameterType="string" resultType="string">
     select c.company_name companyName from company c
     where login_name=#{loginName}
+  </select>
+  <select id="seletByUserName" parameterType="string" resultType="com.msp.impulse.entity.Company">
+    select  id,company_name companyName  from  company  where company_name  like "%"#{userName}"%"
+    and flag!="1"
   </select>
 
 </mapper>

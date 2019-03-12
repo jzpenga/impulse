@@ -12,7 +12,6 @@ import com.msp.impulse.mapper.LinkmanMapper;
 import com.msp.impulse.mapper.SensorMapper;
 import com.msp.impulse.query.*;
 import com.msp.impulse.vo.CompanyDetailVo;
-import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -207,6 +206,20 @@ public class AdminUserService {
             company.setFlag("1");
             companyMapper.updateByPrimaryKey(company);
         }
+        response.setResponseCode(ResponseCode.OK.getCode());
+        response.setResponseMsg(ResponseCode.OK.getMessage());
+        return response;
+    }
+
+    /**
+     * 根据名称搜索用户
+     * @param userName
+     * @return
+     */
+    public BaseResponse searchUserByName(String userName) {
+        BaseResponse response = new BaseResponse<>();
+        List<Company> companyList=companyMapper.seletByUserName(userName);
+        response.setData(companyList);
         response.setResponseCode(ResponseCode.OK.getCode());
         response.setResponseMsg(ResponseCode.OK.getMessage());
         return response;

@@ -295,9 +295,9 @@ public class SensorService {
      *
      * @return
      */
-    public BaseResponse<List<Sensor>> querySensorNotRelation() {
+    public BaseResponse<List<Sensor>> querySensorNotRelation(String sensorName) {
         BaseResponse response = new BaseResponse();
-        List<Sensor> sensorList = sensorMapper.querySensorNotRelation();
+        List<Sensor> sensorList = sensorMapper.querySensorNotRelation(sensorName);
         response.setData(sensorList);
         response.setResponseCode(ResponseCode.OK.getCode());
         response.setResponseMsg(ResponseCode.OK.getMessage());

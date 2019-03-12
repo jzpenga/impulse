@@ -40,7 +40,7 @@ public interface SensorMapper {
 
     String findByDeviceId(String deviceId);
 
-    List<Sensor> querySensorNotRelation();
+    List<Sensor> querySensorNotRelation(String sensorName);
 
     Sensor findSensorBySensorName(String sensorName);
 }

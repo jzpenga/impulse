@@ -1,9 +1,11 @@
 package com.msp.impulse.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.msp.impulse.base.BaseResponse;
 import com.msp.impulse.base.ResponseCode;
 import com.msp.impulse.entity.Dictionary;
 import com.msp.impulse.exception.MyException;
+import com.msp.impulse.query.DicQuery;
 import com.msp.impulse.service.AdminDicService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -61,12 +63,12 @@ public class AdminDicController {
         return response;
     }
 
-    @GetMapping("findDicByCondition")
+    @PostMapping("findDicByCondition")
     @ApiOperation(value = "根据条件查询数据字典", notes = "根据条件查询数据字典", tags = "数据字典管理", httpMethod = "POST")
-    public BaseResponse<List<Dictionary>> findDicByCondition(String  dicName ,String  dicCode) {
-        BaseResponse<List<Dictionary>> response;
+    public BaseResponse<PageInfo> findDicByCondition(@RequestBody DicQuery dicQuery) {
+        BaseResponse<PageInfo> response;
         try {
-            response = adminDicService.findDicByCondition(dicName,dicCode);
+            response = adminDicService.findDicByCondition(dicQuery);
         }  catch(MyException e){
             logger.error(e.getMessage());
             response = new BaseResponse();

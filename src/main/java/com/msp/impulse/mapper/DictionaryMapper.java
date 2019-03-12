@@ -2,6 +2,7 @@ package com.msp.impulse.mapper;
 
 import com.msp.impulse.entity.Dictionary;
 import com.msp.impulse.entity.DictionaryExample;
+import com.msp.impulse.query.DicQuery;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -29,5 +30,5 @@ public interface DictionaryMapper {
 
     int updateByPrimaryKey(Dictionary record);
 
-    List<Dictionary> findDicByCondition(@Param("dicName")String dicName,@Param("dicCode") String dicCode);
+    List<Dictionary> findDicByCondition(DicQuery dicQuery);
 }

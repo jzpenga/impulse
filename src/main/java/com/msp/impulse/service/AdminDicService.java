@@ -1,10 +1,15 @@
 package com.msp.impulse.service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.msp.impulse.base.BaseResponse;
 import com.msp.impulse.base.ResponseCode;
 import com.msp.impulse.entity.Dictionary;
+import com.msp.impulse.entity.Gateway;
 import com.msp.impulse.exception.MyException;
 import com.msp.impulse.mapper.DictionaryMapper;
+import com.msp.impulse.query.DicQuery;
+import com.msp.impulse.query.GatewayQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -75,10 +80,19 @@ public class AdminDicService {
         return response;
     }
 
-    public BaseResponse<List<Dictionary>> findDicByCondition(String dicName, String dicCode) {
+    public BaseResponse<PageInfo> findDicByCondition(DicQuery dicQuery) {
         BaseResponse response = new BaseResponse<>();
-        List<Dictionary> dictionaryList=dictionaryMapper.findDicByCondition(dicName,dicCode);
-        response.setData(dictionaryList);
+        if (dicQuery.getPageNo() == null) {
+            dicQuery.setPageNo(1);
+        }
+        if (dicQuery.getPageSize() == null) {
+            dicQuery.setPageSize(10);
+        }
+        PageHelper.startPage(dicQuery.getPageNo(), dicQuery.getPageSize());
+        List<Dictionary> dictionaryList=dictionaryMapper.findDicByCondition(dicQuery);
+        PageInfo<Dictionary> dictionaryPageInfo = new PageInfo<>(dictionaryList);
+
+        response.setData(dictionaryPageInfo);
         response.setResponseCode(ResponseCode.OK.getCode());
         response.setResponseMsg(ResponseCode.OK.getMessage());
         return response;

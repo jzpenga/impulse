@@ -36,4 +36,6 @@ public interface CompanyMapper {
     List<Company> findUser(FindUserQuery findUserQuery);
 
     String findCompanyNameByLoginName(String loginName);
+
+    List<Company> seletByUserName(String userName);
 }

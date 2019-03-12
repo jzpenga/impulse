@@ -31,6 +31,8 @@ mybatis:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 server:
   port: 8072
+  session:
+    timeout:3600
 
 logging:
   level:
