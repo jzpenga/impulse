@@ -6,8 +6,10 @@ import com.msp.impulse.base.BaseResponse;
 import com.msp.impulse.base.ResponseCode;
 import com.msp.impulse.entity.Dictionary;
 import com.msp.impulse.entity.Gateway;
+import com.msp.impulse.entity.Sensor;
 import com.msp.impulse.exception.MyException;
 import com.msp.impulse.mapper.DictionaryMapper;
+import com.msp.impulse.query.ChildDicQuery;
 import com.msp.impulse.query.DicQuery;
 import com.msp.impulse.query.GatewayQuery;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -110,6 +112,32 @@ public class AdminDicService {
             dictionary.setFlag("1");
             dictionaryMapper.updateByPrimaryKey(dictionary);
         }
+        response.setResponseCode(ResponseCode.OK.getCode());
+        response.setResponseMsg(ResponseCode.OK.getMessage());
+        return response;
+    }
+
+    /**
+     * 根据id查询子系统编码
+     * @param childDicQuery
+     * @return
+     */
+    public BaseResponse<PageInfo> findChildDicCode(ChildDicQuery childDicQuery) {
+        BaseResponse<PageInfo> response = new BaseResponse<>();
+        if(childDicQuery.getId()==null){
+           throw new MyException("id必输");
+        }
+        if (childDicQuery.getPageNo() == null) {
+            childDicQuery.setPageNo(1);
+        }
+        if (childDicQuery.getPageSize() == null) {
+            childDicQuery.setPageSize(10);
+        }
+        PageHelper.startPage(childDicQuery.getPageNo(), childDicQuery.getPageSize());
+        List<Dictionary> dictionaryList=dictionaryMapper.findChildDicCode(childDicQuery.getId());
+        PageInfo<Dictionary> dictionaryPageInfo = new PageInfo<>(dictionaryList);
+
+        response.setData(dictionaryPageInfo);
         response.setResponseCode(ResponseCode.OK.getCode());
         response.setResponseMsg(ResponseCode.OK.getMessage());
         return response;

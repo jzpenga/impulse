@@ -420,10 +420,10 @@
       AND c.login_name like "%"#{loginName}"%"
     </if>
     <if test="name != null">
-      AND c.name like "%"#{name}"%"
+      AND k.name like "%"#{name}"%"
     </if>
     <if test="phoneNo != null">
-      AND c.phone_no like "%"#{phoneNo}"%"
+      AND k.phone_no like "%"#{phoneNo}"%"
     </if>
     AND c.flag!="1"
   </select>

@@ -31,4 +31,6 @@ public interface DictionaryMapper {
     int updateByPrimaryKey(Dictionary record);
 
     List<Dictionary> findDicByCondition(DicQuery dicQuery);
+
+    List<Dictionary> findChildDicCode(Integer id);
 }

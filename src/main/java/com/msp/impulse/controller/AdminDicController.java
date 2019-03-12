@@ -5,6 +5,7 @@ import com.msp.impulse.base.BaseResponse;
 import com.msp.impulse.base.ResponseCode;
 import com.msp.impulse.entity.Dictionary;
 import com.msp.impulse.exception.MyException;
+import com.msp.impulse.query.ChildDicQuery;
 import com.msp.impulse.query.DicQuery;
 import com.msp.impulse.service.AdminDicService;
 import io.swagger.annotations.Api;
@@ -69,6 +70,25 @@ public class AdminDicController {
         BaseResponse<PageInfo> response;
         try {
             response = adminDicService.findDicByCondition(dicQuery);
+        }  catch(MyException e){
+            logger.error(e.getMessage());
+            response = new BaseResponse();
+            response.setResponseCode(ResponseCode.PARAMETER_VALIDATION_FAILED.getCode());
+            response.setResponseMsg(e.getMessage());
+        }catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            response = new BaseResponse<>();
+            response.setResponseCode(ResponseCode.SERVER_FAILED.getCode());
+            response.setResponseMsg(ResponseCode.SERVER_FAILED.getMessage());
+        }
+        return response;
+    }
+    @PostMapping("findChildDicCode")
+    @ApiOperation(value = "根据id查询子系统编码", notes = "根据id查询子系统编码", tags = "数据字典管理", httpMethod = "POST")
+    public BaseResponse<PageInfo> findChildDicCode(@RequestBody ChildDicQuery childDicQuery) {
+        BaseResponse<PageInfo> response;
+        try {
+            response = adminDicService.findChildDicCode(childDicQuery);
         }  catch(MyException e){
             logger.error(e.getMessage());
             response = new BaseResponse();
