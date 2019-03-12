@@ -127,6 +127,10 @@
       #{state,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.msp.impulse.entity.Company">
+    <selectKey keyColumn="id" keyProperty="id" order="AFTER"
+               resultType="int">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into company
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
