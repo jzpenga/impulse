@@ -319,7 +319,7 @@
     <if test="dicCode != null and dicCode!=''">
     and d.dic_code=#{dicCode}
     </if>
-    and d.flag!="1"
+    and d.flag!="1" and d.hierarchy="1"
   </select>
   <select id="findChildDicCode" parameterType="int" resultType="com.msp.impulse.entity.Dictionary">
     select
