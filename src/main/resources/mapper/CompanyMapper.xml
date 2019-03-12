@@ -407,22 +407,22 @@
     c.login_name ,k.`name`,k.phone_no,c.flag
      from company c left join linkman  k on  c.id=k.company_id
      where 1=1
-    <if test="companyName != null">
+    <if test="companyName != null and companyName!=''">
       and c.company_name like "%"#{companyName}"%"
     </if>
-    <if test="province != null">
+    <if test="province != null and province!=''">
       and c.province  like "%"#{province}"%"
     </if>
-    <if test="city != null">
+    <if test="city != null and city!='' ">
       AND c.city like "%"#{city}"%"
     </if>
-    <if test="loginName != null">
+    <if test="loginName != null and loginName!=''">
       AND c.login_name like "%"#{loginName}"%"
     </if>
-    <if test="name != null">
+    <if test="name != null and name!=''">
       AND k.name like "%"#{name}"%"
     </if>
-    <if test="phoneNo != null">
+    <if test="phoneNo != null and phoneNo!=''">
       AND k.phone_no like "%"#{phoneNo}"%"
     </if>
     AND c.flag!="1"

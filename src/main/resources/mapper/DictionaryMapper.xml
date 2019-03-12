@@ -313,10 +313,10 @@
      ,d.update_user updateUser
     from  dictionary d
     where 1=1
-    <if test="dicName != null">
+    <if test="dicName != null and dicName!=''">
     and d.dic_name like "%"#{dicName}"%"
     </if>
-    <if test="dicCode != null">
+    <if test="dicCode != null and dicCode!=''">
     and d.dic_code=#{dicCode}
     </if>
     and d.flag!="1"

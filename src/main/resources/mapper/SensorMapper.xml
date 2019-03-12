@@ -466,10 +466,10 @@
     <if test="userId != null">
       and s.user_id =#{userId}
     </if>
-    <if test="name != null">
+    <if test="name != null and name != ''">
       and s.name  like "%"#{name}"%"
     </if>
-    <if test="gatewayName != null">
+    <if test="gatewayName != null and gatewayName!=''">
       AND s.gateway_name like "%"#{gatewayName}"%"
     </if>
     AND s.flag!="1"
