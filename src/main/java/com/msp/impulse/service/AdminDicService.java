@@ -43,6 +43,12 @@ public class AdminDicService {
      * @return
      */
     public BaseResponse addDictionary(Dictionary dictionary) {
+        if(dictionary.getDicName()==null){
+            throw  new MyException("系统编码名称不能为空!");
+        }
+        if(dictionary.getDicCode()==null){
+            throw  new MyException("系统编码不能为空!");
+        }
         //确定层级
         if(dictionary.getParentId()==null){
             dictionary.setHierarchy("1");
@@ -64,18 +70,37 @@ public class AdminDicService {
         if(dictionary.getId()!=null){
             //修改
             Dictionary dictionaryUpdate = dictionaryMapper.selectByPrimaryKey(dictionary.getId());
+            //判断编码是否重复
+            if(!dictionaryUpdate.getDicCode().equals(dictionary.getDicCode())){
+                Dictionary dictionary1= dictionaryMapper.findDicByDicCode(dictionary.getDicCode());
+                if(dictionary1!=null){
+                    throw new MyException("编码重复");
+                }
+            }
+            if(!dictionaryUpdate.getDicName().equals(dictionary.getDicName())){
+                Dictionary dictionary2=dictionaryMapper.findDicByDicName(dictionary.getDicName());
+                if(dictionary2!=null){
+                    throw new MyException("名称重复");
+                }
+            }
             dictionaryUpdate.setDicName(dictionary.getDicName());
             dictionaryUpdate.setUpdateTime(new Date());
             dictionaryMapper.updateByPrimaryKey(dictionaryUpdate);
         }else{
+            //判断dicCode是否重复
+           Dictionary dictionary1= dictionaryMapper.findDicByDicCode(dictionary.getDicCode());
+           if(dictionary1!=null){
+                throw new MyException("编码重复");
+           }
+           //判断名称是否重复
+            Dictionary dictionary2=dictionaryMapper.findDicByDicName(dictionary.getDicName());
+            if(dictionary2!=null){
+                throw new MyException("名称重复");
+            }
             //新增
             dictionary.setCreateTime(new Date());
             dictionary.setFlag("0");
             dictionaryMapper.insertSelective(dictionary);
-            //跟新dicCode
-            dictionary.setDicCode(dictionary.getId()+"");
-            dictionaryMapper.updateByPrimaryKey(dictionary);
-
         }
         response.setResponseCode(ResponseCode.OK.getCode());
         response.setResponseMsg(ResponseCode.OK.getMessage());

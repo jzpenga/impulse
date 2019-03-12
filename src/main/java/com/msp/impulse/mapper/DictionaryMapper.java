@@ -33,4 +33,8 @@ public interface DictionaryMapper {
     List<Dictionary> findDicByCondition(DicQuery dicQuery);
 
     List<Dictionary> findChildDicCode(Integer id);
+
+    Dictionary findDicByDicCode(String dicCode);
+
+    Dictionary findDicByDicName(String dicName);
 }

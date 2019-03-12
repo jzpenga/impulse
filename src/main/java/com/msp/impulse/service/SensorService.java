@@ -50,7 +50,7 @@ public class SensorService {
         return response;
     }
 
-    public synchronized void  addSensor(SensorAddQuery sensorAddQuery, Integer userId){
+    public  void  addSensor(SensorAddQuery sensorAddQuery, Integer userId){
         Sensor sensor = sensorAddQuery.getSensor();
         if(sensor==null){
             throw new MyException("请输入传感器信息!");
@@ -63,23 +63,27 @@ public class SensorService {
             //查询传感器
             Sensor sensorUp= sensorMapper.selectByPrimaryKey(sensor.getId());
             if(sensorUp==null){
-               throw  new MyException("传感器不存在!");
+               throw  new MyException("id对应的传感器不存在!");
             }
             //判断网关名称是否唯一
             if (!sensorUp.equals(sensor.getName())&&sensorMapper.findBySensorName(sensor.getName())>0) {
                 throw  new MyException("传感器名称已存在!");
             }
             sensorUp.setGatewayName(sensor.getGatewayName());
-            sensorUp.setUpdateTime(new Date());
-            if(userId!=null) {
-                sensorUp.setUpdateUser(userId);
-            }
+            sensorUp.setSensorNo(sensor.getSensorNo());
             sensorUp.setSensorModel(sensor.getSensorModel());
             sensorUp.setLatitude(sensor.getLatitude());
             sensorUp.setLongitude(sensor.getLongitude());
             sensorUp.setPassNumber(sensor.getPassNumber());
+            sensorUp.setUpdateTime(new Date());
+            if(userId!=null) {
+                sensorUp.setUpdateUser(userId);
+            }
             sensorMapper.updateByPrimaryKey(sensorUp);
-
+            List<Pass> passList = sensorAddQuery.getPassList();
+            if(passList!=null) {
+                gatewayService.savePass(passList,userId,sensor,null);
+            }
         }else{//新增
             //获取传感器序列号
             if(StringUtils.isBlank(sensor.getSensorNo())){
