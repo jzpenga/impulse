@@ -70,13 +70,6 @@ public class AdminDicService {
         if(dictionary.getId()!=null){
             //修改
             Dictionary dictionaryUpdate = dictionaryMapper.selectByPrimaryKey(dictionary.getId());
-            //判断编码是否重复
-            if(!dictionaryUpdate.getDicCode().equals(dictionary.getDicCode())){
-                Dictionary dictionary1= dictionaryMapper.findDicByDicCode(dictionary.getDicCode());
-                if(dictionary1!=null){
-                    throw new MyException("编码重复");
-                }
-            }
             if(!dictionaryUpdate.getDicName().equals(dictionary.getDicName())){
                 Dictionary dictionary2=dictionaryMapper.findDicByDicName(dictionary.getDicName());
                 if(dictionary2!=null){

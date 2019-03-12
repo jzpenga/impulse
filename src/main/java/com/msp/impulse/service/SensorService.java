@@ -66,7 +66,7 @@ public class SensorService {
                throw  new MyException("id对应的传感器不存在!");
             }
             //判断网关名称是否唯一
-            if (!sensorUp.equals(sensor.getName())&&sensorMapper.findBySensorName(sensor.getName())>0) {
+            if (!sensorUp.getName().equals(sensor.getName())&&sensorMapper.findBySensorName(sensor.getName())>0) {
                 throw  new MyException("传感器名称已存在!");
             }
             sensorUp.setGatewayName(sensor.getGatewayName());
