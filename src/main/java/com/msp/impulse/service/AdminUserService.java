@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
+
 import java.util.Date;
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class AdminUserService {
     @Autowired
     private GatewayMapper gatewayMapper;
     @Autowired
-    private SensorMapper  sensorMapper;
+    private SensorMapper sensorMapper;
 
     /**
      * 用户信息查询
@@ -64,24 +65,24 @@ public class AdminUserService {
      */
     public BaseResponse<CompanyDetailVo> findUserById(FindUserByIdQuery findUserByIdQuery) {
         BaseResponse response = new BaseResponse<>();
-        if(findUserByIdQuery.getUserId()==null){
-           throw  new MyException("用户id必输!");
+        if (findUserByIdQuery.getUserId() == null) {
+            throw new MyException("用户id必输!");
         }
         Integer userId = findUserByIdQuery.getUserId();//用户id
 
-        CompanyDetailVo companyDetailVo=new CompanyDetailVo();
+        CompanyDetailVo companyDetailVo = new CompanyDetailVo();
         //查询公司
         Company company = companyMapper.selectByPrimaryKey(userId);
-        if(company!=null){
+        if (company != null) {
             companyDetailVo.setCompany(company);
         }
         //查询联系人
-        Linkman linkman=linkmanMapper.selectByCompanyId(userId);
-        if(linkman!=null){
+        Linkman linkman = linkmanMapper.selectByCompanyId(userId);
+        if (linkman != null) {
             companyDetailVo.setLinkman(linkman);
         }
         //查询网关
-        GatewayQuery gatewayQuery=new GatewayQuery();
+        GatewayQuery gatewayQuery = new GatewayQuery();
         gatewayQuery.setUserId(userId);
         if (findUserByIdQuery.getPageNoGate() == null) {
             findUserByIdQuery.setPageNoGate(1);
@@ -94,7 +95,7 @@ public class AdminUserService {
         PageInfo<Gateway> pageInfoGate = new PageInfo<>(gatewayList);
         companyDetailVo.setPageBeanGateway(pageInfoGate);
         //查询传感器
-        SensorQuery sensorQuery=new SensorQuery();
+        SensorQuery sensorQuery = new SensorQuery();
         sensorQuery.setUserId(userId);
         if (findUserByIdQuery.getPageNoSensor() == null) {
             findUserByIdQuery.setPageNoSensor(1);
@@ -122,46 +123,48 @@ public class AdminUserService {
     @Transactional
     public BaseResponse saveUser(SaveUserQuery saveUserQuery) {
         BaseResponse response = new BaseResponse<>();
-        if(saveUserQuery.getCompany()==null){
+        if (saveUserQuery.getCompany() == null) {
             response.setResponseCode(ResponseCode.INPUT_COMPAY.getCode());
             response.setResponseMsg(ResponseCode.INPUT_COMPAY.getMessage());
             return response;
         }
         //用户登录名不能为空
-        if(StringUtils.isBlank(saveUserQuery.getCompany().getLoginName())){
+        if (StringUtils.isBlank(saveUserQuery.getCompany().getLoginName())) {
             response.setResponseCode(ResponseCode.USERNAME_NULL.getCode());
             response.setResponseMsg(ResponseCode.USERNAME_NULL.getMessage());
             return response;
         }
-        //密码不能为空
-        if(StringUtils.isBlank(saveUserQuery.getCompany().getPassword())){
-            response.setResponseCode(ResponseCode.PASSWORD_NULL.getCode());
-            response.setResponseMsg(ResponseCode.PASSWORD_NULL.getMessage());
-            return response;
-        }
+//        //密码不能为空
+//        if(StringUtils.isBlank(saveUserQuery.getCompany().getPassword())){
+//            response.setResponseCode(ResponseCode.PASSWORD_NULL.getCode());
+//            response.setResponseMsg(ResponseCode.PASSWORD_NULL.getMessage());
+//            return response;
+//        }
         Company company = saveUserQuery.getCompany();
-        if(company.getId()!=null){
+        if (company.getId() != null) {
             //密码加密
             String pwd = DigestUtils.md5DigestAsHex(saveUserQuery.getCompany().getPassword().getBytes());
-            company.setPassword(pwd);
+            if (company.getPassword() != null) {
+                company.setPassword(pwd);
+            }
             company.setUpdateTime(new Date());
             companyMapper.updateByPrimaryKey(company);
             //修改联系人
             Linkman linkman = saveUserQuery.getLinkman();
-            if(linkman==null){
+            if (linkman == null) {
                 response.setResponseCode(ResponseCode.LINKMAN_MUST_INPUT.getCode());
                 response.setResponseMsg(ResponseCode.LINKMAN_MUST_INPUT.getMessage());
                 return response;
             }
-            if(linkman.getId()==null){
+            if (linkman.getId() == null) {
                 throw new MyException("修改时请传入联系人id！");
             }
             linkman.setUpdateTime(new Date());
             linkmanMapper.updateByPrimaryKey(linkman);
-        }else{
+        } else {
             //用户登录名不能重复
-            Company com=companyMapper.findByName(saveUserQuery.getCompany().getLoginName());
-            if(com!=null){
+            Company com = companyMapper.findByName(saveUserQuery.getCompany().getLoginName());
+            if (com != null) {
                 response.setResponseCode(ResponseCode.LOGINNAME_EXSIST.getCode());
                 response.setResponseMsg(ResponseCode.LOGINNAME_EXSIST.getMessage());
                 return response;
@@ -176,11 +179,11 @@ public class AdminUserService {
             company.setCreateTime(new Date());
             companyMapper.insertSelective(company);
             //保存联系人信息
-            if(saveUserQuery.getLinkman()==null){
-                throw  new MyException("联系人信息必输!");
+            if (saveUserQuery.getLinkman() == null) {
+                throw new MyException("联系人信息必输!");
             }
-            if(StringUtils.isBlank(saveUserQuery.getLinkman().getName())){
-                throw  new MyException("联系人姓名必输!");
+            if (StringUtils.isBlank(saveUserQuery.getLinkman().getName())) {
+                throw new MyException("联系人姓名必输!");
             }
             Linkman linkman = saveUserQuery.getLinkman();
             linkman.setCreateTime(new Date());
@@ -214,12 +217,13 @@ public class AdminUserService {
 
     /**
      * 根据名称搜索用户
+     *
      * @param userName
      * @return
      */
     public BaseResponse searchUserByName(String userName) {
         BaseResponse response = new BaseResponse<>();
-        List<Company> companyList=companyMapper.seletByUserName(userName);
+        List<Company> companyList = companyMapper.seletByUserName(userName);
         response.setData(companyList);
         response.setResponseCode(ResponseCode.OK.getCode());
         response.setResponseMsg(ResponseCode.OK.getMessage());
