@@ -167,6 +167,9 @@ public class AdminUserService {
                 throw new MyException("修改时请传入联系人id！");
             }
             Linkman linkman1 = linkmanMapper.selectByPrimaryKey(linkman.getId());
+            if (linkman1 == null) {
+                throw new MyException("id对应的联系人不存在！");
+            }
             linkman1.setUpdateTime(new Date());
             linkman1.setName(linkman.getName());
             linkman1.setGender(linkman.getGender());
