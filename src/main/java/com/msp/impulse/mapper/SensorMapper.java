@@ -4,6 +4,7 @@ import com.msp.impulse.entity.Sensor;
 import com.msp.impulse.entity.SensorExample;
 import java.util.List;
 
+import com.msp.impulse.entity.ServiceType;
 import com.msp.impulse.query.SensorQuery;
 import org.apache.ibatis.annotations.Param;
 
@@ -43,4 +44,8 @@ public interface SensorMapper {
     List<Sensor> querySensorNotRelation(String sensorName);
 
     Sensor findSensorBySensorName(String sensorName);
+
+    List<Sensor> findSensorByNameLike(String sensorName);
+
+    List<ServiceType> findServiceType(String sensorModel);
 }

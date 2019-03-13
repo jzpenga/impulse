@@ -34,7 +34,7 @@ public class Pass implements Serializable {
 
     private String sensorName;
 
-    private String sensorType;
+    private String sensingType;
 
     private Integer userId;
 
@@ -180,12 +180,12 @@ public class Pass implements Serializable {
         this.sensorName = sensorName == null ? null : sensorName.trim();
     }
 
-    public String getSensorType() {
-        return sensorType;
+    public String getSensingType() {
+        return sensingType;
     }
 
-    public void setSensorType(String sensorType) {
-        this.sensorType = sensorType == null ? null : sensorType.trim();
+    public void setSensingType(String sensingType) {
+        this.sensingType = sensingType == null ? null : sensingType.trim();
     }
 
     public Integer getUserId() {

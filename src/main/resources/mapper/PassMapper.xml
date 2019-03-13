@@ -17,7 +17,7 @@
     <result column="gateway_name" jdbcType="VARCHAR" property="gatewayName" />
     <result column="sensor_id" jdbcType="INTEGER" property="sensorId" />
     <result column="sensor_name" jdbcType="VARCHAR" property="sensorName" />
-    <result column="sensor_type" jdbcType="VARCHAR" property="sensorType" />
+    <result column="sensing type" jdbcType="VARCHAR" property="sensingType" />
     <result column="user_id" jdbcType="INTEGER" property="userId" />
     <result column="user_name" jdbcType="VARCHAR" property="userName" />
     <result column="ext_pass_id" jdbcType="INTEGER" property="extPassId" />
@@ -91,8 +91,8 @@
   <sql id="Base_Column_List">
     id, pass_no, alarm_ceil, alarm_floor, ceil_status, floor_status, analog_zero, analog_full, 
     sensor_zero, sensor_full, decimal_places, gateway_id, gateway_name, sensor_id, sensor_name, 
-    sensor_type, user_id, user_name, ext_pass_id, ext_pass_flag, ext_pass_address, flag, 
-    create_time, update_time, create_user, update_user, state
+    "sensing type", user_id, user_name, ext_pass_id, ext_pass_flag, ext_pass_address, 
+    flag, create_time, update_time, create_user, update_user, state
   </sql>
   <select id="selectByExample" parameterType="com.msp.impulse.entity.PassExample" resultMap="BaseResultMap">
     select
@@ -130,7 +130,7 @@
       analog_zero, analog_full, sensor_zero, 
       sensor_full, decimal_places, gateway_id, 
       gateway_name, sensor_id, sensor_name, 
-      sensor_type, user_id, user_name, 
+      "sensing type", user_id, user_name, 
       ext_pass_id, ext_pass_flag, ext_pass_address, 
       flag, create_time, update_time, 
       create_user, update_user, state
@@ -140,7 +140,7 @@
       #{analogZero,jdbcType=VARCHAR}, #{analogFull,jdbcType=VARCHAR}, #{sensorZero,jdbcType=VARCHAR}, 
       #{sensorFull,jdbcType=VARCHAR}, #{decimalPlaces,jdbcType=VARCHAR}, #{gatewayId,jdbcType=INTEGER}, 
       #{gatewayName,jdbcType=VARCHAR}, #{sensorId,jdbcType=INTEGER}, #{sensorName,jdbcType=VARCHAR}, 
-      #{sensorType,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, 
+      #{sensingType,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, 
       #{extPassId,jdbcType=INTEGER}, #{extPassFlag,jdbcType=VARCHAR}, #{extPassAddress,jdbcType=VARCHAR}, 
       #{flag,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
       #{createUser,jdbcType=INTEGER}, #{updateUser,jdbcType=INTEGER}, #{state,jdbcType=VARCHAR}
@@ -194,8 +194,8 @@
       <if test="sensorName != null">
         sensor_name,
       </if>
-      <if test="sensorType != null">
-        sensor_type,
+      <if test="sensingType != null">
+        "sensing type",
       </if>
       <if test="userId != null">
         user_id,
@@ -277,8 +277,8 @@
       <if test="sensorName != null">
         #{sensorName,jdbcType=VARCHAR},
       </if>
-      <if test="sensorType != null">
-        #{sensorType,jdbcType=VARCHAR},
+      <if test="sensingType != null">
+        #{sensingType,jdbcType=VARCHAR},
       </if>
       <if test="userId != null">
         #{userId,jdbcType=INTEGER},
@@ -369,8 +369,8 @@
       <if test="record.sensorName != null">
         sensor_name = #{record.sensorName,jdbcType=VARCHAR},
       </if>
-      <if test="record.sensorType != null">
-        sensor_type = #{record.sensorType,jdbcType=VARCHAR},
+      <if test="record.sensingType != null">
+        "sensing type" = #{record.sensingType,jdbcType=VARCHAR},
       </if>
       <if test="record.userId != null">
         user_id = #{record.userId,jdbcType=INTEGER},
@@ -427,7 +427,7 @@
       gateway_name = #{record.gatewayName,jdbcType=VARCHAR},
       sensor_id = #{record.sensorId,jdbcType=INTEGER},
       sensor_name = #{record.sensorName,jdbcType=VARCHAR},
-      sensor_type = #{record.sensorType,jdbcType=VARCHAR},
+      "sensing type" = #{record.sensingType,jdbcType=VARCHAR},
       user_id = #{record.userId,jdbcType=INTEGER},
       user_name = #{record.userName,jdbcType=VARCHAR},
       ext_pass_id = #{record.extPassId,jdbcType=INTEGER},
@@ -488,8 +488,8 @@
       <if test="sensorName != null">
         sensor_name = #{sensorName,jdbcType=VARCHAR},
       </if>
-      <if test="sensorType != null">
-        sensor_type = #{sensorType,jdbcType=VARCHAR},
+      <if test="sensingType != null">
+        "sensing type" = #{sensingType,jdbcType=VARCHAR},
       </if>
       <if test="userId != null">
         user_id = #{userId,jdbcType=INTEGER},
@@ -543,7 +543,7 @@
       gateway_name = #{gatewayName,jdbcType=VARCHAR},
       sensor_id = #{sensorId,jdbcType=INTEGER},
       sensor_name = #{sensorName,jdbcType=VARCHAR},
-      sensor_type = #{sensorType,jdbcType=VARCHAR},
+      "sensing type" = #{sensingType,jdbcType=VARCHAR},
       user_id = #{userId,jdbcType=INTEGER},
       user_name = #{userName,jdbcType=VARCHAR},
       ext_pass_id = #{extPassId,jdbcType=INTEGER},
@@ -558,9 +558,9 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="queryMaxPassNoByGatewayName" parameterType="string" resultType="int">
-    select  max(pass_no) from  pass  where gateway_name =#{gatewayName}
+  select  max(pass_no) from  pass  where gateway_name =#{gatewayName}
   </select>
   <select id="queryByPassNoAndGatewayName"  resultType="com.msp.impulse.entity.Pass">
-      select  * from  pass where gateway_name=#{gatewayName} and pass_no=#{passNo} and flag!="1"
+  select  * from  pass where gateway_name=#{gatewayName} and pass_no=#{passNo} and flag!="1"
   </select>
 </mapper>

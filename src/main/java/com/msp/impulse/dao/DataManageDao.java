@@ -3,6 +3,7 @@ package com.msp.impulse.dao;
 import com.github.pagehelper.PageInfo;
 import com.msp.impulse.nb.entity.DataReportEntity;
 import com.msp.impulse.query.DataHistoryQuery;
+import com.msp.impulse.vo.DataHistoryVo;
 import com.msp.impulse.vo.HomePageDataVo;
 import java.text.ParseException;
 import java.util.List;
@@ -14,7 +15,7 @@ public interface DataManageDao {
 
     Map<String, Object> findGatewayMap();
 
-    List<DataReportEntity> findHistoryData(DataHistoryQuery dataHistoryQuery) throws ParseException;
+    DataHistoryVo findHistoryData(DataHistoryQuery dataHistoryQuery) throws ParseException;
 
     PageInfo findRealTimeData(DataHistoryQuery dataHistoryQuery) throws ParseException;
 }

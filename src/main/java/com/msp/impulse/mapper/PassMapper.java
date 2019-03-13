@@ -3,8 +3,6 @@ package com.msp.impulse.mapper;
 import com.msp.impulse.entity.Pass;
 import com.msp.impulse.entity.PassExample;
 import java.util.List;
-
-import com.msp.impulse.query.PassQuery;
 import org.apache.ibatis.annotations.Param;
 
 public interface PassMapper {

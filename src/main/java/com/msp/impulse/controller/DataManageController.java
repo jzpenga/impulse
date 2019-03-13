@@ -3,6 +3,7 @@ package com.msp.impulse.controller;
 import com.github.pagehelper.PageInfo;
 import com.msp.impulse.base.BaseResponse;
 import com.msp.impulse.base.ResponseCode;
+import com.msp.impulse.exception.MyException;
 import com.msp.impulse.nb.entity.DataReportEntity;
 import com.msp.impulse.query.DataHistoryQuery;
 import com.msp.impulse.service.DataManageService;
@@ -97,6 +98,11 @@ public class DataManageController {
 //        }
         try {
             response = dataManageService.findRealTimeData(dataHistoryQuery);
+        }catch (MyException e) {
+            logger.error(e.getMessage(), e);
+            response = new BaseResponse();
+            response.setResponseCode(ResponseCode.SERVER_FAILED.getCode());
+            response.setResponseMsg(ResponseCode.SERVER_FAILED.getMessage());
         } catch (Exception e) {
             logger.error(e.getMessage(),e);
             response = new BaseResponse();
@@ -114,6 +120,11 @@ public class DataManageController {
         BaseResponse response;
         try {
             response = dataManageService.findHistoryData(dataHistoryQuery);
+        }catch (MyException e) {
+            logger.error(e.getMessage(), e);
+            response = new BaseResponse();
+            response.setResponseCode(ResponseCode.SERVER_FAILED.getCode());
+            response.setResponseMsg(ResponseCode.SERVER_FAILED.getMessage());
         } catch (Exception e) {
             logger.error(e.getMessage(),e);
             response = new BaseResponse();

@@ -10,6 +10,7 @@ import com.msp.impulse.exception.MyException;
 import com.msp.impulse.query.SensorAddQuery;
 import com.msp.impulse.query.SensorQuery;
 import com.msp.impulse.service.SensorService;
+import com.msp.impulse.vo.SensorInfoVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -124,8 +125,8 @@ public class SensorController {
         return response;
     }
 
-    @GetMapping("deleteSerson/{id}")
-    @ApiOperation(value = "根据id删除传感器信息", notes = "根据id删除传感器信息", tags = "传感器操作", httpMethod = "GET")
+    @PostMapping("deleteSerson/{id}")
+    @ApiOperation(value = "根据id删除传感器信息", notes = "根据id删除传感器信息", tags = "传感器操作", httpMethod = "POST")
     @ApiImplicitParam(name = "id", value = "传感器ID", example = "1", required = true, dataType = "string")
     public BaseResponse deleteSensor(@PathVariable Integer id,HttpSession session) {
         BaseResponse response;
@@ -203,6 +204,25 @@ public class SensorController {
         BaseResponse response;
         try {
             response = sensorService.relationSensorAndUser(userId,sensorName);
+        } catch (MyException e) {
+            logger.error(e.getMessage(), e);
+            response = new BaseResponse();
+            response.setResponseCode(ResponseCode.SERVER_FAILED.getCode());
+            response.setResponseMsg(ResponseCode.SERVER_FAILED.getMessage());
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            response = new BaseResponse();
+            response.setResponseCode(ResponseCode.SERVER_FAILED.getCode());
+            response.setResponseMsg(ResponseCode.SERVER_FAILED.getMessage());
+        }
+        return response;
+    }
+    @GetMapping("findSensorByName")
+    @ApiOperation(value = "根据名称模糊查询传感器信息", notes = "根据名称模糊查询传感器信息", tags = "传感器操作", httpMethod = "GET")
+    public BaseResponse<List<Sensor>> findSensorByName(String sensorName) {
+        BaseResponse<List<Sensor>> response;
+        try {
+            response = sensorService.findSensorByName(sensorName);
         } catch (MyException e) {
             logger.error(e.getMessage(), e);
             response = new BaseResponse();

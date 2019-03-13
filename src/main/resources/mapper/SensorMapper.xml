@@ -472,6 +472,9 @@
     <if test="gatewayName != null and gatewayName!=''">
       AND s.gateway_name like "%"#{gatewayName}"%"
     </if>
+    <if test="sensorModel != null and sensorModel!=''">
+      AND s.sensor_model like "%"#{sensorModel}"%"
+    </if>
     AND s.flag!="1"
     ORDER BY s.create_time DESC
   </select>
@@ -506,7 +509,17 @@
      select
       s.create_time,s.create_user,s.device_id,s.flag,s.flag,s.gateway_name,
         s.id,s.latitude,s.longitude,s.`name`,s.pass_no,s.pass_number,s.sensor_model,s.sensor_no,s.sensor_type
-       ,s.state,s.update_time,s.update_user,s.user_id,s.user_name,s.work _status
+       ,s.state,s.update_time,s.update_user,s.user_id,s.user_name,s.work_status
       from sensor s where s.name=#{sensorName} and s.flag!="1"
    </select>
+  <select id="findSensorByNameLike" parameterType="string" resultType="com.msp.impulse.entity.Sensor">
+     select
+        s.device_id deviceId,s.`name` ,s.sensor_model sensorModel
+     from sensor s where s.name like "%"#{sensorName}"%" and s.flag!="1"
+   </select>
+  <select id="findServiceType" parameterType="string" resultType="com.msp.impulse.entity.ServiceType">
+    select dic_code serviceCode ,dic_name serviceName
+      from device_type t,device_service s,dictionary y
+    where t.id=s.device_type_id and t.device_type=#{deviceType} and y.dic_code=s.service_code
+  </select>
 </mapper>

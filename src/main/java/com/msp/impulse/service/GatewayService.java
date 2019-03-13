@@ -177,7 +177,7 @@ public class GatewayService {
                     Pass pass1 = passMapper.selectByPrimaryKey(pass.getId());
                     pass1.setGatewayName(pass.getGatewayName());
                     pass1.setSensorName(pass.getSensorName());
-                    pass1.setSensorType(pass.getSensorType());
+                    pass1.setSensingType(pass.getSensingType());
                     pass1.setAnalogZero(pass.getAnalogZero());
                     pass1.setAnalogFull(pass.getAnalogFull());
                     pass1.setSensorZero(pass.getSensorZero());

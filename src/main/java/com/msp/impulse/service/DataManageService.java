@@ -9,6 +9,7 @@ import com.msp.impulse.dao.DataManageDao;
 import com.msp.impulse.entity.DataHistory;
 import com.msp.impulse.nb.entity.DataReportEntity;
 import com.msp.impulse.query.DataHistoryQuery;
+import com.msp.impulse.vo.DataHistoryVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -165,8 +166,8 @@ public class DataManageService {
      */
     public BaseResponse findHistoryData(DataHistoryQuery dataHistoryQuery) throws ParseException {
         BaseResponse response=new BaseResponse();
-        List<DataReportEntity> valueList = dataManageDao.findHistoryData(dataHistoryQuery);
-        response.setData(valueList);
+        DataHistoryVo dataHistoryVo = dataManageDao.findHistoryData(dataHistoryQuery);
+        response.setData(dataHistoryVo);
         response.setResponseMsg(ResponseCode.OK.getMessage());
         response.setResponseCode(ResponseCode.OK.getCode());
         return response;

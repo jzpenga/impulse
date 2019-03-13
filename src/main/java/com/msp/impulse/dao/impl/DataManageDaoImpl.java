@@ -6,10 +6,14 @@ import com.github.pagehelper.PageInfo;
 import com.msp.impulse.constants.Constants;
 import com.msp.impulse.dao.DataManageDao;
 import com.msp.impulse.entity.*;
+import com.msp.impulse.exception.MyException;
+import com.msp.impulse.mapper.SensorMapper;
 import com.msp.impulse.nb.entity.DataReportEntity;
 import com.msp.impulse.query.DataHistoryQuery;
 import com.msp.impulse.util.DateUtil;
+import com.msp.impulse.vo.DataHistoryVo;
 import com.msp.impulse.vo.HomePageDataVo;
+import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -27,6 +31,8 @@ import java.util.regex.Pattern;
 public class DataManageDaoImpl implements DataManageDao {
     @Autowired
     private MongoTemplate mongoTemplate;
+    @Autowired
+    private SensorMapper sensorMapper;
     @Override
     public HomePageDataVo findHomeData() {
 
@@ -111,34 +117,42 @@ public class DataManageDaoImpl implements DataManageDao {
      * @return
      */
     @Override
-    public List<DataReportEntity> findHistoryData(DataHistoryQuery dataHistoryQuery) throws ParseException {
+    public DataHistoryVo findHistoryData(DataHistoryQuery dataHistoryQuery) throws ParseException {
+        DataHistoryVo dataHistoryVo=new DataHistoryVo();
         Query query=new Query();
+        Criteria criteria=new Criteria();
         //网关名称
         if(StringUtils.isNotBlank(dataHistoryQuery.getGatewayName())){
             Pattern pattern = Pattern.compile("^" + dataHistoryQuery.getGatewayName() + ".*$", Pattern.CASE_INSENSITIVE);
-            query.addCriteria(Criteria.where("gatewayName").regex(pattern));
+            criteria.where("gatewayName").regex(pattern);
         }
         //传感器名称
         if(StringUtils.isNotBlank(dataHistoryQuery.getSensorName())){
-            Pattern pattern = Pattern.compile("^" + dataHistoryQuery.getSensorName() + ".*$", Pattern.CASE_INSENSITIVE);
-            query.addCriteria(Criteria.where("sensorName").regex(pattern));
+            criteria.where("sensorName").is(dataHistoryQuery.getSensorName());
         }
         if(dataHistoryQuery.getWayNo()!=null){
-            query.addCriteria(Criteria.where("wayNo").is(dataHistoryQuery.getWayNo()));
+            criteria.where("wayNo").is(dataHistoryQuery.getWayNo());
         }
         //上报时间
-        Criteria reportDate=null;
+        Criteria eventTime = criteria.and("eventTime").nin("0");
         if(StringUtils.isNotBlank(dataHistoryQuery.getReportDateFrom())){//上报时间 From
-            reportDate = Criteria.where("reportDate").gte(dataHistoryQuery.getReportDateFrom());
+            eventTime.gte(dataHistoryQuery.getReportDateFrom());
         }
         if(StringUtils.isNotBlank(dataHistoryQuery.getReportDateTo())){//上报时间to
-            reportDate.lte(dataHistoryQuery.getReportDateTo());
+            eventTime.lte(dataHistoryQuery.getReportDateTo());
         }
-        if(reportDate!=null) {
-            query.addCriteria(reportDate);
+        criteria.andOperator(eventTime);
+        List<DataReportEntity> dataReportEntities = mongoTemplate.find(query.addCriteria(criteria).with(new Sort(Sort.Direction.DESC,"eventTime")), DataReportEntity.class);
+        dataHistoryVo.setList(dataReportEntities);
+        //查询该类型传感器所具备的数值类型
+        //根据的sensorModel查询deviveType表的id，根据id查询deviceService表
+        if(StringUtils.isBlank(dataHistoryQuery.getSensorModel())){
+            throw  new MyException("设备型号必输!");
         }
-        List<DataReportEntity> passList = mongoTemplate.find(query, DataReportEntity.class);
-        return passList;
+        List<ServiceType> serviceType = sensorMapper.findServiceType(dataHistoryQuery.getSensorModel());
+        dataHistoryVo.setServiceType(serviceType);
+
+        return dataHistoryVo;
     }
 
     @Override
