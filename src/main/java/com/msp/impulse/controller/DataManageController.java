@@ -108,20 +108,20 @@ public class DataManageController {
         return response;
     }
 
-//    @PostMapping("findHistoryData")
-//    @ApiOperation(value = "查询历史数据", notes = "查询历史数据", tags = "数据管理", httpMethod = "POST")
-//    public BaseResponse findHistoryData(@RequestBody DataHistoryQuery dataHistoryQuery) {
-//        BaseResponse response;
-//        try {
-//            response = dataManageService.findHistoryData(dataHistoryQuery);
-//        } catch (Exception e) {
-//            logger.error(e.getMessage(),e);
-//            response = new BaseResponse();
-//            response.setResponseCode(ResponseCode.SERVER_FAILED.getCode());
-//            response.setResponseMsg(ResponseCode.SERVER_FAILED.getMessage());
-//        }
-//        return response;
-//    }
+    @PostMapping("findHistoryData")
+    @ApiOperation(value = "查询历史数据", notes = "查询历史数据", tags = "数据管理", httpMethod = "POST")
+    public BaseResponse findHistoryData(@RequestBody DataHistoryQuery dataHistoryQuery) {
+        BaseResponse response;
+        try {
+            response = dataManageService.findHistoryData(dataHistoryQuery);
+        } catch (Exception e) {
+            logger.error(e.getMessage(),e);
+            response = new BaseResponse();
+            response.setResponseCode(ResponseCode.SERVER_FAILED.getCode());
+            response.setResponseMsg(ResponseCode.SERVER_FAILED.getMessage());
+        }
+        return response;
+    }
 
 //    @PostMapping("findMapData")
 //    @ApiOperation(value = "查询地图数据", notes = "查询地图数据", tags = "数据管理", httpMethod = "POST")

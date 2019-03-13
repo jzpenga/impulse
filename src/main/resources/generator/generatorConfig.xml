@@ -101,6 +101,8 @@
     <!--    <table tableName="admin" domainObjectName="Admin" delimitIdentifiers="false"/>-->
        <!-- <table tableName="controlinstru" domainObjectName="Controlinstru" delimitIdentifiers="false"/>-->
         <!--<table tableName="test_message_receiver" domainObjectName="TestMessageReceiver" delimitIdentifiers="false"/>-->
+        <table tableName="device_service" domainObjectName="deviceService" delimitIdentifiers="false"/>
+        <table tableName="device_type" domainObjectName="deviceType" delimitIdentifiers="false"/>
 
     </context>
 </generatorConfiguration>

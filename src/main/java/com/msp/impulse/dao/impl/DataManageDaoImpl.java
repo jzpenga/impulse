@@ -111,7 +111,7 @@ public class DataManageDaoImpl implements DataManageDao {
      * @return
      */
     @Override
-    public List<DataHistory> findHistoryData(DataHistoryQuery dataHistoryQuery) throws ParseException {
+    public List<DataReportEntity> findHistoryData(DataHistoryQuery dataHistoryQuery) throws ParseException {
         Query query=new Query();
         //网关名称
         if(StringUtils.isNotBlank(dataHistoryQuery.getGatewayName())){
@@ -129,15 +129,15 @@ public class DataManageDaoImpl implements DataManageDao {
         //上报时间
         Criteria reportDate=null;
         if(StringUtils.isNotBlank(dataHistoryQuery.getReportDateFrom())){//上报时间 From
-            reportDate = Criteria.where("reportDate").gte(DateUtil.dateToISODate(dataHistoryQuery.getReportDateFrom()));
+            reportDate = Criteria.where("reportDate").gte(dataHistoryQuery.getReportDateFrom());
         }
         if(StringUtils.isNotBlank(dataHistoryQuery.getReportDateTo())){//上报时间to
-            reportDate.lte(DateUtil.dateToISODate(dataHistoryQuery.getReportDateTo()));
+            reportDate.lte(dataHistoryQuery.getReportDateTo());
         }
         if(reportDate!=null) {
             query.addCriteria(reportDate);
         }
-        List<DataHistory> passList = mongoTemplate.find(query, DataHistory.class);
+        List<DataReportEntity> passList = mongoTemplate.find(query, DataReportEntity.class);
         return passList;
     }
 

@@ -6,6 +6,8 @@ import com.msp.impulse.base.ResponseCode;
 import com.msp.impulse.dao.AlarmDao;
 import com.msp.impulse.dao.ControlInstruDao;
 import com.msp.impulse.dao.DataManageDao;
+import com.msp.impulse.entity.DataHistory;
+import com.msp.impulse.nb.entity.DataReportEntity;
 import com.msp.impulse.query.DataHistoryQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
+import java.util.List;
 
 @Service
 public class DataManageService {
@@ -155,20 +158,20 @@ public class DataManageService {
 //        return response;
 //    }
 
-//    /**
-//     *查询历史数据
-//     * @param dataHistoryQuery
-//     * @return
-//     */
-//    public BaseResponse findHistoryData(DataHistoryQuery dataHistoryQuery) throws ParseException {
-//        BaseResponse response=new BaseResponse();
-//        List<DataHistory> valueList = dataManageDao.findHistoryData(dataHistoryQuery);
-//        response.setData(valueList);
-//        response.setResponseMsg(ResponseCode.OK.getMessage());
-//        response.setResponseCode(ResponseCode.OK.getCode());
-//        return response;
-//
-//    }
+    /**
+     *查询历史数据
+     * @param dataHistoryQuery
+     * @return
+     */
+    public BaseResponse findHistoryData(DataHistoryQuery dataHistoryQuery) throws ParseException {
+        BaseResponse response=new BaseResponse();
+        List<DataReportEntity> valueList = dataManageDao.findHistoryData(dataHistoryQuery);
+        response.setData(valueList);
+        response.setResponseMsg(ResponseCode.OK.getMessage());
+        response.setResponseCode(ResponseCode.OK.getCode());
+        return response;
+
+    }
 
     /**
      * 查询实时数据
