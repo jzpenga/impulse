@@ -142,13 +142,20 @@ public class AdminUserService {
 //        }
         Company company = saveUserQuery.getCompany();
         if (company.getId() != null) {
+            Company company1 = companyMapper.selectByPrimaryKey(company.getId());
             //密码加密
-            String pwd = DigestUtils.md5DigestAsHex(saveUserQuery.getCompany().getPassword().getBytes());
             if (company.getPassword() != null) {
-                company.setPassword(pwd);
+                String pwd = DigestUtils.md5DigestAsHex(saveUserQuery.getCompany().getPassword().getBytes());
+                company1.setPassword(pwd);
             }
-            company.setUpdateTime(new Date());
-            companyMapper.updateByPrimaryKey(company);
+            company1.setUpdateTime(new Date());
+            company1.setLoginName(company.getLoginName());
+            company1.setCompanyName(company.getCompanyName());
+            company1.setProvince(company.getProvince());
+            company1.setCity(company.getCity());
+            company1.setDetailedAdd(company.getDetailedAdd());
+            company1.setPostalCode(company.getPostalCode());
+            companyMapper.updateByPrimaryKey(company1);
             //修改联系人
             Linkman linkman = saveUserQuery.getLinkman();
             if (linkman == null) {
@@ -159,8 +166,13 @@ public class AdminUserService {
             if (linkman.getId() == null) {
                 throw new MyException("修改时请传入联系人id！");
             }
-            linkman.setUpdateTime(new Date());
-            linkmanMapper.updateByPrimaryKey(linkman);
+            Linkman linkman1 = linkmanMapper.selectByPrimaryKey(linkman.getId());
+            linkman1.setUpdateTime(new Date());
+            linkman1.setName(linkman.getName());
+            linkman1.setGender(linkman.getGender());
+            linkman1.setPhoneNo(linkman.getPhoneNo());
+            linkman1.setEmail(linkman.getEmail());
+            linkmanMapper.updateByPrimaryKey(linkman1);
         } else {
             //用户登录名不能重复
             Company com = companyMapper.findByName(saveUserQuery.getCompany().getLoginName());
