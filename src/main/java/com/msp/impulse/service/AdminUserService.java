@@ -185,6 +185,7 @@ public class AdminUserService {
             Linkman linkman = saveUserQuery.getLinkman();
             linkman.setCreateTime(new Date());
             linkman.setFlag("0");
+            linkman.setCompanyId(company.getId());
             linkmanMapper.insertSelective(linkman);
         }
         response.setResponseCode(ResponseCode.OK.getCode());
