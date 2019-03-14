@@ -16,9 +16,7 @@ spring:
       custom:
         hosts:
         - dds-m5ea5feb0705bd541.mongodb.rds.aliyuncs.com
-        - dds-m5ea5feb0705bd542.mongodb.rds.aliyuncs.com
         ports:
-        - 3717
         - 3717
         database: admin
         username: root
