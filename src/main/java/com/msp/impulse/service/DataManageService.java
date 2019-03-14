@@ -6,10 +6,12 @@ import com.msp.impulse.base.ResponseCode;
 import com.msp.impulse.dao.AlarmDao;
 import com.msp.impulse.dao.ControlInstruDao;
 import com.msp.impulse.dao.DataManageDao;
+import com.msp.impulse.exception.MyException;
 import com.msp.impulse.nb.entity.DataReportEntity;
 import com.msp.impulse.query.DataHistoryQuery;
 import com.msp.impulse.vo.DataHistoryMapVo;
 import com.msp.impulse.vo.DataHistoryVo;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -166,6 +168,9 @@ public class DataManageService {
      */
     public BaseResponse<DataHistoryMapVo> findHistoryData(DataHistoryQuery dataHistoryQuery) throws ParseException {
         BaseResponse<DataHistoryMapVo> response=new BaseResponse<>();
+        if(StringUtils.isBlank(dataHistoryQuery.getDeviceId())){
+            throw new MyException("deviceId必输!");
+        }
         DataHistoryVo dataHistoryVo = dataManageDao.findHistoryData(dataHistoryQuery);
         DataHistoryMapVo dataHistoryMapVo = new DataHistoryMapVo();
         dataHistoryMapVo.setServiceType(dataHistoryVo.getServiceType());

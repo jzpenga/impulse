@@ -26,6 +26,8 @@ public class DataHistoryQuery extends BaseRequest {
     private Integer userId;
     @ApiModelProperty(name = "sensorModel", value = "设备型号", example = "")
     private String sensorModel;
+    @ApiModelProperty(name = "deviceId", value = "设备型号", example = "")
+    private String deviceId;
 
     public String getGatewayName() {
         return gatewayName;
@@ -97,5 +99,13 @@ public class DataHistoryQuery extends BaseRequest {
 
     public void setSensorModel(String sensorModel) {
         this.sensorModel = sensorModel;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
     }
 }

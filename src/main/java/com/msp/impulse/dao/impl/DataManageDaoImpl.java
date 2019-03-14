@@ -1,6 +1,5 @@
 package com.msp.impulse.dao.impl;
 
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.msp.impulse.constants.Constants;
@@ -10,10 +9,8 @@ import com.msp.impulse.exception.MyException;
 import com.msp.impulse.mapper.SensorMapper;
 import com.msp.impulse.nb.entity.DataReportEntity;
 import com.msp.impulse.query.DataHistoryQuery;
-import com.msp.impulse.util.DateUtil;
 import com.msp.impulse.vo.DataHistoryVo;
 import com.msp.impulse.vo.HomePageDataVo;
-import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -121,18 +118,7 @@ public class DataManageDaoImpl implements DataManageDao {
         DataHistoryVo dataHistoryVo=new DataHistoryVo();
         Query query=new Query();
         Criteria criteria=new Criteria();
-        //网关名称
-        if(StringUtils.isNotBlank(dataHistoryQuery.getGatewayName())){
-            Pattern pattern = Pattern.compile("^" + dataHistoryQuery.getGatewayName() + ".*$", Pattern.CASE_INSENSITIVE);
-            criteria.where("gatewayName").regex(pattern);
-        }
-        //传感器名称
-        if(StringUtils.isNotBlank(dataHistoryQuery.getSensorName())){
-            criteria.where("sensorName").is(dataHistoryQuery.getSensorName());
-        }
-        if(dataHistoryQuery.getWayNo()!=null){
-            criteria.where("wayNo").is(dataHistoryQuery.getWayNo());
-        }
+        criteria.where("deviceId").is(dataHistoryQuery.getDeviceId());
         //上报时间
         Criteria eventTime = criteria.and("eventTime").nin("0");
         if(StringUtils.isNotBlank(dataHistoryQuery.getReportDateFrom())){//上报时间 From
