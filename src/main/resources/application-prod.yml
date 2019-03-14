@@ -14,13 +14,7 @@ spring:
   data:
     mongodb:
       custom:
-        hosts:
-        - dds-m5ea5feb0705bd541.mongodb.rds.aliyuncs.com
-        ports:
-        - 3717
-        database: huanyu
-        username: root
-        password: Hyzg8888
+        uri: mongodb://root:Hyzg8888@dds-m5ea5feb0705bd541.mongodb.rds.aliyuncs.com:3717
   jackson:
     deserialization:
       FAIL_ON_UNKNOWN_PROPERTIES: false
