@@ -21,7 +21,10 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -342,7 +345,10 @@ public class SensorService {
         //根据传感器名称查询传感器信息
         List<Sensor> sensorList=sensorMapper.findSensorByNameLike(sensorName);
         if(sensorList.isEmpty()){
-            throw  new MyException("名称【"+sensorName+"】对应的传感器信息不存在!");
+            response.setData(new ArrayList<>());
+            response.setResponseCode(ResponseCode.OK.getCode());
+            response.setResponseMsg(ResponseCode.OK.getMessage());
+            return response;
         }
         response.setData(sensorList);
         response.setResponseCode(ResponseCode.OK.getCode());
