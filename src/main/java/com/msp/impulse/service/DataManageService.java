@@ -202,6 +202,7 @@ public class DataManageService {
             }
             maps.add(map);
         }
+        maps.sort(Comparator.comparing(o -> o.get("eventTime")));
         dataHistoryMapVo.setList(maps);
         response.setData(dataHistoryMapVo);
         response.setResponseMsg(ResponseCode.OK.getMessage());
