@@ -342,6 +342,9 @@ public class SensorService {
      */
     public BaseResponse< List<Sensor>> findSensorByName(String sensorName) {
         BaseResponse< List<Sensor>> response = new BaseResponse();
+        if(sensorName==null){
+            sensorName="";
+        }
         //根据传感器名称查询传感器信息
         List<Sensor> sensorList=sensorMapper.findSensorByNameLike(sensorName);
         if(sensorList.isEmpty()){
