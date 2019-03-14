@@ -20,7 +20,7 @@ spring:
         ports:
         - 3717
         - 3717
-        database: huanyu
+        database: admin
         username: root
         password: Hyzg8888
   jackson:

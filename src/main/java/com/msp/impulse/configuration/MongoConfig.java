@@ -56,7 +56,7 @@ public class MongoConfig {
         // 连接认证
         List<MongoCredential> mongoCredentialList = new ArrayList<>();
         if (mongodbProperties.getUsername() != null) {
-            mongoCredentialList.add(MongoCredential.createCredential(
+            mongoCredentialList.add(MongoCredential.createScramSha1Credential(
                     mongodbProperties.getUsername(),
                     mongodbProperties.getAuthenticationDatabase() != null ? mongodbProperties.getAuthenticationDatabase() : mongodbProperties.getDatabase(),
                     mongodbProperties.getPassword().toCharArray()));
