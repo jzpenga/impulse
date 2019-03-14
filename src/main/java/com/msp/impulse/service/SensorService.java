@@ -16,15 +16,14 @@ import com.msp.impulse.mapper.SensorMapper;
 import com.msp.impulse.nb.utils.NBDXManager;
 import com.msp.impulse.query.SensorAddQuery;
 import com.msp.impulse.query.SensorQuery;
-import com.msp.impulse.vo.SensorInfoVo;
 import org.apache.commons.lang.StringUtils;
+import org.apache.http.util.TextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -342,8 +341,11 @@ public class SensorService {
      */
     public BaseResponse< List<Sensor>> findSensorByName(String sensorName) {
         BaseResponse< List<Sensor>> response = new BaseResponse();
-        if(sensorName==null){
-            sensorName="";
+        if(TextUtils.isEmpty(sensorName)){
+            response.setData(new ArrayList<>());
+            response.setResponseCode(ResponseCode.OK.getCode());
+            response.setResponseMsg(ResponseCode.OK.getMessage());
+            return response;
         }
         //根据传感器名称查询传感器信息
         List<Sensor> sensorList=sensorMapper.findSensorByNameLike(sensorName);
