@@ -122,4 +122,24 @@ public class AdminDicController {
         }
         return response;
     }
+
+    @GetMapping("findAllDic/{id}")
+    @ApiOperation(value = "根据id查询数据字典", notes = "根据id查询数据字典", tags = "数据字典管理", httpMethod = "POST")
+    public BaseResponse findAllDic(@PathVariable Integer id) {
+        BaseResponse response;
+        try {
+            response = adminDicService.findAllDic(id);
+        }  catch(MyException e){
+            logger.error(e.getMessage());
+            response = new BaseResponse();
+            response.setResponseCode(ResponseCode.PARAMETER_VALIDATION_FAILED.getCode());
+            response.setResponseMsg(e.getMessage());
+        }catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            response = new BaseResponse<>();
+            response.setResponseCode(ResponseCode.SERVER_FAILED.getCode());
+            response.setResponseMsg(ResponseCode.SERVER_FAILED.getMessage());
+        }
+        return response;
+    }
 }
