@@ -6,9 +6,9 @@ import com.msp.impulse.base.ResponseCode;
 import com.msp.impulse.dao.AlarmDao;
 import com.msp.impulse.dao.ControlInstruDao;
 import com.msp.impulse.dao.DataManageDao;
-import com.msp.impulse.entity.DataHistory;
 import com.msp.impulse.nb.entity.DataReportEntity;
 import com.msp.impulse.query.DataHistoryQuery;
+import com.msp.impulse.vo.DataHistoryMapVo;
 import com.msp.impulse.vo.DataHistoryVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class DataManageService {
@@ -164,10 +164,41 @@ public class DataManageService {
      * @param dataHistoryQuery
      * @return
      */
-    public BaseResponse findHistoryData(DataHistoryQuery dataHistoryQuery) throws ParseException {
-        BaseResponse response=new BaseResponse();
+    public BaseResponse<DataHistoryMapVo> findHistoryData(DataHistoryQuery dataHistoryQuery) throws ParseException {
+        BaseResponse<DataHistoryMapVo> response=new BaseResponse<>();
         DataHistoryVo dataHistoryVo = dataManageDao.findHistoryData(dataHistoryQuery);
-        response.setData(dataHistoryVo);
+        DataHistoryMapVo dataHistoryMapVo = new DataHistoryMapVo();
+        dataHistoryMapVo.setServiceType(dataHistoryVo.getServiceType());
+        List<DataReportEntity> list = dataHistoryVo.getList();
+        Map<String, ArrayList<DataReportEntity>> cache = new HashMap<>();
+        for (DataReportEntity dataReportEntity : list) {
+            if (cache.containsKey(dataReportEntity.getDataMark())) {
+                //存在
+                ArrayList<DataReportEntity> dataReportEntities = cache.get(dataReportEntity.getDataMark());
+                dataReportEntities.add(dataReportEntity);
+            }else {
+                ArrayList<DataReportEntity> dataReportEntities = new ArrayList<>();
+                dataReportEntities.add(dataReportEntity);
+                cache.put(dataReportEntity.getDataMark(),dataReportEntities);
+            }
+        }
+        Set<Map.Entry<String, ArrayList<DataReportEntity>>> entries = cache.entrySet();
+        ArrayList<Map<String, String>> maps = new ArrayList<>();
+        for (Map.Entry<String, ArrayList<DataReportEntity>> entry : entries) {
+            HashMap<String, String> map = new HashMap<>();
+            for (DataReportEntity dataReportEntity : entry.getValue()) {
+                map.put(dataReportEntity.getDataKey(),dataReportEntity.getDataValue());
+                if (!map.containsKey("eventTime")) {
+                    map.put("eventTime",dataReportEntity.getEventTime());
+                }
+                if (!map.containsKey("id")){
+                    map.put("id",dataReportEntity.getDataMark());
+                }
+            }
+            maps.add(map);
+        }
+        dataHistoryMapVo.setList(maps);
+        response.setData(dataHistoryMapVo);
         response.setResponseMsg(ResponseCode.OK.getMessage());
         response.setResponseCode(ResponseCode.OK.getCode());
         return response;
