@@ -118,7 +118,7 @@ public class DataManageDaoImpl implements DataManageDao {
         DataHistoryVo dataHistoryVo=new DataHistoryVo();
         Query query=new Query();
         Criteria criteria=new Criteria();
-        criteria.where("deviceId").is(dataHistoryQuery.getDeviceId());
+        criteria.and("deviceId").is(dataHistoryQuery.getDeviceId());
         //上报时间
         Criteria eventTime = criteria.and("eventTime").nin("0");
         if(StringUtils.isNotBlank(dataHistoryQuery.getReportDateFrom())){//上报时间 From
@@ -127,7 +127,6 @@ public class DataManageDaoImpl implements DataManageDao {
         if(StringUtils.isNotBlank(dataHistoryQuery.getReportDateTo())){//上报时间to
             eventTime.lte(dataHistoryQuery.getReportDateTo());
         }
-        criteria.andOperator(eventTime);
         List<DataReportEntity> dataReportEntities = mongoTemplate.find(query.addCriteria(criteria).with(new Sort(Sort.Direction.DESC,"eventTime")), DataReportEntity.class);
         dataHistoryVo.setList(dataReportEntities);
         //查询该类型传感器所具备的数值类型
