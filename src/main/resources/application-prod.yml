@@ -19,6 +19,8 @@ spring:
         ports:
         - 3717
         database: huanyu
+        username: root
+        password: Hyzg8888
   jackson:
     deserialization:
       FAIL_ON_UNKNOWN_PROPERTIES: false
