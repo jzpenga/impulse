@@ -1116,72 +1116,72 @@ public class PassExample {
         }
 
         public Criteria andSensingTypeIsNull() {
-            addCriterion("\"sensing type\" is null");
+            addCriterion("sensing_type is null");
             return (Criteria) this;
         }
 
         public Criteria andSensingTypeIsNotNull() {
-            addCriterion("\"sensing type\" is not null");
+            addCriterion("sensing_type is not null");
             return (Criteria) this;
         }
 
         public Criteria andSensingTypeEqualTo(String value) {
-            addCriterion("\"sensing type\" =", value, "sensingType");
+            addCriterion("sensing_type =", value, "sensingType");
             return (Criteria) this;
         }
 
         public Criteria andSensingTypeNotEqualTo(String value) {
-            addCriterion("\"sensing type\" <>", value, "sensingType");
+            addCriterion("sensing_type <>", value, "sensingType");
             return (Criteria) this;
         }
 
         public Criteria andSensingTypeGreaterThan(String value) {
-            addCriterion("\"sensing type\" >", value, "sensingType");
+            addCriterion("sensing_type >", value, "sensingType");
             return (Criteria) this;
         }
 
         public Criteria andSensingTypeGreaterThanOrEqualTo(String value) {
-            addCriterion("\"sensing type\" >=", value, "sensingType");
+            addCriterion("sensing_type >=", value, "sensingType");
             return (Criteria) this;
         }
 
         public Criteria andSensingTypeLessThan(String value) {
-            addCriterion("\"sensing type\" <", value, "sensingType");
+            addCriterion("sensing_type <", value, "sensingType");
             return (Criteria) this;
         }
 
         public Criteria andSensingTypeLessThanOrEqualTo(String value) {
-            addCriterion("\"sensing type\" <=", value, "sensingType");
+            addCriterion("sensing_type <=", value, "sensingType");
             return (Criteria) this;
         }
 
         public Criteria andSensingTypeLike(String value) {
-            addCriterion("\"sensing type\" like", value, "sensingType");
+            addCriterion("sensing_type like", value, "sensingType");
             return (Criteria) this;
         }
 
         public Criteria andSensingTypeNotLike(String value) {
-            addCriterion("\"sensing type\" not like", value, "sensingType");
+            addCriterion("sensing_type not like", value, "sensingType");
             return (Criteria) this;
         }
 
         public Criteria andSensingTypeIn(List<String> values) {
-            addCriterion("\"sensing type\" in", values, "sensingType");
+            addCriterion("sensing_type in", values, "sensingType");
             return (Criteria) this;
         }
 
         public Criteria andSensingTypeNotIn(List<String> values) {
-            addCriterion("\"sensing type\" not in", values, "sensingType");
+            addCriterion("sensing_type not in", values, "sensingType");
             return (Criteria) this;
         }
 
         public Criteria andSensingTypeBetween(String value1, String value2) {
-            addCriterion("\"sensing type\" between", value1, value2, "sensingType");
+            addCriterion("sensing_type between", value1, value2, "sensingType");
             return (Criteria) this;
         }
 
         public Criteria andSensingTypeNotBetween(String value1, String value2) {
-            addCriterion("\"sensing type\" not between", value1, value2, "sensingType");
+            addCriterion("sensing_type not between", value1, value2, "sensingType");
             return (Criteria) this;
         }
 

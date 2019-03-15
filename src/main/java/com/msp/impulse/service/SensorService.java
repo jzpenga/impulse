@@ -54,9 +54,18 @@ public class SensorService {
         if(sensor==null){
             throw new MyException("请输入传感器信息!");
         }
-        //名称必输
-        if (StringUtils.isBlank(sensor.getName())) {
-          throw  new MyException("传感器名称不能为空!");
+        //传感器名称必输
+        if (StringUtils.isBlank(sensor.getName())){
+            throw  new MyException("传感器名称必输!");
+        }
+        if (StringUtils.isBlank(sensor.getSensorType())) {
+            throw  new MyException("传感器类型必输!");
+        }
+        if (StringUtils.isBlank(sensor.getSensorModel())) {
+            throw  new MyException("传感器型号必输!");
+        }
+        if (StringUtils.isBlank(sensor.getSensorNo())) {
+            throw  new MyException("传感器序列号必输!");
         }
         if (sensor.getId()!=null) {//修改
             //查询传感器
@@ -68,9 +77,11 @@ public class SensorService {
 //            if (!sensorUp.getName().equals(sensor.getName())&&sensorMapper.findBySensorName(sensor.getName())>0) {
 //                throw  new MyException("传感器名称已存在!");
 //            }
+            sensorUp.setName(sensor.getName());
             sensorUp.setGatewayName(sensor.getGatewayName());
             sensorUp.setSensorNo(sensor.getSensorNo());
             sensorUp.setSensorModel(sensor.getSensorModel());
+            sensorUp.setSensorType(sensor.getSensorType());
             sensorUp.setLatitude(sensor.getLatitude());
             sensorUp.setLongitude(sensor.getLongitude());
             sensorUp.setPassNumber(sensor.getPassNumber());
@@ -92,16 +103,6 @@ public class SensorService {
 //            if (sensorMapper.findBySensorName(sensor.getName())>0) {
 //                throw  new MyException("传感器名称已存在!");
 //            }
-            //传感器名称必输
-            if (StringUtils.isBlank(sensor.getName())){
-                throw  new MyException("传感器名称必输!");
-            }
-            if (StringUtils.isBlank(sensor.getSensorType())) {
-                throw  new MyException("传感器类型必输!");
-            }
-            if (StringUtils.isBlank(sensor.getSensorModel())) {
-                throw  new MyException("传感器型号必输!");
-            }
             //注册电信运营商
             DeviceInfo deviceInfo = new DeviceInfo();
             deviceInfo.setName(sensor.getName());

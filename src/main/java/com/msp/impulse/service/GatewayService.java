@@ -187,6 +187,8 @@ public class GatewayService {
                     pass1.setSensorFull(pass.getSensorFull());
                     pass1.setAlarmCeil(pass.getAlarmCeil());
                     pass1.setAlarmFloor(pass.getAlarmFloor());
+                    pass1.setFloorStatus(pass.getFloorStatus());
+                    pass1.setCeilStatus(pass.getCeilStatus());
                     pass1.setDecimalPlaces(pass.getDecimalPlaces());
                     //修改通道
                     pass1.setUpdateTime(new Date());

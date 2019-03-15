@@ -2,9 +2,12 @@ package com.msp.impulse.service;
 
 import com.msp.impulse.dao.DataReportDao;
 import com.msp.impulse.entity.Company;
+import com.msp.impulse.entity.Dictionary;
+import com.msp.impulse.entity.DictionaryExample;
 import com.msp.impulse.entity.Sensor;
 import com.msp.impulse.exception.MyException;
 import com.msp.impulse.mapper.CompanyMapper;
+import com.msp.impulse.mapper.DictionaryMapper;
 import com.msp.impulse.mapper.SensorMapper;
 import com.msp.impulse.nb.entity.DataReportEntity;
 import org.apache.commons.lang.StringUtils;
@@ -25,6 +28,8 @@ public class DataReportService {
     private SensorMapper sensorMapper;
     @Autowired
     private CompanyMapper companyMapper;
+    @Autowired
+    private DictionaryMapper dictionaryMapper;
 
     /**
      * 入库
@@ -39,14 +44,21 @@ public class DataReportService {
             }
             Integer userId=sensor.getUserId();
             for (DataReportEntity dataReportEntity : dataReportEntityList) {
+                //根据userId查询用户名
                 if(userId!=null){
                     dataReportEntity.setUserId(userId);
-                    //根据userId查询用户名
                     Company company = companyMapper.selectByPrimaryKey(userId);
                     dataReportEntity.setUserName(company.getCompanyName());
                 }
+                //查询码表，插入字段
                 if(StringUtils.isNotBlank(dataReportEntity.getDataKey())){
-                    //TODO 查询码表，插入字段
+                    DictionaryExample dictionaryExample=new DictionaryExample();
+                    dictionaryExample.createCriteria().andIdEqualTo(Integer.parseInt(dataReportEntity.getDataKey())).andFlagEqualTo("0");
+                    List<Dictionary> dictionaryList = dictionaryMapper.selectByExample(dictionaryExample);
+                    if(!dictionaryList.isEmpty()){
+                        Dictionary dictionary = dictionaryList.get(0);
+                        dataReportEntity.setDataKeyName(dictionary.getDicName());
+                    }
                 }
                 //根据deviceId查找序列号
                 String sensorNo = sensorMapper.findByDeviceId(dataReportEntity.getDeviceId());
@@ -58,6 +70,9 @@ public class DataReportService {
                     dataReportEntity.setGatewayName(dataReportEntity.getGatewayName());
                 }
                 dataReportDao.save(dataReportEntity);
+
+                //插入最新实时数据表
+
             }
             return true;
         } catch (Exception e) {
