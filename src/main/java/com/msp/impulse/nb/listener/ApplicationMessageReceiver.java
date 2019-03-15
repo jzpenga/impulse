@@ -7,7 +7,6 @@ import com.iotplatform.client.invokeapi.Authentication;
 import com.iotplatform.client.invokeapi.SubscriptionManagement;
 import com.iotplatform.utils.PropertyUtil;
 import com.msp.impulse.nb.utils.AuthUtil;
-import com.sun.corba.se.spi.ior.IdentifiableFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -43,7 +42,7 @@ public class ApplicationMessageReceiver implements ApplicationListener<Applicati
                 /**---------------------sub deviceAdded notification------------------------*/
                 //note: 10.X.X.X is a LAN IP, not a public IP, so subscription callbackUrl's IP cannot be 10.X.X.X
                 System.out.println("======subscribe to device business data notification======");
-                String callbackUrl = "http://39.105.86.90:8072/v1.0.0/messageReceiver";//this is a test callbackUrl
+                String callbackUrl = "http://47.105.55.134:8072/v1.0.0/messageReceiver";//this is a test callbackUrl
                 subDeviceData(subscriptionManagement, "deviceAdded", callbackUrl, accessToken);
                 subDeviceData(subscriptionManagement, "deviceDataChanged", callbackUrl, accessToken);
             }
