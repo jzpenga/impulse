@@ -101,6 +101,9 @@ public class GatewayService {
             }
             //新增网关
             gatewayMapper.insertSelective(gateway);
+            if(userId!=null) {
+                changeGatewayNumber(userId, 1);
+            }
         }
         //新增通道
         if(!gatewayAddQuery.getPassList().isEmpty()){
@@ -192,9 +195,6 @@ public class GatewayService {
                     }
                     passMapper.updateByPrimaryKey(pass1);
                 }else{
-                    if(userId!=null) {
-                        changeGatewayNumber(userId, 1);
-                    }
                     //新增通道
                     if(gateway!=null&&StringUtils.isNotBlank(gateway.getGatewayName())) {
                         Integer passNo = queryPassNo(gateway.getGatewayName());
@@ -337,7 +337,7 @@ public class GatewayService {
                 gatewayNumber = gatewayNumber + changeNumber;
             }
             company.setGatewayNumber(gatewayNumber);
-            companyMapper.insertSelective(company);
+            companyMapper.updateByPrimaryKey(company);
         }
     }
 }

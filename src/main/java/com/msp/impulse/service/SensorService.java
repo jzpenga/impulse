@@ -156,7 +156,7 @@ public class SensorService {
                 sensorNumber = sensorNumber + changeNumber;
             }
             company.setSensorNumber(sensorNumber);
-            companyMapper.insertSelective(company);
+            companyMapper.updateByPrimaryKey(company);
         }
     }
     /**
