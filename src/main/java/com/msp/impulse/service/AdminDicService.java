@@ -10,6 +10,7 @@ import com.msp.impulse.exception.MyException;
 import com.msp.impulse.mapper.DictionaryMapper;
 import com.msp.impulse.query.ChildDicQuery;
 import com.msp.impulse.query.DicQuery;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,10 +46,10 @@ public class AdminDicService {
      * @return
      */
     public BaseResponse addDictionary(Dictionary dictionary) {
-        if (dictionary.getDicName() == null) {
+        if (StringUtils.isBlank(dictionary.getDicName())) {
             throw new MyException("系统编码名称不能为空!");
         }
-        if (dictionary.getDicCode() == null) {
+        if (StringUtils.isBlank(dictionary.getDicCode())) {
             throw new MyException("系统编码不能为空!");
         }
         //确定层级
@@ -132,6 +133,26 @@ public class AdminDicService {
             Dictionary dictionary = dictionaryMapper.selectByPrimaryKey(id);
             dictionary.setFlag("1");
             dictionaryMapper.updateByPrimaryKey(dictionary);
+            //查询下一级删除
+            DictionaryExample dictionaryExample=new DictionaryExample();
+            dictionaryExample.createCriteria().andFlagEqualTo("0").andParentIdEqualTo(id);
+            List<Dictionary> dictionaryList2 = dictionaryMapper.selectByExample(dictionaryExample);
+            if(!dictionaryList2.isEmpty()){
+                for ( Dictionary secondDictionary: dictionaryList2) {
+                    secondDictionary.setFlag("1");
+                    dictionaryMapper.updateByPrimaryKey(secondDictionary);
+
+                    DictionaryExample dictionaryExample3=new DictionaryExample();
+                    dictionaryExample3.createCriteria().andFlagEqualTo("0").andParentIdEqualTo(secondDictionary.getId());
+                    List<Dictionary> dictionaryList3 = dictionaryMapper.selectByExample(dictionaryExample3);
+                    if(!dictionaryList3.isEmpty()) {
+                        for (Dictionary thirdDictionary : dictionaryList3) {
+                            thirdDictionary.setFlag("1");
+                            dictionaryMapper.updateByPrimaryKey(thirdDictionary);
+                        }
+                    }
+                }
+            }
         }
         response.setResponseCode(ResponseCode.OK.getCode());
         response.setResponseMsg(ResponseCode.OK.getMessage());

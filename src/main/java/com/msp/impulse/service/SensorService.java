@@ -6,9 +6,7 @@ import com.iotplatform.client.dto.DeviceInfo;
 import com.iotplatform.client.dto.RegDirectDeviceOutDTO;
 import com.msp.impulse.base.BaseResponse;
 import com.msp.impulse.base.ResponseCode;
-import com.msp.impulse.entity.Company;
-import com.msp.impulse.entity.Pass;
-import com.msp.impulse.entity.Sensor;
+import com.msp.impulse.entity.*;
 import com.msp.impulse.exception.MyException;
 import com.msp.impulse.mapper.CompanyMapper;
 import com.msp.impulse.mapper.PassMapper;
@@ -155,7 +153,7 @@ public class SensorService {
                 sensorNumber=0;
             }else {
                 sensorNumber = company.getSensorNumber();
-                sensorNumber = sensorNumber - changeNumber;
+                sensorNumber = sensorNumber + changeNumber;
             }
             company.setSensorNumber(sensorNumber);
             companyMapper.insertSelective(company);
@@ -195,10 +193,21 @@ public class SensorService {
      * @param id
      * @return
      */
-    public BaseResponse<Sensor> querySensorById(Integer id) {
-        BaseResponse<Sensor> response = new BaseResponse<>();
-        Sensor sensor = sensorMapper.selectByPrimaryKey(id);
-        response.setData(sensor);
+    public BaseResponse<SensorAddQuery> querySensorById(Integer id) {
+        BaseResponse<SensorAddQuery> response = new BaseResponse<>();
+        SensorAddQuery sensorAddQuery=new SensorAddQuery();
+        SensorExample sensorExample=new SensorExample();
+        sensorExample.createCriteria().andIdEqualTo(id).andFlagEqualTo("0");
+        List<Sensor> sensorList = sensorMapper.selectByExample(sensorExample);
+        //根据id查询通道
+        if(!sensorList.isEmpty()) {
+            sensorAddQuery.setSensor(sensorList.get(0));
+        }
+        PassExample passExample=new PassExample();
+        passExample.createCriteria().andSensorIdEqualTo(id).andFlagEqualTo("0");
+        List<Pass> passList = passMapper.selectByExample(passExample);
+        sensorAddQuery.setPassList(passList);
+        response.setData(sensorAddQuery);
         response.setResponseCode(ResponseCode.OK.getCode());
         response.setResponseMsg(ResponseCode.OK.getMessage());
         return response;

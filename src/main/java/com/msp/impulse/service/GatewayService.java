@@ -334,7 +334,7 @@ public class GatewayService {
                 gatewayNumber=0;
             }else {
                 gatewayNumber = company.getGatewayNumber();
-                gatewayNumber = gatewayNumber - changeNumber;
+                gatewayNumber = gatewayNumber + changeNumber;
             }
             company.setGatewayNumber(gatewayNumber);
             companyMapper.insertSelective(company);
