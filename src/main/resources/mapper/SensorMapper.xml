@@ -473,7 +473,7 @@
       AND s.gateway_name like "%"#{gatewayName}"%"
     </if>
     <if test="sensorModel != null and sensorModel!=''">
-      AND s.sensor_model like "%"#{sensorModel}"%"
+      AND s.sensor_model = #{sensorModel}
     </if>
     AND s.flag!="1"
     ORDER BY s.create_time DESC

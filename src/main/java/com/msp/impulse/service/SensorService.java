@@ -64,10 +64,10 @@ public class SensorService {
             if(sensorUp==null){
                throw  new MyException("id对应的传感器不存在!");
             }
-            //判断网关名称是否唯一
-            if (!sensorUp.getName().equals(sensor.getName())&&sensorMapper.findBySensorName(sensor.getName())>0) {
-                throw  new MyException("传感器名称已存在!");
-            }
+//            //判断网关名称是否唯一
+//            if (!sensorUp.getName().equals(sensor.getName())&&sensorMapper.findBySensorName(sensor.getName())>0) {
+//                throw  new MyException("传感器名称已存在!");
+//            }
             sensorUp.setGatewayName(sensor.getGatewayName());
             sensorUp.setSensorNo(sensor.getSensorNo());
             sensorUp.setSensorModel(sensor.getSensorModel());
@@ -88,10 +88,10 @@ public class SensorService {
             if(StringUtils.isBlank(sensor.getSensorNo())){
                 throw  new RuntimeException("传感器序列号不能为空!");
             }
-            //判断网关名称是否唯一
-            if (sensorMapper.findBySensorName(sensor.getName())>0) {
-                throw  new MyException("传感器名称已存在!");
-            }
+//            //判断网关名称是否唯一
+//            if (sensorMapper.findBySensorName(sensor.getName())>0) {
+//                throw  new MyException("传感器名称已存在!");
+//            }
             //传感器名称必输
             if (StringUtils.isBlank(sensor.getName())){
                 throw  new MyException("传感器名称必输!");
