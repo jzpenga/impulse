@@ -245,7 +245,14 @@ public class SensorService {
             changeSensorNumber(userId,-1);
         }
         //更新传感器flag为1
-        Sensor sensor = sensorMapper.selectByPrimaryKey(id);
+        SensorExample sensorExample=new SensorExample();
+        sensorExample.createCriteria().andFlagEqualTo("0")
+                .andIdEqualTo(id);
+        List<Sensor> sensorList = sensorMapper.selectByExample(sensorExample);
+        if(sensorList.isEmpty()){
+            throw  new MyException("id【"+id+"】对应的传感器不存在");
+        }
+        Sensor sensor= sensorList.get(0);
         sensor.setFlag("1");
         sensorMapper.updateByPrimaryKey(sensor);
         response.setResponseCode(ResponseCode.OK.getCode());

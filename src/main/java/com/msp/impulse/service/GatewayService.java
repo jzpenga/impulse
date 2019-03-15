@@ -274,7 +274,13 @@ public class GatewayService {
         if(userId!=null) {
             changeGatewayNumber(userId, -1);
         }
-        Gateway gateway = gatewayMapper.selectByPrimaryKey(id);
+        GatewayExample gatewayExample=new GatewayExample();
+        gatewayExample.createCriteria().andIdEqualTo(id).andFlagEqualTo("0");
+       List<Gateway> gatewayList = gatewayMapper.selectByExample(gatewayExample);
+        if(gatewayList.isEmpty()){
+            throw  new MyException("id【"+id+"】对应的网关不存在");
+        }
+        Gateway gateway = gatewayList.get(0);
         gateway.setFlag("1");
         gatewayMapper.updateByPrimaryKey(gateway);
         response.setResponseCode(ResponseCode.OK.getCode());
