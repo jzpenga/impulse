@@ -74,9 +74,6 @@ public class DataReportService {
                     if (StringUtils.isBlank(dataReportEntity.getServiceType())) {
                         throw new MyException("serviceType不能为空!");
                     }
-                    if (StringUtils.isBlank(dataReportEntity.getEquipmentNo())) {
-                        throw new MyException("equipmentNo不能为空!");
-                    }
                     if (StringUtils.isBlank(dataReportEntity.getEventTime())) {
                         throw new MyException("event_time不能为空!");
                     }
@@ -130,7 +127,9 @@ public class DataReportService {
                         realTimeData1.setSensorName(sensor.getName());
                         //realTimeData1.setGatewayName();
                         realTimeData1.setEventTime(dataReportEntity.getEventTime());
-                        realTimeData1.setEquipmentNo(dataReportEntity.getEquipmentNo());
+                        if (StringUtils.isNotBlank(sensorNo)) {
+                            realTimeData1.setEquipmentNo(sensorNo);
+                        }
                         realTimeData1.setDataValue(dataReportEntity.getDataValue());
                         if (StringUtils.isNotBlank(dataReportEntity.getDataKeyName())) {
                             realTimeData1.setDataKeyName(dataReportEntity.getDataKeyName());
@@ -150,7 +149,9 @@ public class DataReportService {
                         realTimeData.setDataMark(dataReportEntity.getDataMark());
                         realTimeData.setDataValue(dataReportEntity.getDataValue());
                         realTimeData.setDeviceId(dataReportEntity.getDeviceId());
-                        realTimeData.setEquipmentNo(sensorNo);
+                        if (StringUtils.isNotBlank(sensorNo)) {
+                            realTimeData.setEquipmentNo(sensorNo);
+                        }
                         realTimeData.setEventTime(dataReportEntity.getEventTime());
                         //realTimeData.setGatewayName();
                         realTimeData.setSensorName(sensor.getName());
