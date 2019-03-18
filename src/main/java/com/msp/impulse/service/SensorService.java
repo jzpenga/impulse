@@ -112,7 +112,7 @@ public class SensorService {
             DictionaryExample dictionaryExample=new DictionaryExample();
             dictionaryExample.createCriteria().andFlagEqualTo("0").andIdEqualTo(Integer.parseInt(sensor.getSensorModel()));
             List<Dictionary> dictionaryList = dictionaryMapper.selectByExample(dictionaryExample);
-            if(!dictionaryList.isEmpty()){
+            if(dictionaryList.isEmpty()){
                 throw  new MyException("传入的数据字典id不存在");
             }
             Dictionary dictionary = dictionaryList.get(0);
