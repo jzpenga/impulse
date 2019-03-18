@@ -5,31 +5,31 @@ import java.io.Serializable;
 public class RealTimeData implements Serializable {
     private Integer id;
 
-    private String deviceid;
+    private String deviceId;
 
-    private String serviceid;
+    private String serviceId;
 
-    private String servicetype;
+    private String serviceType;
 
-    private String eventtime;
+    private String eventTime;
 
-    private String equipmentno;
+    private String equipmentNo;
 
-    private String datakeyname;
+    private String dataKeyName;
 
-    private String datakey;
+    private String dataKey;
 
-    private String datavalue;
+    private String dataValue;
 
-    private String datamark;
+    private String dataMark;
 
-    private String sensorname;
+    private String sensorName;
 
-    private String gatewayname;
+    private String gatewayName;
 
-    private Integer userid;
+    private Integer userId;
 
-    private String username;
+    private String userName;
 
     private static final long serialVersionUID = 1L;
 
@@ -41,107 +41,107 @@ public class RealTimeData implements Serializable {
         this.id = id;
     }
 
-    public String getDeviceid() {
-        return deviceid;
+    public String getDeviceId() {
+        return deviceId;
     }
 
-    public void setDeviceid(String deviceid) {
-        this.deviceid = deviceid == null ? null : deviceid.trim();
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId == null ? null : deviceId.trim();
     }
 
-    public String getServiceid() {
-        return serviceid;
+    public String getServiceId() {
+        return serviceId;
     }
 
-    public void setServiceid(String serviceid) {
-        this.serviceid = serviceid == null ? null : serviceid.trim();
+    public void setServiceId(String serviceId) {
+        this.serviceId = serviceId == null ? null : serviceId.trim();
     }
 
-    public String getServicetype() {
-        return servicetype;
+    public String getServiceType() {
+        return serviceType;
     }
 
-    public void setServicetype(String servicetype) {
-        this.servicetype = servicetype == null ? null : servicetype.trim();
+    public void setServiceType(String serviceType) {
+        this.serviceType = serviceType == null ? null : serviceType.trim();
     }
 
-    public String getEventtime() {
-        return eventtime;
+    public String getEventTime() {
+        return eventTime;
     }
 
-    public void setEventtime(String eventtime) {
-        this.eventtime = eventtime == null ? null : eventtime.trim();
+    public void setEventTime(String eventTime) {
+        this.eventTime = eventTime == null ? null : eventTime.trim();
     }
 
-    public String getEquipmentno() {
-        return equipmentno;
+    public String getEquipmentNo() {
+        return equipmentNo;
     }
 
-    public void setEquipmentno(String equipmentno) {
-        this.equipmentno = equipmentno == null ? null : equipmentno.trim();
+    public void setEquipmentNo(String equipmentNo) {
+        this.equipmentNo = equipmentNo == null ? null : equipmentNo.trim();
     }
 
-    public String getDatakeyname() {
-        return datakeyname;
+    public String getDataKeyName() {
+        return dataKeyName;
     }
 
-    public void setDatakeyname(String datakeyname) {
-        this.datakeyname = datakeyname == null ? null : datakeyname.trim();
+    public void setDataKeyName(String dataKeyName) {
+        this.dataKeyName = dataKeyName == null ? null : dataKeyName.trim();
     }
 
-    public String getDatakey() {
-        return datakey;
+    public String getDataKey() {
+        return dataKey;
     }
 
-    public void setDatakey(String datakey) {
-        this.datakey = datakey == null ? null : datakey.trim();
+    public void setDataKey(String dataKey) {
+        this.dataKey = dataKey == null ? null : dataKey.trim();
     }
 
-    public String getDatavalue() {
-        return datavalue;
+    public String getDataValue() {
+        return dataValue;
     }
 
-    public void setDatavalue(String datavalue) {
-        this.datavalue = datavalue == null ? null : datavalue.trim();
+    public void setDataValue(String dataValue) {
+        this.dataValue = dataValue == null ? null : dataValue.trim();
     }
 
-    public String getDatamark() {
-        return datamark;
+    public String getDataMark() {
+        return dataMark;
     }
 
-    public void setDatamark(String datamark) {
-        this.datamark = datamark == null ? null : datamark.trim();
+    public void setDataMark(String dataMark) {
+        this.dataMark = dataMark == null ? null : dataMark.trim();
     }
 
-    public String getSensorname() {
-        return sensorname;
+    public String getSensorName() {
+        return sensorName;
     }
 
-    public void setSensorname(String sensorname) {
-        this.sensorname = sensorname == null ? null : sensorname.trim();
+    public void setSensorName(String sensorName) {
+        this.sensorName = sensorName == null ? null : sensorName.trim();
     }
 
-    public String getGatewayname() {
-        return gatewayname;
+    public String getGatewayName() {
+        return gatewayName;
     }
 
-    public void setGatewayname(String gatewayname) {
-        this.gatewayname = gatewayname == null ? null : gatewayname.trim();
+    public void setGatewayName(String gatewayName) {
+        this.gatewayName = gatewayName == null ? null : gatewayName.trim();
     }
 
-    public Integer getUserid() {
-        return userid;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setUserid(Integer userid) {
-        this.userid = userid;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
-    public String getUsername() {
-        return username;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUsername(String username) {
-        this.username = username == null ? null : username.trim();
+    public void setUserName(String userName) {
+        this.userName = userName == null ? null : userName.trim();
     }
 }

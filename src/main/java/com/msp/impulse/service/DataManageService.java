@@ -1,12 +1,15 @@
 package com.msp.impulse.service;
 
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.msp.impulse.base.BaseResponse;
 import com.msp.impulse.base.ResponseCode;
 import com.msp.impulse.dao.AlarmDao;
 import com.msp.impulse.dao.ControlInstruDao;
 import com.msp.impulse.dao.DataManageDao;
+import com.msp.impulse.entity.RealTimeData;
 import com.msp.impulse.exception.MyException;
+import com.msp.impulse.mapper.RealTimeDataMapper;
 import com.msp.impulse.nb.entity.DataReportEntity;
 import com.msp.impulse.query.DataHistoryQuery;
 import com.msp.impulse.vo.DataHistoryMapVo;
@@ -16,7 +19,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.text.ParseException;
 import java.util.*;
 
@@ -31,6 +33,8 @@ public class DataManageService {
     private SensorService sensorService;
     @Autowired
     private ControlInstruDao controlInstruDao;
+    @Autowired
+    private RealTimeDataMapper realTimeDataMapper;
 
 
 //    public BaseResponse findHomeData() {
@@ -217,8 +221,7 @@ public class DataManageService {
      * @return
      */
     public BaseResponse findRealTimeData(DataHistoryQuery dataHistoryQuery) throws ParseException {
-        BaseResponse response=new BaseResponse();
-        PageInfo pageInfo = dataManageDao.findRealTimeData(dataHistoryQuery);
+//        PageInfo pageInfo = dataManageDao.findRealTimeData(dataHistoryQuery);
         /*List<DataReportEntity> list = pageInfo.getList();
         for (DataReportEntity dataReportEntity : list) {
             if (!dataReportEntity.getEventTime().contains("20190304")) {
@@ -227,7 +230,16 @@ public class DataManageService {
             }
             dataReportEntity.setUserName("环宇智谷测试");
         }*/
-
+        BaseResponse<PageInfo> response = new BaseResponse<>();
+        if (dataHistoryQuery.getPageNo() == null) {
+            dataHistoryQuery.setPageNo(1);
+        }
+        if (dataHistoryQuery.getPageSize() == null) {
+            dataHistoryQuery.setPageSize(10);
+        }
+        PageHelper.startPage(dataHistoryQuery.getPageNo(), dataHistoryQuery.getPageSize());
+        List<RealTimeData> realTimeDataList= realTimeDataMapper.selectRealTimeDataInfo(dataHistoryQuery);
+        PageInfo<RealTimeData> pageInfo = new PageInfo<>(realTimeDataList);
         response.setData(pageInfo);
         response.setResponseMsg(ResponseCode.OK.getMessage());
         response.setResponseCode(ResponseCode.OK.getCode());

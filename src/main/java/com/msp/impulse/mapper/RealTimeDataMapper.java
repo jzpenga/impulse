@@ -31,4 +31,6 @@ public interface RealTimeDataMapper {
     int updateByPrimaryKey(RealTimeData record);
 
     List<RealTimeData> selectRealTimeDataInfo(DataHistoryQuery dataHistoryQuery);
+
+    RealTimeData selectByDeviceIdAndDataKey(@Param("deviceId")String deviceId, @Param("dataKey")String dataKey);
 }

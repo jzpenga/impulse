@@ -3,19 +3,19 @@
 <mapper namespace="com.msp.impulse.mapper.RealTimeDataMapper">
   <resultMap id="BaseResultMap" type="com.msp.impulse.entity.RealTimeData">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="deviceId" jdbcType="VARCHAR" property="deviceid" />
-    <result column="serviceId" jdbcType="VARCHAR" property="serviceid" />
-    <result column="serviceType" jdbcType="VARCHAR" property="servicetype" />
-    <result column="eventTime" jdbcType="VARCHAR" property="eventtime" />
-    <result column="equipmentNo" jdbcType="VARCHAR" property="equipmentno" />
-    <result column="dataKeyName" jdbcType="VARCHAR" property="datakeyname" />
-    <result column="dataKey" jdbcType="VARCHAR" property="datakey" />
-    <result column="dataValue" jdbcType="VARCHAR" property="datavalue" />
-    <result column="dataMark" jdbcType="VARCHAR" property="datamark" />
-    <result column="sensorName" jdbcType="VARCHAR" property="sensorname" />
-    <result column="gatewayName" jdbcType="VARCHAR" property="gatewayname" />
-    <result column="userId" jdbcType="INTEGER" property="userid" />
-    <result column="userName" jdbcType="VARCHAR" property="username" />
+    <result column="device_id" jdbcType="VARCHAR" property="deviceId" />
+    <result column="service_id" jdbcType="VARCHAR" property="serviceId" />
+    <result column="service_type" jdbcType="VARCHAR" property="serviceType" />
+    <result column="event_time" jdbcType="VARCHAR" property="eventTime" />
+    <result column="equipment_no" jdbcType="VARCHAR" property="equipmentNo" />
+    <result column="data_key_name" jdbcType="VARCHAR" property="dataKeyName" />
+    <result column="data_key" jdbcType="VARCHAR" property="dataKey" />
+    <result column="data_value" jdbcType="VARCHAR" property="dataValue" />
+    <result column="data_mark" jdbcType="VARCHAR" property="dataMark" />
+    <result column="sensor_name" jdbcType="VARCHAR" property="sensorName" />
+    <result column="gateway_name" jdbcType="VARCHAR" property="gatewayName" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -76,8 +76,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, deviceId, serviceId, serviceType, eventTime, equipmentNo, dataKeyName, dataKey, 
-    dataValue, dataMark, sensorName, gatewayName, userId, userName
+    id, device_id, service_id, service_type, event_time, equipment_no, data_key_name, 
+    data_key, data_value, data_mark, sensor_name, gateway_name, user_id, user_name
   </sql>
   <select id="selectByExample" parameterType="com.msp.impulse.entity.RealTimeDataExample" resultMap="BaseResultMap">
     select
@@ -110,16 +110,16 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.msp.impulse.entity.RealTimeData">
-    insert into real_time_data (id, deviceId, serviceId, 
-      serviceType, eventTime, equipmentNo, 
-      dataKeyName, dataKey, dataValue, 
-      dataMark, sensorName, gatewayName, 
-      userId, userName)
-    values (#{id,jdbcType=INTEGER}, #{deviceid,jdbcType=VARCHAR}, #{serviceid,jdbcType=VARCHAR}, 
-      #{servicetype,jdbcType=VARCHAR}, #{eventtime,jdbcType=VARCHAR}, #{equipmentno,jdbcType=VARCHAR}, 
-      #{datakeyname,jdbcType=VARCHAR}, #{datakey,jdbcType=VARCHAR}, #{datavalue,jdbcType=VARCHAR}, 
-      #{datamark,jdbcType=VARCHAR}, #{sensorname,jdbcType=VARCHAR}, #{gatewayname,jdbcType=VARCHAR}, 
-      #{userid,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR})
+    insert into real_time_data (id, device_id, service_id, 
+      service_type, event_time, equipment_no, 
+      data_key_name, data_key, data_value, 
+      data_mark, sensor_name, gateway_name, 
+      user_id, user_name)
+    values (#{id,jdbcType=INTEGER}, #{deviceId,jdbcType=VARCHAR}, #{serviceId,jdbcType=VARCHAR}, 
+      #{serviceType,jdbcType=VARCHAR}, #{eventTime,jdbcType=VARCHAR}, #{equipmentNo,jdbcType=VARCHAR}, 
+      #{dataKeyName,jdbcType=VARCHAR}, #{dataKey,jdbcType=VARCHAR}, #{dataValue,jdbcType=VARCHAR}, 
+      #{dataMark,jdbcType=VARCHAR}, #{sensorName,jdbcType=VARCHAR}, #{gatewayName,jdbcType=VARCHAR}, 
+      #{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.msp.impulse.entity.RealTimeData">
     insert into real_time_data
@@ -127,88 +127,88 @@
       <if test="id != null">
         id,
       </if>
-      <if test="deviceid != null">
-        deviceId,
+      <if test="deviceId != null">
+        device_id,
       </if>
-      <if test="serviceid != null">
-        serviceId,
+      <if test="serviceId != null">
+        service_id,
       </if>
-      <if test="servicetype != null">
-        serviceType,
+      <if test="serviceType != null">
+        service_type,
       </if>
-      <if test="eventtime != null">
-        eventTime,
+      <if test="eventTime != null">
+        event_time,
       </if>
-      <if test="equipmentno != null">
-        equipmentNo,
+      <if test="equipmentNo != null">
+        equipment_no,
       </if>
-      <if test="datakeyname != null">
-        dataKeyName,
+      <if test="dataKeyName != null">
+        data_key_name,
       </if>
-      <if test="datakey != null">
-        dataKey,
+      <if test="dataKey != null">
+        data_key,
       </if>
-      <if test="datavalue != null">
-        dataValue,
+      <if test="dataValue != null">
+        data_value,
       </if>
-      <if test="datamark != null">
-        dataMark,
+      <if test="dataMark != null">
+        data_mark,
       </if>
-      <if test="sensorname != null">
-        sensorName,
+      <if test="sensorName != null">
+        sensor_name,
       </if>
-      <if test="gatewayname != null">
-        gatewayName,
+      <if test="gatewayName != null">
+        gateway_name,
       </if>
-      <if test="userid != null">
-        userId,
+      <if test="userId != null">
+        user_id,
       </if>
-      <if test="username != null">
-        userName,
+      <if test="userName != null">
+        user_name,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="deviceid != null">
-        #{deviceid,jdbcType=VARCHAR},
+      <if test="deviceId != null">
+        #{deviceId,jdbcType=VARCHAR},
       </if>
-      <if test="serviceid != null">
-        #{serviceid,jdbcType=VARCHAR},
+      <if test="serviceId != null">
+        #{serviceId,jdbcType=VARCHAR},
       </if>
-      <if test="servicetype != null">
-        #{servicetype,jdbcType=VARCHAR},
+      <if test="serviceType != null">
+        #{serviceType,jdbcType=VARCHAR},
       </if>
-      <if test="eventtime != null">
-        #{eventtime,jdbcType=VARCHAR},
+      <if test="eventTime != null">
+        #{eventTime,jdbcType=VARCHAR},
       </if>
-      <if test="equipmentno != null">
-        #{equipmentno,jdbcType=VARCHAR},
+      <if test="equipmentNo != null">
+        #{equipmentNo,jdbcType=VARCHAR},
       </if>
-      <if test="datakeyname != null">
-        #{datakeyname,jdbcType=VARCHAR},
+      <if test="dataKeyName != null">
+        #{dataKeyName,jdbcType=VARCHAR},
       </if>
-      <if test="datakey != null">
-        #{datakey,jdbcType=VARCHAR},
+      <if test="dataKey != null">
+        #{dataKey,jdbcType=VARCHAR},
       </if>
-      <if test="datavalue != null">
-        #{datavalue,jdbcType=VARCHAR},
+      <if test="dataValue != null">
+        #{dataValue,jdbcType=VARCHAR},
       </if>
-      <if test="datamark != null">
-        #{datamark,jdbcType=VARCHAR},
+      <if test="dataMark != null">
+        #{dataMark,jdbcType=VARCHAR},
       </if>
-      <if test="sensorname != null">
-        #{sensorname,jdbcType=VARCHAR},
+      <if test="sensorName != null">
+        #{sensorName,jdbcType=VARCHAR},
       </if>
-      <if test="gatewayname != null">
-        #{gatewayname,jdbcType=VARCHAR},
+      <if test="gatewayName != null">
+        #{gatewayName,jdbcType=VARCHAR},
       </if>
-      <if test="userid != null">
-        #{userid,jdbcType=INTEGER},
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
       </if>
-      <if test="username != null">
-        #{username,jdbcType=VARCHAR},
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -224,44 +224,44 @@
       <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.deviceid != null">
-        deviceId = #{record.deviceid,jdbcType=VARCHAR},
+      <if test="record.deviceId != null">
+        device_id = #{record.deviceId,jdbcType=VARCHAR},
       </if>
-      <if test="record.serviceid != null">
-        serviceId = #{record.serviceid,jdbcType=VARCHAR},
+      <if test="record.serviceId != null">
+        service_id = #{record.serviceId,jdbcType=VARCHAR},
       </if>
-      <if test="record.servicetype != null">
-        serviceType = #{record.servicetype,jdbcType=VARCHAR},
+      <if test="record.serviceType != null">
+        service_type = #{record.serviceType,jdbcType=VARCHAR},
       </if>
-      <if test="record.eventtime != null">
-        eventTime = #{record.eventtime,jdbcType=VARCHAR},
+      <if test="record.eventTime != null">
+        event_time = #{record.eventTime,jdbcType=VARCHAR},
       </if>
-      <if test="record.equipmentno != null">
-        equipmentNo = #{record.equipmentno,jdbcType=VARCHAR},
+      <if test="record.equipmentNo != null">
+        equipment_no = #{record.equipmentNo,jdbcType=VARCHAR},
       </if>
-      <if test="record.datakeyname != null">
-        dataKeyName = #{record.datakeyname,jdbcType=VARCHAR},
+      <if test="record.dataKeyName != null">
+        data_key_name = #{record.dataKeyName,jdbcType=VARCHAR},
       </if>
-      <if test="record.datakey != null">
-        dataKey = #{record.datakey,jdbcType=VARCHAR},
+      <if test="record.dataKey != null">
+        data_key = #{record.dataKey,jdbcType=VARCHAR},
       </if>
-      <if test="record.datavalue != null">
-        dataValue = #{record.datavalue,jdbcType=VARCHAR},
+      <if test="record.dataValue != null">
+        data_value = #{record.dataValue,jdbcType=VARCHAR},
       </if>
-      <if test="record.datamark != null">
-        dataMark = #{record.datamark,jdbcType=VARCHAR},
+      <if test="record.dataMark != null">
+        data_mark = #{record.dataMark,jdbcType=VARCHAR},
       </if>
-      <if test="record.sensorname != null">
-        sensorName = #{record.sensorname,jdbcType=VARCHAR},
+      <if test="record.sensorName != null">
+        sensor_name = #{record.sensorName,jdbcType=VARCHAR},
       </if>
-      <if test="record.gatewayname != null">
-        gatewayName = #{record.gatewayname,jdbcType=VARCHAR},
+      <if test="record.gatewayName != null">
+        gateway_name = #{record.gatewayName,jdbcType=VARCHAR},
       </if>
-      <if test="record.userid != null">
-        userId = #{record.userid,jdbcType=INTEGER},
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=INTEGER},
       </if>
-      <if test="record.username != null">
-        userName = #{record.username,jdbcType=VARCHAR},
+      <if test="record.userName != null">
+        user_name = #{record.userName,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null">
@@ -271,19 +271,19 @@
   <update id="updateByExample" parameterType="map">
     update real_time_data
     set id = #{record.id,jdbcType=INTEGER},
-      deviceId = #{record.deviceid,jdbcType=VARCHAR},
-      serviceId = #{record.serviceid,jdbcType=VARCHAR},
-      serviceType = #{record.servicetype,jdbcType=VARCHAR},
-      eventTime = #{record.eventtime,jdbcType=VARCHAR},
-      equipmentNo = #{record.equipmentno,jdbcType=VARCHAR},
-      dataKeyName = #{record.datakeyname,jdbcType=VARCHAR},
-      dataKey = #{record.datakey,jdbcType=VARCHAR},
-      dataValue = #{record.datavalue,jdbcType=VARCHAR},
-      dataMark = #{record.datamark,jdbcType=VARCHAR},
-      sensorName = #{record.sensorname,jdbcType=VARCHAR},
-      gatewayName = #{record.gatewayname,jdbcType=VARCHAR},
-      userId = #{record.userid,jdbcType=INTEGER},
-      userName = #{record.username,jdbcType=VARCHAR}
+      device_id = #{record.deviceId,jdbcType=VARCHAR},
+      service_id = #{record.serviceId,jdbcType=VARCHAR},
+      service_type = #{record.serviceType,jdbcType=VARCHAR},
+      event_time = #{record.eventTime,jdbcType=VARCHAR},
+      equipment_no = #{record.equipmentNo,jdbcType=VARCHAR},
+      data_key_name = #{record.dataKeyName,jdbcType=VARCHAR},
+      data_key = #{record.dataKey,jdbcType=VARCHAR},
+      data_value = #{record.dataValue,jdbcType=VARCHAR},
+      data_mark = #{record.dataMark,jdbcType=VARCHAR},
+      sensor_name = #{record.sensorName,jdbcType=VARCHAR},
+      gateway_name = #{record.gatewayName,jdbcType=VARCHAR},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      user_name = #{record.userName,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -291,67 +291,80 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.msp.impulse.entity.RealTimeData">
     update real_time_data
     <set>
-      <if test="deviceid != null">
-        deviceId = #{deviceid,jdbcType=VARCHAR},
+      <if test="deviceId != null">
+        device_id = #{deviceId,jdbcType=VARCHAR},
       </if>
-      <if test="serviceid != null">
-        serviceId = #{serviceid,jdbcType=VARCHAR},
+      <if test="serviceId != null">
+        service_id = #{serviceId,jdbcType=VARCHAR},
       </if>
-      <if test="servicetype != null">
-        serviceType = #{servicetype,jdbcType=VARCHAR},
+      <if test="serviceType != null">
+        service_type = #{serviceType,jdbcType=VARCHAR},
       </if>
-      <if test="eventtime != null">
-        eventTime = #{eventtime,jdbcType=VARCHAR},
+      <if test="eventTime != null">
+        event_time = #{eventTime,jdbcType=VARCHAR},
       </if>
-      <if test="equipmentno != null">
-        equipmentNo = #{equipmentno,jdbcType=VARCHAR},
+      <if test="equipmentNo != null">
+        equipment_no = #{equipmentNo,jdbcType=VARCHAR},
       </if>
-      <if test="datakeyname != null">
-        dataKeyName = #{datakeyname,jdbcType=VARCHAR},
+      <if test="dataKeyName != null">
+        data_key_name = #{dataKeyName,jdbcType=VARCHAR},
       </if>
-      <if test="datakey != null">
-        dataKey = #{datakey,jdbcType=VARCHAR},
+      <if test="dataKey != null">
+        data_key = #{dataKey,jdbcType=VARCHAR},
       </if>
-      <if test="datavalue != null">
-        dataValue = #{datavalue,jdbcType=VARCHAR},
+      <if test="dataValue != null">
+        data_value = #{dataValue,jdbcType=VARCHAR},
       </if>
-      <if test="datamark != null">
-        dataMark = #{datamark,jdbcType=VARCHAR},
+      <if test="dataMark != null">
+        data_mark = #{dataMark,jdbcType=VARCHAR},
       </if>
-      <if test="sensorname != null">
-        sensorName = #{sensorname,jdbcType=VARCHAR},
+      <if test="sensorName != null">
+        sensor_name = #{sensorName,jdbcType=VARCHAR},
       </if>
-      <if test="gatewayname != null">
-        gatewayName = #{gatewayname,jdbcType=VARCHAR},
+      <if test="gatewayName != null">
+        gateway_name = #{gatewayName,jdbcType=VARCHAR},
       </if>
-      <if test="userid != null">
-        userId = #{userid,jdbcType=INTEGER},
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
       </if>
-      <if test="username != null">
-        userName = #{username,jdbcType=VARCHAR},
+      <if test="userName != null">
+        user_name = #{userName,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.msp.impulse.entity.RealTimeData">
     update real_time_data
-    set deviceId = #{deviceid,jdbcType=VARCHAR},
-      serviceId = #{serviceid,jdbcType=VARCHAR},
-      serviceType = #{servicetype,jdbcType=VARCHAR},
-      eventTime = #{eventtime,jdbcType=VARCHAR},
-      equipmentNo = #{equipmentno,jdbcType=VARCHAR},
-      dataKeyName = #{datakeyname,jdbcType=VARCHAR},
-      dataKey = #{datakey,jdbcType=VARCHAR},
-      dataValue = #{datavalue,jdbcType=VARCHAR},
-      dataMark = #{datamark,jdbcType=VARCHAR},
-      sensorName = #{sensorname,jdbcType=VARCHAR},
-      gatewayName = #{gatewayname,jdbcType=VARCHAR},
-      userId = #{userid,jdbcType=INTEGER},
-      userName = #{username,jdbcType=VARCHAR}
+    set device_id = #{deviceId,jdbcType=VARCHAR},
+      service_id = #{serviceId,jdbcType=VARCHAR},
+      service_type = #{serviceType,jdbcType=VARCHAR},
+      event_time = #{eventTime,jdbcType=VARCHAR},
+      equipment_no = #{equipmentNo,jdbcType=VARCHAR},
+      data_key_name = #{dataKeyName,jdbcType=VARCHAR},
+      data_key = #{dataKey,jdbcType=VARCHAR},
+      data_value = #{dataValue,jdbcType=VARCHAR},
+      data_mark = #{dataMark,jdbcType=VARCHAR},
+      sensor_name = #{sensorName,jdbcType=VARCHAR},
+      gateway_name = #{gatewayName,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=INTEGER},
+      user_name = #{userName,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectByDeviceIdAndDataKey" resultType="com.msp.impulse.entity.RealTimeData">
+       select  *  from real_time_data r where r.data_key=#{dataKey} and r.device_id=#{deviceId}
+  </select>
   <select id="selectRealTimeDataInfo" parameterType="com.msp.impulse.query.DataHistoryQuery" resultType="com.msp.impulse.entity.RealTimeData">
-
-
+      select   r.data_key,r.data_key_name,r.data_mark,r.data_value,r.device_id,r.equipment_no,r.event_time,
+      r.gateway_name,r.id,r.sensor_name,r.service_id,r.service_type,r.user_id,r.user_name
+      from  real_time_data r where 1=1
+    <if test="sensorName != null and sensorName != ''">
+      and r.sensor_name  =#{sensorName}
+    </if>
+    <if test="reportDateFrom != null and reportDateFrom != ''">
+      and r.event_time  >=#{reportDateFrom}
+    </if>
+    <if test="reportDateTo != null and reportDateTo != ''">
+      and #{reportDateTo}>=r.event_time
+    </if>
   </select>
 </mapper>
