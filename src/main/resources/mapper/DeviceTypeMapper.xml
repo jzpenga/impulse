@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.msp.impulse.mapper.deviceTypeMapper">
-  <resultMap id="BaseResultMap" type="com.msp.impulse.entity.deviceType">
+<mapper namespace="com.msp.impulse.mapper.DeviceTypeMapper">
+  <resultMap id="BaseResultMap" type="com.msp.impulse.entity.DeviceType">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="device_type" jdbcType="VARCHAR" property="deviceType" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
@@ -68,7 +68,7 @@
   <sql id="Base_Column_List">
     id, device_type, create_time, update_time
   </sql>
-  <select id="selectByExample" parameterType="com.msp.impulse.entity.deviceTypeExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.msp.impulse.entity.DeviceTypeExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
@@ -92,19 +92,19 @@
     delete from device_type
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.msp.impulse.entity.deviceTypeExample">
+  <delete id="deleteByExample" parameterType="com.msp.impulse.entity.DeviceTypeExample">
     delete from device_type
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.msp.impulse.entity.deviceType">
+  <insert id="insert" parameterType="com.msp.impulse.entity.DeviceType">
     insert into device_type (id, device_type, create_time, 
       update_time)
     values (#{id,jdbcType=INTEGER}, #{deviceType,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.msp.impulse.entity.deviceType">
+  <insert id="insertSelective" parameterType="com.msp.impulse.entity.DeviceType">
     insert into device_type
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -135,7 +135,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.msp.impulse.entity.deviceTypeExample" resultType="java.lang.Long">
+  <select id="countByExample" parameterType="com.msp.impulse.entity.DeviceTypeExample" resultType="java.lang.Long">
     select count(*) from device_type
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
@@ -171,7 +171,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.msp.impulse.entity.deviceType">
+  <update id="updateByPrimaryKeySelective" parameterType="com.msp.impulse.entity.DeviceType">
     update device_type
     <set>
       <if test="deviceType != null">
@@ -186,7 +186,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.msp.impulse.entity.deviceType">
+  <update id="updateByPrimaryKey" parameterType="com.msp.impulse.entity.DeviceType">
     update device_type
     set device_type = #{deviceType,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},

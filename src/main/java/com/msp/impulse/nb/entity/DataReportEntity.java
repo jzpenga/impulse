@@ -24,8 +24,6 @@ public class DataReportEntity {
     private String dataKey;
     private String dataValue;
     private String dataMark;
-
-    private String typeName;//key对应的真实名字
     private String sensorName;
     private String gatewayName;
     private  Integer userId;
@@ -103,14 +101,6 @@ public class DataReportEntity {
 
     public void setDataMark(String dataMark) {
         this.dataMark = dataMark;
-    }
-
-    public String getTypeName() {
-        return typeName;
-    }
-
-    public void setTypeName(String typeName) {
-        this.typeName = typeName;
     }
 
     public String getSensorName() {

@@ -3,6 +3,7 @@ package com.msp.impulse.controller;
 import com.github.pagehelper.PageInfo;
 import com.msp.impulse.base.BaseResponse;
 import com.msp.impulse.base.ResponseCode;
+import com.msp.impulse.entity.Company;
 import com.msp.impulse.exception.MyException;
 import com.msp.impulse.nb.entity.DataReportEntity;
 import com.msp.impulse.query.DataHistoryQuery;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,7 +66,7 @@ public class DataManageController {
 
     @PostMapping("findRealTimeData")
     @ApiOperation(value = "查询实时数据", notes = "查询实时数据", tags = "数据管理", httpMethod = "POST")
-    public BaseResponse<PageInfo> findRealTimeData(@RequestBody DataHistoryQuery dataHistoryQuery) {
+    public BaseResponse<PageInfo> findRealTimeData(@RequestBody DataHistoryQuery dataHistoryQuery, HttpSession session) {
         BaseResponse<PageInfo> response = new BaseResponse<>();
 //        if ("1".equals(dataHistoryQuery.getPageNo())){
 //            RealDataVo realDataVo = new RealDataVo();
@@ -97,6 +99,13 @@ public class DataManageController {
 //            response.setData(realDataVo);
 //        }
         try {
+            //获取用户id
+            Integer  userId=null;
+            Company company= (Company)session.getAttribute("loginUser");
+            if(company!=null){
+                userId=company.getId();
+                dataHistoryQuery.setUserId(userId);
+            }
             response = dataManageService.findRealTimeData(dataHistoryQuery);
         }catch (MyException e) {
             logger.error(e.getMessage(), e);

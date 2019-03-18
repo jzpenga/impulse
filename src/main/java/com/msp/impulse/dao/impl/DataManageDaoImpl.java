@@ -132,7 +132,7 @@ public class DataManageDaoImpl implements DataManageDao {
         //查询该类型传感器所具备的数值类型
         //根据的sensorModel查询deviveType表的id，根据id查询deviceService表
         if(StringUtils.isBlank(dataHistoryQuery.getSensorModel())){
-            throw  new MyException("设备型号必输!");
+            throw  new MyException("请输入设备型号!");
         }
         List<ServiceType> serviceType = sensorMapper.findServiceType(dataHistoryQuery.getSensorModel());
         dataHistoryVo.setServiceType(serviceType);

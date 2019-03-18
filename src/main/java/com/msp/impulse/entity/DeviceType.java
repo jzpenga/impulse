@@ -3,7 +3,7 @@ package com.msp.impulse.entity;
 import java.io.Serializable;
 import java.util.Date;
 
-public class deviceType implements Serializable {
+public class DeviceType implements Serializable {
     private Integer id;
 
     private String deviceType;

@@ -103,6 +103,7 @@ public class SensorService {
 //            if (sensorMapper.findBySensorName(sensor.getName())>0) {
 //                throw  new MyException("传感器名称已存在!");
 //            }
+            sensor.setSensorType("WaterMeter");//TODO  暂时方案
             //注册电信运营商
             DeviceInfo deviceInfo = new DeviceInfo();
             deviceInfo.setName(sensor.getName());

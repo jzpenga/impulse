@@ -2,7 +2,7 @@ package com.msp.impulse.entity;
 
 import java.io.Serializable;
 
-public class deviceService implements Serializable {
+public class DeviceService implements Serializable {
     private Integer id;
 
     private Integer deviceTypeId;
