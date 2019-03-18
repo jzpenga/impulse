@@ -53,7 +53,7 @@ public class DataReportService {
                 //查询码表，插入字段
                 if(StringUtils.isNotBlank(dataReportEntity.getDataKey())){
                     DictionaryExample dictionaryExample=new DictionaryExample();
-                    dictionaryExample.createCriteria().andIdEqualTo(Integer.parseInt(dataReportEntity.getDataKey())).andFlagEqualTo("0");
+                    dictionaryExample.createCriteria().andDicCodeEqualTo(dataReportEntity.getDataKey()).andFlagEqualTo("0");
                     List<Dictionary> dictionaryList = dictionaryMapper.selectByExample(dictionaryExample);
                     if(!dictionaryList.isEmpty()){
                         Dictionary dictionary = dictionaryList.get(0);
