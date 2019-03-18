@@ -354,8 +354,9 @@
        select  *  from real_time_data r where r.data_key=#{dataKey} and r.device_id=#{deviceId}
   </select>
   <select id="selectRealTimeDataInfo" parameterType="com.msp.impulse.query.DataHistoryQuery" resultType="com.msp.impulse.entity.RealTimeData">
-      select   r.data_key,r.data_key_name,r.data_mark,r.data_value,r.device_id,r.equipment_no,r.event_time,
-      r.gateway_name,r.id,r.sensor_name,r.service_id,r.service_type,r.user_id,r.user_name
+      select   r.data_key dataKey,r.data_key_name dataKeyName,r.data_mark dataMark,r.data_value dataValue,
+    r.device_id deviceId,r.equipment_no equipmentNo,r.event_time eventTime,
+      r.gateway_name gatewayName,r.id,r.sensor_name sensorName,r.service_id serviceId,r.service_type serviceType,r.user_id userId,r.user_name userName
       from  real_time_data r where 1=1
     <if test="sensorName != null and sensorName != ''">
       and r.sensor_name  =#{sensorName}
