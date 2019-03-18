@@ -144,7 +144,13 @@ public class SensorService {
                 sensor.setCreateUser(userId);
                 sensor.setUserId(userId);
             }
-            sensorMapper.insertSelective(sensor);
+            try {
+                sensorMapper.insertSelective(sensor);
+            }catch(Exception e){
+                //删除
+                NBDXManager.deleteDevice(regDirectDeviceOutDTO.getDeviceId());
+                throw new MyException("插入数据库失败，已回滚!");
+            }
         }
         if(userId!=null) {//传感器数加1
             changeSensorNumber(userId, 1);
@@ -152,7 +158,20 @@ public class SensorService {
 
         List<Pass> passList= sensorAddQuery.getPassList();
         if(passList!=null) {
-            gatewayService.savePass(passList,userId,sensor,null);
+            try {
+                gatewayService.savePass(passList, userId, sensor, null);
+            }catch(Exception e) {
+                //删除
+                SensorExample sensorExample=new SensorExample();
+                sensorExample.createCriteria().andIdEqualTo(sensor.getId()).andFlagEqualTo("0");
+               List<Sensor> sensorList= sensorMapper.selectByExample(sensorExample);
+               if(sensorList.isEmpty()){
+                    throw  new  MyException("传感器id对应的值不存在");
+               }
+                Sensor sensor1 = sensorList.get(0);
+                NBDXManager.deleteDevice(sensor1.getDeviceId());
+                throw new MyException("插入数据库失败，已回滚!");
+            }
         }
     }
     /**
