@@ -5,7 +5,9 @@ import com.github.pagehelper.PageInfo;
 import com.msp.impulse.constants.Constants;
 import com.msp.impulse.dao.DataManageDao;
 import com.msp.impulse.entity.*;
+import com.msp.impulse.entity.Dictionary;
 import com.msp.impulse.exception.MyException;
+import com.msp.impulse.mapper.DictionaryMapper;
 import com.msp.impulse.mapper.SensorMapper;
 import com.msp.impulse.nb.entity.DataReportEntity;
 import com.msp.impulse.query.DataHistoryQuery;
@@ -30,6 +32,9 @@ public class DataManageDaoImpl implements DataManageDao {
     private MongoTemplate mongoTemplate;
     @Autowired
     private SensorMapper sensorMapper;
+    @Autowired
+    private DictionaryMapper dictionaryMapper;
+
     @Override
     public HomePageDataVo findHomeData() {
 
@@ -134,7 +139,18 @@ public class DataManageDaoImpl implements DataManageDao {
         if(StringUtils.isBlank(dataHistoryQuery.getSensorModel())){
             throw  new MyException("请输入设备型号!");
         }
-        List<ServiceType> serviceType = sensorMapper.findServiceType(dataHistoryQuery.getSensorModel());
+        //根据型号id查询名称
+        DictionaryExample dictionaryExample=new DictionaryExample();
+        dictionaryExample.createCriteria().andIdEqualTo(Integer.parseInt(dataHistoryQuery.getSensorModel())).andFlagEqualTo("0");
+        List<Dictionary> dictionaryList = dictionaryMapper.selectByExample(dictionaryExample);
+        if(dictionaryList.isEmpty()){
+            throw  new MyException("当前id对应的数据字典不存在!");
+        }
+        Dictionary dictionary = dictionaryList.get(0);
+        if(StringUtils.isBlank(dictionary.getDicName())){
+            throw  new MyException("当前id对应的数据字典名称不存在!");
+        }
+        List<ServiceType> serviceType = sensorMapper.findServiceType(dictionary.getDicName());
         dataHistoryVo.setServiceType(serviceType);
 
         return dataHistoryVo;
