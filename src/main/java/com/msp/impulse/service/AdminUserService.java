@@ -144,7 +144,7 @@ public class AdminUserService {
         if (company.getId() != null) {
             Company company1 = companyMapper.selectByPrimaryKey(company.getId());
             //密码加密
-            if (company.getPassword() != null) {
+            if (StringUtils.isNotBlank(company.getPassword())) {
                 String pwd = DigestUtils.md5DigestAsHex(saveUserQuery.getCompany().getPassword().getBytes());
                 company1.setPassword(pwd);
             }
