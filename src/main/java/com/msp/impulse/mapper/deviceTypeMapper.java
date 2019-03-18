@@ -1,30 +1,30 @@
 package com.msp.impulse.mapper;
 
-import com.msp.impulse.entity.deviceType;
-import com.msp.impulse.entity.deviceTypeExample;
+import com.msp.impulse.entity.DeviceType;
+import com.msp.impulse.entity.DeviceTypeExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-public interface deviceTypeMapper {
-    long countByExample(deviceTypeExample example);
+public interface DeviceTypeMapper {
+    long countByExample(DeviceTypeExample example);
 
-    int deleteByExample(deviceTypeExample example);
+    int deleteByExample(DeviceTypeExample example);
 
     int deleteByPrimaryKey(Integer id);
 
-    int insert(deviceType record);
+    int insert(DeviceType record);
 
-    int insertSelective(deviceType record);
+    int insertSelective(DeviceType record);
 
-    List<deviceType> selectByExample(deviceTypeExample example);
+    List<DeviceType> selectByExample(DeviceTypeExample example);
 
-    deviceType selectByPrimaryKey(Integer id);
+    DeviceType selectByPrimaryKey(Integer id);
 
-    int updateByExampleSelective(@Param("record") deviceType record, @Param("example") deviceTypeExample example);
+    int updateByExampleSelective(@Param("record") DeviceType record, @Param("example") DeviceTypeExample example);
 
-    int updateByExample(@Param("record") deviceType record, @Param("example") deviceTypeExample example);
+    int updateByExample(@Param("record") DeviceType record, @Param("example") DeviceTypeExample example);
 
-    int updateByPrimaryKeySelective(deviceType record);
+    int updateByPrimaryKeySelective(DeviceType record);
 
-    int updateByPrimaryKey(deviceType record);
+    int updateByPrimaryKey(DeviceType record);
 }
