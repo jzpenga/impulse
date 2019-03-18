@@ -51,6 +51,7 @@ public class SensorController {
             response = new BaseResponse<>();
             response.setResponseCode(ResponseCode.SERVER_FAILED.getCode());
             response.setResponseMsg(ResponseCode.SERVER_FAILED.getMessage());
+            //回滚iot平台新增的设备
         }
         return response;
     }

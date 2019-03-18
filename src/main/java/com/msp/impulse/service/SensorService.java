@@ -9,6 +9,7 @@ import com.msp.impulse.base.ResponseCode;
 import com.msp.impulse.entity.*;
 import com.msp.impulse.exception.MyException;
 import com.msp.impulse.mapper.CompanyMapper;
+import com.msp.impulse.mapper.DictionaryMapper;
 import com.msp.impulse.mapper.PassMapper;
 import com.msp.impulse.mapper.SensorMapper;
 import com.msp.impulse.nb.utils.NBDXManager;
@@ -34,6 +35,9 @@ public class SensorService {
     private CompanyMapper companyMapper;
     @Autowired
     private  GatewayService gatewayService;
+    @Autowired
+    private DictionaryMapper dictionaryMapper;
+
     /**
      * 新增传感器
      *
@@ -104,11 +108,22 @@ public class SensorService {
 //                throw  new MyException("传感器名称已存在!");
 //            }
             sensor.setSensorType("WaterMeter");//TODO  暂时方案
+            //根据数据字典id查询型号
+            DictionaryExample dictionaryExample=new DictionaryExample();
+            dictionaryExample.createCriteria().andFlagEqualTo("0").andIdEqualTo(Integer.parseInt(sensor.getSensorModel()));
+            List<Dictionary> dictionaryList = dictionaryMapper.selectByExample(dictionaryExample);
+            if(!dictionaryList.isEmpty()){
+                throw  new MyException("传入的数据字典id不存在");
+            }
+            Dictionary dictionary = dictionaryList.get(0);
+            if(StringUtils.isBlank(dictionary.getDicName())){
+                throw  new MyException("传入的数据字典id对应的名称不存在");
+            }
             //注册电信运营商
             DeviceInfo deviceInfo = new DeviceInfo();
             deviceInfo.setName(sensor.getName());
             deviceInfo.setDeviceType(sensor.getSensorType());
-            deviceInfo.setModel(sensor.getSensorModel());
+            deviceInfo.setModel(dictionary.getDicName());
             deviceInfo.setNodeId(sensor.getSensorNo());// mac 地址
 
             RegDirectDeviceOutDTO regDirectDeviceOutDTO = NBDXManager.registerDevice(deviceInfo);
