@@ -20,6 +20,7 @@ public class ImpulseApplication {
         SpringApplication application = new SpringApplication(ImpulseApplication.class);
         application.addListeners(new ApplicationMessageReceiver());
         application.run(args);
+
 //        SpringApplication.run(ImpulseApplication.class, args);
     }
 }
