@@ -360,7 +360,7 @@
       select   r.data_key dataKey,r.data_key_name dataKeyName,r.data_mark dataMark,r.data_value dataValue,
       r.device_id deviceId,r.equipment_no equipmentNo,r.event_time eventTime,
       r.gateway_name gatewayName,r.id,r.sensor_name sensorName,r.service_id serviceId,r.service_type serviceType,r.user_id userId,r.user_name userName
-      from  real_time_data r where 1=1
+      from  real_time_data r ,sensor s where 1=1 and s.device_id=r.device_id and s.flag!="1"
     <if test="sensorName != null and sensorName != ''">
       and r.sensor_name  =#{sensorName}
     </if>
