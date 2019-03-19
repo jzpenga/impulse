@@ -104,6 +104,6 @@
    <!--   <table tableName="device_service" domainObjectName="DeviceService" delimitIdentifiers="false"/>
         <table tableName="device_type" domainObjectName="DeviceType" delimitIdentifiers="false"/>-->
      <!--   <table tableName="real_time_data" domainObjectName="RealTimeData" delimitIdentifiers="false"/>-->
-
+      <!--  <table tableName="iot_device_model" domainObjectName="IotDeviceModel" delimitIdentifiers="false"/>-->
     </context>
 </generatorConfiguration>

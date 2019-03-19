@@ -8,10 +8,7 @@ import com.msp.impulse.base.BaseResponse;
 import com.msp.impulse.base.ResponseCode;
 import com.msp.impulse.entity.*;
 import com.msp.impulse.exception.MyException;
-import com.msp.impulse.mapper.CompanyMapper;
-import com.msp.impulse.mapper.DictionaryMapper;
-import com.msp.impulse.mapper.PassMapper;
-import com.msp.impulse.mapper.SensorMapper;
+import com.msp.impulse.mapper.*;
 import com.msp.impulse.nb.utils.NBDXManager;
 import com.msp.impulse.query.SensorAddQuery;
 import com.msp.impulse.query.SensorQuery;
@@ -34,9 +31,11 @@ public class SensorService {
     @Autowired
     private CompanyMapper companyMapper;
     @Autowired
-    private  GatewayService gatewayService;
+    private GatewayService gatewayService;
     @Autowired
     private DictionaryMapper dictionaryMapper;
+    @Autowired
+    private IotDeviceModelMapper iotDeviceModelMapper;
 
     /**
      * 新增传感器
@@ -47,35 +46,35 @@ public class SensorService {
     @Transactional
     public BaseResponse saveSensor(SensorAddQuery sensorAddQuery, Integer userId) {
         BaseResponse response = new BaseResponse();
-        addSensor(sensorAddQuery,userId);
+        addSensor(sensorAddQuery, userId);
         response.setResponseCode(ResponseCode.OK.getCode());
         response.setResponseMsg(ResponseCode.OK.getMessage());
         return response;
     }
 
-    public  void  addSensor(SensorAddQuery sensorAddQuery, Integer userId){
+    public void addSensor(SensorAddQuery sensorAddQuery, Integer userId) {
         Sensor sensor = sensorAddQuery.getSensor();
-        if(sensor==null){
+        if (sensor == null) {
             throw new MyException("请输入传感器信息!");
         }
         //传感器名称必输
-        if (StringUtils.isBlank(sensor.getName())){
-            throw  new MyException("传感器名称必输!");
+        if (StringUtils.isBlank(sensor.getName())) {
+            throw new MyException("传感器名称必输!");
         }
         if (StringUtils.isBlank(sensor.getSensorType())) {
-            throw  new MyException("传感器类型必输!");
+            throw new MyException("传感器类型必输!");
         }
         if (StringUtils.isBlank(sensor.getSensorModel())) {
-            throw  new MyException("传感器型号必输!");
+            throw new MyException("传感器型号必输!");
         }
         if (StringUtils.isBlank(sensor.getSensorNo())) {
-            throw  new MyException("传感器序列号必输!");
+            throw new MyException("传感器序列号必输!");
         }
-        if (sensor.getId()!=null) {//修改
+        if (sensor.getId() != null) {//修改
             //查询传感器
-            Sensor sensorUp= sensorMapper.selectByPrimaryKey(sensor.getId());
-            if(sensorUp==null){
-               throw  new MyException("id对应的传感器不存在!");
+            Sensor sensorUp = sensorMapper.selectByPrimaryKey(sensor.getId());
+            if (sensorUp == null) {
+                throw new MyException("id对应的传感器不存在!");
             }
 //            //判断网关名称是否唯一
 //            if (!sensorUp.getName().equals(sensor.getName())&&sensorMapper.findBySensorName(sensor.getName())>0) {
@@ -90,90 +89,130 @@ public class SensorService {
             sensorUp.setLongitude(sensor.getLongitude());
             sensorUp.setPassNumber(sensor.getPassNumber());
             sensorUp.setUpdateTime(new Date());
-            if(userId!=null) {
+            if (userId != null) {
                 sensorUp.setUpdateUser(userId);
             }
             sensorMapper.updateByPrimaryKey(sensorUp);
             List<Pass> passList = sensorAddQuery.getPassList();
-            if(passList!=null) {
-                gatewayService.savePass(passList,userId,sensor,null);
+            if (passList != null) {
+                gatewayService.savePass(passList, userId, sensor, null);
             }
-        }else{//新增
+        } else {//新增
             //获取传感器序列号
-            if(StringUtils.isBlank(sensor.getSensorNo())){
-                throw  new RuntimeException("传感器序列号不能为空!");
+            if (StringUtils.isBlank(sensor.getSensorNo())) {
+                throw new RuntimeException("传感器序列号不能为空!");
             }
 //            //判断网关名称是否唯一
 //            if (sensorMapper.findBySensorName(sensor.getName())>0) {
 //                throw  new MyException("传感器名称已存在!");
 //            }
-            sensor.setSensorType("WaterMeter");//TODO  暂时方案
+
+
             //根据数据字典id查询型号
-            DictionaryExample dictionaryExample=new DictionaryExample();
+            DictionaryExample dictionaryExample = new DictionaryExample();
             dictionaryExample.createCriteria().andFlagEqualTo("0").andIdEqualTo(Integer.parseInt(sensor.getSensorModel()));
             List<Dictionary> dictionaryList = dictionaryMapper.selectByExample(dictionaryExample);
-            if(dictionaryList.isEmpty()){
-                throw  new MyException("传入的数据字典id不存在");
+            if (dictionaryList.isEmpty()) {
+                throw new MyException("传入的数据字典id不存在");
             }
             Dictionary dictionary = dictionaryList.get(0);
-            if(StringUtils.isBlank(dictionary.getDicName())){
-                throw  new MyException("传入的数据字典id对应的名称不存在");
+            if (StringUtils.isBlank(dictionary.getDicName())) {
+                throw new MyException("传入的数据字典id对应的名称不存在");
+            }
+            //获取iotServiceType
+            String iotServiceType = getIotServiceType(sensor.getSensorModel());
+            if(StringUtils.isBlank(iotServiceType)){
+                throw new MyException("iot设备类型不存在!");
             }
             //注册电信运营商
             DeviceInfo deviceInfo = new DeviceInfo();
             deviceInfo.setName(sensor.getName());
-            deviceInfo.setDeviceType(sensor.getSensorType());
+            deviceInfo.setDeviceType(iotServiceType);
             deviceInfo.setModel(dictionary.getDicName());
             deviceInfo.setNodeId(sensor.getSensorNo());// mac 地址
 
             RegDirectDeviceOutDTO regDirectDeviceOutDTO = NBDXManager.registerDevice(deviceInfo);
-            if(regDirectDeviceOutDTO==null){
-                throw  new RuntimeException("注册失败");
+            if (regDirectDeviceOutDTO == null) {
+                throw new RuntimeException("注册失败");
             }
-            if(StringUtils.isBlank(regDirectDeviceOutDTO.getDeviceId())){
-                throw  new MyException("注册失败");
+            if (StringUtils.isBlank(regDirectDeviceOutDTO.getDeviceId())) {
+                throw new MyException("注册失败");
             }
             sensor.setDeviceId(regDirectDeviceOutDTO.getDeviceId());
-            //sensor.setDeviceId(sensor.getDeviceId());
 
             sensor.setFlag("0");
             sensor.setCreateTime(new Date());
-            if(userId!=null){
-                Company company = companyMapper.selectByPrimaryKey(userId);
-                sensor.setUserName(company.getCompanyName());
+            if (userId != null) {
+                CompanyExample companyExample = new CompanyExample();
+                companyExample.createCriteria().andFlagEqualTo("0").andIdEqualTo(userId);
+                List<Company> companyList = companyMapper.selectByExample(companyExample);
+                if (!companyList.isEmpty()) {
+                    Company company = companyList.get(0);
+                    if (StringUtils.isNotBlank(company.getCompanyName())) {
+                        sensor.setUserName(company.getCompanyName());
+                    }
+                }
                 sensor.setCreateUser(userId);
                 sensor.setUserId(userId);
             }
             try {
                 sensorMapper.insertSelective(sensor);
-            }catch(Exception e){
+            } catch (Exception e) {
                 //删除
                 NBDXManager.deleteDevice(regDirectDeviceOutDTO.getDeviceId());
                 throw new MyException("插入数据库失败，已回滚!");
             }
         }
-        if(userId!=null) {//传感器数加1
+        if (userId != null) {//传感器数加1
             changeSensorNumber(userId, 1);
         }
 
-        List<Pass> passList= sensorAddQuery.getPassList();
-        if(passList!=null) {
+        List<Pass> passList = sensorAddQuery.getPassList();
+        if (passList != null) {
             try {
                 gatewayService.savePass(passList, userId, sensor, null);
-            }catch(Exception e) {
+            } catch (Exception e) {
                 //删除
-                SensorExample sensorExample=new SensorExample();
+                SensorExample sensorExample = new SensorExample();
                 sensorExample.createCriteria().andIdEqualTo(sensor.getId()).andFlagEqualTo("0");
-               List<Sensor> sensorList= sensorMapper.selectByExample(sensorExample);
-               if(sensorList.isEmpty()){
-                    throw  new  MyException("传感器id对应的值不存在");
-               }
+                List<Sensor> sensorList = sensorMapper.selectByExample(sensorExample);
+                if (sensorList.isEmpty()) {
+                    throw new MyException("传感器id对应的值不存在");
+                }
                 Sensor sensor1 = sensorList.get(0);
                 NBDXManager.deleteDevice(sensor1.getDeviceId());
                 throw new MyException("插入数据库失败，已回滚!");
             }
         }
     }
+
+    public String getIotServiceType(String sensorModelId) {
+        //查询设备型号名称
+        DictionaryExample dictionaryExampleModel = new DictionaryExample();
+        dictionaryExampleModel.createCriteria().andFlagEqualTo("0").andIdEqualTo(Integer.parseInt(sensorModelId));
+        List<Dictionary> dictionaryList1 = dictionaryMapper.selectByExample(dictionaryExampleModel);
+        if (dictionaryList1.isEmpty()) {
+            throw new MyException("id【" + sensorModelId + "】对应的传感器型号不存在");
+        }
+        String dicName = dictionaryList1.get(0).getDicName();
+        //根据型号查询
+        IotDeviceModelExample iotDeviceModelExample = new IotDeviceModelExample();
+        iotDeviceModelExample.createCriteria().andFlagEqualTo("0").andSensorModelEqualTo(dicName);
+        List<IotDeviceModel> iotDeviceModels = iotDeviceModelMapper.selectByExample(iotDeviceModelExample);
+        if (iotDeviceModels.isEmpty()) {
+            throw new MyException(dicName + "对应的iot类型不存在");
+        }
+        String iotSensorTypeId = iotDeviceModels.get(0).getIotSensorType();
+        //根据iotServiceType查询名称
+        DictionaryExample dictionaryExampleModel1 = new DictionaryExample();
+        dictionaryExampleModel1.createCriteria().andFlagEqualTo("0").andIdEqualTo(Integer.parseInt(iotSensorTypeId));
+        List<Dictionary> dictionaryList2= dictionaryMapper.selectByExample(dictionaryExampleModel1);
+        if(dictionaryList2.isEmpty()){
+            throw new MyException(iotSensorTypeId + "对应的数据字典不存在");
+        }
+        return dictionaryList2.get(0).getDicName();
+    }
+
     /**
      * 更改company表的传感器数
      *
@@ -184,10 +223,10 @@ public class SensorService {
         //根据userId查询当前sensorNumber
         Company company = companyMapper.selectByPrimaryKey(userId);
         Integer sensorNumber;
-        if(company!=null){
-            if(company.getSensorNumber()==null){
-                sensorNumber=0;
-            }else {
+        if (company != null) {
+            if (company.getSensorNumber() == null) {
+                sensorNumber = 0;
+            } else {
                 sensorNumber = company.getSensorNumber();
                 sensorNumber = sensorNumber + changeNumber;
             }
@@ -195,6 +234,7 @@ public class SensorService {
             companyMapper.updateByPrimaryKey(company);
         }
     }
+
     /**
      * 根据传感器名称和网关查询传感器信息
      *
@@ -211,7 +251,7 @@ public class SensorService {
             sensorQuery.setPageSize(10);
         }
         PageHelper.startPage(sensorQuery.getPageNo(), sensorQuery.getPageSize());
-        if(userId!=null){
+        if (userId != null) {
             sensorQuery.setUserId(userId);
         }
         List<Sensor> sensorList = sensorMapper.selectSensorInfo(sensorQuery);
@@ -231,15 +271,15 @@ public class SensorService {
      */
     public BaseResponse<SensorAddQuery> querySensorById(Integer id) {
         BaseResponse<SensorAddQuery> response = new BaseResponse<>();
-        SensorAddQuery sensorAddQuery=new SensorAddQuery();
-        SensorExample sensorExample=new SensorExample();
+        SensorAddQuery sensorAddQuery = new SensorAddQuery();
+        SensorExample sensorExample = new SensorExample();
         sensorExample.createCriteria().andIdEqualTo(id).andFlagEqualTo("0");
         List<Sensor> sensorList = sensorMapper.selectByExample(sensorExample);
         //根据id查询通道
-        if(!sensorList.isEmpty()) {
+        if (!sensorList.isEmpty()) {
             sensorAddQuery.setSensor(sensorList.get(0));
         }
-        PassExample passExample=new PassExample();
+        PassExample passExample = new PassExample();
         passExample.createCriteria().andSensorIdEqualTo(id).andFlagEqualTo("0");
         List<Pass> passList = passMapper.selectByExample(passExample);
         sensorAddQuery.setPassList(passList);
@@ -253,12 +293,12 @@ public class SensorService {
      * 根据网关名称，通道号查询通道信息
      *
      * @param gatewayName
-     * @param  passNo
+     * @param passNo
      * @return
      */
-    public BaseResponse<Pass> queryByPassNoAndGatewayName(String gatewayName,Integer passNo) {
+    public BaseResponse<Pass> queryByPassNoAndGatewayName(String gatewayName, Integer passNo) {
         BaseResponse response = new BaseResponse();
-        Pass pass = passMapper.queryByPassNoAndGatewayName(gatewayName,passNo);
+        Pass pass = passMapper.queryByPassNoAndGatewayName(gatewayName, passNo);
         response.setData(pass);
         response.setResponseCode(ResponseCode.OK.getCode());
         response.setResponseMsg(ResponseCode.OK.getMessage());
@@ -272,34 +312,35 @@ public class SensorService {
      * @return
      */
     @Transactional
-    public BaseResponse deleteSensor(Integer id,Integer userId) {
+    public BaseResponse deleteSensor(Integer id, Integer userId) {
         BaseResponse response = new BaseResponse();
         //删除运营商传感器
         deleteNBDXSensor(id);
         //传感器数减一
-        if(userId!=null){
-            changeSensorNumber(userId,-1);
+        if (userId != null) {
+            changeSensorNumber(userId, -1);
         }
         //更新传感器flag为1
-        SensorExample sensorExample=new SensorExample();
+        SensorExample sensorExample = new SensorExample();
         sensorExample.createCriteria().andFlagEqualTo("0")
                 .andIdEqualTo(id);
         List<Sensor> sensorList = sensorMapper.selectByExample(sensorExample);
-        if(sensorList.isEmpty()){
-            throw  new MyException("id【"+id+"】对应的传感器不存在");
+        if (sensorList.isEmpty()) {
+            throw new MyException("id【" + id + "】对应的传感器不存在");
         }
-        Sensor sensor= sensorList.get(0);
+        Sensor sensor = sensorList.get(0);
         sensor.setFlag("1");
         sensorMapper.updateByPrimaryKey(sensor);
         response.setResponseCode(ResponseCode.OK.getCode());
         response.setResponseMsg(ResponseCode.OK.getMessage());
         return response;
     }
+
     /**
      * 删除电信运营商设备
      */
     public void deleteNBDXSensor(Integer sensorId) {
-        Sensor sensor= sensorMapper.selectByPrimaryKey(sensorId);
+        Sensor sensor = sensorMapper.selectByPrimaryKey(sensorId);
         NBDXManager.deleteDevice(sensor.getDeviceId());
     }
 
@@ -310,14 +351,14 @@ public class SensorService {
      * @return
      */
     @Transactional
-    public BaseResponse deleteSensorBatch(List<Integer> ids,Integer userId) {
+    public BaseResponse deleteSensorBatch(List<Integer> ids, Integer userId) {
         BaseResponse response = new BaseResponse();
         for (Integer id : ids) {
             //删除运营商传感器
             deleteNBDXSensor(id);
             //传感器数减一
-            if(userId!=null){
-                changeSensorNumber(userId,-1);
+            if (userId != null) {
+                changeSensorNumber(userId, -1);
             }
             //删除传感器
             Sensor sensor = sensorMapper.selectByPrimaryKey(id);
@@ -363,6 +404,7 @@ public class SensorService {
 
     /**
      * 关联传感器与用户
+     *
      * @param userId
      * @param sensorName
      * @return
@@ -372,7 +414,7 @@ public class SensorService {
         //根据用户id查询用户信息
         Company company = companyMapper.selectByPrimaryKey(userId);
         //根据传感器名称查询传感器信息
-        Sensor sensor=sensorMapper.findSensorBySensorName(sensorName);
+        Sensor sensor = sensorMapper.findSensorBySensorName(sensorName);
         //关联
         sensor.setUserId(company.getId());
         sensor.setUserName(company.getLoginName());
@@ -382,26 +424,27 @@ public class SensorService {
         return response;
     }
 
-    public Sensor queryByDeviceId(String deviceId){
+    public Sensor queryByDeviceId(String deviceId) {
         return sensorMapper.findSensorByDeviceId(deviceId);
     }
 
     /**
      * 根据名称查询传感器信息
+     *
      * @param sensorName
      * @return
      */
-    public BaseResponse< List<Sensor>> findSensorByName(String sensorName) {
-        BaseResponse< List<Sensor>> response = new BaseResponse();
-        if(TextUtils.isEmpty(sensorName)){
+    public BaseResponse<List<Sensor>> findSensorByName(String sensorName) {
+        BaseResponse<List<Sensor>> response = new BaseResponse();
+        if (TextUtils.isEmpty(sensorName)) {
             response.setData(new ArrayList<>());
             response.setResponseCode(ResponseCode.OK.getCode());
             response.setResponseMsg(ResponseCode.OK.getMessage());
             return response;
         }
         //根据传感器名称查询传感器信息
-        List<Sensor> sensorList=sensorMapper.findSensorByNameLike(sensorName);
-        if(sensorList.isEmpty()){
+        List<Sensor> sensorList = sensorMapper.findSensorByNameLike(sensorName);
+        if (sensorList.isEmpty()) {
             response.setData(new ArrayList<>());
             response.setResponseCode(ResponseCode.OK.getCode());
             response.setResponseMsg(ResponseCode.OK.getMessage());
