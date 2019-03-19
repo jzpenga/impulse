@@ -109,7 +109,7 @@ public class AdminDicService {
             dicQuery.setPageNo(1);
         }
         if (dicQuery.getPageSize() == null) {
-            dicQuery.setPageSize(10);
+            dicQuery.setPageSize(100);
         }
         PageHelper.startPage(dicQuery.getPageNo(), dicQuery.getPageSize());
         List<Dictionary> dictionaryList = dictionaryMapper.findDicByCondition(dicQuery);
@@ -174,7 +174,7 @@ public class AdminDicService {
             childDicQuery.setPageNo(1);
         }
         if (childDicQuery.getPageSize() == null) {
-            childDicQuery.setPageSize(10);
+            childDicQuery.setPageSize(100);
         }
         PageHelper.startPage(childDicQuery.getPageNo(), childDicQuery.getPageSize());
         List<Dictionary> dictionaryList = dictionaryMapper.findChildDicCode(childDicQuery.getId());
