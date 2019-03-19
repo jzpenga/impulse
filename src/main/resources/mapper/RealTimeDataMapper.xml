@@ -354,7 +354,7 @@
       select   r.data_key dataKey,r.data_key_name dataKeyName,r.data_mark dataMark,r.data_value dataValue,
       r.device_id deviceId,r.equipment_no equipmentNo,r.event_time eventTime,
       r.gateway_name gatewayName,r.id,r.sensor_name sensorName,r.service_id serviceId,r.service_type serviceType,r.user_id userId,r.user_name userName
-      from real_time_data r where r.data_key=#{dataKey} and r.device_id=#{deviceId}
+      from real_time_data r where r.data_key=#{dataKey} and r.device_id=#{deviceId} order by r.device_id,r.data_key
   </select>
   <select id="selectRealTimeDataInfo" parameterType="com.msp.impulse.query.DataHistoryQuery" resultType="com.msp.impulse.entity.RealTimeData">
       select   r.data_key dataKey,r.data_key_name dataKeyName,r.data_mark dataMark,r.data_value dataValue,
