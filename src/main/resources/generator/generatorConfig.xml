@@ -95,13 +95,15 @@
       <!--  <table tableName="gateway"  domainObjectName="Gateway" delimitIdentifiers="false" />-->
     <!--    <table tableName="sensor" domainObjectName="Sensor" delimitIdentifiers="false" />-->
    <!--     <table tableName="relay"  domainObjectName="Relay" delimitIdentifiers="false" />-->
-        <table tableName="pass"  domainObjectName="Pass" delimitIdentifiers="false" />
+       <!-- <table tableName="pass"  domainObjectName="Pass" delimitIdentifiers="false" />-->
     <!--   <table tableName="ext_pass"  domainObjectName="ExtPass" delimitIdentifiers="false" />-->
        <!--<table tableName="company"  domainObjectName="Company" delimitIdentifiers="false" />-->
     <!--    <table tableName="admin" domainObjectName="Admin" delimitIdentifiers="false"/>-->
        <!-- <table tableName="controlinstru" domainObjectName="Controlinstru" delimitIdentifiers="false"/>-->
         <!--<table tableName="test_message_receiver" domainObjectName="TestMessageReceiver" delimitIdentifiers="false"/>-->
-     <!--   <table tableName="device_service" domainObjectName="deviceService" delimitIdentifiers="false"/>
-        <table tableName="device_type" domainObjectName="deviceType" delimitIdentifiers="false"/>-->
+   <!--   <table tableName="device_service" domainObjectName="DeviceService" delimitIdentifiers="false"/>
+        <table tableName="device_type" domainObjectName="DeviceType" delimitIdentifiers="false"/>-->
+     <!--   <table tableName="real_time_data" domainObjectName="RealTimeData" delimitIdentifiers="false"/>-->
+
     </context>
 </generatorConfiguration>
