@@ -11,6 +11,7 @@ public class DataReportVo {
     private  String gatewayName;
     private  String serviceCode;
     private  String codeName;
+    private  String callbackUrl;
 
     public String getSensorName() {
         return sensorName;
@@ -90,5 +91,13 @@ public class DataReportVo {
 
     public void setCodeName(String codeName) {
         this.codeName = codeName;
+    }
+
+    public String getCallbackUrl() {
+        return callbackUrl;
+    }
+
+    public void setCallbackUrl(String callbackUrl) {
+        this.callbackUrl = callbackUrl;
     }
 }
