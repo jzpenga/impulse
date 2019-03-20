@@ -8,19 +8,17 @@ spring:
       #监控统计拦截的filters
       filters: stat
       driver-class-name: com.mysql.jdbc.Driver
-      url: jdbc:mysql://rm-m5e7x039d1rj7k336po.mysql.rds.aliyuncs.com:3306/huanyu_admin?characterEncoding=utf-8&useSSL=false&useCursorFetch=true&allowPublicKeyRetrieval=true
-      username: hyzg
-      password: Hyzg8888
+      url: jdbc:mysql://39.105.86.90:3306/huanyu_admin?characterEncoding=utf-8&useSSL=false&useCursorFetch=true&allowPublicKeyRetrieval=true
+      username: root
+      password: 123456
   data:
     mongodb:
       custom:
         hosts:
-        - dds-m5ea5feb0705bd541604-pub.mongodb.rds.aliyuncs.com
+        - 39.105.86.90
         ports:
-        - 3717
-        database: admin
-        username: root
-        password: Hyzg8888
+        - 27017
+        database: huanyu
   jackson:
     deserialization:
       FAIL_ON_UNKNOWN_PROPERTIES: false
