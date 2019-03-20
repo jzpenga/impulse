@@ -77,6 +77,9 @@ public class DataReportService {
                     if (StringUtils.isBlank(dataReportEntity.getEventTime())) {
                         throw new MyException("event_time不能为空!");
                     }
+                    if (StringUtils.isBlank(sensor.getSensorNo())) {
+                        throw new MyException("传感器序列号不能为空!");
+                    }
                     //根据userId查询用户名
                     if (userId != null) {
                         CompanyExample companyExample = new CompanyExample();
@@ -99,11 +102,7 @@ public class DataReportService {
                             dataReportEntity.setDataKeyName(dictionary.getDicName());
                         }
                     }
-                    //根据deviceId查找序列号
-                    String sensorNo = sensorMapper.findByDeviceId(dataReportEntity.getDeviceId());
-                    if (StringUtils.isNotBlank(sensorNo)) {
-                        dataReportEntity.setEquipmentNo(sensorNo);
-                    }
+                    dataReportEntity.setEquipmentNo(sensor.getSensorNo());
                     dataReportEntity.setSensorName(sensor.getName());
                     if (StringUtils.isNotBlank(dataReportEntity.getGatewayName())) {
                         dataReportEntity.setGatewayName(dataReportEntity.getGatewayName());
@@ -127,9 +126,7 @@ public class DataReportService {
                         realTimeData1.setSensorName(sensor.getName());
                         //realTimeData1.setGatewayName();
                         realTimeData1.setEventTime(dataReportEntity.getEventTime());
-                        if (StringUtils.isNotBlank(sensorNo)) {
-                            realTimeData1.setEquipmentNo(sensorNo);
-                        }
+                        realTimeData1.setEquipmentNo(sensor.getSensorNo());
                         realTimeData1.setDataValue(dataReportEntity.getDataValue());
                         if (StringUtils.isNotBlank(dataReportEntity.getDataKeyName())) {
                             realTimeData1.setDataKeyName(dataReportEntity.getDataKeyName());
@@ -149,9 +146,7 @@ public class DataReportService {
                         realTimeData.setDataMark(dataReportEntity.getDataMark());
                         realTimeData.setDataValue(dataReportEntity.getDataValue());
                         realTimeData.setDeviceId(dataReportEntity.getDeviceId());
-                        if (StringUtils.isNotBlank(sensorNo)) {
-                            realTimeData.setEquipmentNo(sensorNo);
-                        }
+                        realTimeData.setEquipmentNo(sensor.getSensorNo());
                         realTimeData.setEventTime(dataReportEntity.getEventTime());
                         //realTimeData.setGatewayName();
                         realTimeData.setSensorName(sensor.getName());
