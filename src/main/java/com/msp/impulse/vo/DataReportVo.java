@@ -1,5 +1,7 @@
 package com.msp.impulse.vo;
 
+import java.util.HashMap;
+
 public class DataReportVo {
     private  String  sensorName;
     private String  sensorModel;
@@ -12,6 +14,7 @@ public class DataReportVo {
     private  String serviceCode;
     private  String codeName;
     private  String callbackUrl;
+    private HashMap<String,String> dataValueAndKey;
 
     public String getSensorName() {
         return sensorName;
@@ -99,5 +102,13 @@ public class DataReportVo {
 
     public void setCallbackUrl(String callbackUrl) {
         this.callbackUrl = callbackUrl;
+    }
+
+    public HashMap<String, String> getDataValueAndKey() {
+        return dataValueAndKey;
+    }
+
+    public void setDataValueAndKey(HashMap<String, String> dataValueAndKey) {
+        this.dataValueAndKey = dataValueAndKey;
     }
 }
