@@ -524,7 +524,7 @@
   </select>
   <select id="selectDataReport" parameterType="string" resultType="com.msp.impulse.vo.DataReportVo">
      select   s.name ,s.device_id,s.sensor_no,s.gateway_name,s.sensor_type,s.user_id,c.company_name,d.code_name,d.service_code,s.sensor_model,
-      ,c.callback_url from  sensor s  left  join device_service d
+      c.callback_url from  sensor s  left  join device_service d
      on s.sensor_model=d.device_type_id  LEFT JOIN company c  on s.user_id=c.id
      where s.device_id=#{deviceId}
   </select>
