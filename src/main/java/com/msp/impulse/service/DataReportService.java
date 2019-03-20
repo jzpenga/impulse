@@ -32,7 +32,7 @@ public class DataReportService {
     @Autowired
     private RealTimeDataMapper realTimeDataMapper;
 
-    public  DataReportVo  getDataReportList(String deviceId){
+    public  DataReportVo  getDataReport(String deviceId){
         //关联查询
        DataReportVo dataReportVo= sensorMapper.selectDataReport(deviceId);
        return dataReportVo;
