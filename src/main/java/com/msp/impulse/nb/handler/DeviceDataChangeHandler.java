@@ -26,7 +26,10 @@ public class DeviceDataChangeHandler implements IDataHandler<NotifyDeviceDataCha
     @Override
     public void handler(NotifyDeviceDataChangedDTO dto) {
 
+        long start = System.currentTimeMillis();
         DataReportVo dataReport = dataReportService.getDataReport(dto.getDeviceId());
+        logger.info("数据入库时间===>"+(System.currentTimeMillis()-start)/1000f+"秒");
+
         DataReportTask dataReportTask = new DataReportTask(dataReport, dto, dataReportService);
         executor.execute(dataReportTask);
     }
