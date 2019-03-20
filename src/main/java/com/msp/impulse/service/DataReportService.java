@@ -8,6 +8,7 @@ import com.msp.impulse.mapper.DictionaryMapper;
 import com.msp.impulse.mapper.RealTimeDataMapper;
 import com.msp.impulse.mapper.SensorMapper;
 import com.msp.impulse.nb.entity.DataReportEntity;
+import com.msp.impulse.vo.DataReportVo;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +32,11 @@ public class DataReportService {
     @Autowired
     private RealTimeDataMapper realTimeDataMapper;
 
+    public  DataReportVo  getDataReportList(String deviceId){
+        //关联查询
+       DataReportVo dataReportVo= sensorMapper.selectDataReport(deviceId);
+       return dataReportVo;
+    }
     /**
      * 入库
      */
