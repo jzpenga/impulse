@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.msp.impulse.entity.ServiceType;
 import com.msp.impulse.query.SensorQuery;
+import com.msp.impulse.vo.DataReportVo;
 import org.apache.ibatis.annotations.Param;
 
 public interface SensorMapper {
@@ -48,4 +49,6 @@ public interface SensorMapper {
     List<Sensor> findSensorByNameLike(String sensorName);
 
     List<ServiceType> findServiceType(String sensorModel);
+
+    List<DataReportVo> selectDataReport(String deviceId);
 }
