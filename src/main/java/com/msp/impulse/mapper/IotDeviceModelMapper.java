@@ -27,4 +27,6 @@ public interface IotDeviceModelMapper {
     int updateByPrimaryKeySelective(IotDeviceModel record);
 
     int updateByPrimaryKey(IotDeviceModel record);
+
+    List<IotDeviceModel> selectIotList(IotDeviceModel iotDeviceModel);
 }
