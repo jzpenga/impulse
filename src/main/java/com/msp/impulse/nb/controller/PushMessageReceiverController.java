@@ -143,7 +143,7 @@ public class PushMessageReceiverController {
     public void handleDeviceDataChanged(NotifyDeviceDataChangedDTO body) {
         System.out.println("deviceDataChanged ==> " + body);
         //logger.info("deviceDataChanged ==> " + body);
-        //dataChangedDTOIDataHandler.handler(body);
+        dataChangedDTOIDataHandler.handler(body);
     }
 
     public void handleDeviceDatasChanged(NotifyDeviceDatasChangedDTO body) {
