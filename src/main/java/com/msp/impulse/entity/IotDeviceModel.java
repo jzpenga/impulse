@@ -1,11 +1,12 @@
 package com.msp.impulse.entity;
 
+import com.msp.impulse.base.BaseRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
 import java.util.Date;
 
-public class IotDeviceModel implements Serializable {
+public class IotDeviceModel extends BaseRequest implements Serializable{
     private Integer id;
 
     private String sensorModel;

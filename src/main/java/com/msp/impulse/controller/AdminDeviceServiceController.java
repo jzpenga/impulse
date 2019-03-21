@@ -22,7 +22,7 @@ public class AdminDeviceServiceController {
     private AdminDeviceServiceService adminDeviceServiceService;
 
     @PostMapping("findDeviceType")
-    @ApiOperation(value = "查询所有设备型号", notes = "查询所有设备型号", tags = "查询所有设备型号", httpMethod = "POST")
+    @ApiOperation(value = "查询所有设备型号", notes = "查询所有设备型号", tags = "服务类型管理", httpMethod = "POST")
     public BaseResponse findDeviceType() {
         BaseResponse response;
         try {

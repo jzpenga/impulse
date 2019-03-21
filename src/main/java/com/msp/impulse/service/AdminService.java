@@ -3,7 +3,9 @@ package com.msp.impulse.service;
 import com.msp.impulse.base.BaseResponse;
 import com.msp.impulse.base.ResponseCode;
 import com.msp.impulse.entity.*;
+import com.msp.impulse.exception.MyException;
 import com.msp.impulse.mapper.AdminMapper;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
@@ -95,6 +97,12 @@ public class AdminService {
      */
     public BaseResponse findByNameAndPwd(String loginName, String password) {
         BaseResponse response = new BaseResponse<>();
+        if(StringUtils.isBlank(loginName)){
+            throw new MyException("请输入登录名!");
+        }
+        if(StringUtils.isBlank(password)){
+            throw new MyException("请输入登密码!");
+        }
         String pwd = DigestUtils.md5DigestAsHex(password.getBytes());//默认密码
         Admin admin = adminMapper.findByNameAndPwd(loginName, pwd);
         if (admin == null) {

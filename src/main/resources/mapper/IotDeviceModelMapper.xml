@@ -90,7 +90,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from iot_device_model
     where id = #{id,jdbcType=INTEGER}
@@ -289,6 +289,18 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectIotList" parameterType="com.msp.impulse.entity.IotDeviceModel" resultType="com.msp.impulse.entity.IotDeviceModel">
-      select  * from  iot_device_model  where 1=1
+      select  i.sensor_model sensorModel,i.iot_sensor_type iotSensorType,i.device_type deviceType,i.create_time createTime from  iot_device_model i
+    <where>
+    <if test="sensorModel != null and sensorModel != ''">
+      and i.sensor_model  like "%"#{sensorModel}"%"
+    </if>
+    <if test="iotSensorType != null and iotSensorType!=''">
+      AND i.iot_sensor_type = #{iotSensorType}
+    </if>
+    <if test="deviceType != null and deviceType!=''">
+      AND i.device_type = #{deviceType}
+    </if>
+    </where>
+      order by i.create_time
   </select>
 </mapper>
