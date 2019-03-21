@@ -3,6 +3,7 @@ package com.msp.impulse.service;
 import com.msp.impulse.base.BaseResponse;
 import com.msp.impulse.base.ResponseCode;
 import com.msp.impulse.entity.Company;
+import com.msp.impulse.exception.MyException;
 import com.msp.impulse.mapper.CompanyMapper;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +57,12 @@ public class UserService {
 
     public BaseResponse<Company> findByNameAndPwd(String loginName, String password) {
         BaseResponse<Company> response = new BaseResponse<>();
+        if(StringUtils.isBlank(loginName)){
+            throw new MyException("请输入登录名!");
+        }
+        if(StringUtils.isBlank(password)){
+            throw new MyException("请输入登密码!");
+        }
         String pwd = DigestUtils.md5DigestAsHex(password.getBytes());//默认密码
         Company company= companyMapper.findByNameAndPwd(loginName,pwd);
         if(company==null){

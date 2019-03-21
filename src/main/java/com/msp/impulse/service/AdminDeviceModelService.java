@@ -1,9 +1,12 @@
 package com.msp.impulse.service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.msp.impulse.base.BaseResponse;
 import com.msp.impulse.base.ResponseCode;
 import com.msp.impulse.entity.IotDeviceModel;
 import com.msp.impulse.entity.IotDeviceModelExample;
+import com.msp.impulse.entity.Sensor;
 import com.msp.impulse.exception.MyException;
 import com.msp.impulse.mapper.IotDeviceModelMapper;
 import org.apache.commons.lang.StringUtils;
@@ -54,7 +57,7 @@ public class AdminDeviceModelService {
         file.transferTo(new File(path + File.separator + filename));// 文件写入
 
         if(StringUtils.isBlank(iotDeviceModel.getSensorModel())){
-            throw  new MyException("请输入设备型号!");
+            throw  new MyException("请输入设备型号名称!");
         }
         if(StringUtils.isBlank(iotDeviceModel.getIotSensorType())){
             throw  new MyException("请输入iot设备类型!");
@@ -84,7 +87,7 @@ public class AdminDeviceModelService {
             iotDeviceModelExample.createCriteria().andSensorModelEqualTo(iotDeviceModel.getSensorModel()).andFlagEqualTo("0");
             List<IotDeviceModel> iotDeviceModels = iotDeviceModelMapper.selectByExample(iotDeviceModelExample);
             if(!iotDeviceModels.isEmpty()){
-                throw  new MyException("已存在设备型号为【"+iotDeviceModel.getSensorModel()+"】的iot设备类型");
+                throw  new MyException("已存在设备型号名称为【"+iotDeviceModel.getSensorModel()+"】的iot设备类型");
             }
             iotDeviceModel.setCreateTime(new Date());
             iotDeviceModel.setFlag("0");
@@ -123,7 +126,10 @@ public class AdminDeviceModelService {
     public BaseResponse deleteDeviceModelById(List<Integer> ids) {
         BaseResponse response=new BaseResponse();
         for (Integer id:ids) {
-            iotDeviceModelMapper.deleteByPrimaryKey(id);
+            IotDeviceModel iotDeviceModel = iotDeviceModelMapper.selectByPrimaryKey(id);
+            iotDeviceModel.setFlag("0");
+            iotDeviceModelMapper.updateByPrimaryKey(iotDeviceModel);
+
         }
         response.setResponseMsg(ResponseCode.OK.getMessage());
         response.setResponseCode(ResponseCode.OK.getCode());
@@ -131,9 +137,17 @@ public class AdminDeviceModelService {
     }
 
     public BaseResponse queryDeviceModelList(IotDeviceModel iotDeviceModel) {
-        BaseResponse response=new BaseResponse();
+        BaseResponse<PageInfo> response = new BaseResponse<>();
+        if (iotDeviceModel.getPageNo() == null) {
+            iotDeviceModel.setPageNo(1);
+        }
+        if (iotDeviceModel.getPageSize() == null) {
+            iotDeviceModel.setPageSize(10);
+        }
+        PageHelper.startPage(iotDeviceModel.getPageNo(), iotDeviceModel.getPageSize());
         List<IotDeviceModel> iotDeviceModelList=iotDeviceModelMapper.selectIotList(iotDeviceModel);
-        response.setData(iotDeviceModelList);
+        PageInfo<IotDeviceModel> pageInfo = new PageInfo<>(iotDeviceModelList);
+        response.setData(pageInfo);
         response.setResponseMsg(ResponseCode.OK.getMessage());
         response.setResponseCode(ResponseCode.OK.getCode());
         return response;

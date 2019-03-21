@@ -3,6 +3,7 @@ package com.msp.impulse.controller;
 import com.msp.impulse.base.BaseResponse;
 import com.msp.impulse.base.ResponseCode;
 import com.msp.impulse.entity.Admin;
+import com.msp.impulse.exception.MyException;
 import com.msp.impulse.service.AdminService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -74,6 +75,11 @@ public class AdminController {
             response = adminService.findByNameAndPwd(admin.getLoginName(), admin.getPassword());
             //记录登录状态
             session.setAttribute("loginAdmin", response.getData());
+        }catch (MyException e) {
+            logger.error(e.getMessage());
+            response = new BaseResponse();
+            response.setResponseCode(ResponseCode.PARAMETER_VALIDATION_FAILED.getCode());
+            response.setResponseMsg(e.getMessage());
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             response = new BaseResponse<>();
