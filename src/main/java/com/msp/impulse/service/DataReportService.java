@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -34,8 +35,8 @@ public class DataReportService {
     private RealTimeDataMapper realTimeDataMapper;
 
     public DataReportVo getDataReport(String deviceId) {
-        //关联查询 
-        
+        //关联查询
+
         HashMap<String, String> dataKeyValue = new HashMap<>();
         List<DataReportVo> dataReportVoList = sensorMapper.selectDataReport(deviceId);
         DataReportVo dataReportVo1 = dataReportVoList.get(0);
@@ -63,92 +64,99 @@ public class DataReportService {
      */
     @Transactional
     public boolean insertDateReport(List<DataReportEntity> dataReportEntityList) {
-//        try {
-//            if (!dataReportEntityList.isEmpty()) {
-//                for (DataReportEntity dataReportEntity : dataReportEntityList) {
-//                    if (StringUtils.isBlank(dataReportEntity.getDataKey())) {
-//                        throw new MyException("dataKey不能为空!");
-//                    }
-//                    if (StringUtils.isBlank(dataReportEntity.getDeviceId())) {
-//                        throw new MyException("deviceId不能为空!");
-//                    }
-//                    if (StringUtils.isBlank(dataReportEntity.getServiceType())) {
-//                        throw new MyException("serviceType不能为空!");
-//                    }
-//                    if (StringUtils.isBlank(dataReportEntity.getDataKey())) {
-//                        throw new MyException("dataKey不能为空!");
-//                    }
-//                    if (StringUtils.isBlank(dataReportEntity.getDataValue())) {
-//                        throw new MyException("dataValue不能为空!");
-//                    }
-//                    if (StringUtils.isBlank(dataReportEntity.getDataValue())) {
-//                        throw new MyException("dataMark不能为空!");
-//                    }
-//                    if (StringUtils.isBlank(dataReportEntity.getServiceId())) {
-//                        throw new MyException("serviceId不能为空!");
-//                    }
-//                    if (StringUtils.isBlank(dataReportEntity.getServiceType())) {
-//                        throw new MyException("serviceType不能为空!");
-//                    }
-//                    if (StringUtils.isBlank(dataReportEntity.getEventTime())) {
-//                        throw new MyException("event_time不能为空!");
-//                    }
-//                    if (StringUtils.isBlank(dataReportEntity.getEquipmentNo())) {
-//                        throw new MyException("传感器序列号不能为空!");
-//                    }
-//
-//                    dataReportDao.save(dataReportEntity);
-//                    //记录最新实时数据======================start
-//                    //根据deviceId和dataKey查找数据,存在更新，不存在新增
-//                    RealTimeData realTimeData1 = realTimeDataMapper.selectByDeviceIdAndDataKey(dataReportEntity.getDeviceId(), dataReportEntity.getDataKey());
-//                    if (realTimeData1 != null) {  //更新数据
-//                        if (userId != null) {
-//                            realTimeData1.setUserId(userId);
-//                        }
-//                        if (StringUtils.isNotBlank(dataReportEntity.getUserName())) {
-//                            realTimeData1.setUserName(dataReportEntity.getUserName());
-//                        }
-//                        realTimeData1.setServiceId(dataReportEntity.getServiceId());
-//                        realTimeData1.setServiceType(dataReportEntity.getServiceType());
-//                        realTimeData1.setSensorName(dataReportEntity.getSensorName());
-//                        //realTimeData1.setGatewayName();
-//                        realTimeData1.setEventTime(dataReportEntity.getEventTime());
-//                        realTimeData1.setEquipmentNo(dataReportEntity.getEquipmentNo());
-//                        realTimeData1.setDataValue(dataReportEntity.getDataValue());
-//                        if (StringUtils.isNotBlank(dataReportEntity.getDataKeyName())) {
-//                            realTimeData1.setDataKeyName(dataReportEntity.getDataKeyName());
-//                        }
-//                        realTimeData1.setDataMark(dataReportEntity.getDataMark());
-//                        realTimeDataMapper.updateByPrimaryKey(realTimeData1);
-//                    } else {//新增数据
-//                        RealTimeData realTimeData = new RealTimeData();
-//                        if (userId != null) {
-//                            realTimeData.setUserId(userId);
-//                        }
-//                        if (StringUtils.isNotBlank(dataReportEntity.getUserName())) {
-//                            realTimeData.setUserName(dataReportEntity.getUserName());
-//                        }
-//                        realTimeData.setDataKey(dataReportEntity.getDataKey());
-//                        realTimeData.setDataKeyName(dataReportEntity.getDataKeyName());
-//                        realTimeData.setDataMark(dataReportEntity.getDataMark());
-//                        realTimeData.setDataValue(dataReportEntity.getDataValue());
-//                        realTimeData.setDeviceId(dataReportEntity.getDeviceId());
-//                        realTimeData.setEquipmentNo(dataReportEntity.getEquipmentNo());
-//                        realTimeData.setEventTime(dataReportEntity.getEventTime());
-//                        //realTimeData.setGatewayName();
-//                        realTimeData.setSensorName(dataReportEntity.getSensorName());
-//                        realTimeData.setServiceType(dataReportEntity.getServiceType());
-//                        realTimeData.setServiceId(dataReportEntity.getServiceId());
-//                        realTimeDataMapper.insertSelective(realTimeData);
-//                    }
-//                    //======================================end
-//                }
-//            }
+        try {
+            if (!dataReportEntityList.isEmpty()) {
+                for (DataReportEntity dataReportEntity : dataReportEntityList) {
+                    if (StringUtils.isBlank(dataReportEntity.getDataKey())) {
+                        throw new MyException("dataKey不能为空!");
+                    }
+                    if (StringUtils.isBlank(dataReportEntity.getDeviceId())) {
+                        throw new MyException("deviceId不能为空!");
+                    }
+                    if (StringUtils.isBlank(dataReportEntity.getServiceType())) {
+                        throw new MyException("serviceType不能为空!");
+                    }
+                    if (StringUtils.isBlank(dataReportEntity.getDataKey())) {
+                        throw new MyException("dataKey不能为空!");
+                    }
+                    if (StringUtils.isBlank(dataReportEntity.getDataValue())) {
+                        throw new MyException("dataValue不能为空!");
+                    }
+                    if (StringUtils.isBlank(dataReportEntity.getDataMark())) {
+                        throw new MyException("dataMark不能为空!");
+                    }
+                    if (StringUtils.isBlank(dataReportEntity.getServiceId())) {
+                        throw new MyException("serviceId不能为空!");
+                    }
+                    if (StringUtils.isBlank(dataReportEntity.getServiceType())) {
+                        throw new MyException("serviceType不能为空!");
+                    }
+                    if (StringUtils.isBlank(dataReportEntity.getEventTime())) {
+                        throw new MyException("event_time不能为空!");
+                    }
+                    if (StringUtils.isBlank(dataReportEntity.getEquipmentNo())) {
+                        throw new MyException("传感器序列号不能为空!");
+                    }
+                    if (StringUtils.isBlank(dataReportEntity.getSensorName())) {
+                        throw new MyException("传感器名称不能为空!");
+                    }
+                    dataReportDao.save(dataReportEntity);
+                    //记录最新实时数据======================start
+                    //根据deviceId和dataKey查找数据,存在更新，不存在新增
+                    RealTimeData realTimeData1 = realTimeDataMapper.selectByDeviceIdAndDataKey(dataReportEntity.getDeviceId(), dataReportEntity.getDataKey());
+                    if (realTimeData1 != null) {  //更新数据
+                        if (dataReportEntity.getUserId() != null) {
+                            realTimeData1.setUserId(dataReportEntity.getUserId());
+                        }
+                        if (StringUtils.isNotBlank(dataReportEntity.getUserName())) {
+                            realTimeData1.setUserName(dataReportEntity.getUserName());
+                        }
+                        realTimeData1.setServiceId(dataReportEntity.getServiceId());
+                        realTimeData1.setServiceType(dataReportEntity.getServiceType());
+                        realTimeData1.setSensorName(dataReportEntity.getSensorName());
+                        //realTimeData1.setGatewayName();
+                        realTimeData1.setEventTime(dataReportEntity.getEventTime());
+                        realTimeData1.setEquipmentNo(dataReportEntity.getEquipmentNo());
+                        realTimeData1.setDataValue(dataReportEntity.getDataValue());
+                        if (StringUtils.isNotBlank(dataReportEntity.getDataKeyName())) {
+                            realTimeData1.setDataKeyName(dataReportEntity.getDataKeyName());
+                        }
+                        realTimeData1.setDataMark(dataReportEntity.getDataMark());
+                        realTimeData1.setUpdateTime(new Date());
+                        realTimeDataMapper.updateByPrimaryKey(realTimeData1);
+                    } else {//新增数据
+                        RealTimeData realTimeData = new RealTimeData();
+                        if (dataReportEntity.getUserId()  != null) {
+                            realTimeData.setUserId(dataReportEntity.getUserId() );
+                        }
+                        if (StringUtils.isNotBlank(dataReportEntity.getUserName())) {
+                            realTimeData.setUserName(dataReportEntity.getUserName());
+                        }
+                        realTimeData.setDataKey(dataReportEntity.getDataKey());
+                        if (StringUtils.isNotBlank(dataReportEntity.getDataKeyName())) {
+                            realTimeData.setDataKeyName(dataReportEntity.getDataKeyName());
+                        }
+                        realTimeData.setDataMark(dataReportEntity.getDataMark());
+                        realTimeData.setDataValue(dataReportEntity.getDataValue());
+                        realTimeData.setDeviceId(dataReportEntity.getDeviceId());
+                        realTimeData.setEquipmentNo(dataReportEntity.getEquipmentNo());
+                        realTimeData.setEventTime(dataReportEntity.getEventTime());
+                        //realTimeData.setGatewayName();
+                        realTimeData.setSensorName(dataReportEntity.getSensorName());
+                        realTimeData.setServiceType(dataReportEntity.getServiceType());
+                        realTimeData.setServiceId(dataReportEntity.getServiceId());
+                        realTimeData.setFlag("0");
+                        realTimeData.setCreateTime(new Date());
+                        realTimeDataMapper.insertSelective(realTimeData);
+                    }
+                    //======================================end
+                }
+            }
             return true;
-//        } catch (Exception e) {
-//            logger.error(e.getMessage(), e);
-//            return false;
-//        }
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return false;
+        }
     }
 
     /**
