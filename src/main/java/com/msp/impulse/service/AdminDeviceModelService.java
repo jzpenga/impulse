@@ -94,4 +94,48 @@ public class AdminDeviceModelService {
         response.setResponseCode(ResponseCode.OK.getCode());
         return response;
     }
+
+    /**
+     * 根据id查询信息
+     * @param id
+     * @return
+     */
+    public BaseResponse queryDeviceModelById(Integer id) {
+        BaseResponse response=new BaseResponse();
+        IotDeviceModelExample iotDeviceModelExample=new IotDeviceModelExample();
+        iotDeviceModelExample.createCriteria().andIdEqualTo(id).andFlagEqualTo("0");
+        List<IotDeviceModel> iotDeviceModels = iotDeviceModelMapper.selectByExample(iotDeviceModelExample);
+        if(!iotDeviceModels.isEmpty()){
+            IotDeviceModel iotDeviceModel = iotDeviceModels.get(0);
+            response.setData(iotDeviceModel);
+        }
+        response.setResponseMsg(ResponseCode.OK.getMessage());
+        response.setResponseCode(ResponseCode.OK.getCode());
+        return response;
+    }
+
+    /**
+     * 根据id删iot设备模型
+     * @param ids
+     * @return
+     */
+    @Transactional
+    public BaseResponse deleteDeviceModelById(List<Integer> ids) {
+        BaseResponse response=new BaseResponse();
+        for (Integer id:ids) {
+            iotDeviceModelMapper.deleteByPrimaryKey(id);
+        }
+        response.setResponseMsg(ResponseCode.OK.getMessage());
+        response.setResponseCode(ResponseCode.OK.getCode());
+        return response;
+    }
+
+    public BaseResponse queryDeviceModelList(IotDeviceModel iotDeviceModel) {
+        BaseResponse response=new BaseResponse();
+        List<IotDeviceModel> iotDeviceModelList=iotDeviceModelMapper.selectIotList(iotDeviceModel);
+        response.setData(iotDeviceModelList);
+        response.setResponseMsg(ResponseCode.OK.getMessage());
+        response.setResponseCode(ResponseCode.OK.getCode());
+        return response;
+    }
 }

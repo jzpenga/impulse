@@ -4,8 +4,12 @@
   <resultMap id="BaseResultMap" type="com.msp.impulse.entity.DeviceType">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="device_type" jdbcType="VARCHAR" property="deviceType" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_user" jdbcType="VARCHAR" property="updateUser" />
+    <result column="create_user" jdbcType="VARCHAR" property="createUser" />
+    <result column="state" jdbcType="VARCHAR" property="state" />
+    <result column="flag" jdbcType="VARCHAR" property="flag" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -66,7 +70,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, device_type, create_time, update_time
+    id, device_type, update_time, create_time, update_user, create_user, state, flag
   </sql>
   <select id="selectByExample" parameterType="com.msp.impulse.entity.DeviceTypeExample" resultMap="BaseResultMap">
     select
@@ -99,10 +103,12 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.msp.impulse.entity.DeviceType">
-    insert into device_type (id, device_type, create_time, 
-      update_time)
-    values (#{id,jdbcType=INTEGER}, #{deviceType,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP})
+    insert into device_type (id, device_type, update_time, 
+      create_time, update_user, create_user, 
+      state, flag)
+    values (#{id,jdbcType=INTEGER}, #{deviceType,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, 
+      #{state,jdbcType=VARCHAR}, #{flag,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.msp.impulse.entity.DeviceType">
     insert into device_type
@@ -113,11 +119,23 @@
       <if test="deviceType != null">
         device_type,
       </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
       <if test="createTime != null">
         create_time,
       </if>
-      <if test="updateTime != null">
-        update_time,
+      <if test="updateUser != null">
+        update_user,
+      </if>
+      <if test="createUser != null">
+        create_user,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="flag != null">
+        flag,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -127,11 +145,23 @@
       <if test="deviceType != null">
         #{deviceType,jdbcType=VARCHAR},
       </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="updateTime != null">
-        #{updateTime,jdbcType=TIMESTAMP},
+      <if test="updateUser != null">
+        #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null">
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="flag != null">
+        #{flag,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -150,11 +180,23 @@
       <if test="record.deviceType != null">
         device_type = #{record.deviceType,jdbcType=VARCHAR},
       </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
       <if test="record.createTime != null">
         create_time = #{record.createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.updateTime != null">
-        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      <if test="record.updateUser != null">
+        update_user = #{record.updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createUser != null">
+        create_user = #{record.createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.state != null">
+        state = #{record.state,jdbcType=VARCHAR},
+      </if>
+      <if test="record.flag != null">
+        flag = #{record.flag,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null">
@@ -165,8 +207,12 @@
     update device_type
     set id = #{record.id,jdbcType=INTEGER},
       device_type = #{record.deviceType,jdbcType=VARCHAR},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
-      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+      update_user = #{record.updateUser,jdbcType=VARCHAR},
+      create_user = #{record.createUser,jdbcType=VARCHAR},
+      state = #{record.state,jdbcType=VARCHAR},
+      flag = #{record.flag,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -177,11 +223,23 @@
       <if test="deviceType != null">
         device_type = #{deviceType,jdbcType=VARCHAR},
       </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="updateTime != null">
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      <if test="updateUser != null">
+        update_user = #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null">
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="flag != null">
+        flag = #{flag,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -189,8 +247,12 @@
   <update id="updateByPrimaryKey" parameterType="com.msp.impulse.entity.DeviceType">
     update device_type
     set device_type = #{deviceType,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
+      update_user = #{updateUser,jdbcType=VARCHAR},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      state = #{state,jdbcType=VARCHAR},
+      flag = #{flag,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

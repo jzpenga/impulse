@@ -36,6 +36,8 @@ public class Company implements Serializable {
 
     private String state;
 
+    private String callbackUrl;
+
     private static final long serialVersionUID = 1L;
 
     public Integer getId() {
@@ -164,5 +166,13 @@ public class Company implements Serializable {
 
     public void setState(String state) {
         this.state = state == null ? null : state.trim();
+    }
+
+    public String getCallbackUrl() {
+        return callbackUrl;
+    }
+
+    public void setCallbackUrl(String callbackUrl) {
+        this.callbackUrl = callbackUrl == null ? null : callbackUrl.trim();
     }
 }

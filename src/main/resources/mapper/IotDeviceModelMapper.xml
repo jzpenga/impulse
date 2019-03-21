@@ -288,4 +288,7 @@
       state = #{state,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectIotList" parameterType="com.msp.impulse.entity.IotDeviceModel" resultType="com.msp.impulse.entity.IotDeviceModel">
+      select  * from  iot_device_model  where 1=1
+  </select>
 </mapper>

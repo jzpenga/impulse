@@ -1154,6 +1154,76 @@ public class CompanyExample {
             addCriterion("state not between", value1, value2, "state");
             return (Criteria) this;
         }
+
+        public Criteria andCallbackUrlIsNull() {
+            addCriterion("callback_url is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCallbackUrlIsNotNull() {
+            addCriterion("callback_url is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCallbackUrlEqualTo(String value) {
+            addCriterion("callback_url =", value, "callbackUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andCallbackUrlNotEqualTo(String value) {
+            addCriterion("callback_url <>", value, "callbackUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andCallbackUrlGreaterThan(String value) {
+            addCriterion("callback_url >", value, "callbackUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andCallbackUrlGreaterThanOrEqualTo(String value) {
+            addCriterion("callback_url >=", value, "callbackUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andCallbackUrlLessThan(String value) {
+            addCriterion("callback_url <", value, "callbackUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andCallbackUrlLessThanOrEqualTo(String value) {
+            addCriterion("callback_url <=", value, "callbackUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andCallbackUrlLike(String value) {
+            addCriterion("callback_url like", value, "callbackUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andCallbackUrlNotLike(String value) {
+            addCriterion("callback_url not like", value, "callbackUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andCallbackUrlIn(List<String> values) {
+            addCriterion("callback_url in", values, "callbackUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andCallbackUrlNotIn(List<String> values) {
+            addCriterion("callback_url not in", values, "callbackUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andCallbackUrlBetween(String value1, String value2) {
+            addCriterion("callback_url between", value1, value2, "callbackUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andCallbackUrlNotBetween(String value1, String value2) {
+            addCriterion("callback_url not between", value1, value2, "callbackUrl");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {
