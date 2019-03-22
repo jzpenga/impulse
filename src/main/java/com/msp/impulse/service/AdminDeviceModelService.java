@@ -9,6 +9,7 @@ import com.msp.impulse.entity.IotDeviceModelExample;
 import com.msp.impulse.entity.Sensor;
 import com.msp.impulse.exception.MyException;
 import com.msp.impulse.mapper.IotDeviceModelMapper;
+import com.msp.impulse.vo.IotDeviceModelVo;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,7 +36,7 @@ public class AdminDeviceModelService {
     public BaseResponse saveDeviceType(IotDeviceModel iotDeviceModel , HttpSession session) throws IOException {
         BaseResponse response=new BaseResponse();
         MultipartFile file = iotDeviceModel.getFile();
-        if (file.isEmpty()) {
+        if (file==null) {
             response.setResponseCode(ResponseCode.FILE_NOT_HAVE.getCode());
             response.setResponseMsg(ResponseCode.FILE_NOT_HAVE.getMessage());
             return response;
@@ -127,9 +128,11 @@ public class AdminDeviceModelService {
         BaseResponse response=new BaseResponse();
         for (Integer id:ids) {
             IotDeviceModel iotDeviceModel = iotDeviceModelMapper.selectByPrimaryKey(id);
-            iotDeviceModel.setFlag("0");
+            if(iotDeviceModel==null){
+                throw  new MyException("数据不存在");
+            }
+            iotDeviceModel.setFlag("1");
             iotDeviceModelMapper.updateByPrimaryKey(iotDeviceModel);
-
         }
         response.setResponseMsg(ResponseCode.OK.getMessage());
         response.setResponseCode(ResponseCode.OK.getCode());
@@ -145,8 +148,8 @@ public class AdminDeviceModelService {
             iotDeviceModel.setPageSize(10);
         }
         PageHelper.startPage(iotDeviceModel.getPageNo(), iotDeviceModel.getPageSize());
-        List<IotDeviceModel> iotDeviceModelList=iotDeviceModelMapper.selectIotList(iotDeviceModel);
-        PageInfo<IotDeviceModel> pageInfo = new PageInfo<>(iotDeviceModelList);
+        List<IotDeviceModelVo> iotDeviceModelList=iotDeviceModelMapper.selectIotList(iotDeviceModel);
+        PageInfo<IotDeviceModelVo> pageInfo = new PageInfo<>(iotDeviceModelList);
         response.setData(pageInfo);
         response.setResponseMsg(ResponseCode.OK.getMessage());
         response.setResponseCode(ResponseCode.OK.getCode());
