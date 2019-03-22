@@ -124,10 +124,10 @@ public class SensorService {
 
             RegDirectDeviceOutDTO regDirectDeviceOutDTO = NBDXManager.registerDevice(deviceInfo);
             if (regDirectDeviceOutDTO == null) {
-                throw new RuntimeException("注册失败");
+                throw new MyException("注册失败,请检查设备序列号是否正确或稍后重试!");
             }
             if (StringUtils.isBlank(regDirectDeviceOutDTO.getDeviceId())) {
-                throw new MyException("注册失败");
+                throw new MyException("注册失败,请检查设备序列号是否正确或稍后重试!");
             }
             sensor.setDeviceId(regDirectDeviceOutDTO.getDeviceId());
 
