@@ -41,9 +41,6 @@ server:
     io-threads: 4
     worker-threads: 300
 
-logging:
-  level:
-    root: INFO
-  file: impulse.log
+
 
 
