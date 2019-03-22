@@ -101,7 +101,7 @@ public class DataReportService {
                     if (StringUtils.isBlank(dataReportEntity.getSensorName())) {
                         throw new MyException("传感器名称不能为空!");
                     }
-//                    dataReportDao.save(dataReportEntity);
+                    dataReportDao.save(dataReportEntity);
                     //记录最新实时数据======================start
                     //根据deviceId和dataKey查找数据,存在更新，不存在新增
                     long start = System.currentTimeMillis();
