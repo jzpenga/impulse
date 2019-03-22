@@ -31,6 +31,7 @@ public class DataReportTask implements Runnable {
     public void run() {
         try {
 
+            long startHandler = System.currentTimeMillis();
 
            HashMap<String, String> subData = new HashMap<>();
 
@@ -75,6 +76,7 @@ public class DataReportTask implements Runnable {
                     logger.info(dto.getDeviceId()+"====>未被订阅");
                 }
             }
+            logger.info("任务执行时间===>"+(System.currentTimeMillis()-startHandler)/1000f+"秒");
 
         }catch (Exception e){
             e.printStackTrace();
