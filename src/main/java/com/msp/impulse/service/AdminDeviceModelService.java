@@ -131,6 +131,7 @@ public class AdminDeviceModelService {
             if(iotDeviceModel==null){
                 throw  new MyException("数据不存在");
             }
+            iotDeviceModel.setUpdateTime(new Date());
             iotDeviceModel.setFlag("1");
             iotDeviceModelMapper.updateByPrimaryKey(iotDeviceModel);
         }

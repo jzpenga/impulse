@@ -36,6 +36,8 @@ public class SensorService {
     private DictionaryMapper dictionaryMapper;
     @Autowired
     private IotDeviceModelMapper iotDeviceModelMapper;
+    @Autowired
+    private DeviceTypeMapper deviceTypeMapper;
 
     /**
      * 新增传感器
@@ -188,13 +190,13 @@ public class SensorService {
 
     public String getIotServiceType(String sensorModelId) {
         //查询设备型号名称
-        DictionaryExample dictionaryExampleModel = new DictionaryExample();
-        dictionaryExampleModel.createCriteria().andFlagEqualTo("0").andIdEqualTo(Integer.parseInt(sensorModelId));
-        List<Dictionary> dictionaryList1 = dictionaryMapper.selectByExample(dictionaryExampleModel);
-        if (dictionaryList1.isEmpty()) {
+        DeviceTypeExample deviceTypeExample=new DeviceTypeExample();
+        deviceTypeExample.createCriteria().andIdEqualTo(Integer.parseInt(sensorModelId)).andFlagEqualTo("0");
+        List<DeviceType> deviceTypeList = deviceTypeMapper.selectByExample(deviceTypeExample);
+        if (deviceTypeList.isEmpty()) {
             throw new MyException("id【" + sensorModelId + "】对应的传感器型号不存在");
         }
-        String dicName = dictionaryList1.get(0).getDicName();
+        String dicName = deviceTypeList.get(0).getDeviceType();
         //根据型号查询
         IotDeviceModelExample iotDeviceModelExample = new IotDeviceModelExample();
         iotDeviceModelExample.createCriteria().andFlagEqualTo("0").andSensorModelEqualTo(dicName);
