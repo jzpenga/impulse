@@ -18,7 +18,7 @@ public class DeviceDataChangeHandler implements IDataHandler<NotifyDeviceDataCha
 
     private Logger logger = LoggerFactory.getLogger(DeviceDataChangeHandler.class);
     private ThreadPoolExecutor executor = new ThreadPoolExecutor(5, 10, 200, TimeUnit.MILLISECONDS,
-            new ArrayBlockingQueue<Runnable>(1000));
+            new ArrayBlockingQueue<Runnable>(5000));
 
     @Autowired
     private DataReportService dataReportService;
@@ -26,12 +26,17 @@ public class DeviceDataChangeHandler implements IDataHandler<NotifyDeviceDataCha
     @Override
     public void handler(NotifyDeviceDataChangedDTO dto) {
 
-        long start = System.currentTimeMillis();
-        DataReportVo dataReport = dataReportService.getDataReport(dto.getDeviceId());
-        logger.info("数据获取信息时间===>"+(System.currentTimeMillis()-start)/1000f+"秒");
+        try {
+            long start = System.currentTimeMillis();
+            DataReportVo dataReport = dataReportService.getDataReport(dto.getDeviceId());
+            logger.info("数据获取信息时间===>"+(System.currentTimeMillis()-start)/1000f+"秒");
 
-        DataReportTask dataReportTask = new DataReportTask(dataReport, dto, dataReportService);
-        executor.execute(dataReportTask);
+            DataReportTask dataReportTask = new DataReportTask(dataReport, dto, dataReportService);
+            executor.execute(dataReportTask);
+        }catch (Exception e){
+            logger.error(e.getMessage());
+        }
+
     }
 
 }
