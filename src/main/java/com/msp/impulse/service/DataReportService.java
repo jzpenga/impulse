@@ -104,6 +104,7 @@ public class DataReportService {
                     dataReportDao.save(dataReportEntity);
                     //记录最新实时数据======================start
                     //根据deviceId和dataKey查找数据,存在更新，不存在新增
+                    long start = System.currentTimeMillis();
                     RealTimeData realTimeData1 = realTimeDataMapper.selectByDeviceIdAndDataKey(dataReportEntity.getDeviceId(), dataReportEntity.getDataKey());
                     if (realTimeData1 != null) {  //更新数据
                         if (dataReportEntity.getUserId() != null) {
@@ -150,6 +151,7 @@ public class DataReportService {
                         realTimeData.setCreateTime(new Date());
                         realTimeDataMapper.insertSelective(realTimeData);
                     }
+                    logger.info("更新实时数据时间===>"+(System.currentTimeMillis()-start)/1000f+"秒");
                     //======================================end
                 }
             }

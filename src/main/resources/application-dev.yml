@@ -37,6 +37,9 @@ server:
   port: 8072
   session:
     timeout:3600
+  undertow:
+    io-threads: 4
+    worker-threads: 300
 
 logging:
   level:
