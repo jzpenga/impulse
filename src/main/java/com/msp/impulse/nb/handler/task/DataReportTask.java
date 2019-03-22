@@ -32,7 +32,7 @@ public class DataReportTask implements Runnable {
         try {
 
 
-            HashMap<String, String> subData = new HashMap<>();
+           HashMap<String, String> subData = new HashMap<>();
 
             ObjectNode data = dto.getService().getData();
             Iterator<String> fieldNames = data.fieldNames();
