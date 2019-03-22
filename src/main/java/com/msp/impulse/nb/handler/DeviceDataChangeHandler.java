@@ -34,7 +34,7 @@ public class DeviceDataChangeHandler implements IDataHandler<NotifyDeviceDataCha
             DataReportTask dataReportTask = new DataReportTask(dataReport, dto, dataReportService);
             executor.execute(dataReportTask);
         }catch (Exception e){
-
+            logger.error(e.getMessage());
         }
 
     }
