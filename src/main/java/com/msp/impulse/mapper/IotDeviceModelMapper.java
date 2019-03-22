@@ -3,6 +3,8 @@ package com.msp.impulse.mapper;
 import com.msp.impulse.entity.IotDeviceModel;
 import com.msp.impulse.entity.IotDeviceModelExample;
 import java.util.List;
+
+import com.msp.impulse.vo.IotDeviceModelVo;
 import org.apache.ibatis.annotations.Param;
 
 public interface IotDeviceModelMapper {
@@ -28,5 +30,5 @@ public interface IotDeviceModelMapper {
 
     int updateByPrimaryKey(IotDeviceModel record);
 
-    List<IotDeviceModel> selectIotList(IotDeviceModel iotDeviceModel);
+    List<IotDeviceModelVo> selectIotList(IotDeviceModel iotDeviceModel);
 }

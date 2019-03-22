@@ -1,11 +1,13 @@
 package com.msp.impulse.entity;
 
 import com.msp.impulse.base.BaseRequest;
+import io.swagger.annotations.ApiModel;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
 import java.util.Date;
 
+@ApiModel(value = "iot设备类型", description = "iot设备类型")
 public class IotDeviceModel extends BaseRequest implements Serializable{
     private Integer id;
 

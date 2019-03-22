@@ -288,8 +288,11 @@
       state = #{state,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="selectIotList" parameterType="com.msp.impulse.entity.IotDeviceModel" resultType="com.msp.impulse.entity.IotDeviceModel">
-      select  i.sensor_model sensorModel,i.iot_sensor_type iotSensorType,i.device_type deviceType,i.create_time createTime from  iot_device_model i
+  <select id="selectIotList" parameterType="com.msp.impulse.entity.IotDeviceModel" resultType="com.msp.impulse.vo.IotDeviceModelVo">
+      select  i.sensor_model sensorModel,i.iot_sensor_type iotSensorType,i.device_type deviceType,
+      i.create_time createTime ,d.dic_name iotSensorTypeName,c.dic_name deviceTypeName,i.id from  iot_device_model i
+      left join dictionary d  on  d.id=i.iot_sensor_type
+      left  join dictionary c on c.id=i.device_type
     <where>
     <if test="sensorModel != null and sensorModel != ''">
       and i.sensor_model  like "%"#{sensorModel}"%"
@@ -300,6 +303,7 @@
     <if test="deviceType != null and deviceType!=''">
       AND i.device_type = #{deviceType}
     </if>
+      and i.flag!="1"
     </where>
       order by i.create_time
   </select>
