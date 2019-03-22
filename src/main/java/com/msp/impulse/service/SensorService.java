@@ -109,18 +109,7 @@ public class SensorService {
 //                throw  new MyException("传感器名称已存在!");
 //            }
 
-
-            //根据数据字典id查询型号
-            DictionaryExample dictionaryExample = new DictionaryExample();
-            dictionaryExample.createCriteria().andFlagEqualTo("0").andIdEqualTo(Integer.parseInt(sensor.getSensorModel()));
-            List<Dictionary> dictionaryList = dictionaryMapper.selectByExample(dictionaryExample);
-            if (dictionaryList.isEmpty()) {
-                throw new MyException("传入的数据字典id不存在");
-            }
-            Dictionary dictionary = dictionaryList.get(0);
-            if (StringUtils.isBlank(dictionary.getDicName())) {
-                throw new MyException("传入的数据字典id对应的名称不存在");
-            }
+            String deviceModel = getDeviceModel(sensor.getSensorModel());
             //获取iotServiceType
             String iotServiceType = getIotServiceType(sensor.getSensorModel());
             if(StringUtils.isBlank(iotServiceType)){
@@ -130,7 +119,7 @@ public class SensorService {
             DeviceInfo deviceInfo = new DeviceInfo();
             deviceInfo.setName(sensor.getName());
             deviceInfo.setDeviceType(iotServiceType);
-            deviceInfo.setModel(dictionary.getDicName());
+            deviceInfo.setModel(deviceModel);
             deviceInfo.setNodeId(sensor.getSensorNo());// mac 地址
 
             RegDirectDeviceOutDTO regDirectDeviceOutDTO = NBDXManager.registerDevice(deviceInfo);
@@ -187,16 +176,20 @@ public class SensorService {
             }
         }
     }
+    public  String getDeviceModel(String deviceModelId){
+        DeviceTypeExample deviceTypeExample=new DeviceTypeExample();
+        deviceTypeExample.createCriteria().andIdEqualTo(Integer.parseInt(deviceModelId)).andFlagEqualTo("0");
+        List<DeviceType> deviceTypeList = deviceTypeMapper.selectByExample(deviceTypeExample);
+        if (deviceTypeList.isEmpty()) {
+            throw new MyException("id【" + deviceModelId + "】对应的传感器型号不存在");
+        }
+        String dicName = deviceTypeList.get(0).getDeviceType();
+        return dicName;
+    }
 
     public String getIotServiceType(String sensorModelId) {
         //查询设备型号名称
-        DeviceTypeExample deviceTypeExample=new DeviceTypeExample();
-        deviceTypeExample.createCriteria().andIdEqualTo(Integer.parseInt(sensorModelId)).andFlagEqualTo("0");
-        List<DeviceType> deviceTypeList = deviceTypeMapper.selectByExample(deviceTypeExample);
-        if (deviceTypeList.isEmpty()) {
-            throw new MyException("id【" + sensorModelId + "】对应的传感器型号不存在");
-        }
-        String dicName = deviceTypeList.get(0).getDeviceType();
+        String dicName = getDeviceModel(sensorModelId);
         //根据型号查询
         IotDeviceModelExample iotDeviceModelExample = new IotDeviceModelExample();
         iotDeviceModelExample.createCriteria().andFlagEqualTo("0").andSensorModelEqualTo(dicName);
