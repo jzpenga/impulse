@@ -31,8 +31,8 @@ spring:
 mybatis:
   typeAliasesPackage: com.msp.impluse.entity.*
   mapperLocations: classpath:/mapper/*.xml  #指定*Mapper.xml的位置
-#  configuration:
-#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 server:
   port: 8072
   session:
