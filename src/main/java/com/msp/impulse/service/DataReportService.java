@@ -63,7 +63,7 @@ public class DataReportService {
     /**
      * 入库
      */
-    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
+//    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
     public boolean insertDateReport(List<DataReportEntity> dataReportEntityList) {
         try {
             if (!dataReportEntityList.isEmpty()) {
