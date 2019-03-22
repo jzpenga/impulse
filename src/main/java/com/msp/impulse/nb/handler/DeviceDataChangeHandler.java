@@ -18,7 +18,7 @@ public class DeviceDataChangeHandler implements IDataHandler<NotifyDeviceDataCha
 
     private Logger logger = LoggerFactory.getLogger(DeviceDataChangeHandler.class);
     private ThreadPoolExecutor executor = new ThreadPoolExecutor(5, 10, 200, TimeUnit.MILLISECONDS,
-            new ArrayBlockingQueue<Runnable>(1000));
+            new ArrayBlockingQueue<Runnable>(5000));
 
     @Autowired
     private DataReportService dataReportService;
