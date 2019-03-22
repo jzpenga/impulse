@@ -1,9 +1,12 @@
 package com.msp.impulse.entity;
 
+import org.springframework.data.annotation.Id;
+
 import java.io.Serializable;
 import java.util.Date;
 
 public class RealTimeData implements Serializable {
+    @Id
     private Integer id;
 
     private String deviceId;
