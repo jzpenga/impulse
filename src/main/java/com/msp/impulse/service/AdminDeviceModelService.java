@@ -75,6 +75,7 @@ public class AdminDeviceModelService {
             }
             // 设置文件存储路径
             String path = "/tmp/upload/";
+//            String path = "D:/upload/";
             logger.info("path================================:" + path);
             System.out.println("path:" + path);
 
@@ -174,8 +175,8 @@ public class AdminDeviceModelService {
      * @return
      */
     public void profileDownload(String fileName, HttpServletResponse response, HttpSession session) throws IOException {
-        String path = session.getServletContext().getRealPath(
-                "/upload/");
+        String path = "/tmp/upload/";
+//        String path = "D:/upload/";
         // 构建File
         File file = new File(path + File.separator + fileName);
         if (!file.exists()) {
