@@ -26,6 +26,7 @@ public class WebConfigurer implements WebMvcConfigurer {
         registry.addInterceptor(loginInterceptor).addPathPatterns("/**").excludePathPatterns("/impulse/user/login")
         .excludePathPatterns("/swagger-resources/**", "/webjars/**", "/v2/**", "/swagger-ui.html/**","/v1.0.0/**")
         .excludePathPatterns("/dataManage/**")//暂时先不拦截
-                .excludePathPatterns("/impulse/admin/adminManage/adminLogin").excludePathPatterns("/impulse/admin/adminManage/addAdmin");
+                .excludePathPatterns("/impulse/admin/adminManage/adminLogin").excludePathPatterns("/impulse/admin/adminManage/addAdmin")
+        .excludePathPatterns("/impulse/admin/deviceModel/profileDownload");
     }
 }

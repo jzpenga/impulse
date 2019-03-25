@@ -6,6 +6,7 @@
     <result column="sensor_model" jdbcType="VARCHAR" property="sensorModel" />
     <result column="iot_sensor_type" jdbcType="VARCHAR" property="iotSensorType" />
     <result column="device_type" jdbcType="VARCHAR" property="deviceType" />
+    <result column="file_name" jdbcType="VARCHAR" property="fileName" />
     <result column="flag" jdbcType="VARCHAR" property="flag" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
@@ -72,8 +73,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, sensor_model, iot_sensor_type, device_type, flag, create_time, update_time, create_user, 
-    update_user, state
+    id, sensor_model, iot_sensor_type, device_type, file_name, flag, create_time, update_time, 
+    create_user, update_user, state
   </sql>
   <select id="selectByExample" parameterType="com.msp.impulse.entity.IotDeviceModelExample" resultMap="BaseResultMap">
     select
@@ -90,7 +91,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select
+    select 
     <include refid="Base_Column_List" />
     from iot_device_model
     where id = #{id,jdbcType=INTEGER}
@@ -107,13 +108,13 @@
   </delete>
   <insert id="insert" parameterType="com.msp.impulse.entity.IotDeviceModel">
     insert into iot_device_model (id, sensor_model, iot_sensor_type, 
-      device_type, flag, create_time, 
-      update_time, create_user, update_user, 
-      state)
+      device_type, file_name, flag, 
+      create_time, update_time, create_user, 
+      update_user, state)
     values (#{id,jdbcType=INTEGER}, #{sensorModel,jdbcType=VARCHAR}, #{iotSensorType,jdbcType=VARCHAR}, 
-      #{deviceType,jdbcType=VARCHAR}, #{flag,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=INTEGER}, #{updateUser,jdbcType=INTEGER}, 
-      #{state,jdbcType=VARCHAR})
+      #{deviceType,jdbcType=VARCHAR}, #{fileName,jdbcType=VARCHAR}, #{flag,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=INTEGER}, 
+      #{updateUser,jdbcType=INTEGER}, #{state,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.msp.impulse.entity.IotDeviceModel">
     insert into iot_device_model
@@ -129,6 +130,9 @@
       </if>
       <if test="deviceType != null">
         device_type,
+      </if>
+      <if test="fileName != null">
+        file_name,
       </if>
       <if test="flag != null">
         flag,
@@ -161,6 +165,9 @@
       </if>
       <if test="deviceType != null">
         #{deviceType,jdbcType=VARCHAR},
+      </if>
+      <if test="fileName != null">
+        #{fileName,jdbcType=VARCHAR},
       </if>
       <if test="flag != null">
         #{flag,jdbcType=VARCHAR},
@@ -203,6 +210,9 @@
       <if test="record.deviceType != null">
         device_type = #{record.deviceType,jdbcType=VARCHAR},
       </if>
+      <if test="record.fileName != null">
+        file_name = #{record.fileName,jdbcType=VARCHAR},
+      </if>
       <if test="record.flag != null">
         flag = #{record.flag,jdbcType=VARCHAR},
       </if>
@@ -232,6 +242,7 @@
       sensor_model = #{record.sensorModel,jdbcType=VARCHAR},
       iot_sensor_type = #{record.iotSensorType,jdbcType=VARCHAR},
       device_type = #{record.deviceType,jdbcType=VARCHAR},
+      file_name = #{record.fileName,jdbcType=VARCHAR},
       flag = #{record.flag,jdbcType=VARCHAR},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP},
@@ -253,6 +264,9 @@
       </if>
       <if test="deviceType != null">
         device_type = #{deviceType,jdbcType=VARCHAR},
+      </if>
+      <if test="fileName != null">
+        file_name = #{fileName,jdbcType=VARCHAR},
       </if>
       <if test="flag != null">
         flag = #{flag,jdbcType=VARCHAR},
@@ -280,6 +294,7 @@
     set sensor_model = #{sensorModel,jdbcType=VARCHAR},
       iot_sensor_type = #{iotSensorType,jdbcType=VARCHAR},
       device_type = #{deviceType,jdbcType=VARCHAR},
+      file_name = #{fileName,jdbcType=VARCHAR},
       flag = #{flag,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
@@ -289,22 +304,22 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectIotList" parameterType="com.msp.impulse.entity.IotDeviceModel" resultType="com.msp.impulse.vo.IotDeviceModelVo">
-      select  i.sensor_model sensorModel,i.iot_sensor_type iotSensorType,i.device_type deviceType,
-      i.create_time createTime ,d.dic_name iotSensorTypeName,c.dic_name deviceTypeName,i.id from  iot_device_model i
-      left join dictionary d  on  d.id=i.iot_sensor_type
-      left  join dictionary c on c.id=i.device_type
+    select  i.sensor_model sensorModel,i.iot_sensor_type iotSensorType,i.device_type deviceType,
+    i.create_time createTime ,d.dic_name iotSensorTypeName,c.dic_name deviceTypeName,i.id,i.file_name fileName from  iot_device_model i
+    left join dictionary d  on  d.id=i.iot_sensor_type
+    left  join dictionary c on c.id=i.device_type
     <where>
-    <if test="sensorModel != null and sensorModel != ''">
-      and i.sensor_model  like "%"#{sensorModel}"%"
-    </if>
-    <if test="iotSensorType != null and iotSensorType!=''">
-      AND i.iot_sensor_type = #{iotSensorType}
-    </if>
-    <if test="deviceType != null and deviceType!=''">
-      AND i.device_type = #{deviceType}
-    </if>
+      <if test="sensorModel != null and sensorModel != ''">
+        and i.sensor_model  like "%"#{sensorModel}"%"
+      </if>
+      <if test="iotSensorType != null and iotSensorType!=''">
+        AND i.iot_sensor_type = #{iotSensorType}
+      </if>
+      <if test="deviceType != null and deviceType!=''">
+        AND i.device_type = #{deviceType}
+      </if>
       and i.flag!="1"
     </where>
-      order by i.create_time
+    order by i.create_time
   </select>
 </mapper>

@@ -12,6 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
@@ -32,6 +34,36 @@ public class AdminDeviceModelController {
         BaseResponse response;
         try {
             response = adminDeviceModelService.saveDeviceType(iotDeviceModel,session);
+        } catch (IllegalStateException e) {
+            logger.error(e.getMessage());
+            response = new BaseResponse();
+            response.setResponseCode(ResponseCode.PARAMETER_VALIDATION_FAILED.getCode());
+            response.setResponseMsg(e.getMessage());
+        } catch (IOException e) {
+            logger.error(e.getMessage(), e);
+            response = new BaseResponse<>();
+            response.setResponseCode(ResponseCode.PARAMETER_VALIDATION_FAILED.getCode());
+            response.setResponseMsg(e.getMessage());
+        }catch (MyException e) {
+            logger.error(e.getMessage());
+            response = new BaseResponse();
+            response.setResponseCode(ResponseCode.PARAMETER_VALIDATION_FAILED.getCode());
+            response.setResponseMsg(e.getMessage());
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            response = new BaseResponse<>();
+            response.setResponseCode(ResponseCode.SERVER_FAILED.getCode());
+            response.setResponseMsg(ResponseCode.SERVER_FAILED.getMessage());
+        }
+        return response;
+    }
+
+    @GetMapping("profileDownload")
+    @ApiOperation(value = "profile文件下载", notes = "profile文件下载", tags = "iot平台设备型号管理", httpMethod = "GET")
+    public BaseResponse profileDownload( String fileName, HttpServletResponse httpResponse,HttpSession session) {
+        BaseResponse response=new BaseResponse();
+        try {
+             adminDeviceModelService.profileDownload(fileName,httpResponse,session);
         } catch (IllegalStateException e) {
             logger.error(e.getMessage());
             response = new BaseResponse();
