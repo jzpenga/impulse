@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.msp.impulse.base.BaseResponse;
 import com.msp.impulse.base.ResponseCode;
+import com.msp.impulse.controller.AdminDeviceModelController;
 import com.msp.impulse.entity.IotDeviceModel;
 import com.msp.impulse.entity.IotDeviceModelExample;
 import com.msp.impulse.entity.Sensor;
@@ -11,6 +12,8 @@ import com.msp.impulse.exception.MyException;
 import com.msp.impulse.mapper.IotDeviceModelMapper;
 import com.msp.impulse.vo.IotDeviceModelVo;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +30,7 @@ import java.util.List;
 public class AdminDeviceModelService {
     @Autowired
     private IotDeviceModelMapper iotDeviceModelMapper;
+    private static Logger logger = LoggerFactory.getLogger(AdminDeviceModelController.class);
 
     /**
      * 新增iot平台设备类型
@@ -71,6 +75,7 @@ public class AdminDeviceModelService {
             }
             // 设置文件存储路径
             String path = session.getServletContext().getRealPath("/upload/");
+            logger.info("path================================:" + path);
             System.out.println("path:" + path);
 
             String filename = file.getOriginalFilename();
@@ -168,17 +173,17 @@ public class AdminDeviceModelService {
      * @param response
      * @return
      */
-    public void profileDownload(String fileName, HttpServletResponse response,HttpSession session) throws IOException {
+    public void profileDownload(String fileName, HttpServletResponse response, HttpSession session) throws IOException {
         String path = session.getServletContext().getRealPath(
                 "/upload/");
         // 构建File
-        File file = new File(path+File.separator+ fileName);
+        File file = new File(path + File.separator + fileName);
         if (!file.exists()) {
-           throw  new MyException("文件不存在!");
+            throw new MyException("文件不存在!");
         }
         response.reset();
         response.setContentType(session.getServletContext().getMimeType(fileName));
-        response.setHeader("Content-Disposition", "attachment; fileName=" +URLEncoder.encode(fileName));
+        response.setHeader("Content-Disposition", "attachment; fileName=" + URLEncoder.encode(fileName));
         InputStream inStream = new FileInputStream(file);
         OutputStream os = response.getOutputStream();
 
