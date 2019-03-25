@@ -74,7 +74,7 @@ public class AdminDeviceModelService {
                 return response;
             }
             // 设置文件存储路径
-            String path = session.getServletContext().getRealPath("/upload/");
+            String path = "/tmp/upload/";
             logger.info("path================================:" + path);
             System.out.println("path:" + path);
 
