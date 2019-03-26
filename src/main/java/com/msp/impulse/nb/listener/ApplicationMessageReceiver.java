@@ -7,6 +7,8 @@ import com.iotplatform.client.invokeapi.Authentication;
 import com.iotplatform.client.invokeapi.SubscriptionManagement;
 import com.iotplatform.utils.PropertyUtil;
 import com.msp.impulse.nb.utils.AuthUtil;
+import com.msp.impulse.nb.utils.NBIotConfigProperties;
+import com.msp.impulse.nb.utils.SpringContextHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -16,12 +18,13 @@ public class ApplicationMessageReceiver implements ApplicationListener<Applicati
 
     private Logger logger = LoggerFactory.getLogger(ApplicationMessageReceiver.class);
 
+
     @Override
     public void onApplicationEvent(ApplicationReadyEvent applicationReadyEvent) {
         //应用启动成功，注册回调
         try {
             /**---------------------initialize northApiClient------------------------*/
-            NorthApiClient northApiClient = AuthUtil.initApiClient();
+            NorthApiClient northApiClient = AuthUtil.initApiClient(SpringContextHolder.getBean(NBIotConfigProperties.class));
             SubscriptionManagement subscriptionManagement = new SubscriptionManagement(northApiClient);
 
             /**---------------------get accessToken at first------------------------*/

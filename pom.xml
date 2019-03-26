@@ -227,7 +227,7 @@
                     <!--允许移动生成的文件 -->
                     <verbose>true</verbose>
                     <!-- 自动生成的配置,${basedir}表示项目根目录 ,configurationFile默认在resource目录下-->
-                    <configurationFile>src/main/resources/generator/generatorConfig.xml</configurationFile>
+                    <configurationFile>/resources/generator/generatorConfig.xml</configurationFile>
                 </configuration>
                 <dependencies>
                     <!--mysql驱动包-->
@@ -239,6 +239,45 @@
                     </dependency>
                 </dependencies>
             </plugin>
+
+
+
+
+
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>dockerfile-maven-plugin</artifactId>
+                <version>1.4.9</version>
+                <configuration>
+                    <repository>jzpenga/${project.artifactId}</repository>
+                </configuration>
+            </plugin>
+
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>unpack</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>${project.groupId}</groupId>
+                                    <artifactId>${project.artifactId}</artifactId>
+                                    <version>${project.version}</version>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+
         </plugins>
     </build>
 
