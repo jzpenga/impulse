@@ -6,6 +6,7 @@ import com.iotplatform.client.dto.DeviceInfo;
 import com.iotplatform.client.dto.RegDirectDeviceOutDTO;
 import com.msp.impulse.base.BaseResponse;
 import com.msp.impulse.base.ResponseCode;
+import com.msp.impulse.dao.RealTimeDataDao;
 import com.msp.impulse.entity.*;
 import com.msp.impulse.exception.MyException;
 import com.msp.impulse.mapper.*;
@@ -38,6 +39,10 @@ public class SensorService {
     private IotDeviceModelMapper iotDeviceModelMapper;
     @Autowired
     private DeviceTypeMapper deviceTypeMapper;
+    @Autowired
+    private RealTimeDataDao realTimeDataDao;
+    @Autowired
+    private DeviceServiceMapper deviceServiceMapper;
 
     /**
      * 新增传感器
@@ -152,6 +157,18 @@ public class SensorService {
                 //删除
                 NBDXManager.deleteDevice(regDirectDeviceOutDTO.getDeviceId());
                 throw new MyException("插入数据库失败，已回滚!");
+            }
+            //根据设备模型查询服务类型
+            DeviceServiceExample deviceServiceExample=new DeviceServiceExample();
+            deviceServiceExample.createCriteria().andTypeNameEqualTo(deviceModel).andFlagEqualTo("0");
+            List<DeviceService> deviceServices = deviceServiceMapper.selectByExample(deviceServiceExample);
+            for(DeviceService deviceService:deviceServices) {
+                //新增实时数据
+                RealTimeData realTimeData=new RealTimeData();
+                realTimeData.setCreateTime(new Date());
+                realTimeData.setDataKey(deviceService.getServiceCode());
+                realTimeData.setDeviceId(regDirectDeviceOutDTO.getDeviceId());
+                realTimeDataDao.save(realTimeData);
             }
         }
         if (userId != null) {//传感器数加1
