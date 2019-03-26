@@ -130,7 +130,7 @@ public class DataReportService {
                         }
                         realTimeData1.setDataMark(dataReportEntity.getDataMark());
                         realTimeData1.setUpdateTime(new Date());
-                        realTimeDataMapper.updateByPrimaryKey(realTimeData1);
+                        realTimeDataDao.save(realTimeData1);
                     } else {//新增数据
                         RealTimeData realTimeData = new RealTimeData();
                         if (dataReportEntity.getUserId()  != null) {
