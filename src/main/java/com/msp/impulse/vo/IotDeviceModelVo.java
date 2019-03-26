@@ -17,6 +17,8 @@ public class IotDeviceModelVo {
     private String iotSensorTypeName;
     @ApiModelProperty(name = "deviceType", value = "iot设备类型名称", example = "")
     private String deviceType;
+    @ApiModelProperty(name = "fileName", value = "文件名称", example = "")
+    private String fileName;
 
     private  String deviceTypeName;
     private String flag;
@@ -96,5 +98,13 @@ public class IotDeviceModelVo {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 }

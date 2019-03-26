@@ -2,6 +2,8 @@ package com.msp.impulse.nb.entity;
 
 import org.springframework.data.annotation.Id;
 
+import java.util.Date;
+
 /**
  * 设备数据上报实体类
  */
@@ -28,6 +30,7 @@ public class DataReportEntity {
     private String gatewayName;
     private  Integer userId;
     private  String userName;
+    private Date createTime;
 
 
     public String getId() {
@@ -141,6 +144,14 @@ public class DataReportEntity {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
     @Override

@@ -1,14 +1,12 @@
 package com.msp.impulse.entity;
 
 import com.msp.impulse.base.BaseRequest;
-import io.swagger.annotations.ApiModel;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
 import java.util.Date;
 
-@ApiModel(value = "iot设备类型", description = "iot设备类型")
-public class IotDeviceModel extends BaseRequest implements Serializable{
+public class IotDeviceModel extends BaseRequest implements Serializable {
     private Integer id;
 
     private String sensorModel;
@@ -16,6 +14,8 @@ public class IotDeviceModel extends BaseRequest implements Serializable{
     private String iotSensorType;
 
     private String deviceType;
+
+    private String fileName;
 
     private String flag;
 
@@ -29,7 +29,8 @@ public class IotDeviceModel extends BaseRequest implements Serializable{
 
     private String state;
 
-    private MultipartFile  file;
+    private MultipartFile file;
+
 
     private static final long serialVersionUID = 1L;
 
@@ -63,6 +64,14 @@ public class IotDeviceModel extends BaseRequest implements Serializable{
 
     public void setDeviceType(String deviceType) {
         this.deviceType = deviceType == null ? null : deviceType.trim();
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName == null ? null : fileName.trim();
     }
 
     public String getFlag() {
