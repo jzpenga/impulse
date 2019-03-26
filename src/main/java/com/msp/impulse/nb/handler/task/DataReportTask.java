@@ -65,6 +65,7 @@ public class DataReportTask implements Runnable {
                 //调用相关接口
                 String callbackUrl = param.getCallbackUrl();
                 if (!TextUtils.isEmpty(callbackUrl)){
+                    long startSub = System.currentTimeMillis();
                     subData.put("deviceNo",param.getSensorNo());
                     subData.put("eventTime",dto.getService().getEventTime());
                     String s = JSONObject.toJSONString(subData);
@@ -72,6 +73,7 @@ public class DataReportTask implements Runnable {
                     if (!StringUtils.isEmpty(response)){
                         logger.info(dto.getDeviceId()+" send "+dto.getService().getEventTime()+" data ====>  success!");
                     }
+                    logger.info("订阅执行时间===>"+(System.currentTimeMillis()-startSub)/1000f+"秒");
                 }else {
                     logger.info(dto.getDeviceId()+"====>未被订阅");
                 }
