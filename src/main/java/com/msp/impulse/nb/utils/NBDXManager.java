@@ -24,7 +24,7 @@ public class NBDXManager {
 
         try {
             /**---------------------initialize northApiClient------------------------*/
-            NorthApiClient northApiClient = AuthUtil.initApiClient();
+            NorthApiClient northApiClient = AuthUtil.initApiClient(SpringContextHolder.getBean(NBIotConfigProperties.class));
             DeviceManagement deviceManagement = new DeviceManagement(northApiClient);
 
             /**---------------------get accessToken at first------------------------*/
@@ -81,7 +81,7 @@ public class NBDXManager {
     public static boolean deleteDevice(String deviceId){
         try {
             /**---------------------initialize northApiClient------------------------*/
-            NorthApiClient northApiClient = AuthUtil.initApiClient();
+            NorthApiClient northApiClient = AuthUtil.initApiClient(SpringContextHolder.getBean(NBIotConfigProperties.class));
             DeviceManagement deviceManagement = new DeviceManagement(northApiClient);
 
             /**---------------------get accessToken at first------------------------*/
