@@ -48,7 +48,7 @@ public class RealTimeDataDaoImpl implements RealTimeDataDao {
             criteria.and("gatewayName").is(dataHistoryQuery.getGatewayName());
         }
         if(StringUtils.isNotBlank(dataHistoryQuery.getSensorType())) {
-            criteria.and("serviceType").is(dataHistoryQuery.getSensorType());
+            criteria.and("dataKey").is(dataHistoryQuery.getSensorType());
         }
         Criteria eventTime = criteria.and("eventTime").nin("0");
         if(StringUtils.isNotBlank(dataHistoryQuery.getReportDateFrom())){//上报时间 From
