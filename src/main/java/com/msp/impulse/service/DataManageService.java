@@ -1,15 +1,13 @@
 package com.msp.impulse.service;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.msp.impulse.base.BaseResponse;
 import com.msp.impulse.base.ResponseCode;
 import com.msp.impulse.dao.AlarmDao;
 import com.msp.impulse.dao.ControlInstruDao;
 import com.msp.impulse.dao.DataManageDao;
-import com.msp.impulse.entity.RealTimeData;
+import com.msp.impulse.dao.RealTimeDataDao;
+import com.msp.impulse.entity.PageBean;
 import com.msp.impulse.exception.MyException;
-import com.msp.impulse.mapper.RealTimeDataMapper;
 import com.msp.impulse.nb.entity.DataReportEntity;
 import com.msp.impulse.query.DataHistoryQuery;
 import com.msp.impulse.vo.DataHistoryMapVo;
@@ -34,7 +32,7 @@ public class DataManageService {
     @Autowired
     private ControlInstruDao controlInstruDao;
     @Autowired
-    private RealTimeDataMapper realTimeDataMapper;
+    private RealTimeDataDao realTimeDataDao;
 
 
 //    public BaseResponse findHomeData() {
@@ -230,17 +228,9 @@ public class DataManageService {
             }
             dataReportEntity.setUserName("环宇智谷测试");
         }*/
-        BaseResponse<PageInfo> response = new BaseResponse<>();
-        if (dataHistoryQuery.getPageNo() == null) {
-            dataHistoryQuery.setPageNo(1);
-        }
-        if (dataHistoryQuery.getPageSize() == null) {
-            dataHistoryQuery.setPageSize(10);
-        }
-        PageHelper.startPage(dataHistoryQuery.getPageNo(), dataHistoryQuery.getPageSize());
-        List<RealTimeData> realTimeDataList= realTimeDataMapper.selectRealTimeDataInfo(dataHistoryQuery);
-        PageInfo<RealTimeData> pageInfo = new PageInfo<>(realTimeDataList);
-        response.setData(pageInfo);
+        BaseResponse response = new BaseResponse<>();
+        PageBean pageBean= realTimeDataDao.selectRealTimeDataInfo(dataHistoryQuery);
+        response.setData(pageBean);
         response.setResponseMsg(ResponseCode.OK.getMessage());
         response.setResponseCode(ResponseCode.OK.getCode());
         return response;

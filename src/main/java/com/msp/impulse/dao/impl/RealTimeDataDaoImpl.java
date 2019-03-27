@@ -1,15 +1,22 @@
 package com.msp.impulse.dao.impl;
 
 import com.msp.impulse.dao.RealTimeDataDao;
+import com.msp.impulse.entity.Company;
+import com.msp.impulse.entity.PageBean;
 import com.msp.impulse.entity.RealTimeData;
+import com.msp.impulse.query.DataHistoryQuery;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+import java.util.regex.Pattern;
 
 @Repository
 public class RealTimeDataDaoImpl implements RealTimeDataDao {
@@ -28,5 +35,44 @@ public class RealTimeDataDaoImpl implements RealTimeDataDao {
     @Override
     public void save(RealTimeData realTimeData) {
         mongoTemplate.save(realTimeData);
+    }
+
+    @Override
+    public PageBean selectRealTimeDataInfo(DataHistoryQuery dataHistoryQuery) {
+        Query query =new Query();
+        Criteria criteria=new Criteria();
+        if(StringUtils.isNotBlank(dataHistoryQuery.getSensorName())){
+            criteria.and("sensorName").is(dataHistoryQuery.getSensorName());
+        }
+        if(StringUtils.isNotBlank(dataHistoryQuery.getGatewayName())) {
+            criteria.and("gatewayName").is(dataHistoryQuery.getGatewayName());
+        }
+        if(StringUtils.isNotBlank(dataHistoryQuery.getSensorType())) {
+            criteria.and("serviceType").is(dataHistoryQuery.getSensorType());
+        }
+        Criteria eventTime = criteria.and("eventTime").nin("0");
+        if(StringUtils.isNotBlank(dataHistoryQuery.getReportDateFrom())){//上报时间 From
+            eventTime.gte(dataHistoryQuery.getReportDateFrom());
+        }
+        if(StringUtils.isNotBlank(dataHistoryQuery.getReportDateTo())){//上报时间to
+            eventTime.lte(dataHistoryQuery.getReportDateTo());
+        }
+        Query query1 = query.addCriteria(criteria);
+
+        //查询总条数
+        Long totalRecord = mongoTemplate.count(query1, RealTimeData.class);
+        Sort sort = new Sort(Sort.Direction.DESC, "createTime");
+        if(dataHistoryQuery.getPageNo()==null){
+            dataHistoryQuery.setPageNo(1);
+        }
+        if(dataHistoryQuery.getPageSize()==null){
+            dataHistoryQuery.setPageSize(10);
+        }
+        Pageable pageable = new PageRequest(dataHistoryQuery.getPageNo()-1, dataHistoryQuery.getPageSize(), sort);
+        List<RealTimeData> realTimeDataList = mongoTemplate.find(query1.with(pageable), RealTimeData.class);
+
+        PageBean pageBean = new PageBean(dataHistoryQuery.getPageNo(), dataHistoryQuery.getPageSize(), totalRecord.intValue());
+        pageBean.setList(realTimeDataList);
+        return pageBean;
     }
 }
