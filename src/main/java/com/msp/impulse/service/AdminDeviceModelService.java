@@ -172,8 +172,8 @@ public class AdminDeviceModelService {
             throw new MyException("文件不存在！");
         }
         // 设置文件存储路径
-//        String path = "/tmp/upload/";
-        String path = "D:/upload/";
+        String path = "/tmp/upload/";
+//        String path = "D:/upload/";
         logger.info("path================================:" + path);
         System.out.println("path:" + path);
 
