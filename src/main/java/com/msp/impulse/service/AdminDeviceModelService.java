@@ -119,7 +119,7 @@ public class AdminDeviceModelService {
 
             //新增modelService
             List<Integer> modelServiceIds = deviceModelQuery.getModelServiceIds();
-            if (!modelServiceIds.isEmpty()) {
+            if (modelServiceIds!=null||!modelServiceIds.isEmpty()) {
                 //新增modelService
                 for (Integer id : modelServiceIds) {
                     addModelService(id, deviceModelQuery.getSensorModel(), deviceModel.getId());
