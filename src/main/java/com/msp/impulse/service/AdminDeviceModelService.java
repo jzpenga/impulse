@@ -119,7 +119,7 @@ public class AdminDeviceModelService {
 
             //新增modelService
             List<Integer> modelServiceIds = deviceModelQuery.getModelServiceIds();
-            if (modelServiceIds!=null||!modelServiceIds.isEmpty()) {
+            if (modelServiceIds!=null&&!modelServiceIds.isEmpty()) {
                 //新增modelService
                 for (Integer id : modelServiceIds) {
                     addModelService(id, deviceModelQuery.getSensorModel(), deviceModel.getId());
@@ -172,8 +172,8 @@ public class AdminDeviceModelService {
             throw new MyException("文件不存在！");
         }
         // 设置文件存储路径
-        String path = "/tmp/upload/";
-//        String path = "D:/upload/";
+//        String path = "/tmp/upload/";
+        String path = "D:/upload/";
         logger.info("path================================:" + path);
         System.out.println("path:" + path);
 
