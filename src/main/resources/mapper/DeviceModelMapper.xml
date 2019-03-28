@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.msp.impulse.mapper.IotDeviceModelMapper">
-  <resultMap id="BaseResultMap" type="com.msp.impulse.entity.IotDeviceModel">
+<mapper namespace="com.msp.impulse.mapper.DeviceModelMapper">
+  <resultMap id="BaseResultMap" type="com.msp.impulse.entity.DeviceModel">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="sensor_model" jdbcType="VARCHAR" property="sensorModel" />
     <result column="iot_sensor_type" jdbcType="VARCHAR" property="iotSensorType" />
@@ -76,13 +76,13 @@
     id, sensor_model, iot_sensor_type, device_type, file_name, flag, create_time, update_time, 
     create_user, update_user, state
   </sql>
-  <select id="selectByExample" parameterType="com.msp.impulse.entity.IotDeviceModelExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.msp.impulse.entity.DeviceModelExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from iot_device_model
+    from device_model
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -93,21 +93,21 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from iot_device_model
+    from device_model
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from iot_device_model
+    delete from device_model
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.msp.impulse.entity.IotDeviceModelExample">
-    delete from iot_device_model
+  <delete id="deleteByExample" parameterType="com.msp.impulse.entity.DeviceModelExample">
+    delete from device_model
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.msp.impulse.entity.IotDeviceModel">
-    insert into iot_device_model (id, sensor_model, iot_sensor_type, 
+  <insert id="insert" parameterType="com.msp.impulse.entity.DeviceModel">
+    insert into device_model (id, sensor_model, iot_sensor_type, 
       device_type, file_name, flag, 
       create_time, update_time, create_user, 
       update_user, state)
@@ -116,8 +116,12 @@
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=INTEGER}, 
       #{updateUser,jdbcType=INTEGER}, #{state,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.msp.impulse.entity.IotDeviceModel">
-    insert into iot_device_model
+  <insert id="insertSelective" parameterType="com.msp.impulse.entity.DeviceModel">
+    <selectKey keyColumn="id" keyProperty="id" order="AFTER"
+               resultType="int">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into device_model
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
@@ -189,14 +193,14 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.msp.impulse.entity.IotDeviceModelExample" resultType="java.lang.Long">
-    select count(*) from iot_device_model
+  <select id="countByExample" parameterType="com.msp.impulse.entity.DeviceModelExample" resultType="java.lang.Long">
+    select count(*) from device_model
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update iot_device_model
+    update device_model
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
@@ -237,7 +241,7 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update iot_device_model
+    update device_model
     set id = #{record.id,jdbcType=INTEGER},
       sensor_model = #{record.sensorModel,jdbcType=VARCHAR},
       iot_sensor_type = #{record.iotSensorType,jdbcType=VARCHAR},
@@ -253,8 +257,8 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.msp.impulse.entity.IotDeviceModel">
-    update iot_device_model
+  <update id="updateByPrimaryKeySelective" parameterType="com.msp.impulse.entity.DeviceModel">
+    update device_model
     <set>
       <if test="sensorModel != null">
         sensor_model = #{sensorModel,jdbcType=VARCHAR},
@@ -289,8 +293,8 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.msp.impulse.entity.IotDeviceModel">
-    update iot_device_model
+  <update id="updateByPrimaryKey" parameterType="com.msp.impulse.entity.DeviceModel">
+    update device_model
     set sensor_model = #{sensorModel,jdbcType=VARCHAR},
       iot_sensor_type = #{iotSensorType,jdbcType=VARCHAR},
       device_type = #{deviceType,jdbcType=VARCHAR},
@@ -303,9 +307,10 @@
       state = #{state,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="selectIotList" parameterType="com.msp.impulse.entity.IotDeviceModel" resultType="com.msp.impulse.vo.IotDeviceModelVo">
+  <select id="selectIotList" parameterType="com.msp.impulse.entity.DeviceModel" resultType="com.msp.impulse.vo.DeviceModelVo">
     select  i.sensor_model sensorModel,i.iot_sensor_type iotSensorType,i.device_type deviceType,
-    i.create_time createTime ,d.dic_name iotSensorTypeName,c.dic_name deviceTypeName,i.id,i.file_name fileName from  iot_device_model i
+    i.create_time createTime ,d.dic_name iotSensorTypeName,c.dic_name deviceTypeName,i.id,i.file_name fileName
+    from  device_model i
     left join dictionary d  on  d.id=i.iot_sensor_type
     left  join dictionary c on c.id=i.device_type
     <where>

@@ -518,9 +518,9 @@
      from sensor s where s.name like "%"#{sensorName}"%" and s.flag!="1"
    </select>
   <select id="findServiceType" parameterType="string" resultType="com.msp.impulse.entity.ServiceType">
-    select dic_code serviceCode ,dic_name serviceName
-      from device_type t,device_service s,dictionary y
-    where t.id=s.device_type_id and t.device_type=#{deviceType} and y.dic_code=s.service_code
+    select s.service_code serviceCode ,s.code_name serviceName
+      from device_model d,model_service s
+    where d.id=s.device_model_id  and d.sensor_model=#{deviceType}  and s.flag!="1"
   </select>
   <select id="selectDataReport" parameterType="string" resultType="com.msp.impulse.vo.DataReportVo">
      select   s.name sensorName ,s.device_id deviceId,s.sensor_no sensorNo,s.gateway_name gatewayName,s.sensor_type sensorType,s.user_id userId,c.company_name companyName,d.code_name codeName,d.service_code serviceCode,s.sensor_model sensorModel,

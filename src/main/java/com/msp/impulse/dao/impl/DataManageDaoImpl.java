@@ -5,9 +5,8 @@ import com.github.pagehelper.PageInfo;
 import com.msp.impulse.constants.Constants;
 import com.msp.impulse.dao.DataManageDao;
 import com.msp.impulse.entity.*;
-import com.msp.impulse.entity.Dictionary;
 import com.msp.impulse.exception.MyException;
-import com.msp.impulse.mapper.DeviceTypeMapper;
+import com.msp.impulse.mapper.DeviceModelMapper;
 import com.msp.impulse.mapper.DictionaryMapper;
 import com.msp.impulse.mapper.SensorMapper;
 import com.msp.impulse.nb.entity.DataReportEntity;
@@ -36,7 +35,7 @@ public class DataManageDaoImpl implements DataManageDao {
     @Autowired
     private DictionaryMapper dictionaryMapper;
     @Autowired
-    private DeviceTypeMapper deviceTypeMapper;
+    private DeviceModelMapper deviceModelMapper;
 
     @Override
     public HomePageDataVo findHomeData() {
@@ -142,21 +141,21 @@ public class DataManageDaoImpl implements DataManageDao {
         if(StringUtils.isBlank(dataHistoryQuery.getSensorModel())){
             throw  new MyException("请输入设备型号!");
         }
-        String deviceModel = getDeviceModel(dataHistoryQuery.getSensorModel());
+        String deviceModel = getDeviceModelName(dataHistoryQuery.getSensorModel());
         List<ServiceType> serviceType = sensorMapper.findServiceType(deviceModel);
         dataHistoryVo.setServiceType(serviceType);
 
         return dataHistoryVo;
     }
 
-    public  String getDeviceModel(String deviceModelId){
-        DeviceTypeExample deviceTypeExample=new DeviceTypeExample();
-        deviceTypeExample.createCriteria().andIdEqualTo(Integer.parseInt(deviceModelId)).andFlagEqualTo("0");
-        List<DeviceType> deviceTypeList = deviceTypeMapper.selectByExample(deviceTypeExample);
-        if (deviceTypeList.isEmpty()) {
+    public  String getDeviceModelName(String deviceModelId){
+        DeviceModelExample deviceModelExample=new DeviceModelExample();
+        deviceModelExample.createCriteria().andIdEqualTo(Integer.parseInt(deviceModelId)).andFlagEqualTo("0");
+        List<DeviceModel> deviceModelList = deviceModelMapper.selectByExample(deviceModelExample);
+        if (deviceModelList.isEmpty()) {
             throw new MyException("id【" + deviceModelId + "】对应的传感器型号不存在");
         }
-        String dicName = deviceTypeList.get(0).getDeviceType();
+        String dicName = deviceModelList.get(0).getSensorModel();
         return dicName;
     }
 

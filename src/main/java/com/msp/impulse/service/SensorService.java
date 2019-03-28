@@ -3,6 +3,7 @@ package com.msp.impulse.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.iotplatform.client.dto.DeviceInfo;
+import com.iotplatform.client.dto.DeviceService;
 import com.iotplatform.client.dto.RegDirectDeviceOutDTO;
 import com.msp.impulse.base.BaseResponse;
 import com.msp.impulse.base.ResponseCode;
@@ -18,7 +19,6 @@ import org.apache.http.util.TextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -36,13 +36,11 @@ public class SensorService {
     @Autowired
     private DictionaryMapper dictionaryMapper;
     @Autowired
-    private IotDeviceModelMapper iotDeviceModelMapper;
-    @Autowired
-    private DeviceTypeMapper deviceTypeMapper;
-    @Autowired
     private RealTimeDataDao realTimeDataDao;
     @Autowired
-    private DeviceServiceMapper deviceServiceMapper;
+    private ModelServiceMapper modelServiceMapper;
+    @Autowired
+    private  DeviceModelMapper deviceModelMapper;
 
     /**
      * 新增传感器
@@ -116,7 +114,7 @@ public class SensorService {
 
             String deviceModel = getDeviceModel(sensor.getSensorModel());
             //获取iotServiceType
-            String iotServiceType = getIotServiceType(sensor.getSensorModel());
+            String iotServiceType = getIotServiceTypeName(sensor.getSensorModel());
             if(StringUtils.isBlank(iotServiceType)){
                 throw new MyException("iot设备类型不存在!");
             }
@@ -159,14 +157,14 @@ public class SensorService {
                 throw new MyException("插入数据库失败，已回滚!");
             }
             //根据设备模型查询服务类型
-            DeviceServiceExample deviceServiceExample=new DeviceServiceExample();
-            deviceServiceExample.createCriteria().andTypeNameEqualTo(deviceModel).andFlagEqualTo("0");
-            List<DeviceService> deviceServices = deviceServiceMapper.selectByExample(deviceServiceExample);
-            for(DeviceService deviceService:deviceServices) {
+            ModelServiceExample modelServiceExample=new ModelServiceExample();
+            modelServiceExample.createCriteria().andModelNameEqualTo(deviceModel).andFlagEqualTo("0");
+            List<ModelService> modelServices = modelServiceMapper.selectByExample(modelServiceExample);
+            for(ModelService modelService:modelServices) {
                 //新增实时数据
                 RealTimeData realTimeData=new RealTimeData();
                 realTimeData.setCreateTime(new Date());
-                realTimeData.setDataKey(deviceService.getServiceCode());
+                realTimeData.setDataKey(modelService.getServiceCode());
                 realTimeData.setDeviceId(regDirectDeviceOutDTO.getDeviceId());
                 realTimeDataDao.save(realTimeData);
             }
@@ -194,27 +192,27 @@ public class SensorService {
         }
     }
     public  String getDeviceModel(String deviceModelId){
-        DeviceTypeExample deviceTypeExample=new DeviceTypeExample();
-        deviceTypeExample.createCriteria().andIdEqualTo(Integer.parseInt(deviceModelId)).andFlagEqualTo("0");
-        List<DeviceType> deviceTypeList = deviceTypeMapper.selectByExample(deviceTypeExample);
-        if (deviceTypeList.isEmpty()) {
+        DeviceModelExample deviceModelExample=new DeviceModelExample();
+        deviceModelExample.createCriteria().andIdEqualTo(Integer.parseInt(deviceModelId)).andFlagEqualTo("0");
+        List<DeviceModel> iotDeviceModelList = deviceModelMapper.selectByExample(deviceModelExample);
+        if (iotDeviceModelList.isEmpty()) {
             throw new MyException("id【" + deviceModelId + "】对应的传感器型号不存在");
         }
-        String dicName = deviceTypeList.get(0).getDeviceType();
+        String dicName = iotDeviceModelList.get(0).getSensorModel();
         return dicName;
     }
 
-    public String getIotServiceType(String sensorModelId) {
+    public String getIotServiceTypeName(String sensorModelId) {
         //查询设备型号名称
         String dicName = getDeviceModel(sensorModelId);
         //根据型号查询
-        IotDeviceModelExample iotDeviceModelExample = new IotDeviceModelExample();
-        iotDeviceModelExample.createCriteria().andFlagEqualTo("0").andSensorModelEqualTo(dicName);
-        List<IotDeviceModel> iotDeviceModels = iotDeviceModelMapper.selectByExample(iotDeviceModelExample);
-        if (iotDeviceModels.isEmpty()) {
+        DeviceModelExample deviceModelExample = new DeviceModelExample();
+        deviceModelExample.createCriteria().andFlagEqualTo("0").andSensorModelEqualTo(dicName);
+        List<DeviceModel> deviceModelList = deviceModelMapper.selectByExample(deviceModelExample);
+        if (deviceModelList.isEmpty()) {
             throw new MyException(dicName + "对应的iot类型不存在");
         }
-        String iotSensorTypeId = iotDeviceModels.get(0).getIotSensorType();
+        String iotSensorTypeId = deviceModelList.get(0).getIotSensorType();
         //根据iotServiceType查询名称
         DictionaryExample dictionaryExampleModel1 = new DictionaryExample();
         dictionaryExampleModel1.createCriteria().andFlagEqualTo("0").andIdEqualTo(Integer.parseInt(iotSensorTypeId));

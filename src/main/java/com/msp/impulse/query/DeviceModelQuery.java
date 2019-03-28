@@ -1,12 +1,12 @@
-package com.msp.impulse.entity;
+package com.msp.impulse.query;
 
 import com.msp.impulse.base.BaseRequest;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
-public class IotDeviceModel extends BaseRequest implements Serializable {
+public class DeviceModelQuery extends BaseRequest implements Serializable {
     private Integer id;
 
     private String sensorModel;
@@ -31,8 +31,7 @@ public class IotDeviceModel extends BaseRequest implements Serializable {
 
     private MultipartFile file;
 
-
-    private static final long serialVersionUID = 1L;
+    private List<Integer> modelServiceIds;
 
     public Integer getId() {
         return id;
@@ -47,7 +46,7 @@ public class IotDeviceModel extends BaseRequest implements Serializable {
     }
 
     public void setSensorModel(String sensorModel) {
-        this.sensorModel = sensorModel == null ? null : sensorModel.trim();
+        this.sensorModel = sensorModel;
     }
 
     public String getIotSensorType() {
@@ -55,7 +54,7 @@ public class IotDeviceModel extends BaseRequest implements Serializable {
     }
 
     public void setIotSensorType(String iotSensorType) {
-        this.iotSensorType = iotSensorType == null ? null : iotSensorType.trim();
+        this.iotSensorType = iotSensorType;
     }
 
     public String getDeviceType() {
@@ -63,7 +62,7 @@ public class IotDeviceModel extends BaseRequest implements Serializable {
     }
 
     public void setDeviceType(String deviceType) {
-        this.deviceType = deviceType == null ? null : deviceType.trim();
+        this.deviceType = deviceType;
     }
 
     public String getFileName() {
@@ -71,7 +70,7 @@ public class IotDeviceModel extends BaseRequest implements Serializable {
     }
 
     public void setFileName(String fileName) {
-        this.fileName = fileName == null ? null : fileName.trim();
+        this.fileName = fileName;
     }
 
     public String getFlag() {
@@ -79,7 +78,7 @@ public class IotDeviceModel extends BaseRequest implements Serializable {
     }
 
     public void setFlag(String flag) {
-        this.flag = flag == null ? null : flag.trim();
+        this.flag = flag;
     }
 
     public Date getCreateTime() {
@@ -119,7 +118,7 @@ public class IotDeviceModel extends BaseRequest implements Serializable {
     }
 
     public void setState(String state) {
-        this.state = state == null ? null : state.trim();
+        this.state = state;
     }
 
     public MultipartFile getFile() {
@@ -128,5 +127,13 @@ public class IotDeviceModel extends BaseRequest implements Serializable {
 
     public void setFile(MultipartFile file) {
         this.file = file;
+    }
+
+    public List<Integer> getModelServiceIds() {
+        return modelServiceIds;
+    }
+
+    public void setModelServiceIds(List<Integer> modelServiceIds) {
+        this.modelServiceIds = modelServiceIds;
     }
 }

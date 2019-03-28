@@ -6,27 +6,17 @@ import io.swagger.annotations.ApiModelProperty;
 import java.util.Date;
 
 @ApiModel(value = "iot设备类型", description = "iot设备类型")
-public class IotDeviceModelVo {
-    @ApiModelProperty(name = "id", value = "id", example = "")
+public class DeviceModelVo {
     private Integer id;
-    @ApiModelProperty(name = "sensorModel", value = "设备型号", example = "")
     private String sensorModel;
-    @ApiModelProperty(name = "iotSensorType", value = "iot设备类型", example = "")
     private String iotSensorType;
-    @ApiModelProperty(name = "iotSensorTypeName", value = "iot设备类型名称", example = "")
     private String iotSensorTypeName;
-    @ApiModelProperty(name = "deviceType", value = "iot设备类型名称", example = "")
     private String deviceType;
-    @ApiModelProperty(name = "fileName", value = "文件名称", example = "")
     private String fileName;
-
     private  String deviceTypeName;
     private String flag;
-
     private Date createTime;
-
     private Date updateTime;
-
 
     public Integer getId() {
         return id;

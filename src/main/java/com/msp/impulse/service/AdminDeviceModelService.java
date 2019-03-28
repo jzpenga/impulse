@@ -5,12 +5,14 @@ import com.github.pagehelper.PageInfo;
 import com.msp.impulse.base.BaseResponse;
 import com.msp.impulse.base.ResponseCode;
 import com.msp.impulse.controller.AdminDeviceModelController;
-import com.msp.impulse.entity.IotDeviceModel;
-import com.msp.impulse.entity.IotDeviceModelExample;
-import com.msp.impulse.entity.Sensor;
+import com.msp.impulse.entity.*;
 import com.msp.impulse.exception.MyException;
-import com.msp.impulse.mapper.IotDeviceModelMapper;
-import com.msp.impulse.vo.IotDeviceModelVo;
+import com.msp.impulse.mapper.DeviceModelMapper;
+import com.msp.impulse.mapper.DictionaryMapper;
+import com.msp.impulse.mapper.ModelServiceMapper;
+import com.msp.impulse.query.DeviceModelQuery;
+import com.msp.impulse.vo.DeviceModelVo;
+import com.msp.impulse.vo.ModelServiceVo;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,82 +31,164 @@ import java.util.List;
 @Service
 public class AdminDeviceModelService {
     @Autowired
-    private IotDeviceModelMapper iotDeviceModelMapper;
+    private DeviceModelMapper deviceModelMapper;
+    @Autowired
+    private ModelServiceMapper modelServiceMapper;
+    @Autowired
+    private DictionaryMapper dictionaryMapper;
+
     private static Logger logger = LoggerFactory.getLogger(AdminDeviceModelController.class);
 
     /**
      * 新增iot平台设备类型
      *
-     * @param iotDeviceModel
+     * @param deviceModelQuery
      * @return
      */
     @Transactional
-    public BaseResponse saveDeviceType(IotDeviceModel iotDeviceModel, HttpSession session) throws IOException {
+    public BaseResponse saveDeviceType(DeviceModelQuery deviceModelQuery) throws IOException {
         BaseResponse response = new BaseResponse();
-        if (StringUtils.isBlank(iotDeviceModel.getSensorModel())) {
+        if (StringUtils.isBlank(deviceModelQuery.getSensorModel())) {
             throw new MyException("请输入设备型号名称!");
         }
-        if (StringUtils.isBlank(iotDeviceModel.getIotSensorType())) {
+        if (StringUtils.isBlank(deviceModelQuery.getIotSensorType())) {
             throw new MyException("请输入iot设备类型!");
         }
-        if (iotDeviceModel.getId() != null) {//修改
-            IotDeviceModelExample iotDeviceModelExample = new IotDeviceModelExample();
-            iotDeviceModelExample.createCriteria().andFlagEqualTo("0").andIdEqualTo(iotDeviceModel.getId());
-            List<IotDeviceModel> iotDeviceModels = iotDeviceModelMapper.selectByExample(iotDeviceModelExample);
-            if (!iotDeviceModels.isEmpty()) {
-
-                IotDeviceModel iotDeviceModel1 = iotDeviceModels.get(0);
-                //根据设备型号查询
-                IotDeviceModelExample iotDeviceModelExample1 = new IotDeviceModelExample();
-                iotDeviceModelExample1.createCriteria().andSensorModelEqualTo(iotDeviceModel.getSensorModel()).andFlagEqualTo("0");
-                List<IotDeviceModel> iotDeviceModels1 = iotDeviceModelMapper.selectByExample(iotDeviceModelExample1);
-                if (!iotDeviceModel1.getSensorModel().equals(iotDeviceModel.getSensorModel()) && !iotDeviceModels1.isEmpty()) {
-                    throw new MyException("已存在设备型号为【" + iotDeviceModels1.get(0).getSensorModel() + "】的iot设备类型");
-                }
-                iotDeviceModel1.setIotSensorType(iotDeviceModel.getIotSensorType());
-                iotDeviceModel1.setSensorModel(iotDeviceModel.getSensorModel());
-                iotDeviceModel1.setUpdateTime(new Date());
-                iotDeviceModelMapper.updateByPrimaryKey(iotDeviceModel1);
+        if (deviceModelQuery.getId() != null) {//修改
+            DeviceModelExample deviceModelExample = new DeviceModelExample();
+            deviceModelExample.createCriteria().andFlagEqualTo("0").andIdEqualTo(deviceModelQuery.getId());
+            List<DeviceModel> deviceModels = deviceModelMapper.selectByExample(deviceModelExample);
+            if (deviceModels.isEmpty()) {
+                throw  new MyException("不存在此数据!");
             }
-        } else {//新增
-            MultipartFile file = iotDeviceModel.getFile();
-            if (file == null) {
-                response.setResponseCode(ResponseCode.FILE_NOT_HAVE.getCode());
-                response.setResponseMsg(ResponseCode.FILE_NOT_HAVE.getMessage());
-                return response;
-            }
-            // 设置文件存储路径
-            String path = "/tmp/upload/";
-//            String path = "D:/upload/";
-            logger.info("path================================:" + path);
-            System.out.println("path:" + path);
-
-            String filename = file.getOriginalFilename();
-            iotDeviceModel.setFileName(filename);
-            File filepath = new File(path, filename);
-            // 检测是否存在目录
-            if (!filepath.getParentFile().exists()) {
-                filepath.getParentFile().mkdirs();// 新建文件夹
-            }
-            //检测文件是否存在
-            if (filepath.exists()) {//存在删除
-                filepath.delete();
-            }
-            file.transferTo(new File(path + File.separator + filename));// 文件写入
+            DeviceModel deviceModel1 = deviceModels.get(0);
             //根据设备型号查询
-            IotDeviceModelExample iotDeviceModelExample = new IotDeviceModelExample();
-            iotDeviceModelExample.createCriteria().andSensorModelEqualTo(iotDeviceModel.getSensorModel()).andFlagEqualTo("0");
-            List<IotDeviceModel> iotDeviceModels = iotDeviceModelMapper.selectByExample(iotDeviceModelExample);
-            if (!iotDeviceModels.isEmpty()) {
-                throw new MyException("已存在设备型号名称为【" + iotDeviceModel.getSensorModel() + "】的iot设备类型");
+            DeviceModelExample deviceModelExample1 = new DeviceModelExample();
+            deviceModelExample1.createCriteria().andSensorModelEqualTo(deviceModelQuery.getSensorModel()).andFlagEqualTo("0");
+            List<DeviceModel> deviceModelList = deviceModelMapper.selectByExample(deviceModelExample1);
+            if (!deviceModel1.getSensorModel().equals(deviceModelQuery.getSensorModel()) && !deviceModelList.isEmpty()) {
+                throw new MyException("已存在设备型号为【" + deviceModelList.get(0).getSensorModel() + "】的iot设备类型");
             }
-            iotDeviceModel.setCreateTime(new Date());
-            iotDeviceModel.setFlag("0");
-            iotDeviceModelMapper.insertSelective(iotDeviceModel);
+            //上传文件
+            String fileName = fileUpload(deviceModelQuery.getFile());
+
+            deviceModel1.setIotSensorType(deviceModelQuery.getIotSensorType());
+            deviceModel1.setSensorModel(deviceModelQuery.getSensorModel());
+            deviceModel1.setDeviceType(deviceModel1.getDeviceType());
+            deviceModel1.setFileName(fileName);
+            deviceModel1.setUpdateTime(new Date());
+            deviceModelMapper.updateByPrimaryKey(deviceModel1);
+
+            //更新modelService==========================================start
+            ModelServiceExample modelServiceExample = new ModelServiceExample();
+            modelServiceExample.createCriteria().andDeviceModelIdEqualTo(deviceModelQuery.getId()).andFlagEqualTo("0");
+            List<ModelService> modelServices = modelServiceMapper.selectByExample(modelServiceExample);
+            for (ModelService modelService : modelServices) {
+                modelService.setUpdateTime(new Date());
+                modelService.setFlag("1");
+                modelServiceMapper.updateByPrimaryKey(modelService);
+            }
+            List<Integer> modelServiceIds = deviceModelQuery.getModelServiceIds();
+            if (!modelServiceIds.isEmpty()) {
+                //新增modelService
+                for (Integer id : modelServiceIds) {
+                    addModelService(id, deviceModelQuery.getSensorModel(), deviceModelQuery.getId());
+                }
+            }
+            //更新modelService=============================================end
+        } else {//新增
+            DeviceModel deviceModel = new DeviceModel();
+            //上传文件
+            String fileName = fileUpload(deviceModelQuery.getFile());
+            //新增  deviceMode
+            DeviceModelExample deviceModelExample = new DeviceModelExample();
+            deviceModelExample.createCriteria().andSensorModelEqualTo(deviceModelQuery.getSensorModel()).andFlagEqualTo("0");
+            List<DeviceModel> iotDeviceModels = deviceModelMapper.selectByExample(deviceModelExample);
+            if (!iotDeviceModels.isEmpty()) {
+                throw new MyException("已存在设备型号名称为【" + deviceModelQuery.getSensorModel() + "】的iot设备类型");
+            }
+            if (StringUtils.isNotBlank(deviceModelQuery.getDeviceType())) {
+                deviceModel.setDeviceType(deviceModelQuery.getDeviceType());
+            }
+            deviceModel.setFileName(fileName);
+            deviceModel.setIotSensorType(deviceModelQuery.getIotSensorType());
+            deviceModel.setSensorModel(deviceModelQuery.getSensorModel());
+            deviceModel.setCreateTime(new Date());
+            deviceModel.setFlag("0");
+            deviceModelMapper.insertSelective(deviceModel);
+
+            //新增modelService
+            List<Integer> modelServiceIds = deviceModelQuery.getModelServiceIds();
+            if (!modelServiceIds.isEmpty()) {
+                //新增modelService
+                for (Integer id : modelServiceIds) {
+                    addModelService(id, deviceModelQuery.getSensorModel(), deviceModel.getId());
+                }
+            }
         }
         response.setResponseMsg(ResponseCode.OK.getMessage());
         response.setResponseCode(ResponseCode.OK.getCode());
         return response;
+    }
+
+    /**
+     * 新增modelService
+     *
+     * @param dicId
+     * @param sensorModel
+     * @param modelId
+     */
+    public void addModelService(Integer dicId, String sensorModel, Integer modelId) {
+        //查询是否已经存在 设备型号和传感类型相同的数据
+        Dictionary dictionary = dictionaryMapper.selectByPrimaryKey(dicId);
+        if (getModelService(modelId, dictionary.getDicCode()) != null) {
+            throw new MyException("已存在设备型号为【" + sensorModel
+                    + "】传感类型为【" + dictionary.getDicCode() + "】的数据!");
+        }
+        ModelService modelService = new ModelService();
+        modelService.setModelName(sensorModel);
+        modelService.setDeviceModelId(modelId);
+        modelService.setServiceCode(dictionary.getDicCode());
+        modelService.setCodeName(dictionary.getDicName());
+        modelService.setFlag("0");
+        modelService.setCreateTime(new Date());
+        modelServiceMapper.insertSelective(modelService);
+    }
+
+    public ModelService getModelService(Integer serviceModelId, String dicCode) {
+        ModelServiceExample modelServiceExample = new ModelServiceExample();
+        modelServiceExample.createCriteria()
+                .andFlagEqualTo("0").andServiceCodeEqualTo(dicCode)
+                .andDeviceModelIdEqualTo(serviceModelId);
+        List<ModelService> modelServices = modelServiceMapper.selectByExample(modelServiceExample);
+        if (modelServices.isEmpty()) {
+            return null;
+        }
+        return modelServices.get(0);
+    }
+
+    public String fileUpload(MultipartFile file) throws IOException {
+        if (file == null) {
+            throw new MyException("文件不存在！");
+        }
+        // 设置文件存储路径
+//        String path = "/tmp/upload/";
+        String path = "D:/upload/";
+        logger.info("path================================:" + path);
+        System.out.println("path:" + path);
+
+        String filename = file.getOriginalFilename();
+        File filepath = new File(path, filename);
+        // 检测是否存在目录
+        if (!filepath.getParentFile().exists()) {
+            filepath.getParentFile().mkdirs();// 新建文件夹
+        }
+        //检测文件是否存在
+        if (filepath.exists()) {//存在删除
+            filepath.delete();
+        }
+        file.transferTo(new File(path + File.separator + filename));// 文件写入
+        return filename;
     }
 
     /**
@@ -115,13 +199,25 @@ public class AdminDeviceModelService {
      */
     public BaseResponse queryDeviceModelById(Integer id) {
         BaseResponse response = new BaseResponse();
-        IotDeviceModelExample iotDeviceModelExample = new IotDeviceModelExample();
-        iotDeviceModelExample.createCriteria().andIdEqualTo(id).andFlagEqualTo("0");
-        List<IotDeviceModel> iotDeviceModels = iotDeviceModelMapper.selectByExample(iotDeviceModelExample);
+        ModelServiceVo modelServiceVo = new ModelServiceVo();
+        DeviceModelExample deviceModelExample = new DeviceModelExample();
+        deviceModelExample.createCriteria().andIdEqualTo(id).andFlagEqualTo("0");
+        List<DeviceModel> iotDeviceModels = deviceModelMapper.selectByExample(deviceModelExample);
         if (!iotDeviceModels.isEmpty()) {
-            IotDeviceModel iotDeviceModel = iotDeviceModels.get(0);
-            response.setData(iotDeviceModel);
+            DeviceModel iotDeviceModel = iotDeviceModels.get(0);
+            modelServiceVo.setCreateTime(iotDeviceModel.getCreateTime());
+            modelServiceVo.setDeviceType(iotDeviceModel.getDeviceType());
+            modelServiceVo.setFileName(iotDeviceModel.getFileName());
+            modelServiceVo.setId(iotDeviceModel.getId());
+            modelServiceVo.setIotSensorType(iotDeviceModel.getIotSensorType());
+            modelServiceVo.setSensorModel(iotDeviceModel.getSensorModel());
         }
+        ModelServiceExample modelServiceExample = new ModelServiceExample();
+        modelServiceExample.createCriteria().andDeviceModelIdEqualTo(id).andFlagEqualTo("0");
+        List<ModelService> modelServices = modelServiceMapper.selectByExample(modelServiceExample);
+        modelServiceVo.setModelServiceList(modelServices);
+
+        response.setData(modelServiceVo);
         response.setResponseMsg(ResponseCode.OK.getMessage());
         response.setResponseCode(ResponseCode.OK.getCode());
         return response;
@@ -137,30 +233,31 @@ public class AdminDeviceModelService {
     public BaseResponse deleteDeviceModelById(List<Integer> ids) {
         BaseResponse response = new BaseResponse();
         for (Integer id : ids) {
-            IotDeviceModel iotDeviceModel = iotDeviceModelMapper.selectByPrimaryKey(id);
-            if (iotDeviceModel == null) {
+            DeviceModel deviceModel = deviceModelMapper.selectByPrimaryKey(id);
+            if (deviceModel == null) {
                 throw new MyException("数据不存在");
             }
-            iotDeviceModel.setUpdateTime(new Date());
-            iotDeviceModel.setFlag("1");
-            iotDeviceModelMapper.updateByPrimaryKey(iotDeviceModel);
+            deviceModel.setUpdateTime(new Date());
+            deviceModel.setFlag("1");
+            deviceModelMapper.updateByPrimaryKey(deviceModel);
         }
         response.setResponseMsg(ResponseCode.OK.getMessage());
         response.setResponseCode(ResponseCode.OK.getCode());
         return response;
     }
 
-    public BaseResponse queryDeviceModelList(IotDeviceModel iotDeviceModel) {
+
+    public BaseResponse queryDeviceModelList(DeviceModel deviceModel) {
         BaseResponse<PageInfo> response = new BaseResponse<>();
-        if (iotDeviceModel.getPageNo() == null) {
-            iotDeviceModel.setPageNo(1);
+        if (deviceModel.getPageNo() == null) {
+            deviceModel.setPageNo(1);
         }
-        if (iotDeviceModel.getPageSize() == null) {
-            iotDeviceModel.setPageSize(20);
+        if (deviceModel.getPageSize() == null) {
+            deviceModel.setPageSize(20);
         }
-        PageHelper.startPage(iotDeviceModel.getPageNo(), iotDeviceModel.getPageSize());
-        List<IotDeviceModelVo> iotDeviceModelList = iotDeviceModelMapper.selectIotList(iotDeviceModel);
-        PageInfo<IotDeviceModelVo> pageInfo = new PageInfo<>(iotDeviceModelList);
+        PageHelper.startPage(deviceModel.getPageNo(), deviceModel.getPageSize());
+        List<DeviceModelVo> deviceModelVoList = deviceModelMapper.selectIotList(deviceModel);
+        PageInfo<DeviceModelVo> pageInfo = new PageInfo<>(deviceModelVoList);
         response.setData(pageInfo);
         response.setResponseMsg(ResponseCode.OK.getMessage());
         response.setResponseCode(ResponseCode.OK.getCode());
@@ -196,5 +293,21 @@ public class AdminDeviceModelService {
         os.flush();
         os.close();
         inStream.close();
+    }
+
+    /**
+     * 查询所有deviceType
+     *
+     * @return
+     */
+    public BaseResponse findDeviceType() {
+        BaseResponse response = new BaseResponse<>();
+        DeviceModelExample iotDeviceModelExample = new DeviceModelExample();
+        iotDeviceModelExample.createCriteria().andFlagEqualTo("0");
+        List<DeviceModel> deviceModelList = deviceModelMapper.selectByExample(iotDeviceModelExample);
+        response.setData(deviceModelList);
+        response.setResponseMsg(ResponseCode.OK.getMessage());
+        response.setResponseCode(ResponseCode.OK.getCode());
+        return response;
     }
 }

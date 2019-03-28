@@ -3,14 +3,14 @@ package com.msp.impulse.entity;
 import java.io.Serializable;
 import java.util.Date;
 
-public class DeviceService implements Serializable {
+public class ModelService implements Serializable {
     private Integer id;
 
-    private Integer deviceTypeId;
+    private Integer deviceModelId;
 
     private String serviceCode;
 
-    private String typeName;
+    private String modelName;
 
     private String codeName;
 
@@ -36,12 +36,12 @@ public class DeviceService implements Serializable {
         this.id = id;
     }
 
-    public Integer getDeviceTypeId() {
-        return deviceTypeId;
+    public Integer getDeviceModelId() {
+        return deviceModelId;
     }
 
-    public void setDeviceTypeId(Integer deviceTypeId) {
-        this.deviceTypeId = deviceTypeId;
+    public void setDeviceModelId(Integer deviceModelId) {
+        this.deviceModelId = deviceModelId;
     }
 
     public String getServiceCode() {
@@ -52,12 +52,12 @@ public class DeviceService implements Serializable {
         this.serviceCode = serviceCode == null ? null : serviceCode.trim();
     }
 
-    public String getTypeName() {
-        return typeName;
+    public String getModelName() {
+        return modelName;
     }
 
-    public void setTypeName(String typeName) {
-        this.typeName = typeName == null ? null : typeName.trim();
+    public void setModelName(String modelName) {
+        this.modelName = modelName == null ? null : modelName.trim();
     }
 
     public String getCodeName() {

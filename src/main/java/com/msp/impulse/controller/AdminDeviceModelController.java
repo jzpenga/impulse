@@ -2,8 +2,9 @@ package com.msp.impulse.controller;
 
 import com.msp.impulse.base.BaseResponse;
 import com.msp.impulse.base.ResponseCode;
-import com.msp.impulse.entity.IotDeviceModel;
+import com.msp.impulse.entity.DeviceModel;
 import com.msp.impulse.exception.MyException;
+import com.msp.impulse.query.DeviceModelQuery;
 import com.msp.impulse.service.AdminDeviceModelService;
 import com.msp.impulse.service.DataReportService;
 import io.swagger.annotations.Api;
@@ -12,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -30,10 +30,10 @@ public class AdminDeviceModelController {
 
     @PostMapping("saveDeviceModel")
     @ApiOperation(value = "新增", notes = "新增iot设备类型", tags = "iot平台设备型号管理", httpMethod = "POST")
-    public BaseResponse saveDeviceType(IotDeviceModel iotDeviceModel, HttpSession session) {
+    public BaseResponse saveDeviceType(DeviceModelQuery deviceModelQuery) {
         BaseResponse response;
         try {
-            response = adminDeviceModelService.saveDeviceType(iotDeviceModel,session);
+            response = adminDeviceModelService.saveDeviceType(deviceModelQuery);
         } catch (IllegalStateException e) {
             logger.error(e.getMessage());
             response = new BaseResponse();
@@ -93,7 +93,6 @@ public class AdminDeviceModelController {
     public BaseResponse queryDeviceModelById(@PathVariable Integer id) {
         BaseResponse response;
         try {
-
             response = adminDeviceModelService.queryDeviceModelById(id);
         }catch (MyException e) {
             logger.error(e.getMessage());
@@ -129,10 +128,10 @@ public class AdminDeviceModelController {
     }
     @PostMapping("queryDeviceModelList")
     @ApiOperation(value = "查询列表", notes = "查询列表", tags = "iot平台设备型号管理", httpMethod = "POST")
-    public BaseResponse queryDeviceModelList(@RequestBody IotDeviceModel iotDeviceModel) {
+    public BaseResponse queryDeviceModelList(@RequestBody DeviceModel deviceModel) {
         BaseResponse response;
         try {
-            response = adminDeviceModelService.queryDeviceModelList(iotDeviceModel);
+            response = adminDeviceModelService.queryDeviceModelList(deviceModel);
         }catch (MyException e) {
             logger.error(e.getMessage());
             response = new BaseResponse();
@@ -146,13 +145,33 @@ public class AdminDeviceModelController {
         }
         return response;
     }
-    @GetMapping("test")
-    @ApiOperation(value = "查询列表", notes = "查询列表", tags = "iot平台设备型号管理", httpMethod = "GET")
-    public BaseResponse getDataReport(String deviceId) {
-        BaseResponse response=new BaseResponse();
+//    @GetMapping("test")
+//    @ApiOperation(value = "查询列表", notes = "查询列表", tags = "iot平台设备型号管理", httpMethod = "GET")
+//    public BaseResponse getDataReport(String deviceId) {
+//        BaseResponse response=new BaseResponse();
+//        try {
+//            dataReportService.getDataReport(deviceId);
+//        }catch (MyException e) {
+//            logger.error(e.getMessage());
+//            response = new BaseResponse();
+//            response.setResponseCode(ResponseCode.PARAMETER_VALIDATION_FAILED.getCode());
+//            response.setResponseMsg(e.getMessage());
+//        } catch (Exception e) {
+//            logger.error(e.getMessage(), e);
+//            response = new BaseResponse<>();
+//            response.setResponseCode(ResponseCode.SERVER_FAILED.getCode());
+//            response.setResponseMsg(ResponseCode.SERVER_FAILED.getMessage());
+//        }
+//        return response;
+//    }
+
+    @PostMapping("findDeviceModel")
+    @ApiOperation(value = "查询所有设备型号", notes = "查询所有设备型号", tags = "服务类型管理", httpMethod = "POST")
+    public BaseResponse findDeviceType() {
+        BaseResponse response;
         try {
-            dataReportService.getDataReport(deviceId);
-        }catch (MyException e) {
+            response = adminDeviceModelService.findDeviceType();
+        } catch (MyException e) {
             logger.error(e.getMessage());
             response = new BaseResponse();
             response.setResponseCode(ResponseCode.PARAMETER_VALIDATION_FAILED.getCode());

@@ -1,7 +1,6 @@
 package com.msp.impulse.dao.impl;
 
 import com.msp.impulse.dao.RealTimeDataDao;
-import com.msp.impulse.entity.Company;
 import com.msp.impulse.entity.PageBean;
 import com.msp.impulse.entity.RealTimeData;
 import com.msp.impulse.query.DataHistoryQuery;
@@ -14,7 +13,6 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
-
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -41,11 +39,14 @@ public class RealTimeDataDaoImpl implements RealTimeDataDao {
     public PageBean selectRealTimeDataInfo(DataHistoryQuery dataHistoryQuery) {
         Query query =new Query();
         Criteria criteria=new Criteria();
+        criteria.and("dataValue").exists(true);
         if(StringUtils.isNotBlank(dataHistoryQuery.getSensorName())){
-            criteria.and("sensorName").is(dataHistoryQuery.getSensorName());
+            Pattern pattern = Pattern.compile("^.*" + dataHistoryQuery.getSensorName() + ".*$", Pattern.CASE_INSENSITIVE);
+            criteria.and("sensorName").regex(pattern);
         }
         if(StringUtils.isNotBlank(dataHistoryQuery.getGatewayName())) {
-            criteria.and("gatewayName").is(dataHistoryQuery.getGatewayName());
+            Pattern pattern = Pattern.compile("^.*" + dataHistoryQuery.getGatewayName() + ".*$", Pattern.CASE_INSENSITIVE);
+            criteria.and("gatewayName").regex(pattern);
         }
         if(StringUtils.isNotBlank(dataHistoryQuery.getSensorType())) {
             criteria.and("dataKey").is(dataHistoryQuery.getSensorType());

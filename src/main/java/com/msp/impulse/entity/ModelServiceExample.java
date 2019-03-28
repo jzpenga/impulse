@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class IotDeviceModelExample {
+public class ModelServiceExample {
     protected String orderByClause;
 
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
-    public IotDeviceModelExample() {
+    public ModelServiceExample() {
         oredCriteria = new ArrayList<Criteria>();
     }
 
@@ -165,413 +165,273 @@ public class IotDeviceModelExample {
             return (Criteria) this;
         }
 
-        public Criteria andSensorModelIsNull() {
-            addCriterion("sensor_model is null");
+        public Criteria andDeviceModelIdIsNull() {
+            addCriterion("device_model_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andSensorModelIsNotNull() {
-            addCriterion("sensor_model is not null");
+        public Criteria andDeviceModelIdIsNotNull() {
+            addCriterion("device_model_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andSensorModelEqualTo(String value) {
-            addCriterion("sensor_model =", value, "sensorModel");
+        public Criteria andDeviceModelIdEqualTo(Integer value) {
+            addCriterion("device_model_id =", value, "deviceModelId");
             return (Criteria) this;
         }
 
-        public Criteria andSensorModelNotEqualTo(String value) {
-            addCriterion("sensor_model <>", value, "sensorModel");
+        public Criteria andDeviceModelIdNotEqualTo(Integer value) {
+            addCriterion("device_model_id <>", value, "deviceModelId");
             return (Criteria) this;
         }
 
-        public Criteria andSensorModelGreaterThan(String value) {
-            addCriterion("sensor_model >", value, "sensorModel");
+        public Criteria andDeviceModelIdGreaterThan(Integer value) {
+            addCriterion("device_model_id >", value, "deviceModelId");
             return (Criteria) this;
         }
 
-        public Criteria andSensorModelGreaterThanOrEqualTo(String value) {
-            addCriterion("sensor_model >=", value, "sensorModel");
+        public Criteria andDeviceModelIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("device_model_id >=", value, "deviceModelId");
             return (Criteria) this;
         }
 
-        public Criteria andSensorModelLessThan(String value) {
-            addCriterion("sensor_model <", value, "sensorModel");
+        public Criteria andDeviceModelIdLessThan(Integer value) {
+            addCriterion("device_model_id <", value, "deviceModelId");
             return (Criteria) this;
         }
 
-        public Criteria andSensorModelLessThanOrEqualTo(String value) {
-            addCriterion("sensor_model <=", value, "sensorModel");
+        public Criteria andDeviceModelIdLessThanOrEqualTo(Integer value) {
+            addCriterion("device_model_id <=", value, "deviceModelId");
             return (Criteria) this;
         }
 
-        public Criteria andSensorModelLike(String value) {
-            addCriterion("sensor_model like", value, "sensorModel");
+        public Criteria andDeviceModelIdIn(List<Integer> values) {
+            addCriterion("device_model_id in", values, "deviceModelId");
             return (Criteria) this;
         }
 
-        public Criteria andSensorModelNotLike(String value) {
-            addCriterion("sensor_model not like", value, "sensorModel");
+        public Criteria andDeviceModelIdNotIn(List<Integer> values) {
+            addCriterion("device_model_id not in", values, "deviceModelId");
             return (Criteria) this;
         }
 
-        public Criteria andSensorModelIn(List<String> values) {
-            addCriterion("sensor_model in", values, "sensorModel");
+        public Criteria andDeviceModelIdBetween(Integer value1, Integer value2) {
+            addCriterion("device_model_id between", value1, value2, "deviceModelId");
             return (Criteria) this;
         }
 
-        public Criteria andSensorModelNotIn(List<String> values) {
-            addCriterion("sensor_model not in", values, "sensorModel");
+        public Criteria andDeviceModelIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("device_model_id not between", value1, value2, "deviceModelId");
             return (Criteria) this;
         }
 
-        public Criteria andSensorModelBetween(String value1, String value2) {
-            addCriterion("sensor_model between", value1, value2, "sensorModel");
+        public Criteria andServiceCodeIsNull() {
+            addCriterion("service_code is null");
             return (Criteria) this;
         }
 
-        public Criteria andSensorModelNotBetween(String value1, String value2) {
-            addCriterion("sensor_model not between", value1, value2, "sensorModel");
+        public Criteria andServiceCodeIsNotNull() {
+            addCriterion("service_code is not null");
             return (Criteria) this;
         }
 
-        public Criteria andIotSensorTypeIsNull() {
-            addCriterion("iot_sensor_type is null");
+        public Criteria andServiceCodeEqualTo(String value) {
+            addCriterion("service_code =", value, "serviceCode");
             return (Criteria) this;
         }
 
-        public Criteria andIotSensorTypeIsNotNull() {
-            addCriterion("iot_sensor_type is not null");
+        public Criteria andServiceCodeNotEqualTo(String value) {
+            addCriterion("service_code <>", value, "serviceCode");
             return (Criteria) this;
         }
 
-        public Criteria andIotSensorTypeEqualTo(String value) {
-            addCriterion("iot_sensor_type =", value, "iotSensorType");
+        public Criteria andServiceCodeGreaterThan(String value) {
+            addCriterion("service_code >", value, "serviceCode");
             return (Criteria) this;
         }
 
-        public Criteria andIotSensorTypeNotEqualTo(String value) {
-            addCriterion("iot_sensor_type <>", value, "iotSensorType");
+        public Criteria andServiceCodeGreaterThanOrEqualTo(String value) {
+            addCriterion("service_code >=", value, "serviceCode");
             return (Criteria) this;
         }
 
-        public Criteria andIotSensorTypeGreaterThan(String value) {
-            addCriterion("iot_sensor_type >", value, "iotSensorType");
+        public Criteria andServiceCodeLessThan(String value) {
+            addCriterion("service_code <", value, "serviceCode");
             return (Criteria) this;
         }
 
-        public Criteria andIotSensorTypeGreaterThanOrEqualTo(String value) {
-            addCriterion("iot_sensor_type >=", value, "iotSensorType");
+        public Criteria andServiceCodeLessThanOrEqualTo(String value) {
+            addCriterion("service_code <=", value, "serviceCode");
             return (Criteria) this;
         }
 
-        public Criteria andIotSensorTypeLessThan(String value) {
-            addCriterion("iot_sensor_type <", value, "iotSensorType");
+        public Criteria andServiceCodeLike(String value) {
+            addCriterion("service_code like", value, "serviceCode");
             return (Criteria) this;
         }
 
-        public Criteria andIotSensorTypeLessThanOrEqualTo(String value) {
-            addCriterion("iot_sensor_type <=", value, "iotSensorType");
+        public Criteria andServiceCodeNotLike(String value) {
+            addCriterion("service_code not like", value, "serviceCode");
             return (Criteria) this;
         }
 
-        public Criteria andIotSensorTypeLike(String value) {
-            addCriterion("iot_sensor_type like", value, "iotSensorType");
+        public Criteria andServiceCodeIn(List<String> values) {
+            addCriterion("service_code in", values, "serviceCode");
             return (Criteria) this;
         }
 
-        public Criteria andIotSensorTypeNotLike(String value) {
-            addCriterion("iot_sensor_type not like", value, "iotSensorType");
+        public Criteria andServiceCodeNotIn(List<String> values) {
+            addCriterion("service_code not in", values, "serviceCode");
             return (Criteria) this;
         }
 
-        public Criteria andIotSensorTypeIn(List<String> values) {
-            addCriterion("iot_sensor_type in", values, "iotSensorType");
+        public Criteria andServiceCodeBetween(String value1, String value2) {
+            addCriterion("service_code between", value1, value2, "serviceCode");
             return (Criteria) this;
         }
 
-        public Criteria andIotSensorTypeNotIn(List<String> values) {
-            addCriterion("iot_sensor_type not in", values, "iotSensorType");
+        public Criteria andServiceCodeNotBetween(String value1, String value2) {
+            addCriterion("service_code not between", value1, value2, "serviceCode");
             return (Criteria) this;
         }
 
-        public Criteria andIotSensorTypeBetween(String value1, String value2) {
-            addCriterion("iot_sensor_type between", value1, value2, "iotSensorType");
+        public Criteria andModelNameIsNull() {
+            addCriterion("model_name is null");
             return (Criteria) this;
         }
 
-        public Criteria andIotSensorTypeNotBetween(String value1, String value2) {
-            addCriterion("iot_sensor_type not between", value1, value2, "iotSensorType");
+        public Criteria andModelNameIsNotNull() {
+            addCriterion("model_name is not null");
             return (Criteria) this;
         }
 
-        public Criteria andDeviceTypeIsNull() {
-            addCriterion("device_type is null");
+        public Criteria andModelNameEqualTo(String value) {
+            addCriterion("model_name =", value, "modelName");
             return (Criteria) this;
         }
 
-        public Criteria andDeviceTypeIsNotNull() {
-            addCriterion("device_type is not null");
+        public Criteria andModelNameNotEqualTo(String value) {
+            addCriterion("model_name <>", value, "modelName");
             return (Criteria) this;
         }
 
-        public Criteria andDeviceTypeEqualTo(String value) {
-            addCriterion("device_type =", value, "deviceType");
+        public Criteria andModelNameGreaterThan(String value) {
+            addCriterion("model_name >", value, "modelName");
             return (Criteria) this;
         }
 
-        public Criteria andDeviceTypeNotEqualTo(String value) {
-            addCriterion("device_type <>", value, "deviceType");
+        public Criteria andModelNameGreaterThanOrEqualTo(String value) {
+            addCriterion("model_name >=", value, "modelName");
             return (Criteria) this;
         }
 
-        public Criteria andDeviceTypeGreaterThan(String value) {
-            addCriterion("device_type >", value, "deviceType");
+        public Criteria andModelNameLessThan(String value) {
+            addCriterion("model_name <", value, "modelName");
             return (Criteria) this;
         }
 
-        public Criteria andDeviceTypeGreaterThanOrEqualTo(String value) {
-            addCriterion("device_type >=", value, "deviceType");
+        public Criteria andModelNameLessThanOrEqualTo(String value) {
+            addCriterion("model_name <=", value, "modelName");
             return (Criteria) this;
         }
 
-        public Criteria andDeviceTypeLessThan(String value) {
-            addCriterion("device_type <", value, "deviceType");
+        public Criteria andModelNameLike(String value) {
+            addCriterion("model_name like", value, "modelName");
             return (Criteria) this;
         }
 
-        public Criteria andDeviceTypeLessThanOrEqualTo(String value) {
-            addCriterion("device_type <=", value, "deviceType");
+        public Criteria andModelNameNotLike(String value) {
+            addCriterion("model_name not like", value, "modelName");
             return (Criteria) this;
         }
 
-        public Criteria andDeviceTypeLike(String value) {
-            addCriterion("device_type like", value, "deviceType");
+        public Criteria andModelNameIn(List<String> values) {
+            addCriterion("model_name in", values, "modelName");
             return (Criteria) this;
         }
 
-        public Criteria andDeviceTypeNotLike(String value) {
-            addCriterion("device_type not like", value, "deviceType");
+        public Criteria andModelNameNotIn(List<String> values) {
+            addCriterion("model_name not in", values, "modelName");
             return (Criteria) this;
         }
 
-        public Criteria andDeviceTypeIn(List<String> values) {
-            addCriterion("device_type in", values, "deviceType");
+        public Criteria andModelNameBetween(String value1, String value2) {
+            addCriterion("model_name between", value1, value2, "modelName");
             return (Criteria) this;
         }
 
-        public Criteria andDeviceTypeNotIn(List<String> values) {
-            addCriterion("device_type not in", values, "deviceType");
+        public Criteria andModelNameNotBetween(String value1, String value2) {
+            addCriterion("model_name not between", value1, value2, "modelName");
             return (Criteria) this;
         }
 
-        public Criteria andDeviceTypeBetween(String value1, String value2) {
-            addCriterion("device_type between", value1, value2, "deviceType");
+        public Criteria andCodeNameIsNull() {
+            addCriterion("code_name is null");
             return (Criteria) this;
         }
 
-        public Criteria andDeviceTypeNotBetween(String value1, String value2) {
-            addCriterion("device_type not between", value1, value2, "deviceType");
+        public Criteria andCodeNameIsNotNull() {
+            addCriterion("code_name is not null");
             return (Criteria) this;
         }
 
-        public Criteria andFileNameIsNull() {
-            addCriterion("file_name is null");
+        public Criteria andCodeNameEqualTo(String value) {
+            addCriterion("code_name =", value, "codeName");
             return (Criteria) this;
         }
 
-        public Criteria andFileNameIsNotNull() {
-            addCriterion("file_name is not null");
+        public Criteria andCodeNameNotEqualTo(String value) {
+            addCriterion("code_name <>", value, "codeName");
             return (Criteria) this;
         }
 
-        public Criteria andFileNameEqualTo(String value) {
-            addCriterion("file_name =", value, "fileName");
+        public Criteria andCodeNameGreaterThan(String value) {
+            addCriterion("code_name >", value, "codeName");
             return (Criteria) this;
         }
 
-        public Criteria andFileNameNotEqualTo(String value) {
-            addCriterion("file_name <>", value, "fileName");
+        public Criteria andCodeNameGreaterThanOrEqualTo(String value) {
+            addCriterion("code_name >=", value, "codeName");
             return (Criteria) this;
         }
 
-        public Criteria andFileNameGreaterThan(String value) {
-            addCriterion("file_name >", value, "fileName");
+        public Criteria andCodeNameLessThan(String value) {
+            addCriterion("code_name <", value, "codeName");
             return (Criteria) this;
         }
 
-        public Criteria andFileNameGreaterThanOrEqualTo(String value) {
-            addCriterion("file_name >=", value, "fileName");
+        public Criteria andCodeNameLessThanOrEqualTo(String value) {
+            addCriterion("code_name <=", value, "codeName");
             return (Criteria) this;
         }
 
-        public Criteria andFileNameLessThan(String value) {
-            addCriterion("file_name <", value, "fileName");
+        public Criteria andCodeNameLike(String value) {
+            addCriterion("code_name like", value, "codeName");
             return (Criteria) this;
         }
 
-        public Criteria andFileNameLessThanOrEqualTo(String value) {
-            addCriterion("file_name <=", value, "fileName");
+        public Criteria andCodeNameNotLike(String value) {
+            addCriterion("code_name not like", value, "codeName");
             return (Criteria) this;
         }
 
-        public Criteria andFileNameLike(String value) {
-            addCriterion("file_name like", value, "fileName");
+        public Criteria andCodeNameIn(List<String> values) {
+            addCriterion("code_name in", values, "codeName");
             return (Criteria) this;
         }
 
-        public Criteria andFileNameNotLike(String value) {
-            addCriterion("file_name not like", value, "fileName");
+        public Criteria andCodeNameNotIn(List<String> values) {
+            addCriterion("code_name not in", values, "codeName");
             return (Criteria) this;
         }
 
-        public Criteria andFileNameIn(List<String> values) {
-            addCriterion("file_name in", values, "fileName");
+        public Criteria andCodeNameBetween(String value1, String value2) {
+            addCriterion("code_name between", value1, value2, "codeName");
             return (Criteria) this;
         }
 
-        public Criteria andFileNameNotIn(List<String> values) {
-            addCriterion("file_name not in", values, "fileName");
-            return (Criteria) this;
-        }
-
-        public Criteria andFileNameBetween(String value1, String value2) {
-            addCriterion("file_name between", value1, value2, "fileName");
-            return (Criteria) this;
-        }
-
-        public Criteria andFileNameNotBetween(String value1, String value2) {
-            addCriterion("file_name not between", value1, value2, "fileName");
-            return (Criteria) this;
-        }
-
-        public Criteria andFlagIsNull() {
-            addCriterion("flag is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andFlagIsNotNull() {
-            addCriterion("flag is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andFlagEqualTo(String value) {
-            addCriterion("flag =", value, "flag");
-            return (Criteria) this;
-        }
-
-        public Criteria andFlagNotEqualTo(String value) {
-            addCriterion("flag <>", value, "flag");
-            return (Criteria) this;
-        }
-
-        public Criteria andFlagGreaterThan(String value) {
-            addCriterion("flag >", value, "flag");
-            return (Criteria) this;
-        }
-
-        public Criteria andFlagGreaterThanOrEqualTo(String value) {
-            addCriterion("flag >=", value, "flag");
-            return (Criteria) this;
-        }
-
-        public Criteria andFlagLessThan(String value) {
-            addCriterion("flag <", value, "flag");
-            return (Criteria) this;
-        }
-
-        public Criteria andFlagLessThanOrEqualTo(String value) {
-            addCriterion("flag <=", value, "flag");
-            return (Criteria) this;
-        }
-
-        public Criteria andFlagLike(String value) {
-            addCriterion("flag like", value, "flag");
-            return (Criteria) this;
-        }
-
-        public Criteria andFlagNotLike(String value) {
-            addCriterion("flag not like", value, "flag");
-            return (Criteria) this;
-        }
-
-        public Criteria andFlagIn(List<String> values) {
-            addCriterion("flag in", values, "flag");
-            return (Criteria) this;
-        }
-
-        public Criteria andFlagNotIn(List<String> values) {
-            addCriterion("flag not in", values, "flag");
-            return (Criteria) this;
-        }
-
-        public Criteria andFlagBetween(String value1, String value2) {
-            addCriterion("flag between", value1, value2, "flag");
-            return (Criteria) this;
-        }
-
-        public Criteria andFlagNotBetween(String value1, String value2) {
-            addCriterion("flag not between", value1, value2, "flag");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreateTimeIsNull() {
-            addCriterion("create_time is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreateTimeIsNotNull() {
-            addCriterion("create_time is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreateTimeEqualTo(Date value) {
-            addCriterion("create_time =", value, "createTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreateTimeNotEqualTo(Date value) {
-            addCriterion("create_time <>", value, "createTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreateTimeGreaterThan(Date value) {
-            addCriterion("create_time >", value, "createTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreateTimeGreaterThanOrEqualTo(Date value) {
-            addCriterion("create_time >=", value, "createTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreateTimeLessThan(Date value) {
-            addCriterion("create_time <", value, "createTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreateTimeLessThanOrEqualTo(Date value) {
-            addCriterion("create_time <=", value, "createTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreateTimeIn(List<Date> values) {
-            addCriterion("create_time in", values, "createTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreateTimeNotIn(List<Date> values) {
-            addCriterion("create_time not in", values, "createTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreateTimeBetween(Date value1, Date value2) {
-            addCriterion("create_time between", value1, value2, "createTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andCreateTimeNotBetween(Date value1, Date value2) {
-            addCriterion("create_time not between", value1, value2, "createTime");
+        public Criteria andCodeNameNotBetween(String value1, String value2) {
+            addCriterion("code_name not between", value1, value2, "codeName");
             return (Criteria) this;
         }
 
@@ -635,63 +495,63 @@ public class IotDeviceModelExample {
             return (Criteria) this;
         }
 
-        public Criteria andCreateUserIsNull() {
-            addCriterion("create_user is null");
+        public Criteria andCreateTimeIsNull() {
+            addCriterion("create_time is null");
             return (Criteria) this;
         }
 
-        public Criteria andCreateUserIsNotNull() {
-            addCriterion("create_user is not null");
+        public Criteria andCreateTimeIsNotNull() {
+            addCriterion("create_time is not null");
             return (Criteria) this;
         }
 
-        public Criteria andCreateUserEqualTo(Integer value) {
-            addCriterion("create_user =", value, "createUser");
+        public Criteria andCreateTimeEqualTo(Date value) {
+            addCriterion("create_time =", value, "createTime");
             return (Criteria) this;
         }
 
-        public Criteria andCreateUserNotEqualTo(Integer value) {
-            addCriterion("create_user <>", value, "createUser");
+        public Criteria andCreateTimeNotEqualTo(Date value) {
+            addCriterion("create_time <>", value, "createTime");
             return (Criteria) this;
         }
 
-        public Criteria andCreateUserGreaterThan(Integer value) {
-            addCriterion("create_user >", value, "createUser");
+        public Criteria andCreateTimeGreaterThan(Date value) {
+            addCriterion("create_time >", value, "createTime");
             return (Criteria) this;
         }
 
-        public Criteria andCreateUserGreaterThanOrEqualTo(Integer value) {
-            addCriterion("create_user >=", value, "createUser");
+        public Criteria andCreateTimeGreaterThanOrEqualTo(Date value) {
+            addCriterion("create_time >=", value, "createTime");
             return (Criteria) this;
         }
 
-        public Criteria andCreateUserLessThan(Integer value) {
-            addCriterion("create_user <", value, "createUser");
+        public Criteria andCreateTimeLessThan(Date value) {
+            addCriterion("create_time <", value, "createTime");
             return (Criteria) this;
         }
 
-        public Criteria andCreateUserLessThanOrEqualTo(Integer value) {
-            addCriterion("create_user <=", value, "createUser");
+        public Criteria andCreateTimeLessThanOrEqualTo(Date value) {
+            addCriterion("create_time <=", value, "createTime");
             return (Criteria) this;
         }
 
-        public Criteria andCreateUserIn(List<Integer> values) {
-            addCriterion("create_user in", values, "createUser");
+        public Criteria andCreateTimeIn(List<Date> values) {
+            addCriterion("create_time in", values, "createTime");
             return (Criteria) this;
         }
 
-        public Criteria andCreateUserNotIn(List<Integer> values) {
-            addCriterion("create_user not in", values, "createUser");
+        public Criteria andCreateTimeNotIn(List<Date> values) {
+            addCriterion("create_time not in", values, "createTime");
             return (Criteria) this;
         }
 
-        public Criteria andCreateUserBetween(Integer value1, Integer value2) {
-            addCriterion("create_user between", value1, value2, "createUser");
+        public Criteria andCreateTimeBetween(Date value1, Date value2) {
+            addCriterion("create_time between", value1, value2, "createTime");
             return (Criteria) this;
         }
 
-        public Criteria andCreateUserNotBetween(Integer value1, Integer value2) {
-            addCriterion("create_user not between", value1, value2, "createUser");
+        public Criteria andCreateTimeNotBetween(Date value1, Date value2) {
+            addCriterion("create_time not between", value1, value2, "createTime");
             return (Criteria) this;
         }
 
@@ -705,53 +565,133 @@ public class IotDeviceModelExample {
             return (Criteria) this;
         }
 
-        public Criteria andUpdateUserEqualTo(Integer value) {
+        public Criteria andUpdateUserEqualTo(String value) {
             addCriterion("update_user =", value, "updateUser");
             return (Criteria) this;
         }
 
-        public Criteria andUpdateUserNotEqualTo(Integer value) {
+        public Criteria andUpdateUserNotEqualTo(String value) {
             addCriterion("update_user <>", value, "updateUser");
             return (Criteria) this;
         }
 
-        public Criteria andUpdateUserGreaterThan(Integer value) {
+        public Criteria andUpdateUserGreaterThan(String value) {
             addCriterion("update_user >", value, "updateUser");
             return (Criteria) this;
         }
 
-        public Criteria andUpdateUserGreaterThanOrEqualTo(Integer value) {
+        public Criteria andUpdateUserGreaterThanOrEqualTo(String value) {
             addCriterion("update_user >=", value, "updateUser");
             return (Criteria) this;
         }
 
-        public Criteria andUpdateUserLessThan(Integer value) {
+        public Criteria andUpdateUserLessThan(String value) {
             addCriterion("update_user <", value, "updateUser");
             return (Criteria) this;
         }
 
-        public Criteria andUpdateUserLessThanOrEqualTo(Integer value) {
+        public Criteria andUpdateUserLessThanOrEqualTo(String value) {
             addCriterion("update_user <=", value, "updateUser");
             return (Criteria) this;
         }
 
-        public Criteria andUpdateUserIn(List<Integer> values) {
+        public Criteria andUpdateUserLike(String value) {
+            addCriterion("update_user like", value, "updateUser");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpdateUserNotLike(String value) {
+            addCriterion("update_user not like", value, "updateUser");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpdateUserIn(List<String> values) {
             addCriterion("update_user in", values, "updateUser");
             return (Criteria) this;
         }
 
-        public Criteria andUpdateUserNotIn(List<Integer> values) {
+        public Criteria andUpdateUserNotIn(List<String> values) {
             addCriterion("update_user not in", values, "updateUser");
             return (Criteria) this;
         }
 
-        public Criteria andUpdateUserBetween(Integer value1, Integer value2) {
+        public Criteria andUpdateUserBetween(String value1, String value2) {
             addCriterion("update_user between", value1, value2, "updateUser");
             return (Criteria) this;
         }
 
-        public Criteria andUpdateUserNotBetween(Integer value1, Integer value2) {
+        public Criteria andUpdateUserNotBetween(String value1, String value2) {
             addCriterion("update_user not between", value1, value2, "updateUser");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateUserIsNull() {
+            addCriterion("create_user is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateUserIsNotNull() {
+            addCriterion("create_user is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateUserEqualTo(String value) {
+            addCriterion("create_user =", value, "createUser");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateUserNotEqualTo(String value) {
+            addCriterion("create_user <>", value, "createUser");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateUserGreaterThan(String value) {
+            addCriterion("create_user >", value, "createUser");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateUserGreaterThanOrEqualTo(String value) {
+            addCriterion("create_user >=", value, "createUser");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateUserLessThan(String value) {
+            addCriterion("create_user <", value, "createUser");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateUserLessThanOrEqualTo(String value) {
+            addCriterion("create_user <=", value, "createUser");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateUserLike(String value) {
+            addCriterion("create_user like", value, "createUser");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateUserNotLike(String value) {
+            addCriterion("create_user not like", value, "createUser");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateUserIn(List<String> values) {
+            addCriterion("create_user in", values, "createUser");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateUserNotIn(List<String> values) {
+            addCriterion("create_user not in", values, "createUser");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateUserBetween(String value1, String value2) {
+            addCriterion("create_user between", value1, value2, "createUser");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateUserNotBetween(String value1, String value2) {
+            addCriterion("create_user not between", value1, value2, "createUser");
             return (Criteria) this;
         }
 
@@ -822,6 +762,76 @@ public class IotDeviceModelExample {
 
         public Criteria andStateNotBetween(String value1, String value2) {
             addCriterion("state not between", value1, value2, "state");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlagIsNull() {
+            addCriterion("flag is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlagIsNotNull() {
+            addCriterion("flag is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlagEqualTo(String value) {
+            addCriterion("flag =", value, "flag");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlagNotEqualTo(String value) {
+            addCriterion("flag <>", value, "flag");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlagGreaterThan(String value) {
+            addCriterion("flag >", value, "flag");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlagGreaterThanOrEqualTo(String value) {
+            addCriterion("flag >=", value, "flag");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlagLessThan(String value) {
+            addCriterion("flag <", value, "flag");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlagLessThanOrEqualTo(String value) {
+            addCriterion("flag <=", value, "flag");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlagLike(String value) {
+            addCriterion("flag like", value, "flag");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlagNotLike(String value) {
+            addCriterion("flag not like", value, "flag");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlagIn(List<String> values) {
+            addCriterion("flag in", values, "flag");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlagNotIn(List<String> values) {
+            addCriterion("flag not in", values, "flag");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlagBetween(String value1, String value2) {
+            addCriterion("flag between", value1, value2, "flag");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlagNotBetween(String value1, String value2) {
+            addCriterion("flag not between", value1, value2, "flag");
             return (Criteria) this;
         }
     }

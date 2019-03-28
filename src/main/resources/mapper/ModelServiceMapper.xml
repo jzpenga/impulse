@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.msp.impulse.mapper.DeviceTypeMapper">
-  <resultMap id="BaseResultMap" type="com.msp.impulse.entity.DeviceType">
+<mapper namespace="com.msp.impulse.mapper.ModelServiceMapper">
+  <resultMap id="BaseResultMap" type="com.msp.impulse.entity.ModelService">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="device_type" jdbcType="VARCHAR" property="deviceType" />
+    <result column="device_model_id" jdbcType="INTEGER" property="deviceModelId" />
+    <result column="service_code" jdbcType="VARCHAR" property="serviceCode" />
+    <result column="model_name" jdbcType="VARCHAR" property="modelName" />
+    <result column="code_name" jdbcType="VARCHAR" property="codeName" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_user" jdbcType="VARCHAR" property="updateUser" />
@@ -70,15 +73,16 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, device_type, update_time, create_time, update_user, create_user, state, flag
+    id, device_model_id, service_code, model_name, code_name, update_time, create_time, 
+    update_user, create_user, state, flag
   </sql>
-  <select id="selectByExample" parameterType="com.msp.impulse.entity.DeviceTypeExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.msp.impulse.entity.ModelServiceExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from device_type
+    from model_service
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -89,35 +93,46 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from device_type
+    from model_service
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from device_type
+    delete from model_service
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.msp.impulse.entity.DeviceTypeExample">
-    delete from device_type
+  <delete id="deleteByExample" parameterType="com.msp.impulse.entity.ModelServiceExample">
+    delete from model_service
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.msp.impulse.entity.DeviceType">
-    insert into device_type (id, device_type, update_time, 
+  <insert id="insert" parameterType="com.msp.impulse.entity.ModelService">
+    insert into model_service (id, device_model_id, service_code, 
+      model_name, code_name, update_time, 
       create_time, update_user, create_user, 
       state, flag)
-    values (#{id,jdbcType=INTEGER}, #{deviceType,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+    values (#{id,jdbcType=INTEGER}, #{deviceModelId,jdbcType=INTEGER}, #{serviceCode,jdbcType=VARCHAR}, 
+      #{modelName,jdbcType=VARCHAR}, #{codeName,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, 
       #{state,jdbcType=VARCHAR}, #{flag,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.msp.impulse.entity.DeviceType">
-    insert into device_type
+  <insert id="insertSelective" parameterType="com.msp.impulse.entity.ModelService">
+    insert into model_service
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
       </if>
-      <if test="deviceType != null">
-        device_type,
+      <if test="deviceModelId != null">
+        device_model_id,
+      </if>
+      <if test="serviceCode != null">
+        service_code,
+      </if>
+      <if test="modelName != null">
+        model_name,
+      </if>
+      <if test="codeName != null">
+        code_name,
       </if>
       <if test="updateTime != null">
         update_time,
@@ -142,8 +157,17 @@
       <if test="id != null">
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="deviceType != null">
-        #{deviceType,jdbcType=VARCHAR},
+      <if test="deviceModelId != null">
+        #{deviceModelId,jdbcType=INTEGER},
+      </if>
+      <if test="serviceCode != null">
+        #{serviceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="modelName != null">
+        #{modelName,jdbcType=VARCHAR},
+      </if>
+      <if test="codeName != null">
+        #{codeName,jdbcType=VARCHAR},
       </if>
       <if test="updateTime != null">
         #{updateTime,jdbcType=TIMESTAMP},
@@ -165,20 +189,29 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.msp.impulse.entity.DeviceTypeExample" resultType="java.lang.Long">
-    select count(*) from device_type
+  <select id="countByExample" parameterType="com.msp.impulse.entity.ModelServiceExample" resultType="java.lang.Long">
+    select count(*) from model_service
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update device_type
+    update model_service
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.deviceType != null">
-        device_type = #{record.deviceType,jdbcType=VARCHAR},
+      <if test="record.deviceModelId != null">
+        device_model_id = #{record.deviceModelId,jdbcType=INTEGER},
+      </if>
+      <if test="record.serviceCode != null">
+        service_code = #{record.serviceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.modelName != null">
+        model_name = #{record.modelName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.codeName != null">
+        code_name = #{record.codeName,jdbcType=VARCHAR},
       </if>
       <if test="record.updateTime != null">
         update_time = #{record.updateTime,jdbcType=TIMESTAMP},
@@ -204,9 +237,12 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update device_type
+    update model_service
     set id = #{record.id,jdbcType=INTEGER},
-      device_type = #{record.deviceType,jdbcType=VARCHAR},
+      device_model_id = #{record.deviceModelId,jdbcType=INTEGER},
+      service_code = #{record.serviceCode,jdbcType=VARCHAR},
+      model_name = #{record.modelName,jdbcType=VARCHAR},
+      code_name = #{record.codeName,jdbcType=VARCHAR},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       update_user = #{record.updateUser,jdbcType=VARCHAR},
@@ -217,11 +253,20 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.msp.impulse.entity.DeviceType">
-    update device_type
+  <update id="updateByPrimaryKeySelective" parameterType="com.msp.impulse.entity.ModelService">
+    update model_service
     <set>
-      <if test="deviceType != null">
-        device_type = #{deviceType,jdbcType=VARCHAR},
+      <if test="deviceModelId != null">
+        device_model_id = #{deviceModelId,jdbcType=INTEGER},
+      </if>
+      <if test="serviceCode != null">
+        service_code = #{serviceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="modelName != null">
+        model_name = #{modelName,jdbcType=VARCHAR},
+      </if>
+      <if test="codeName != null">
+        code_name = #{codeName,jdbcType=VARCHAR},
       </if>
       <if test="updateTime != null">
         update_time = #{updateTime,jdbcType=TIMESTAMP},
@@ -244,9 +289,12 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.msp.impulse.entity.DeviceType">
-    update device_type
-    set device_type = #{deviceType,jdbcType=VARCHAR},
+  <update id="updateByPrimaryKey" parameterType="com.msp.impulse.entity.ModelService">
+    update model_service
+    set device_model_id = #{deviceModelId,jdbcType=INTEGER},
+      service_code = #{serviceCode,jdbcType=VARCHAR},
+      model_name = #{modelName,jdbcType=VARCHAR},
+      code_name = #{codeName,jdbcType=VARCHAR},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_user = #{updateUser,jdbcType=VARCHAR},
