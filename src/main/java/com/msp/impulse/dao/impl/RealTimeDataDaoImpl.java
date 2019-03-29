@@ -3,6 +3,9 @@ package com.msp.impulse.dao.impl;
 import com.msp.impulse.dao.RealTimeDataDao;
 import com.msp.impulse.entity.PageBean;
 import com.msp.impulse.entity.RealTimeData;
+import com.msp.impulse.entity.Sensor;
+import com.msp.impulse.entity.SensorExample;
+import com.msp.impulse.mapper.SensorMapper;
 import com.msp.impulse.query.DataHistoryQuery;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,8 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -20,6 +25,8 @@ import java.util.regex.Pattern;
 public class RealTimeDataDaoImpl implements RealTimeDataDao {
     @Autowired
     private MongoTemplate mongoTemplate;
+    @Autowired
+    private SensorMapper sensorMapper;
 
 
     @Override
@@ -37,9 +44,19 @@ public class RealTimeDataDaoImpl implements RealTimeDataDao {
 
     @Override
     public PageBean selectRealTimeDataInfo(DataHistoryQuery dataHistoryQuery) {
+        //已被删除的设备不被查出
+        SensorExample sensorExample=new SensorExample();
+        sensorExample.createCriteria().andFlagEqualTo("1");
+        List<Sensor> sensorList = sensorMapper.selectByExample(sensorExample);
+        List<String> deviceList=new ArrayList();
+        for (Sensor sensor:sensorList) {
+            String deviceId = sensor.getDeviceId();
+            deviceList.add(deviceId);
+        }
         Query query =new Query();
         Criteria criteria=new Criteria();
         criteria.and("dataValue").exists(true);
+        criteria.and("deviceId").nin(deviceList);
         if(StringUtils.isNotBlank(dataHistoryQuery.getSensorName())){
             Pattern pattern = Pattern.compile("^.*" + dataHistoryQuery.getSensorName() + ".*$", Pattern.CASE_INSENSITIVE);
             criteria.and("sensorName").regex(pattern);
