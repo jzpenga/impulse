@@ -459,9 +459,9 @@
   <select id="selectSensorInfo" parameterType="com.msp.impulse.query.SensorQuery" resultType="com.msp.impulse.entity.Sensor">
     SELECT
     s.id,s.gateway_name gatewayName,s.name ,pass_no passNo,
-    s.sensor_no sensorNo,s.user_name userName,s.user_id userId
+    s.sensor_no sensorNo,s.user_name userName,s.user_id userId,d.sensor_model sensorModel
     from
-    sensor s
+    sensor s  left  join device_model d on  s.sensor_model=d.id
     where 1=1
     <if test="userId != null">
       and s.user_id =#{userId}

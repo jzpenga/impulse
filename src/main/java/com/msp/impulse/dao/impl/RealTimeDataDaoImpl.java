@@ -1,10 +1,9 @@
 package com.msp.impulse.dao.impl;
 
 import com.msp.impulse.dao.RealTimeDataDao;
-import com.msp.impulse.entity.PageBean;
-import com.msp.impulse.entity.RealTimeData;
-import com.msp.impulse.entity.Sensor;
-import com.msp.impulse.entity.SensorExample;
+import com.msp.impulse.entity.*;
+import com.msp.impulse.exception.MyException;
+import com.msp.impulse.mapper.DictionaryMapper;
 import com.msp.impulse.mapper.SensorMapper;
 import com.msp.impulse.query.DataHistoryQuery;
 import org.apache.commons.lang.StringUtils;
@@ -27,6 +26,8 @@ public class RealTimeDataDaoImpl implements RealTimeDataDao {
     private MongoTemplate mongoTemplate;
     @Autowired
     private SensorMapper sensorMapper;
+    @Autowired
+    private DictionaryMapper dictionaryMapper;
 
 
     @Override
@@ -65,8 +66,11 @@ public class RealTimeDataDaoImpl implements RealTimeDataDao {
             Pattern pattern = Pattern.compile("^.*" + dataHistoryQuery.getGatewayName() + ".*$", Pattern.CASE_INSENSITIVE);
             criteria.and("gatewayName").regex(pattern);
         }
+
         if(StringUtils.isNotBlank(dataHistoryQuery.getSensorType())) {
-            criteria.and("dataKey").is(dataHistoryQuery.getSensorType());
+            Pattern pattern = Pattern.compile("^.*" + dataHistoryQuery.getSensorType() + ".*$", Pattern.CASE_INSENSITIVE);
+            criteria.and("dataKey").is(pattern);
+
         }
         Criteria eventTime = criteria.and("eventTime").nin("0");
         if(StringUtils.isNotBlank(dataHistoryQuery.getReportDateFrom())){//上报时间 From
