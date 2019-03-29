@@ -69,7 +69,7 @@ public class RealTimeDataDaoImpl implements RealTimeDataDao {
 
         if(StringUtils.isNotBlank(dataHistoryQuery.getSensorType())) {
             Pattern pattern = Pattern.compile("^.*" + dataHistoryQuery.getSensorType() + ".*$", Pattern.CASE_INSENSITIVE);
-            criteria.and("dataKey").is(pattern);
+            criteria.and("dataKeyName").is(pattern);
 
         }
         Criteria eventTime = criteria.and("eventTime").nin("0");
