@@ -20,7 +20,7 @@ public class ModelServiceVo {
 
     private Date updateTime;
 
-    List<ModelService> modelServiceList;
+    List<Integer> modelServiceIds;
 
     public Integer getId() {
         return id;
@@ -78,11 +78,11 @@ public class ModelServiceVo {
         this.updateTime = updateTime;
     }
 
-    public List<ModelService> getModelServiceList() {
-        return modelServiceList;
+    public List<Integer> getModelServiceIds() {
+        return modelServiceIds;
     }
 
-    public void setModelServiceList(List<ModelService> modelServiceList) {
-        this.modelServiceList = modelServiceList;
+    public void setModelServiceIds(List<Integer> modelServiceIds) {
+        this.modelServiceIds = modelServiceIds;
     }
 }

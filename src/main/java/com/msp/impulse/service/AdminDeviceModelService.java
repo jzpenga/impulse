@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -69,13 +70,15 @@ public class AdminDeviceModelService {
             if (!deviceModel1.getSensorModel().equals(deviceModelQuery.getSensorModel()) && !deviceModelList.isEmpty()) {
                 throw new MyException("已存在设备型号为【" + deviceModelList.get(0).getSensorModel() + "】的iot设备类型");
             }
-            //上传文件
-            String fileName = fileUpload(deviceModelQuery.getFile());
+            if(deviceModelQuery.getFile()!=null){
+                //上传文件
+                String fileName = fileUpload(deviceModelQuery.getFile());
+                deviceModel1.setFileName(fileName);
+            }
 
             deviceModel1.setIotSensorType(deviceModelQuery.getIotSensorType());
             deviceModel1.setSensorModel(deviceModelQuery.getSensorModel());
             deviceModel1.setDeviceType(deviceModel1.getDeviceType());
-            deviceModel1.setFileName(fileName);
             deviceModel1.setUpdateTime(new Date());
             deviceModelMapper.updateByPrimaryKey(deviceModel1);
 
@@ -215,7 +218,19 @@ public class AdminDeviceModelService {
         ModelServiceExample modelServiceExample = new ModelServiceExample();
         modelServiceExample.createCriteria().andDeviceModelIdEqualTo(id).andFlagEqualTo("0");
         List<ModelService> modelServices = modelServiceMapper.selectByExample(modelServiceExample);
-        modelServiceVo.setModelServiceList(modelServices);
+
+        List<Integer> ids=new ArrayList<>();
+        modelServices.forEach((item) -> {
+            //根据code查询id
+            DictionaryExample dictionaryExample=new DictionaryExample();
+            dictionaryExample.createCriteria().andDicCodeEqualTo(item.getServiceCode()).andFlagEqualTo("0");
+            List<Dictionary> dictionaryList = dictionaryMapper.selectByExample(dictionaryExample);
+            if(!dictionaryList.isEmpty()){
+                Dictionary dictionary = dictionaryList.get(0);
+                ids.add(dictionary.getId());
+            }
+        });
+        modelServiceVo.setModelServiceIds(ids);
 
         response.setData(modelServiceVo);
         response.setResponseMsg(ResponseCode.OK.getMessage());

@@ -2,7 +2,6 @@ package com.msp.impulse.dao.impl;
 
 import com.msp.impulse.dao.RealTimeDataDao;
 import com.msp.impulse.entity.*;
-import com.msp.impulse.exception.MyException;
 import com.msp.impulse.mapper.DictionaryMapper;
 import com.msp.impulse.mapper.SensorMapper;
 import com.msp.impulse.query.DataHistoryQuery;
@@ -15,7 +14,6 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
