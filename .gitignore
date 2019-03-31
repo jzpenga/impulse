@@ -17,6 +17,7 @@
 *.ipr
 *.log
 *.gz
+*.tmp
 
 ### NetBeans ###
 /nbproject/private/
