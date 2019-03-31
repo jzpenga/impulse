@@ -96,6 +96,7 @@ public class AdminController {
         BaseResponse response = new BaseResponse();
         //退出登录
         session.removeAttribute("loginAdmin");
+        session.removeAttribute("loginUser");
         response.setResponseCode(ResponseCode.OK.getCode());
         response.setResponseMsg(ResponseCode.OK.getMessage());
         return response;
