@@ -56,6 +56,7 @@ public class SensorService {
         return response;
     }
 
+    @Transactional
     public void addSensor(SensorAddQuery sensorAddQuery, Integer userId) {
         Sensor sensor = sensorAddQuery.getSensor();
         if (sensor == null) {
