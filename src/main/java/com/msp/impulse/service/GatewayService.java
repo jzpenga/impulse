@@ -214,6 +214,12 @@ public class GatewayService {
                     pass.setCreateTime(new Date());
                     if(userId!=null) {
                         pass.setUserId(userId);
+                        Company company = companyMapper.selectByPrimaryKey(userId);
+                        if(company!=null) {
+                            if (StringUtils.isNotBlank(company.getCompanyName())) {
+                                pass.setUserName(company.getCompanyName());
+                            }
+                        }
                         pass.setCreateUser(userId);
                     }
                     passMapper.insertSelective(pass);

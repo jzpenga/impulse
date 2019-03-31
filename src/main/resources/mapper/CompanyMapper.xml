@@ -444,7 +444,7 @@
     <if test="phoneNo != null and phoneNo!=''">
       AND k.phone_no like "%"#{phoneNo}"%"
     </if>
-    AND c.flag!="1"
+    AND c.flag="0"
   </select>
   <select id="findCompanyNameByLoginName" parameterType="string" resultType="string">
     select c.company_name companyName from company c
