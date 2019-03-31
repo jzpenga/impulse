@@ -55,6 +55,9 @@ public class RealTimeDataDaoImpl implements RealTimeDataDao {
         }
         Query query = new Query();
         Criteria criteria = new Criteria();
+        if(dataHistoryQuery.getUserId()!=null){
+            criteria.and("userId").is(dataHistoryQuery.getUserId());
+        }
         criteria.and("dataValue").exists(true);
         criteria.and("deviceId").nin(deviceList);
         if (StringUtils.isNotBlank(dataHistoryQuery.getSensorName())) {
