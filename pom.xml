@@ -227,7 +227,7 @@
                     <!--允许移动生成的文件 -->
                     <verbose>true</verbose>
                     <!-- 自动生成的配置,${basedir}表示项目根目录 ,configurationFile默认在resource目录下-->
-                    <configurationFile>/resources/generator/generatorConfig.xml</configurationFile>
+                    <configurationFile>src/main/resources/generator/generatorConfig.xml</configurationFile>
                 </configuration>
                 <dependencies>
                     <!--mysql驱动包-->
