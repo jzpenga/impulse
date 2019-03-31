@@ -3,7 +3,6 @@ package com.msp.impulse.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.iotplatform.client.dto.DeviceInfo;
-import com.iotplatform.client.dto.DeviceService;
 import com.iotplatform.client.dto.RegDirectDeviceOutDTO;
 import com.msp.impulse.base.BaseResponse;
 import com.msp.impulse.base.ResponseCode;
@@ -75,16 +74,17 @@ public class SensorService {
         if (StringUtils.isBlank(sensor.getSensorNo())) {
             throw new MyException("传感器序列号必输!");
         }
+        //如果是admin登录，则视为hyzg用户
+        if(userId==null){
+            userId=1;
+        }
+
         if (sensor.getId() != null) {//修改
             //查询传感器
             Sensor sensorUp = sensorMapper.selectByPrimaryKey(sensor.getId());
             if (sensorUp == null) {
                 throw new MyException("id对应的传感器不存在!");
             }
-//            //判断网关名称是否唯一
-//            if (!sensorUp.getName().equals(sensor.getName())&&sensorMapper.findBySensorName(sensor.getName())>0) {
-//                throw  new MyException("传感器名称已存在!");
-//            }
             sensorUp.setName(sensor.getName());
             sensorUp.setGatewayName(sensor.getGatewayName());
             sensorUp.setSensorNo(sensor.getSensorNo());
@@ -102,15 +102,11 @@ public class SensorService {
             if (passList != null) {
                 gatewayService.savePass(passList, userId, sensor, null);
             }
-        } else {//新增
-            //获取传感器序列号
+        } else {
+            //新增设备====================================================================start
             if (StringUtils.isBlank(sensor.getSensorNo())) {
                 throw new RuntimeException("传感器序列号不能为空!");
             }
-//            //判断网关名称是否唯一
-//            if (sensorMapper.findBySensorName(sensor.getName())>0) {
-//                throw  new MyException("传感器名称已存在!");
-//            }
 
             String deviceModel = getDeviceModel(sensor.getSensorModel());
             //获取iotServiceType
@@ -118,7 +114,7 @@ public class SensorService {
             if(StringUtils.isBlank(iotServiceType)){
                 throw new MyException("iot设备类型不存在!");
             }
-            //注册电信运营商
+            //注册电信运营商===========================start
             DeviceInfo deviceInfo = new DeviceInfo();
             deviceInfo.setName(sensor.getName());
             deviceInfo.setDeviceType(iotServiceType);
@@ -132,16 +128,14 @@ public class SensorService {
             if (StringUtils.isBlank(regDirectDeviceOutDTO.getDeviceId())) {
                 throw new MyException("注册失败,请检查设备序列号是否正确或稍后重试!");
             }
-            sensor.setDeviceId(regDirectDeviceOutDTO.getDeviceId());
+            //注册电信运营商===========================end
 
+            sensor.setDeviceId(regDirectDeviceOutDTO.getDeviceId());
             sensor.setFlag("0");
             sensor.setCreateTime(new Date());
             if (userId != null) {
-                CompanyExample companyExample = new CompanyExample();
-                companyExample.createCriteria().andFlagEqualTo("0").andIdEqualTo(userId);
-                List<Company> companyList = companyMapper.selectByExample(companyExample);
-                if (!companyList.isEmpty()) {
-                    Company company = companyList.get(0);
+                Company company = companyMapper.selectByPrimaryKey(userId);
+                if (company!=null) {
                     if (StringUtils.isNotBlank(company.getCompanyName())) {
                         sensor.setUserName(company.getCompanyName());
                     }
@@ -156,23 +150,26 @@ public class SensorService {
                 NBDXManager.deleteDevice(regDirectDeviceOutDTO.getDeviceId());
                 throw new MyException("插入数据库失败，已回滚!");
             }
-            //根据设备模型查询服务类型
+            //新增设备=======================================================================end
+
+            //新增实时数据===================================================================start
             ModelServiceExample modelServiceExample=new ModelServiceExample();
             modelServiceExample.createCriteria().andModelNameEqualTo(deviceModel).andFlagEqualTo("0");
             List<ModelService> modelServices = modelServiceMapper.selectByExample(modelServiceExample);
             for(ModelService modelService:modelServices) {
-                //新增实时数据
                 RealTimeData realTimeData=new RealTimeData();
                 realTimeData.setCreateTime(new Date());
                 realTimeData.setDataKey(modelService.getServiceCode());
                 realTimeData.setDeviceId(regDirectDeviceOutDTO.getDeviceId());
                 realTimeDataDao.save(realTimeData);
             }
+            //新增实时数据======================================================================end
         }
-        if (userId != null) {//传感器数加1
+        //传感器数加1
+        if (userId != null) {
             changeSensorNumber(userId, 1);
         }
-
+        //新增通道===========================================================================start
         List<Pass> passList = sensorAddQuery.getPassList();
         if (passList != null) {
             try {
@@ -190,7 +187,9 @@ public class SensorService {
                 throw new MyException("插入数据库失败，已回滚!");
             }
         }
+        //新增通道==============================================================================end
     }
+
     public  String getDeviceModel(String deviceModelId){
         DeviceModelExample deviceModelExample=new DeviceModelExample();
         deviceModelExample.createCriteria().andIdEqualTo(Integer.parseInt(deviceModelId)).andFlagEqualTo("0");
