@@ -166,10 +166,10 @@ public class SensorService {
             }
             //新增实时数据======================================================================end
         }
-        //传感器数加1
-        if (userId != null) {
-            changeSensorNumber(userId, 1);
-        }
+//        //传感器数加1
+//        if (userId != null) {
+//            changeSensorNumber(userId, 1);
+//        }
         //新增通道===========================================================================start
         List<Pass> passList = sensorAddQuery.getPassList();
         if (passList != null) {
@@ -326,10 +326,10 @@ public class SensorService {
         BaseResponse response = new BaseResponse();
         //删除运营商传感器
         deleteNBDXSensor(id);
-        //传感器数减一
-        if (userId != null) {
-            changeSensorNumber(userId, -1);
-        }
+//        //传感器数减一
+//        if (userId != null) {
+//            changeSensorNumber(userId, -1);
+//        }
         //更新传感器flag为1
         SensorExample sensorExample = new SensorExample();
         sensorExample.createCriteria().andFlagEqualTo("0")
@@ -366,10 +366,10 @@ public class SensorService {
         for (Integer id : ids) {
             //删除运营商传感器
             deleteNBDXSensor(id);
-            //传感器数减一
-            if (userId != null) {
-                changeSensorNumber(userId, -1);
-            }
+//            //传感器数减一
+//            if (userId != null) {
+//                changeSensorNumber(userId, -1);
+//            }
             //删除传感器
             Sensor sensor = sensorMapper.selectByPrimaryKey(id);
             sensor.setFlag("1");

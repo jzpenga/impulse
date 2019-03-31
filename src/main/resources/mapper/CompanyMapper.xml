@@ -422,9 +422,13 @@
     <result property="sensorNumber" column="sensor_number" />
   </resultMap>
   <select id="findUser" parameterType="com.msp.impulse.query.FindUserQuery" resultMap="userResultMap">
-    select  c.id,c.company_name,c.gateway_number,c.province,c.city,c.sensor_number,
-    c.login_name ,k.`name`,k.phone_no,c.flag
-    from company c left join linkman  k on  c.id=k.company_id
+    select  c.id,c.company_name,c.gateway_number,c.province,c.city,
+    c.login_name ,k.`name`,k.phone_no,c.flag,n.sensor_number
+    from company c
+    left join linkman  k on  c.id=k.company_id
+    left  join
+    (select  count(*)  sensor_number ,c.id nId from  sensor  s,company c where s.user_id=c.id  and  s.flag!="1"  GROUP BY c.id) n
+    on  n.nId=c.id
     where 1=1
     <if test="companyName != null and companyName!=''">
       and c.company_name like "%"#{companyName}"%"
