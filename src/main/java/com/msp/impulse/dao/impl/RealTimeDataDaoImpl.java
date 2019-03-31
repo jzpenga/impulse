@@ -69,7 +69,9 @@ public class RealTimeDataDaoImpl implements RealTimeDataDao {
         if (StringUtils.isNotBlank(dataHistoryQuery.getSensorType())) {
             String replace = dataHistoryQuery.getSensorType();
             replace = replace.replace("(", "\\(");
+            replace = replace.replace("（", "\\(");
             replace = replace.replace(")", "\\)");
+            replace = replace.replace("）", "\\)");
             Pattern pattern = Pattern.compile("^.*" + replace + ".*$", Pattern.CASE_INSENSITIVE);
             criteria.and("dataKeyName").is(pattern);
 
