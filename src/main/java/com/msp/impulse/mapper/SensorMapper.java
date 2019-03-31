@@ -46,7 +46,7 @@ public interface SensorMapper {
 
     Sensor findSensorBySensorName(String sensorName);
 
-    List<Sensor> findSensorByNameLike(String sensorName);
+    List<Sensor> findSensorByNameLike(@Param("sensorName")String sensorName,@Param("userId")Integer userId);
 
     List<ServiceType> findServiceType(String sensorModel);
 

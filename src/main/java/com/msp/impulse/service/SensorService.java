@@ -444,7 +444,7 @@ public class SensorService {
      * @param sensorName
      * @return
      */
-    public BaseResponse<List<Sensor>> findSensorByName(String sensorName) {
+    public BaseResponse<List<Sensor>> findSensorByName(String sensorName,Integer userId) {
         BaseResponse<List<Sensor>> response = new BaseResponse();
         if (TextUtils.isEmpty(sensorName)) {
             response.setData(new ArrayList<>());
@@ -453,7 +453,7 @@ public class SensorService {
             return response;
         }
         //根据传感器名称查询传感器信息
-        List<Sensor> sensorList = sensorMapper.findSensorByNameLike(sensorName);
+        List<Sensor> sensorList = sensorMapper.findSensorByNameLike(sensorName,userId);
         if (sensorList.isEmpty()) {
             response.setData(new ArrayList<>());
             response.setResponseCode(ResponseCode.OK.getCode());

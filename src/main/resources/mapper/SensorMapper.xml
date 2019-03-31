@@ -512,10 +512,10 @@
        ,s.state,s.update_time,s.update_user,s.user_id,s.user_name,s.work_status
       from sensor s where s.name=#{sensorName} and s.flag!="1"
    </select>
-  <select id="findSensorByNameLike" parameterType="string" resultType="com.msp.impulse.entity.Sensor">
+  <select id="findSensorByNameLike"  resultType="com.msp.impulse.entity.Sensor">
      select
         s.device_id deviceId,s.`name` ,s.sensor_model sensorModel
-     from sensor s where s.name like "%"#{sensorName}"%" and s.flag!="1"
+     from sensor s where s.name like "%"#{sensorName}"%" and s.flag!="1" and s.user_id=#{userId}
    </select>
   <select id="findServiceType" parameterType="string" resultType="com.msp.impulse.entity.ServiceType">
     select s.service_code serviceCode ,s.code_name serviceName

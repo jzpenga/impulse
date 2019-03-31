@@ -217,10 +217,16 @@ public class SensorController {
     }
     @GetMapping("findSensorByName")
     @ApiOperation(value = "根据名称模糊查询传感器信息", notes = "根据名称模糊查询传感器信息", tags = "传感器操作", httpMethod = "GET")
-    public BaseResponse<List<Sensor>> findSensorByName(String sensorName) {
+    public BaseResponse<List<Sensor>> findSensorByName(String sensorName,HttpSession session) {
         BaseResponse<List<Sensor>> response;
         try {
-            response = sensorService.findSensorByName(sensorName);
+            //获取用户id
+            Integer  userId=null;
+            Company company= (Company)session.getAttribute("loginUser");
+            if(company!=null){
+                userId=company.getId();
+            }
+            response = sensorService.findSensorByName(sensorName,userId);
         } catch (MyException e) {
             logger.error(e.getMessage(), e);
             response = new BaseResponse();
