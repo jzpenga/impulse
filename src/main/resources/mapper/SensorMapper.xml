@@ -515,7 +515,10 @@
   <select id="findSensorByNameLike"  resultType="com.msp.impulse.entity.Sensor">
      select
         s.device_id deviceId,s.`name` ,s.sensor_model sensorModel
-     from sensor s where s.name like "%"#{sensorName}"%" and s.flag!="1" and s.user_id=#{userId}
+     from sensor s where s.name like "%"#{sensorName}"%" and s.flag!="1"
+    <if test="userId != null and userId!=''">
+      AND s.user_id=#{userId}
+    </if>
    </select>
   <select id="findServiceType" parameterType="string" resultType="com.msp.impulse.entity.ServiceType">
     select s.service_code serviceCode ,s.code_name serviceName
