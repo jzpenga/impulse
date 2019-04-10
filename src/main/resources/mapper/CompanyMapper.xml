@@ -407,7 +407,7 @@
     where login_name=#{loginName} and flag!="1"
   </select>
   <select id="findByNameAndPwd"  resultType="com.msp.impulse.entity.Company">
-    select id,login_name loginName from company
+    select id,login_name loginName,password from company
     where login_name=#{loginName} and password=#{pwd} and flag!="1"
   </select>
   <resultMap type="com.msp.impulse.entity.CompanyAndLink" id="userResultMap">

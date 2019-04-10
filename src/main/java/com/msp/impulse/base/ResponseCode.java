@@ -24,6 +24,9 @@ public enum ResponseCode {
     LINKMAN_MUST_INPUT(3017,"请输入联系人信息!"),
     GATEWAY_NOT_HAVE(3018,"网关不存在!"),
     FILE_NOT_HAVE(3019,"文件不存在!"),
+    TOKEN_TIME_OUT(4000,"token失效"),
+    TOKEN_CREATE_WRONG(4001,"token生成失败！！！"),
+    NOT_HAVE_TOKEN(4002,"无token，请重新登录"),
     ;
 
 
