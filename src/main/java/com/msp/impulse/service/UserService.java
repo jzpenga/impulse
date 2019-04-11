@@ -117,4 +117,19 @@ public class UserService {
         response.setResponseMsg(ResponseCode.OK.getMessage());
         return response;
     }
+
+    public BaseResponse findUserInfo(String userId) {
+        BaseResponse response=new BaseResponse();
+        CompanyExample companyExample = new CompanyExample();
+        companyExample.createCriteria().andIdEqualTo(Integer.parseInt(userId)).andFlagNotEqualTo("1");
+        List<Company> companyList = companyMapper.selectByExample(companyExample);
+        if (companyList.isEmpty()) {
+            throw  new MyException("用户信息不存在!");
+        }
+        response.setData(companyList.get(0));
+        response.setResponseCode(ResponseCode.OK.getCode());
+        response.setResponseMsg(ResponseCode.OK.getMessage());
+        return response;
+    }
+
 }

@@ -33,7 +33,7 @@ public class AppUserController {
     private UserService userService;
 
     @PostMapping("login")
-    @ApiOperation(value = "用户登录", notes = "用户登录", tags = "登录登出", httpMethod = "POST")
+    @ApiOperation(value = "用户登录", notes = "用户登录", tags = "app用户管理接口", httpMethod = "POST")
     public BaseResponse login(@RequestBody AppUserLoginParam appUserLoginParam) {
 
         BaseResponse response = new BaseResponse();
@@ -54,7 +54,7 @@ public class AppUserController {
     }
 
     @PostMapping("scanSaveSensor")
-    @ApiOperation(value="新增",notes = "新增或修改传感器",tags="传感器操作",httpMethod = "POST")
+    @ApiOperation(value="新增",notes = "新增或修改传感器",tags="app用户管理接口",httpMethod = "POST")
     @UserLoginToken
     public BaseResponse addSensor(@RequestBody AppSensorQuery appSensorQuery, HttpServletRequest httpServletRequest){
         BaseResponse response;
@@ -71,6 +71,29 @@ public class AppUserController {
             logger.error(e.getMessage(),e);
             e.printStackTrace();
             response = new BaseResponse<>();
+            response.setResponseCode(ResponseCode.SERVER_FAILED.getCode());
+            response.setResponseMsg(ResponseCode.SERVER_FAILED.getMessage());
+        }
+        return response;
+    }
+
+    @PostMapping("findUserByToken")
+    @ApiOperation(value = "查询用户信息", notes = "查询用户信息", tags = "app用户管理接口", httpMethod = "POST")
+    public BaseResponse findUserInfo(HttpServletRequest httpServletRequest) {
+
+        BaseResponse response = new BaseResponse();
+        try {
+            String token = httpServletRequest.getHeader("token");
+            String userId = JWT.decode(token).getAudience().get(0);
+            response = userService.findUserInfo(userId);
+        } catch (MyException e) {
+            logger.error(e.getMessage());
+            response = new BaseResponse();
+            response.setResponseCode(ResponseCode.PARAMETER_VALIDATION_FAILED.getCode());
+            response.setResponseMsg(e.getMessage());
+        }catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            e.printStackTrace();
             response.setResponseCode(ResponseCode.SERVER_FAILED.getCode());
             response.setResponseMsg(ResponseCode.SERVER_FAILED.getMessage());
         }
