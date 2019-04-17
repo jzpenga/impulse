@@ -1,5 +1,6 @@
 package com.msp.impulse.controller;
 
+import com.auth0.jwt.JWT;
 import com.msp.impulse.base.BaseResponse;
 import com.msp.impulse.base.ResponseCode;
 import com.msp.impulse.entity.DeviceModel;
@@ -13,6 +14,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -30,10 +33,12 @@ public class AdminDeviceModelController {
 
     @PostMapping("saveDeviceModel")
     @ApiOperation(value = "新增", notes = "新增iot设备类型", tags = "iot平台设备型号管理", httpMethod = "POST")
-    public BaseResponse saveDeviceType(DeviceModelQuery deviceModelQuery) {
+    public BaseResponse saveDeviceType(DeviceModelQuery deviceModelQuery,HttpServletRequest httpServletRequest) {
         BaseResponse response;
         try {
-            response = adminDeviceModelService.saveDeviceType(deviceModelQuery);
+            String token = httpServletRequest.getHeader("token");
+            String userId = JWT.decode(token).getAudience().get(0);
+            response = adminDeviceModelService.saveDeviceType(deviceModelQuery,Integer.parseInt(userId));
         } catch (IllegalStateException e) {
             logger.error(e.getMessage());
             response = new BaseResponse();
@@ -109,10 +114,12 @@ public class AdminDeviceModelController {
     }
     @PostMapping("deleteDeviceModelById")
     @ApiOperation(value = "根据id删除", notes = "根据id删除", tags = "iot平台设备型号管理", httpMethod = "POST")
-    public BaseResponse deleteDeviceModelById(@RequestBody List<Integer> ids) {
+    public BaseResponse deleteDeviceModelById(@RequestBody List<Integer> ids,HttpServletRequest httpServletRequest) {
         BaseResponse response;
         try {
-            response = adminDeviceModelService.deleteDeviceModelById(ids);
+            String token = httpServletRequest.getHeader("token");
+            String userId = JWT.decode(token).getAudience().get(0);
+            response = adminDeviceModelService.deleteDeviceModelById(ids,Integer.parseInt(userId));
         }catch (MyException e) {
             logger.error(e.getMessage());
             response = new BaseResponse();

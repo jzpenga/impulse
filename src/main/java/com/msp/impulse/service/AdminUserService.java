@@ -4,12 +4,10 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.msp.impulse.base.BaseResponse;
 import com.msp.impulse.base.ResponseCode;
+import com.msp.impulse.constants.Constants;
 import com.msp.impulse.entity.*;
 import com.msp.impulse.exception.MyException;
-import com.msp.impulse.mapper.CompanyMapper;
-import com.msp.impulse.mapper.GatewayMapper;
-import com.msp.impulse.mapper.LinkmanMapper;
-import com.msp.impulse.mapper.SensorMapper;
+import com.msp.impulse.mapper.*;
 import com.msp.impulse.query.*;
 import com.msp.impulse.vo.CompanyDetailVo;
 import org.apache.commons.lang.StringUtils;
@@ -27,7 +25,7 @@ public class AdminUserService {
     @Autowired
     private CompanyMapper companyMapper;
     @Autowired
-    private LinkmanMapper linkmanMapper;
+    private UserMapper userMapper;
     @Autowired
     private GatewayMapper gatewayMapper;
     @Autowired
@@ -76,11 +74,6 @@ public class AdminUserService {
         if (company != null) {
             companyDetailVo.setCompany(company);
         }
-        //查询联系人
-        Linkman linkman = linkmanMapper.selectByCompanyId(userId);
-        if (linkman != null) {
-            companyDetailVo.setLinkman(linkman);
-        }
         //查询网关
         GatewayQuery gatewayQuery = new GatewayQuery();
         gatewayQuery.setUserId(userId);
@@ -117,98 +110,132 @@ public class AdminUserService {
     /**
      * 新增或修改用户数据
      *
-     * @param saveUserQuery
+     * @param companyParam
      * @return
      */
     @Transactional
-    public BaseResponse saveUser(SaveUserQuery saveUserQuery) {
+    public BaseResponse saveUser(CompanyParam companyParam,String userId) {
         BaseResponse response = new BaseResponse<>();
-        if (saveUserQuery.getCompany() == null) {
-            response.setResponseCode(ResponseCode.INPUT_COMPAY.getCode());
-            response.setResponseMsg(ResponseCode.INPUT_COMPAY.getMessage());
-            return response;
-        }
         //用户登录名不能为空
-        if (StringUtils.isBlank(saveUserQuery.getCompany().getLoginName())) {
+        if (StringUtils.isBlank(companyParam.getLoginName())) {
             response.setResponseCode(ResponseCode.USERNAME_NULL.getCode());
             response.setResponseMsg(ResponseCode.USERNAME_NULL.getMessage());
             return response;
         }
-//        //密码不能为空
+//        //密码不能为空  修改的情况可以为空
 //        if(StringUtils.isBlank(saveUserQuery.getCompany().getPassword())){
 //            response.setResponseCode(ResponseCode.PASSWORD_NULL.getCode());
 //            response.setResponseMsg(ResponseCode.PASSWORD_NULL.getMessage());
 //            return response;
 //        }
-        Company company = saveUserQuery.getCompany();
-        if (company.getId() != null) {
-            Company company1 = companyMapper.selectByPrimaryKey(company.getId());
+        //联系人电话号不能为空
+        if (StringUtils.isBlank(companyParam.getPhoneNo())) {
+            response.setResponseCode(ResponseCode.PHONE_NO_MUST_HAVE.getCode());
+            response.setResponseMsg(ResponseCode.PHONE_NO_MUST_HAVE.getMessage());
+            return response;
+        }
+        //根据userId查询公司信息
+        User user1 = userMapper.selectByPrimaryKey(Integer.parseInt(userId));
+        Company company = companyMapper.selectByPrimaryKey(user1.getCompanyId());
+
+        if (companyParam.getId() != null) {
+            //修改用户信息
+            //根据登录名查询
+            UserExample userExample=new UserExample();
+            userExample.createCriteria().andFlagEqualTo("0").andLoginNameEqualTo(companyParam.getLoginName());
+            List<User> users = userMapper.selectByExample(userExample);
+            if(users.isEmpty()){
+                throw  new MyException("登录名为【"+companyParam.getLoginName()+"】的用户不存在");
+            }
+            User user = users.get(0);
+
+            Company company1 = companyMapper.selectByPrimaryKey(companyParam.getId());
             //密码加密
-            if (StringUtils.isNotBlank(company.getPassword())) {
-                String pwd = DigestUtils.md5DigestAsHex(saveUserQuery.getCompany().getPassword().getBytes());
+            if (StringUtils.isNotBlank(companyParam.getPassword())) {
+                String pwd = DigestUtils.md5DigestAsHex(companyParam.getPassword().getBytes());
                 company1.setPassword(pwd);
+                user.setPassword(pwd);
             }
             company1.setUpdateTime(new Date());
-            company1.setLoginName(company.getLoginName());
-            company1.setCompanyName(company.getCompanyName());
-            company1.setProvince(company.getProvince());
-            company1.setCity(company.getCity());
-            company1.setDetailedAdd(company.getDetailedAdd());
-            company1.setPostalCode(company.getPostalCode());
+            company1.setLoginName(companyParam.getLoginName());
+            company1.setCompanyName(companyParam.getCompanyName());
+            company1.setProvince(companyParam.getProvince());
+            company1.setCity(companyParam.getCity());
+            company1.setDetailedAdd(companyParam.getDetailedAdd());
+            company1.setPostalCode(companyParam.getPostalCode());
+            company1.setLinkmanName(companyParam.getLinkmanName());
+            company1.setAccount(companyParam.getAccount());
+            company1.setPhoneNo(companyParam.getPhoneNo());
+            company1.setEmail(companyParam.getEmail());
+            company1.setGender(companyParam.getGender());
+            company1.setUpdateUser(company.getId());
             companyMapper.updateByPrimaryKey(company1);
-            //修改联系人
-            Linkman linkman = saveUserQuery.getLinkman();
-            if (linkman == null) {
-                response.setResponseCode(ResponseCode.LINKMAN_MUST_INPUT.getCode());
-                response.setResponseMsg(ResponseCode.LINKMAN_MUST_INPUT.getMessage());
-                return response;
-            }
-            if (linkman.getId() == null) {
-                throw new MyException("修改时请传入联系人id！");
-            }
-            Linkman linkman1 = linkmanMapper.selectByPrimaryKey(linkman.getId());
-            if (linkman1 == null) {
-                throw new MyException("id对应的联系人不存在！");
-            }
-            linkman1.setUpdateTime(new Date());
-            linkman1.setName(linkman.getName());
-            linkman1.setGender(linkman.getGender());
-            linkman1.setPhoneNo(linkman.getPhoneNo());
-            linkman1.setEmail(linkman.getEmail());
-            linkmanMapper.updateByPrimaryKey(linkman1);
+
+            user.setUpdateTime(new Date());
+            user.setUpdateUser(company.getId());
+            userMapper.updateByPrimaryKey(user);
+
         } else {
             //用户登录名不能重复
-            Company com = companyMapper.findByName(saveUserQuery.getCompany().getLoginName());
-            if (com != null) {
+            CompanyExample companyExample=new CompanyExample();
+            companyExample.createCriteria().andFlagEqualTo("0").andLoginNameEqualTo(companyParam.getLoginName());
+            List<Company> companyList = companyMapper.selectByExample(companyExample);
+            if (!companyList.isEmpty()) {
                 response.setResponseCode(ResponseCode.LOGINNAME_EXSIST.getCode());
                 response.setResponseMsg(ResponseCode.LOGINNAME_EXSIST.getMessage());
                 return response;
             }
-            //密码加密
-            String pwd = DigestUtils.md5DigestAsHex(saveUserQuery.getCompany().getPassword().getBytes());
-            company.setPassword(pwd);
-            //保存公司信息
-            company.setGatewayNumber(0);
-            company.setSensorNumber(0);
-            company.setFlag("0");
-            company.setCreateTime(new Date());
-            companyMapper.insertSelective(company);
-            //保存联系人信息
-            if (saveUserQuery.getLinkman() == null) {
-                throw new MyException("联系人信息必输!");
+            companyParam.setCreateUser(company.getId());
+            //新增公司信息
+            Integer  companyId = addCompany(companyParam);
+            //新增用户信息
+            User user=new User();
+            user.setCreateTime(new Date());
+            user.setPassword(companyParam.getPassword());
+            user.setLoginName(companyParam.getLoginName());
+            if(StringUtils.isBlank(companyParam.getAuthFlag())){
+                user.setAuthFlag(Constants.AuthFlag.NORMAL.getValue());//普通用户
+            }else{
+                user.setAuthFlag(companyParam.getAuthFlag());
             }
-            if (StringUtils.isBlank(saveUserQuery.getLinkman().getName())) {
-                throw new MyException("联系人姓名必输!");
-            }
-            Linkman linkman = saveUserQuery.getLinkman();
-            linkman.setCreateTime(new Date());
-            linkman.setFlag("0");
-            linkman.setCompanyId(company.getId());
-            linkmanMapper.insertSelective(linkman);
+            user.setCompanyId(companyId);
+            user.setFlag("0");
+            user.setCreateUser(company.getId());
+            userMapper.insertSelective(user);
         }
         response.setResponseCode(ResponseCode.OK.getCode());
         response.setResponseMsg(ResponseCode.OK.getMessage());
         return response;
+    }
+
+    public  Integer addCompany(CompanyParam companyParam){
+        Company company=new Company();
+        if(StringUtils.isBlank(companyParam.getPassword())){
+            throw  new MyException("密码必输！");
+        }
+        //密码加密
+        String pwd = DigestUtils.md5DigestAsHex(companyParam.getPassword().getBytes());
+        company.setPassword(pwd);
+        //保存公司信息
+//            company.setGatewayNumber(0);
+//            company.setSensorNumber(0);
+        company.setFlag("0");
+        company.setCreateTime(new Date());
+        company.setEmail(StringUtils.isBlank(companyParam.getEmail())?null:companyParam.getEmail());
+        company.setPhoneNo(companyParam.getPhoneNo());
+        company.setAccount(StringUtils.isBlank(companyParam.getAccount())?null:companyParam.getAccount());
+        company.setLinkmanName(StringUtils.isBlank(companyParam.getLinkmanName())?null:companyParam.getLinkmanName());
+        company.setPostalCode(StringUtils.isBlank(companyParam.getPostalCode())?null:companyParam.getPostalCode());
+        company.setDetailedAdd(StringUtils.isBlank(companyParam.getDetailedAdd())?null:companyParam.getDetailedAdd());
+        company.setCity(StringUtils.isBlank(companyParam.getCity())?null:companyParam.getCity());
+        company.setProvince(StringUtils.isBlank(companyParam.getProvince())?null:companyParam.getProvince());
+        company.setCompanyName(StringUtils.isBlank(companyParam.getCompanyName())?null:companyParam.getCompanyName());
+        company.setLoginName(companyParam.getLoginName());
+        company.setGender(StringUtils.isBlank(companyParam.getGender())?null:companyParam.getGender());
+        company.setCreateUser(companyParam.getCreateUser());
+        companyMapper.insertSelective(company);
+
+        return company.getId();
     }
 
     /**
@@ -221,9 +248,14 @@ public class AdminUserService {
     public BaseResponse deleteUserBatch(List<Integer> ids) {
         BaseResponse response = new BaseResponse<>();
         for (Integer id : ids) {
+            //删除公司
             Company company = companyMapper.selectByPrimaryKey(id);
             company.setFlag("1");
             companyMapper.updateByPrimaryKey(company);
+            //删除用户
+            UserExample userExample=new UserExample();
+            userExample.createCriteria().andFlagEqualTo("0").andCompanyIdEqualTo(id);
+            userMapper.deleteByExample(userExample);
         }
         response.setResponseCode(ResponseCode.OK.getCode());
         response.setResponseMsg(ResponseCode.OK.getMessage());

@@ -6,8 +6,10 @@ import com.msp.impulse.base.BaseResponse;
 import com.msp.impulse.base.ResponseCode;
 import com.msp.impulse.entity.Dictionary;
 import com.msp.impulse.entity.DictionaryExample;
+import com.msp.impulse.entity.User;
 import com.msp.impulse.exception.MyException;
 import com.msp.impulse.mapper.DictionaryMapper;
+import com.msp.impulse.mapper.UserMapper;
 import com.msp.impulse.query.ChildDicQuery;
 import com.msp.impulse.query.DicQuery;
 import org.apache.commons.lang.StringUtils;
@@ -23,6 +25,8 @@ import java.util.List;
 public class AdminDicService {
     @Autowired
     private DictionaryMapper dictionaryMapper;
+    @Autowired
+    private UserMapper userMapper;
 
     /**
      * 根据分组
@@ -45,13 +49,14 @@ public class AdminDicService {
      * @param dictionary
      * @return
      */
-    public BaseResponse addDictionary(Dictionary dictionary) {
+    public BaseResponse addDictionary(Dictionary dictionary,Integer userId) {
         if (StringUtils.isBlank(dictionary.getDicName())) {
             throw new MyException("系统编码名称不能为空!");
         }
         if (StringUtils.isBlank(dictionary.getDicCode())) {
             throw new MyException("系统编码不能为空!");
         }
+        User user = userMapper.selectByPrimaryKey(userId);
         //确定层级
         if (dictionary.getParentId() == null) {
             dictionary.setHierarchy("1");
@@ -81,6 +86,8 @@ public class AdminDicService {
             }
             dictionaryUpdate.setDicName(dictionary.getDicName());
             dictionaryUpdate.setUpdateTime(new Date());
+            dictionaryUpdate.setUpdateUser(user.getCompanyId()+"");
+
             dictionaryMapper.updateByPrimaryKey(dictionaryUpdate);
         } else {
             //判断dicCode是否重复
@@ -96,6 +103,7 @@ public class AdminDicService {
             //新增
             dictionary.setCreateTime(new Date());
             dictionary.setFlag("0");
+            dictionary.setCreateUser(user.getCompanyId()+"");
             dictionaryMapper.insertSelective(dictionary);
         }
         response.setResponseCode(ResponseCode.OK.getCode());
@@ -127,8 +135,9 @@ public class AdminDicService {
      * @param ids
      * @return
      */
-    public BaseResponse deleteDic(List<Integer> ids) {
+    public BaseResponse deleteDic(List<Integer> ids,Integer userId) {
         BaseResponse response = new BaseResponse<>();
+        User user = userMapper.selectByPrimaryKey(userId);
         for (Integer id : ids) {
             Dictionary dictionary = dictionaryMapper.selectByPrimaryKey(id);
             dictionary.setFlag("1");
@@ -140,6 +149,7 @@ public class AdminDicService {
             if(!dictionaryList2.isEmpty()){
                 for ( Dictionary secondDictionary: dictionaryList2) {
                     secondDictionary.setFlag("1");
+                    secondDictionary.setUpdateUser(user.getCompanyId()+"");
                     dictionaryMapper.updateByPrimaryKey(secondDictionary);
 
                     DictionaryExample dictionaryExample3=new DictionaryExample();
@@ -148,6 +158,7 @@ public class AdminDicService {
                     if(!dictionaryList3.isEmpty()) {
                         for (Dictionary thirdDictionary : dictionaryList3) {
                             thirdDictionary.setFlag("1");
+                            thirdDictionary.setUpdateUser(user.getCompanyId()+"");
                             dictionaryMapper.updateByPrimaryKey(thirdDictionary);
                         }
                     }

@@ -2,11 +2,13 @@ package com.msp.impulse.service;
 
 import com.msp.impulse.base.BaseResponse;
 import com.msp.impulse.base.ResponseCode;
+import com.msp.impulse.constants.Constants;
 import com.msp.impulse.dao.AlarmDao;
 import com.msp.impulse.dao.ControlInstruDao;
 import com.msp.impulse.dao.DataManageDao;
 import com.msp.impulse.dao.RealTimeDataDao;
 import com.msp.impulse.entity.PageBean;
+import com.msp.impulse.entity.User;
 import com.msp.impulse.exception.MyException;
 import com.msp.impulse.nb.entity.DataReportEntity;
 import com.msp.impulse.query.DataHistoryQuery;
@@ -33,6 +35,8 @@ public class DataManageService {
     private ControlInstruDao controlInstruDao;
     @Autowired
     private RealTimeDataDao realTimeDataDao;
+    @Autowired
+    private UserService userService;
 
 
 //    public BaseResponse findHomeData() {
@@ -218,7 +222,7 @@ public class DataManageService {
      * @param dataHistoryQuery
      * @return
      */
-    public BaseResponse findRealTimeData(DataHistoryQuery dataHistoryQuery) throws ParseException {
+    public BaseResponse findRealTimeData(DataHistoryQuery dataHistoryQuery,String userId) throws ParseException {
 //        PageInfo pageInfo = dataManageDao.findRealTimeData(dataHistoryQuery);
         /*List<DataReportEntity> list = pageInfo.getList();
         for (DataReportEntity dataReportEntity : list) {
@@ -228,6 +232,13 @@ public class DataManageService {
             }
             dataReportEntity.setUserName("环宇智谷测试");
         }*/
+
+        //获取用户id
+        User user = userService.findUserById(userId);
+        if (user != null && (user.getAuthFlag() == Constants.AuthFlag.NORMAL.getValue())) {
+            //管理员用户id不作为查询条件
+            dataHistoryQuery.setUserId(user.getCompanyId());
+        }
         BaseResponse response = new BaseResponse<>();
         PageBean pageBean= realTimeDataDao.selectRealTimeDataInfo(dataHistoryQuery);
         response.setData(pageBean);

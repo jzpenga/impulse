@@ -1,9 +1,8 @@
-package com.msp.impulse.entity;
+package com.msp.impulse.query;
 
-import java.io.Serializable;
 import java.util.Date;
 
-public class Company implements Serializable {
+public class CompanyParam {
     private Integer id;
 
     private String companyName;
@@ -48,7 +47,8 @@ public class Company implements Serializable {
 
     private String callbackUrl;
 
-    private static final long serialVersionUID = 1L;
+    private String AuthFlag;
+
 
     public Integer getId() {
         return id;
@@ -63,7 +63,7 @@ public class Company implements Serializable {
     }
 
     public void setCompanyName(String companyName) {
-        this.companyName = companyName == null ? null : companyName.trim();
+        this.companyName = companyName;
     }
 
     public String getProvince() {
@@ -71,7 +71,7 @@ public class Company implements Serializable {
     }
 
     public void setProvince(String province) {
-        this.province = province == null ? null : province.trim();
+        this.province = province;
     }
 
     public String getCity() {
@@ -79,7 +79,7 @@ public class Company implements Serializable {
     }
 
     public void setCity(String city) {
-        this.city = city == null ? null : city.trim();
+        this.city = city;
     }
 
     public String getDetailedAdd() {
@@ -87,7 +87,7 @@ public class Company implements Serializable {
     }
 
     public void setDetailedAdd(String detailedAdd) {
-        this.detailedAdd = detailedAdd == null ? null : detailedAdd.trim();
+        this.detailedAdd = detailedAdd;
     }
 
     public String getPostalCode() {
@@ -95,7 +95,7 @@ public class Company implements Serializable {
     }
 
     public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode == null ? null : postalCode.trim();
+        this.postalCode = postalCode;
     }
 
     public Integer getGatewayNumber() {
@@ -119,7 +119,7 @@ public class Company implements Serializable {
     }
 
     public void setLoginName(String loginName) {
-        this.loginName = loginName == null ? null : loginName.trim();
+        this.loginName = loginName;
     }
 
     public String getPassword() {
@@ -127,7 +127,7 @@ public class Company implements Serializable {
     }
 
     public void setPassword(String password) {
-        this.password = password == null ? null : password.trim();
+        this.password = password;
     }
 
     public String getLinkmanName() {
@@ -135,7 +135,7 @@ public class Company implements Serializable {
     }
 
     public void setLinkmanName(String linkmanName) {
-        this.linkmanName = linkmanName == null ? null : linkmanName.trim();
+        this.linkmanName = linkmanName;
     }
 
     public String getAccount() {
@@ -143,7 +143,7 @@ public class Company implements Serializable {
     }
 
     public void setAccount(String account) {
-        this.account = account == null ? null : account.trim();
+        this.account = account;
     }
 
     public String getPhoneNo() {
@@ -151,7 +151,7 @@ public class Company implements Serializable {
     }
 
     public void setPhoneNo(String phoneNo) {
-        this.phoneNo = phoneNo == null ? null : phoneNo.trim();
+        this.phoneNo = phoneNo;
     }
 
     public String getEmail() {
@@ -159,7 +159,7 @@ public class Company implements Serializable {
     }
 
     public void setEmail(String email) {
-        this.email = email == null ? null : email.trim();
+        this.email = email;
     }
 
     public String getGender() {
@@ -167,7 +167,7 @@ public class Company implements Serializable {
     }
 
     public void setGender(String gender) {
-        this.gender = gender == null ? null : gender.trim();
+        this.gender = gender;
     }
 
     public String getFlag() {
@@ -175,7 +175,7 @@ public class Company implements Serializable {
     }
 
     public void setFlag(String flag) {
-        this.flag = flag == null ? null : flag.trim();
+        this.flag = flag;
     }
 
     public Date getCreateTime() {
@@ -215,7 +215,7 @@ public class Company implements Serializable {
     }
 
     public void setState(String state) {
-        this.state = state == null ? null : state.trim();
+        this.state = state;
     }
 
     public String getCallbackUrl() {
@@ -223,6 +223,14 @@ public class Company implements Serializable {
     }
 
     public void setCallbackUrl(String callbackUrl) {
-        this.callbackUrl = callbackUrl == null ? null : callbackUrl.trim();
+        this.callbackUrl = callbackUrl;
+    }
+
+    public String getAuthFlag() {
+        return AuthFlag;
+    }
+
+    public void setAuthFlag(String authFlag) {
+        AuthFlag = authFlag;
     }
 }

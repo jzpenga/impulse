@@ -7,11 +7,16 @@
     <result column="province" jdbcType="VARCHAR" property="province" />
     <result column="city" jdbcType="VARCHAR" property="city" />
     <result column="detailed_add" jdbcType="VARCHAR" property="detailedAdd" />
-    <result column="login_name" jdbcType="VARCHAR" property="loginName" />
-    <result column="password" jdbcType="VARCHAR" property="password" />
     <result column="postal_code" jdbcType="VARCHAR" property="postalCode" />
     <result column="gateway_number" jdbcType="INTEGER" property="gatewayNumber" />
     <result column="sensor_number" jdbcType="INTEGER" property="sensorNumber" />
+    <result column="login_name" jdbcType="VARCHAR" property="loginName" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="linkman_name" jdbcType="VARCHAR" property="linkmanName" />
+    <result column="account" jdbcType="VARCHAR" property="account" />
+    <result column="phone_no" jdbcType="VARCHAR" property="phoneNo" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="gender" jdbcType="VARCHAR" property="gender" />
     <result column="flag" jdbcType="VARCHAR" property="flag" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
@@ -79,9 +84,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, company_name, province, city, detailed_add, login_name, password, postal_code, 
-    gateway_number, sensor_number, flag, create_time, update_time, create_user, update_user, 
-    state, callback_url
+    id, company_name, province, city, detailed_add, postal_code, gateway_number, sensor_number, 
+    login_name, password, linkman_name, account, phone_no, email, gender, flag, create_time, 
+    update_time, create_user, update_user, state, callback_url
   </sql>
   <select id="selectByExample" parameterType="com.msp.impulse.entity.CompanyExample" resultMap="BaseResultMap">
     select
@@ -115,22 +120,26 @@
   </delete>
   <insert id="insert" parameterType="com.msp.impulse.entity.Company">
     insert into company (id, company_name, province, 
-      city, detailed_add, login_name, 
-      password, postal_code, gateway_number, 
-      sensor_number, flag, create_time, 
-      update_time, create_user, update_user, 
-      state, callback_url)
+      city, detailed_add, postal_code, 
+      gateway_number, sensor_number, login_name, 
+      password, linkman_name, account, 
+      phone_no, email, gender, 
+      flag, create_time, update_time, 
+      create_user, update_user, state, 
+      callback_url)
     values (#{id,jdbcType=INTEGER}, #{companyName,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, 
-      #{city,jdbcType=VARCHAR}, #{detailedAdd,jdbcType=VARCHAR}, #{loginName,jdbcType=VARCHAR}, 
-      #{password,jdbcType=VARCHAR}, #{postalCode,jdbcType=VARCHAR}, #{gatewayNumber,jdbcType=INTEGER}, 
-      #{sensorNumber,jdbcType=INTEGER}, #{flag,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=INTEGER}, #{updateUser,jdbcType=INTEGER}, 
-      #{state,jdbcType=VARCHAR}, #{callbackUrl,jdbcType=VARCHAR})
+      #{city,jdbcType=VARCHAR}, #{detailedAdd,jdbcType=VARCHAR}, #{postalCode,jdbcType=VARCHAR}, 
+      #{gatewayNumber,jdbcType=INTEGER}, #{sensorNumber,jdbcType=INTEGER}, #{loginName,jdbcType=VARCHAR}, 
+      #{password,jdbcType=VARCHAR}, #{linkmanName,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR}, 
+      #{phoneNo,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{gender,jdbcType=VARCHAR}, 
+      #{flag,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{createUser,jdbcType=INTEGER}, #{updateUser,jdbcType=INTEGER}, #{state,jdbcType=VARCHAR}, 
+      #{callbackUrl,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.msp.impulse.entity.Company">
     <selectKey keyColumn="id" keyProperty="id" order="AFTER"
                resultType="int">
-    SELECT LAST_INSERT_ID()
+      SELECT LAST_INSERT_ID()
     </selectKey>
     insert into company
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -149,12 +158,6 @@
       <if test="detailedAdd != null">
         detailed_add,
       </if>
-      <if test="loginName != null">
-        login_name,
-      </if>
-      <if test="password != null">
-        password,
-      </if>
       <if test="postalCode != null">
         postal_code,
       </if>
@@ -163,6 +166,27 @@
       </if>
       <if test="sensorNumber != null">
         sensor_number,
+      </if>
+      <if test="loginName != null">
+        login_name,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="linkmanName != null">
+        linkman_name,
+      </if>
+      <if test="account != null">
+        account,
+      </if>
+      <if test="phoneNo != null">
+        phone_no,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="gender != null">
+        gender,
       </if>
       <if test="flag != null">
         flag,
@@ -202,12 +226,6 @@
       <if test="detailedAdd != null">
         #{detailedAdd,jdbcType=VARCHAR},
       </if>
-      <if test="loginName != null">
-        #{loginName,jdbcType=VARCHAR},
-      </if>
-      <if test="password != null">
-        #{password,jdbcType=VARCHAR},
-      </if>
       <if test="postalCode != null">
         #{postalCode,jdbcType=VARCHAR},
       </if>
@@ -216,6 +234,27 @@
       </if>
       <if test="sensorNumber != null">
         #{sensorNumber,jdbcType=INTEGER},
+      </if>
+      <if test="loginName != null">
+        #{loginName,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="linkmanName != null">
+        #{linkmanName,jdbcType=VARCHAR},
+      </if>
+      <if test="account != null">
+        #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneNo != null">
+        #{phoneNo,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null">
+        #{gender,jdbcType=VARCHAR},
       </if>
       <if test="flag != null">
         #{flag,jdbcType=VARCHAR},
@@ -264,12 +303,6 @@
       <if test="record.detailedAdd != null">
         detailed_add = #{record.detailedAdd,jdbcType=VARCHAR},
       </if>
-      <if test="record.loginName != null">
-        login_name = #{record.loginName,jdbcType=VARCHAR},
-      </if>
-      <if test="record.password != null">
-        password = #{record.password,jdbcType=VARCHAR},
-      </if>
       <if test="record.postalCode != null">
         postal_code = #{record.postalCode,jdbcType=VARCHAR},
       </if>
@@ -278,6 +311,27 @@
       </if>
       <if test="record.sensorNumber != null">
         sensor_number = #{record.sensorNumber,jdbcType=INTEGER},
+      </if>
+      <if test="record.loginName != null">
+        login_name = #{record.loginName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.password != null">
+        password = #{record.password,jdbcType=VARCHAR},
+      </if>
+      <if test="record.linkmanName != null">
+        linkman_name = #{record.linkmanName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.account != null">
+        account = #{record.account,jdbcType=VARCHAR},
+      </if>
+      <if test="record.phoneNo != null">
+        phone_no = #{record.phoneNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.email != null">
+        email = #{record.email,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gender != null">
+        gender = #{record.gender,jdbcType=VARCHAR},
       </if>
       <if test="record.flag != null">
         flag = #{record.flag,jdbcType=VARCHAR},
@@ -312,11 +366,16 @@
       province = #{record.province,jdbcType=VARCHAR},
       city = #{record.city,jdbcType=VARCHAR},
       detailed_add = #{record.detailedAdd,jdbcType=VARCHAR},
-      login_name = #{record.loginName,jdbcType=VARCHAR},
-      password = #{record.password,jdbcType=VARCHAR},
       postal_code = #{record.postalCode,jdbcType=VARCHAR},
       gateway_number = #{record.gatewayNumber,jdbcType=INTEGER},
       sensor_number = #{record.sensorNumber,jdbcType=INTEGER},
+      login_name = #{record.loginName,jdbcType=VARCHAR},
+      password = #{record.password,jdbcType=VARCHAR},
+      linkman_name = #{record.linkmanName,jdbcType=VARCHAR},
+      account = #{record.account,jdbcType=VARCHAR},
+      phone_no = #{record.phoneNo,jdbcType=VARCHAR},
+      email = #{record.email,jdbcType=VARCHAR},
+      gender = #{record.gender,jdbcType=VARCHAR},
       flag = #{record.flag,jdbcType=VARCHAR},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP},
@@ -343,12 +402,6 @@
       <if test="detailedAdd != null">
         detailed_add = #{detailedAdd,jdbcType=VARCHAR},
       </if>
-      <if test="loginName != null">
-        login_name = #{loginName,jdbcType=VARCHAR},
-      </if>
-      <if test="password != null">
-        password = #{password,jdbcType=VARCHAR},
-      </if>
       <if test="postalCode != null">
         postal_code = #{postalCode,jdbcType=VARCHAR},
       </if>
@@ -357,6 +410,27 @@
       </if>
       <if test="sensorNumber != null">
         sensor_number = #{sensorNumber,jdbcType=INTEGER},
+      </if>
+      <if test="loginName != null">
+        login_name = #{loginName,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="linkmanName != null">
+        linkman_name = #{linkmanName,jdbcType=VARCHAR},
+      </if>
+      <if test="account != null">
+        account = #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneNo != null">
+        phone_no = #{phoneNo,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null">
+        gender = #{gender,jdbcType=VARCHAR},
       </if>
       <if test="flag != null">
         flag = #{flag,jdbcType=VARCHAR},
@@ -388,11 +462,16 @@
       province = #{province,jdbcType=VARCHAR},
       city = #{city,jdbcType=VARCHAR},
       detailed_add = #{detailedAdd,jdbcType=VARCHAR},
-      login_name = #{loginName,jdbcType=VARCHAR},
-      password = #{password,jdbcType=VARCHAR},
       postal_code = #{postalCode,jdbcType=VARCHAR},
       gateway_number = #{gatewayNumber,jdbcType=INTEGER},
       sensor_number = #{sensorNumber,jdbcType=INTEGER},
+      login_name = #{loginName,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      linkman_name = #{linkmanName,jdbcType=VARCHAR},
+      account = #{account,jdbcType=VARCHAR},
+      phone_no = #{phoneNo,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=VARCHAR},
       flag = #{flag,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
@@ -423,9 +502,8 @@
   </resultMap>
   <select id="findUser" parameterType="com.msp.impulse.query.FindUserQuery" resultMap="userResultMap">
     select  c.id,c.company_name,c.gateway_number,c.province,c.city,
-    c.login_name ,k.`name`,k.phone_no,c.flag,n.sensor_number
+    c.login_name ,c.linkman_name,c.phone_no,c.flag,n.sensor_number
     from company c
-    left join linkman  k on  c.id=k.company_id
     left  join
     (select  count(*)  sensor_number ,c.id nId from  sensor  s,company c where s.user_id=c.id  and  s.flag!="1"  GROUP BY c.id) n
     on  n.nId=c.id
@@ -458,5 +536,4 @@
     select  id,company_name companyName  from  company  where company_name  like "%"#{userName}"%"
     and flag!="1"
   </select>
-
 </mapper>

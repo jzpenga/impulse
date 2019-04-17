@@ -1,5 +1,6 @@
 package com.msp.impulse.controller;
 
+import com.auth0.jwt.JWT;
 import com.github.pagehelper.PageInfo;
 import com.msp.impulse.base.BaseResponse;
 import com.msp.impulse.base.ResponseCode;
@@ -16,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -46,10 +48,12 @@ public class AdminDicController {
     }
     @PostMapping("addDictionary")
     @ApiOperation(value = "新增数据字典", notes = "新增数据字典", tags = "数据字典管理", httpMethod = "POST")
-    public BaseResponse addDictionary(@RequestBody Dictionary dictionary) {
+    public BaseResponse addDictionary(@RequestBody Dictionary dictionary, HttpServletRequest httpServletRequest) {
         BaseResponse response;
         try {
-            response = adminDicService.addDictionary(dictionary);
+            String token = httpServletRequest.getHeader("token");
+            String userId = JWT.decode(token).getAudience().get(0);
+            response = adminDicService.addDictionary(dictionary,Integer.parseInt(userId));
         } catch(MyException e){
             logger.error(e.getMessage());
             response = new BaseResponse();
@@ -105,10 +109,12 @@ public class AdminDicController {
     @PostMapping("deleteDic")
     @ApiOperation(value = "批量删除数据字典", notes = "批量删除数据字典", tags = "数据字典管理", httpMethod = "POST")
     @ApiImplicitParam(name = "ids", value = "数据字典id", example = "1，3,4", required = true, dataType = "string")
-    public BaseResponse deleteDic(@RequestBody List<Integer> ids) {
+    public BaseResponse deleteDic(@RequestBody List<Integer> ids, HttpServletRequest httpServletRequest) {
         BaseResponse response;
         try {
-            response = adminDicService.deleteDic(ids);
+            String token = httpServletRequest.getHeader("token");
+            String userId = JWT.decode(token).getAudience().get(0);
+            response = adminDicService.deleteDic(ids, Integer.parseInt(userId));
         }  catch(MyException e){
             logger.error(e.getMessage());
             response = new BaseResponse();

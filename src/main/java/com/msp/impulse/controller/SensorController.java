@@ -1,9 +1,9 @@
 package com.msp.impulse.controller;
 
+import com.auth0.jwt.JWT;
 import com.github.pagehelper.PageInfo;
 import com.msp.impulse.base.BaseResponse;
 import com.msp.impulse.base.ResponseCode;
-import com.msp.impulse.entity.Company;
 import com.msp.impulse.entity.Pass;
 import com.msp.impulse.entity.Sensor;
 import com.msp.impulse.exception.MyException;
@@ -17,7 +17,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import javax.servlet.http.HttpSession;
+
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -30,16 +31,12 @@ public class SensorController {
 
     @PostMapping("saveSensor")
     @ApiOperation(value="新增",notes = "新增或修改传感器",tags="传感器操作",httpMethod = "POST")
-    public BaseResponse addSensor(@RequestBody SensorAddQuery sensorAddQuery, HttpSession session){
+    public BaseResponse addSensor(@RequestBody SensorAddQuery sensorAddQuery,  HttpServletRequest httpServletRequest){
         BaseResponse response;
         try{
-            //获取用户id
-            Integer  userId=null;
-            Company company= (Company)session.getAttribute("loginUser");
-            if(company!=null){
-                userId=company.getId();
-            }
-           response=sensorService.saveSensor(sensorAddQuery,userId);
+            String token = httpServletRequest.getHeader("token");
+            String userId = JWT.decode(token).getAudience().get(0);
+           response=sensorService.saveSensor(sensorAddQuery, Integer.parseInt(userId));
         }catch (MyException e) {
             logger.error(e.getMessage());
             response = new BaseResponse();
@@ -78,16 +75,12 @@ public class SensorController {
 
     @PostMapping("searchSensor")
     @ApiOperation(value = "查询", notes = "查询传感器相关信息", tags = "传感器操作", httpMethod = "POST")
-    public BaseResponse<PageInfo> queryBySensorAndGateway(@RequestBody SensorQuery sensorQuery, HttpSession session){
+    public BaseResponse<PageInfo> queryBySensorAndGateway(@RequestBody SensorQuery sensorQuery,HttpServletRequest httpServletRequest){
         BaseResponse<PageInfo> response;
         try{
-            //获取用户id
-            Integer  userId=null;
-            Company company= (Company)session.getAttribute("loginUser");
-            if(company!=null){
-                userId=company.getId();
-            }
-            response=sensorService.queryBySensorAndGateway(sensorQuery,userId);
+            String token = httpServletRequest.getHeader("token");
+            String userId = JWT.decode(token).getAudience().get(0);
+            response=sensorService.queryBySensorAndGateway(sensorQuery,Integer.parseInt(userId));
         }catch (MyException e) {
             logger.error(e.getMessage());
             response = new BaseResponse();
@@ -126,16 +119,10 @@ public class SensorController {
     @PostMapping("deleteSerson/{id}")
     @ApiOperation(value = "根据id删除传感器信息", notes = "根据id删除传感器信息", tags = "传感器操作", httpMethod = "POST")
     @ApiImplicitParam(name = "id", value = "传感器ID", example = "1", required = true, dataType = "string")
-    public BaseResponse deleteSensor(@PathVariable Integer id,HttpSession session) {
+    public BaseResponse deleteSensor(@PathVariable Integer id) {
         BaseResponse response;
         try {
-            //获取用户id
-            Integer  userId=null;
-            Company company= (Company)session.getAttribute("loginUser");
-            if(company!=null){
-                userId=company.getId();
-            }
-            response = sensorService.deleteSensor(id,userId);
+            response = sensorService.deleteSensor(id);
         } catch (MyException e) {
             logger.error(e.getMessage(), e);
             response = new BaseResponse();
@@ -154,16 +141,10 @@ public class SensorController {
     @PostMapping("deleteSensorBatch")
     @ApiOperation(value = "批量删除传感器信息", notes = "批量删除传感器信息", tags = "传感器操作", httpMethod = "POST")
     @ApiImplicitParam(name = "ids", value = "网关ID集合", example = "1，3,4", required = true, dataType = "string")
-    public BaseResponse deleteSensorBatch(@RequestBody List<Integer> ids,HttpSession session) {
+    public BaseResponse deleteSensorBatch(@RequestBody List<Integer> ids) {
         BaseResponse response;
         try {
-            //获取用户id
-            Integer  userId=null;
-            Company company= (Company)session.getAttribute("loginUser");
-            if(company!=null){
-                userId=company.getId();
-            }
-            response = sensorService.deleteSensorBatch(ids,userId);
+            response = sensorService.deleteSensorBatch(ids);
         } catch (MyException e) {
             logger.error(e.getMessage(), e);
             response = new BaseResponse();
@@ -217,15 +198,11 @@ public class SensorController {
     }
     @GetMapping("findSensorByName")
     @ApiOperation(value = "根据名称模糊查询传感器信息", notes = "根据名称模糊查询传感器信息", tags = "传感器操作", httpMethod = "GET")
-    public BaseResponse<List<Sensor>> findSensorByName(String sensorName,HttpSession session) {
+    public BaseResponse<List<Sensor>> findSensorByName(String sensorName,HttpServletRequest httpServletRequest) {
         BaseResponse<List<Sensor>> response;
         try {
-            //获取用户id
-            Integer  userId=null;
-            Company company= (Company)session.getAttribute("loginUser");
-            if(company!=null){
-                userId=company.getId();
-            }
+            String token = httpServletRequest.getHeader("token");
+            String userId = JWT.decode(token).getAudience().get(0);
             response = sensorService.findSensorByName(sensorName,userId);
         } catch (MyException e) {
             logger.error(e.getMessage(), e);

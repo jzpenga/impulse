@@ -3,20 +3,12 @@ package com.msp.impulse.entity;
 import java.io.Serializable;
 import java.util.Date;
 
-public class Linkman implements Serializable {
+public class User implements Serializable {
     private Integer id;
 
-    private String name;
+    private String loginName;
 
-    private String account;
-
-    private String phoneNo;
-
-    private String gender;
-
-    private String email;
-
-    private Integer companyId;
+    private String password;
 
     private String flag;
 
@@ -30,6 +22,10 @@ public class Linkman implements Serializable {
 
     private String state;
 
+    private Integer companyId;
+
+    private String authFlag;
+
     private static final long serialVersionUID = 1L;
 
     public Integer getId() {
@@ -40,52 +36,20 @@ public class Linkman implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getLoginName() {
+        return loginName;
     }
 
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+    public void setLoginName(String loginName) {
+        this.loginName = loginName == null ? null : loginName.trim();
     }
 
-    public String getAccount() {
-        return account;
+    public String getPassword() {
+        return password;
     }
 
-    public void setAccount(String account) {
-        this.account = account == null ? null : account.trim();
-    }
-
-    public String getPhoneNo() {
-        return phoneNo;
-    }
-
-    public void setPhoneNo(String phoneNo) {
-        this.phoneNo = phoneNo == null ? null : phoneNo.trim();
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender == null ? null : gender.trim();
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email == null ? null : email.trim();
-    }
-
-    public Integer getCompanyId() {
-        return companyId;
-    }
-
-    public void setCompanyId(Integer companyId) {
-        this.companyId = companyId;
+    public void setPassword(String password) {
+        this.password = password == null ? null : password.trim();
     }
 
     public String getFlag() {
@@ -134,5 +98,21 @@ public class Linkman implements Serializable {
 
     public void setState(String state) {
         this.state = state == null ? null : state.trim();
+    }
+
+    public Integer getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Integer companyId) {
+        this.companyId = companyId;
+    }
+
+    public String getAuthFlag() {
+        return authFlag;
+    }
+
+    public void setAuthFlag(String authFlag) {
+        this.authFlag = authFlag == null ? null : authFlag.trim();
     }
 }

@@ -6,6 +6,7 @@ import com.iotplatform.client.dto.DeviceInfo;
 import com.iotplatform.client.dto.RegDirectDeviceOutDTO;
 import com.msp.impulse.base.BaseResponse;
 import com.msp.impulse.base.ResponseCode;
+import com.msp.impulse.constants.Constants;
 import com.msp.impulse.dao.RealTimeDataDao;
 import com.msp.impulse.entity.*;
 import com.msp.impulse.exception.MyException;
@@ -42,6 +43,10 @@ public class SensorService {
     private ModelServiceMapper modelServiceMapper;
     @Autowired
     private  DeviceModelMapper deviceModelMapper;
+    @Autowired
+    private  UserMapper userMapper;
+    @Autowired
+    private  UserService userService;
 
     /**
      * 新增传感器
@@ -52,14 +57,20 @@ public class SensorService {
     @Transactional
     public BaseResponse saveSensor(SensorAddQuery sensorAddQuery, Integer userId) {
         BaseResponse response = new BaseResponse();
-        addSensor(sensorAddQuery, userId);
+        Integer companyId=null;
+        //根据用户查询公司id
+        if(userId!=null){
+            User user = userMapper.selectByPrimaryKey(userId );
+            companyId=user.getCompanyId();
+        }
+        addSensor(sensorAddQuery, companyId);
         response.setResponseCode(ResponseCode.OK.getCode());
         response.setResponseMsg(ResponseCode.OK.getMessage());
         return response;
     }
 
     @Transactional
-    public void addSensor(SensorAddQuery sensorAddQuery, Integer userId) {
+    public void addSensor(SensorAddQuery sensorAddQuery, Integer companyId) {
         Sensor sensor = sensorAddQuery.getSensor();
         if (sensor == null) {
             throw new MyException("请输入传感器信息!");
@@ -78,10 +89,9 @@ public class SensorService {
             throw new MyException("传感器序列号必输!");
         }
         //如果是admin登录，则视为hyzg用户
-        if(userId==null){
-            userId=1;
+        if(companyId==null){
+            companyId=1;
         }
-
         if (sensor.getId() != null) {//修改
             //查询传感器
             Sensor sensorUp = sensorMapper.selectByPrimaryKey(sensor.getId());
@@ -97,13 +107,13 @@ public class SensorService {
             sensorUp.setLongitude(sensor.getLongitude());
             sensorUp.setPassNumber(sensor.getPassNumber());
             sensorUp.setUpdateTime(new Date());
-            if (userId != null) {
-                sensorUp.setUpdateUser(userId);
+            if (companyId != null) {
+                sensorUp.setUpdateUser(companyId);
             }
             sensorMapper.updateByPrimaryKey(sensorUp);
             List<Pass> passList = sensorAddQuery.getPassList();
             if (passList != null) {
-                gatewayService.savePass(passList, userId, sensor, null);
+                gatewayService.savePass(passList, companyId, sensor, null);
             }
         } else {//新增
             //新增设备====================================================================start
@@ -132,15 +142,15 @@ public class SensorService {
             sensor.setDeviceId(deviceId);
             sensor.setFlag("0");
             sensor.setCreateTime(new Date());
-            if (userId != null) {
-                Company company = companyMapper.selectByPrimaryKey(userId);
+            if (companyId != null) {
+                Company company = companyMapper.selectByPrimaryKey(companyId);
                 if (company!=null) {
                     if (StringUtils.isNotBlank(company.getCompanyName())) {
                         sensor.setUserName(company.getCompanyName());
                     }
                 }
-                sensor.setCreateUser(userId);
-                sensor.setUserId(userId);
+                sensor.setCreateUser(companyId);
+                sensor.setUserId(companyId);
             }
             try {
                 sensorMapper.insertSelective(sensor);
@@ -168,7 +178,7 @@ public class SensorService {
         List<Pass> passList = sensorAddQuery.getPassList();
         if (passList != null) {
             try {
-                gatewayService.savePass(passList, userId, sensor, null);
+                gatewayService.savePass(passList, companyId, sensor, null);
             } catch (Exception e) {
                 //删除
                 SensorExample sensorExample = new SensorExample();
@@ -307,8 +317,11 @@ public class SensorService {
             sensorQuery.setPageSize(10);
         }
         PageHelper.startPage(sensorQuery.getPageNo(), sensorQuery.getPageSize());
-        if (userId != null) {
-            sensorQuery.setUserId(userId);
+        //获取用户id
+        User user = userService.findUserById(userId+"");
+        if (user != null && (user.getAuthFlag().equals(Constants.AuthFlag.NORMAL.getValue()))) {
+            //管理员用户id不作为查询条件
+            sensorQuery.setUserId(user.getCompanyId());
         }
         List<Sensor> sensorList = sensorMapper.selectSensorInfo(sensorQuery);
         PageInfo<Sensor> pageInfo = new PageInfo<>(sensorList);
@@ -368,7 +381,7 @@ public class SensorService {
      * @return
      */
     @Transactional
-    public BaseResponse deleteSensor(Integer id, Integer userId) {
+    public BaseResponse deleteSensor(Integer id) {
         BaseResponse response = new BaseResponse();
         //删除运营商传感器
         deleteNBDXSensor(id);
@@ -407,7 +420,7 @@ public class SensorService {
      * @return
      */
     @Transactional
-    public BaseResponse deleteSensorBatch(List<Integer> ids, Integer userId) {
+    public BaseResponse deleteSensorBatch(List<Integer> ids) {
         BaseResponse response = new BaseResponse();
         for (Integer id : ids) {
             //删除运营商传感器
@@ -490,8 +503,14 @@ public class SensorService {
      * @param sensorName
      * @return
      */
-    public BaseResponse<List<Sensor>> findSensorByName(String sensorName,Integer userId) {
+    public BaseResponse<List<Sensor>> findSensorByName(String sensorName,String userId) {
         BaseResponse<List<Sensor>> response = new BaseResponse();
+        Integer companyId=null;
+        User user = userService.findUserById(userId);
+        if (user != null && (user.getAuthFlag() == Constants.AuthFlag.NORMAL.getValue())) {
+            //管理员用户id不作为查询条件
+            companyId=user.getCompanyId();
+        }
         if (TextUtils.isEmpty(sensorName)) {
             response.setData(new ArrayList<>());
             response.setResponseCode(ResponseCode.OK.getCode());
@@ -499,7 +518,7 @@ public class SensorService {
             return response;
         }
         //根据传感器名称查询传感器信息
-        List<Sensor> sensorList = sensorMapper.findSensorByNameLike(sensorName,userId);
+        List<Sensor> sensorList = sensorMapper.findSensorByNameLike(sensorName,companyId);
         if (sensorList.isEmpty()) {
             response.setData(new ArrayList<>());
             response.setResponseCode(ResponseCode.OK.getCode());
@@ -572,6 +591,9 @@ public class SensorService {
                 realTimeData.setDeviceId(deviceId);
                 realTimeDataDao.save(realTimeData);
             }
+            response.setResponseCode(ResponseCode.OK.getCode());
+            response.setResponseMsg("新增成功");
+            return response;
             //新增实时数据======================================================================end
         }else{
             Sensor sensor = sensorList.get(0);
@@ -588,10 +610,11 @@ public class SensorService {
                 sensor.setUpdateTime(new Date());
             }
             sensorMapper.updateByPrimaryKey(sensor);
+            response.setResponseCode(ResponseCode.OK.getCode());
+            response.setResponseMsg("修改成功");
+            return response;
         }
-        response.setResponseCode(ResponseCode.OK.getCode());
-        response.setResponseMsg(ResponseCode.OK.getMessage());
-        return response;
+
     }
 
     public  DeviceModel  getDeviceModelId(String deviceModelName){

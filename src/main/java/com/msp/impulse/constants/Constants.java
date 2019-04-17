@@ -61,6 +61,26 @@ public interface Constants {
             return name;
         }
     }
+    //权限  0-管理员 1-普通用户
+    enum  AuthFlag{
+        ADMIN("管理员", "0"),
+        NORMAL("普通用户", "1");
+
+        private AuthFlag(String name, String value){
+            this.name = name;
+            this.value = value;
+        }
+        String name;
+        String value;
+
+        public String getValue() {
+            return value;
+        }
+
+        public String getName() {
+            return name;
+        }
+    }
 
 
 

@@ -6,8 +6,12 @@ import com.msp.impulse.base.BaseResponse;
 import com.msp.impulse.base.ResponseCode;
 import com.msp.impulse.entity.Company;
 import com.msp.impulse.entity.CompanyExample;
+import com.msp.impulse.entity.User;
+import com.msp.impulse.entity.UserExample;
 import com.msp.impulse.exception.MyException;
 import com.msp.impulse.mapper.CompanyMapper;
+import com.msp.impulse.mapper.UserMapper;
+import com.msp.impulse.vo.CompanyVo;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,15 +26,17 @@ import java.util.Map;
 public class UserService {
     @Autowired
     private CompanyMapper companyMapper;
+    @Autowired
+    private UserMapper userMapper;
 
     /**
      * 更新密码
      *
-     * @param company
+     * @param consumerId
      * @param newPwd
      * @param oPwd
      */
-    public BaseResponse modifyPwd(Company company, String oPwd, String newPwd) {
+    public BaseResponse modifyPwd(String consumerId, String oPwd, String newPwd) {
         BaseResponse response = new BaseResponse<>();
         //参数是否为空
         if (StringUtils.isBlank(oPwd) || StringUtils.isBlank(newPwd)) {
@@ -39,6 +45,7 @@ public class UserService {
             return response;
         }
         //判断用户是否登录
+        Company company = companyMapper.selectByPrimaryKey(Integer.parseInt(consumerId));
         if (null == company) {
             response.setResponseCode(ResponseCode.NOT_LOGIN.getCode());
             response.setResponseMsg(ResponseCode.NOT_LOGIN.getMessage());
@@ -78,6 +85,34 @@ public class UserService {
             return response;
         }
         response.setData(company);
+        response.setResponseCode(ResponseCode.OK.getCode());
+        response.setResponseMsg(ResponseCode.OK.getMessage());
+        return response;
+    }
+
+    public BaseResponse loginByNameAndPwd(String loginName, String password) {
+        BaseResponse response = new BaseResponse<>();
+        if (StringUtils.isBlank(loginName)) {
+            throw new MyException("请输入登录名!");
+        }
+        if (StringUtils.isBlank(password)) {
+            throw new MyException("请输入登密码!");
+        }
+        String pwd = DigestUtils.md5DigestAsHex(password.getBytes());//默认密码
+        User user = userMapper.findByNameAndPwd(loginName, pwd);
+        if (user == null) {
+            response.setResponseMsg(ResponseCode.USERNAME_OR_PWD_WRONG.getMessage());
+            response.setResponseCode(ResponseCode.USERNAME_OR_PWD_WRONG.getCode());
+            return response;
+        }
+        CompanyVo companyVo=new CompanyVo();
+        //生成token
+        String token = JWT.create().withAudience(user.getId() + "")
+                .sign(Algorithm.HMAC256(user.getPassword()));
+        companyVo.setToken(token);
+        companyVo.setAuthFlag(user.getAuthFlag());
+        companyVo.setLoginName(user.getLoginName());
+        response.setData(companyVo);
         response.setResponseCode(ResponseCode.OK.getCode());
         response.setResponseMsg(ResponseCode.OK.getMessage());
         return response;
@@ -132,4 +167,10 @@ public class UserService {
         return response;
     }
 
+    public User findUserById(String userId) {
+        UserExample userExample=new UserExample();
+        userExample.createCriteria().andFlagEqualTo("0").andIdEqualTo(Integer.parseInt(userId));
+        List<User> users = userMapper.selectByExample(userExample);
+        return users.isEmpty()?null:users.get(0);
+    }
 }

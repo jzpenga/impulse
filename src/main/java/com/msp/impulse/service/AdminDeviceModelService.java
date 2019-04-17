@@ -10,6 +10,7 @@ import com.msp.impulse.exception.MyException;
 import com.msp.impulse.mapper.DeviceModelMapper;
 import com.msp.impulse.mapper.DictionaryMapper;
 import com.msp.impulse.mapper.ModelServiceMapper;
+import com.msp.impulse.mapper.UserMapper;
 import com.msp.impulse.query.DeviceModelQuery;
 import com.msp.impulse.vo.DeviceModelVo;
 import com.msp.impulse.vo.ModelServiceVo;
@@ -37,6 +38,8 @@ public class AdminDeviceModelService {
     private ModelServiceMapper modelServiceMapper;
     @Autowired
     private DictionaryMapper dictionaryMapper;
+    @Autowired
+    private UserMapper userMapper;
 
     private static Logger logger = LoggerFactory.getLogger(AdminDeviceModelController.class);
 
@@ -47,7 +50,7 @@ public class AdminDeviceModelService {
      * @return
      */
     @Transactional
-    public BaseResponse saveDeviceType(DeviceModelQuery deviceModelQuery) throws IOException {
+    public BaseResponse saveDeviceType(DeviceModelQuery deviceModelQuery,Integer userId) throws IOException {
         BaseResponse response = new BaseResponse();
         if (StringUtils.isBlank(deviceModelQuery.getSensorModel())) {
             throw new MyException("请输入设备型号名称!");
@@ -55,6 +58,12 @@ public class AdminDeviceModelService {
         if (StringUtils.isBlank(deviceModelQuery.getIotSensorType())) {
             throw new MyException("请输入iot设备类型!");
         }
+        //根据用户id获取公司id
+        User user = userMapper.selectByPrimaryKey(userId);
+        if(user==null){
+            throw  new MyException("当前登录用户不存在");
+        }
+
         if (deviceModelQuery.getId() != null) {//修改
             DeviceModelExample deviceModelExample = new DeviceModelExample();
             deviceModelExample.createCriteria().andFlagEqualTo("0").andIdEqualTo(deviceModelQuery.getId());
@@ -80,6 +89,7 @@ public class AdminDeviceModelService {
             deviceModel1.setSensorModel(deviceModelQuery.getSensorModel());
             deviceModel1.setDeviceType(deviceModel1.getDeviceType());
             deviceModel1.setUpdateTime(new Date());
+            deviceModel1.setUpdateUser(user.getCompanyId());
             deviceModelMapper.updateByPrimaryKey(deviceModel1);
 
             //更新modelService==========================================start
@@ -89,13 +99,14 @@ public class AdminDeviceModelService {
             for (ModelService modelService : modelServices) {
                 modelService.setUpdateTime(new Date());
                 modelService.setFlag("1");
+                modelService.setUpdateUser(user.getCompanyId()+"");
                 modelServiceMapper.updateByPrimaryKey(modelService);
             }
             List<Integer> modelServiceIds = deviceModelQuery.getModelServiceIds();
             if (!modelServiceIds.isEmpty()) {
                 //新增modelService
                 for (Integer id : modelServiceIds) {
-                    addModelService(id, deviceModelQuery.getSensorModel(), deviceModelQuery.getId());
+                    addModelService(id, deviceModelQuery.getSensorModel(), deviceModelQuery.getId(),user.getCompanyId());
                 }
             }
             //更新modelService=============================================end
@@ -118,6 +129,7 @@ public class AdminDeviceModelService {
             deviceModel.setSensorModel(deviceModelQuery.getSensorModel());
             deviceModel.setCreateTime(new Date());
             deviceModel.setFlag("0");
+            deviceModel.setCreateUser(user.getCompanyId());
             deviceModelMapper.insertSelective(deviceModel);
 
             //新增modelService
@@ -125,7 +137,7 @@ public class AdminDeviceModelService {
             if (modelServiceIds!=null&&!modelServiceIds.isEmpty()) {
                 //新增modelService
                 for (Integer id : modelServiceIds) {
-                    addModelService(id, deviceModelQuery.getSensorModel(), deviceModel.getId());
+                    addModelService(id, deviceModelQuery.getSensorModel(), deviceModel.getId(),user.getCompanyId());
                 }
             }
         }
@@ -141,7 +153,7 @@ public class AdminDeviceModelService {
      * @param sensorModel
      * @param modelId
      */
-    public void addModelService(Integer dicId, String sensorModel, Integer modelId) {
+    public void addModelService(Integer dicId, String sensorModel, Integer modelId,Integer companyId) {
         //查询是否已经存在 设备型号和传感类型相同的数据
         Dictionary dictionary = dictionaryMapper.selectByPrimaryKey(dicId);
         if (getModelService(modelId, dictionary.getDicCode()) != null) {
@@ -155,6 +167,7 @@ public class AdminDeviceModelService {
         modelService.setCodeName(dictionary.getDicName());
         modelService.setFlag("0");
         modelService.setCreateTime(new Date());
+        modelService.setCreateUser(companyId+"");
         modelServiceMapper.insertSelective(modelService);
     }
 
@@ -245,8 +258,9 @@ public class AdminDeviceModelService {
      * @return
      */
     @Transactional
-    public BaseResponse deleteDeviceModelById(List<Integer> ids) {
+    public BaseResponse deleteDeviceModelById(List<Integer> ids,Integer userId) {
         BaseResponse response = new BaseResponse();
+        User user = userMapper.selectByPrimaryKey(userId);
         for (Integer id : ids) {
             DeviceModel deviceModel = deviceModelMapper.selectByPrimaryKey(id);
             if (deviceModel == null) {
@@ -254,6 +268,7 @@ public class AdminDeviceModelService {
             }
             deviceModel.setUpdateTime(new Date());
             deviceModel.setFlag("1");
+            deviceModel.setUpdateUser(user.getCompanyId());
             deviceModelMapper.updateByPrimaryKey(deviceModel);
         }
         response.setResponseMsg(ResponseCode.OK.getMessage());

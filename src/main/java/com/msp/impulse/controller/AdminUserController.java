@@ -1,12 +1,13 @@
 package com.msp.impulse.controller;
 
+import com.auth0.jwt.JWT;
 import com.github.pagehelper.PageInfo;
 import com.msp.impulse.base.BaseResponse;
 import com.msp.impulse.base.ResponseCode;
 import com.msp.impulse.exception.MyException;
+import com.msp.impulse.query.CompanyParam;
 import com.msp.impulse.query.FindUserByIdQuery;
 import com.msp.impulse.query.FindUserQuery;
-import com.msp.impulse.query.SaveUserQuery;
 import com.msp.impulse.service.AdminUserService;
 import com.msp.impulse.vo.CompanyDetailVo;
 import io.swagger.annotations.Api;
@@ -16,6 +17,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -69,10 +72,12 @@ public class AdminUserController {
      */
     @PostMapping("saveUser")
     @ApiOperation(value = "新增修改用户数据", notes = "新增修改用户数据", tags = "用户管理", httpMethod = "POST")
-    public BaseResponse saveUser(@RequestBody SaveUserQuery saveUserQuery) {
+    public BaseResponse saveUser(@RequestBody CompanyParam companyParam, HttpServletRequest httpServletRequest) {
         BaseResponse response;
         try {
-            response = adminUserService.saveUser(saveUserQuery);
+            String token = httpServletRequest.getHeader("token");
+            String userId = JWT.decode(token).getAudience().get(0);
+            response = adminUserService.saveUser(companyParam,userId);
         } catch(MyException e){
             logger.error(e.getMessage());
             response = new BaseResponse();
