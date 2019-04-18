@@ -304,11 +304,15 @@ public class SensorService {
             sensorQuery.setPageSize(10);
         }
         PageHelper.startPage(sensorQuery.getPageNo(), sensorQuery.getPageSize());
-        //获取用户id
-        User user = userService.findUserById(userId+"");
-        if (user != null && (user.getAuthFlag().equals(Constants.AuthFlag.NORMAL.getValue()))) {
-            //管理员用户id不作为查询条件
-            sensorQuery.setUserId(userId);
+        if(sensorQuery.getUserId()==null) {
+            //获取用户id
+            User user = userService.findUserById(userId + "");
+            if (user != null && (user.getAuthFlag().equals(Constants.AuthFlag.NORMAL.getValue()))) {
+                //管理员用户id不作为查询条件
+                sensorQuery.setUserId(userId);
+            }
+        }else{
+            sensorQuery.setUserId(sensorQuery.getUserId());
         }
         List<Sensor> sensorList = sensorMapper.selectSensorInfo(sensorQuery);
         PageInfo<Sensor> pageInfo = new PageInfo<>(sensorList);
