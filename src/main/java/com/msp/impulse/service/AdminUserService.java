@@ -69,8 +69,9 @@ public class AdminUserService {
         Integer userId = findUserByIdQuery.getUserId();//用户id
 
         CompanyDetailVo companyDetailVo = new CompanyDetailVo();
+        User user = userMapper.selectByPrimaryKey(userId);
         //查询公司
-        Company company = companyMapper.selectByPrimaryKey(userId);
+        Company company = companyMapper.selectByPrimaryKey(user.getCompanyId());
         if (company != null) {
             companyDetailVo.setCompany(company);
         }
