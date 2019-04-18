@@ -134,12 +134,8 @@ public class SensorService {
             sensor.setFlag("0");
             sensor.setCreateTime(new Date());
             if (userId != null) {
-                Company company = companyMapper.selectByPrimaryKey(userId);
-                if (company!=null) {
-                    if (StringUtils.isNotBlank(company.getCompanyName())) {
-                        sensor.setUserName(company.getCompanyName());
-                    }
-                }
+                User user = userMapper.selectByPrimaryKey(userId);
+                sensor.setUserName(user.getLoginName());
                 sensor.setCreateUser(userId);
                 sensor.setUserId(userId);
             }
