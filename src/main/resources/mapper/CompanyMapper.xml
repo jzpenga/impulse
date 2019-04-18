@@ -499,13 +499,14 @@
     <result property="phoneNo" column="phone_no" />
     <result property="gatewayNumber" column="gateway_number" />
     <result property="sensorNumber" column="sensor_number" />
+    <result property="linkmanName" column="linkman_name" />
   </resultMap>
   <select id="findUser" parameterType="com.msp.impulse.query.FindUserQuery" resultMap="userResultMap">
     select  c.id,c.company_name,c.gateway_number,c.province,c.city,
-    c.login_name ,c.linkman_name,c.phone_no,c.flag,n.sensor_number
+    c.login_name ,c.linkman_name ,c.phone_no,c.flag,n.sensor_number
     from company c
     left  join
-    (select  count(*)  sensor_number ,c.id nId from  sensor  s,company c where s.user_id=c.id  and  s.flag!="1"  GROUP BY c.id) n
+    (select  count(*)  sensor_number ,c.id nId from  sensor  s,company c where s.user_id=c.id  and  s.flag="0"  GROUP BY c.id) n
     on  n.nId=c.id
     where 1=1
     <if test="companyName != null and companyName!=''">
@@ -534,6 +535,6 @@
   </select>
   <select id="seletByUserName" parameterType="string" resultType="com.msp.impulse.entity.Company">
     select  id,company_name companyName  from  company  where company_name  like "%"#{userName}"%"
-    and flag!="1"
+    and flag="0"
   </select>
 </mapper>

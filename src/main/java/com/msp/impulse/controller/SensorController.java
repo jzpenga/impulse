@@ -119,10 +119,12 @@ public class SensorController {
     @PostMapping("deleteSerson/{id}")
     @ApiOperation(value = "根据id删除传感器信息", notes = "根据id删除传感器信息", tags = "传感器操作", httpMethod = "POST")
     @ApiImplicitParam(name = "id", value = "传感器ID", example = "1", required = true, dataType = "string")
-    public BaseResponse deleteSensor(@PathVariable Integer id) {
+    public BaseResponse deleteSensor(@PathVariable Integer id,HttpServletRequest httpServletRequest) {
         BaseResponse response;
         try {
-            response = sensorService.deleteSensor(id);
+            String token = httpServletRequest.getHeader("token");
+            String userId = JWT.decode(token).getAudience().get(0);
+            response = sensorService.deleteSensor(id,Integer.parseInt(userId));
         } catch (MyException e) {
             logger.error(e.getMessage(), e);
             response = new BaseResponse();
@@ -141,10 +143,12 @@ public class SensorController {
     @PostMapping("deleteSensorBatch")
     @ApiOperation(value = "批量删除传感器信息", notes = "批量删除传感器信息", tags = "传感器操作", httpMethod = "POST")
     @ApiImplicitParam(name = "ids", value = "网关ID集合", example = "1，3,4", required = true, dataType = "string")
-    public BaseResponse deleteSensorBatch(@RequestBody List<Integer> ids) {
+    public BaseResponse deleteSensorBatch(@RequestBody List<Integer> ids,HttpServletRequest httpServletRequest) {
         BaseResponse response;
         try {
-            response = sensorService.deleteSensorBatch(ids);
+            String token = httpServletRequest.getHeader("token");
+            String userId = JWT.decode(token).getAudience().get(0);
+            response = sensorService.deleteSensorBatch(ids,Integer.parseInt(userId));
         } catch (MyException e) {
             logger.error(e.getMessage(), e);
             response = new BaseResponse();

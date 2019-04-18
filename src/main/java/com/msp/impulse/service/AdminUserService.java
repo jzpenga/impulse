@@ -114,7 +114,7 @@ public class AdminUserService {
      * @return
      */
     @Transactional
-    public BaseResponse saveUser(CompanyParam companyParam,String userId) {
+    public BaseResponse saveUser(CompanyParam companyParam, Integer userId) {
         BaseResponse response = new BaseResponse<>();
         //用户登录名不能为空
         if (StringUtils.isBlank(companyParam.getLoginName())) {
@@ -122,30 +122,26 @@ public class AdminUserService {
             response.setResponseMsg(ResponseCode.USERNAME_NULL.getMessage());
             return response;
         }
-//        //密码不能为空  修改的情况可以为空
-//        if(StringUtils.isBlank(saveUserQuery.getCompany().getPassword())){
-//            response.setResponseCode(ResponseCode.PASSWORD_NULL.getCode());
-//            response.setResponseMsg(ResponseCode.PASSWORD_NULL.getMessage());
-//            return response;
-//        }
+        //联系人姓名不能为空
+        if (StringUtils.isBlank(companyParam.getLinkmanName())) {
+            response.setResponseCode(ResponseCode.LINKMAN_NAME_MUST_HAVE.getCode());
+            response.setResponseMsg(ResponseCode.LINKMAN_NAME_MUST_HAVE.getMessage());
+            return response;
+        }
+
         //联系人电话号不能为空
         if (StringUtils.isBlank(companyParam.getPhoneNo())) {
             response.setResponseCode(ResponseCode.PHONE_NO_MUST_HAVE.getCode());
             response.setResponseMsg(ResponseCode.PHONE_NO_MUST_HAVE.getMessage());
             return response;
         }
-        //根据userId查询公司信息
-        User user1 = userMapper.selectByPrimaryKey(Integer.parseInt(userId));
-        Company company = companyMapper.selectByPrimaryKey(user1.getCompanyId());
 
         if (companyParam.getId() != null) {
-            //修改用户信息
-            //根据登录名查询
-            UserExample userExample=new UserExample();
-            userExample.createCriteria().andFlagEqualTo("0").andLoginNameEqualTo(companyParam.getLoginName());
+            UserExample userExample = new UserExample();
+            userExample.createCriteria().andFlagEqualTo("0").andCompanyIdEqualTo(companyParam.getId());
             List<User> users = userMapper.selectByExample(userExample);
-            if(users.isEmpty()){
-                throw  new MyException("登录名为【"+companyParam.getLoginName()+"】的用户不存在");
+            if (users.isEmpty()) {
+                throw new MyException("该公司对应的用户数据不存在!");
             }
             User user = users.get(0);
 
@@ -168,16 +164,22 @@ public class AdminUserService {
             company1.setPhoneNo(companyParam.getPhoneNo());
             company1.setEmail(companyParam.getEmail());
             company1.setGender(companyParam.getGender());
-            company1.setUpdateUser(company.getId());
+            company1.setUpdateUser(userId);
             companyMapper.updateByPrimaryKey(company1);
 
+            user.setLoginName(companyParam.getLoginName());
             user.setUpdateTime(new Date());
-            user.setUpdateUser(company.getId());
+            user.setUpdateUser(userId);
             userMapper.updateByPrimaryKey(user);
 
         } else {
+            if (StringUtils.isBlank(companyParam.getPassword())) {
+                response.setResponseCode(ResponseCode.PASSWORD_NULL.getCode());
+                response.setResponseMsg(ResponseCode.PASSWORD_NULL.getMessage());
+                return response;
+            }
             //用户登录名不能重复
-            CompanyExample companyExample=new CompanyExample();
+            CompanyExample companyExample = new CompanyExample();
             companyExample.createCriteria().andFlagEqualTo("0").andLoginNameEqualTo(companyParam.getLoginName());
             List<Company> companyList = companyMapper.selectByExample(companyExample);
             if (!companyList.isEmpty()) {
@@ -185,22 +187,23 @@ public class AdminUserService {
                 response.setResponseMsg(ResponseCode.LOGINNAME_EXSIST.getMessage());
                 return response;
             }
-            companyParam.setCreateUser(company.getId());
+            companyParam.setCreateUser(userId);
             //新增公司信息
-            Integer  companyId = addCompany(companyParam);
+            Integer companyId = addCompany(companyParam);
             //新增用户信息
-            User user=new User();
+            User user = new User();
             user.setCreateTime(new Date());
-            user.setPassword(companyParam.getPassword());
+            String pwd = DigestUtils.md5DigestAsHex(companyParam.getPassword().getBytes());
+            user.setPassword(pwd);
             user.setLoginName(companyParam.getLoginName());
-            if(StringUtils.isBlank(companyParam.getAuthFlag())){
+            if (StringUtils.isBlank(companyParam.getAuthFlag())) {
                 user.setAuthFlag(Constants.AuthFlag.NORMAL.getValue());//普通用户
-            }else{
+            } else {
                 user.setAuthFlag(companyParam.getAuthFlag());
             }
             user.setCompanyId(companyId);
             user.setFlag("0");
-            user.setCreateUser(company.getId());
+            user.setCreateUser(userId);
             userMapper.insertSelective(user);
         }
         response.setResponseCode(ResponseCode.OK.getCode());
@@ -208,10 +211,10 @@ public class AdminUserService {
         return response;
     }
 
-    public  Integer addCompany(CompanyParam companyParam){
-        Company company=new Company();
-        if(StringUtils.isBlank(companyParam.getPassword())){
-            throw  new MyException("密码必输！");
+    public Integer addCompany(CompanyParam companyParam) {
+        Company company = new Company();
+        if (StringUtils.isBlank(companyParam.getPassword())) {
+            throw new MyException("密码必输！");
         }
         //密码加密
         String pwd = DigestUtils.md5DigestAsHex(companyParam.getPassword().getBytes());
@@ -221,17 +224,17 @@ public class AdminUserService {
 //            company.setSensorNumber(0);
         company.setFlag("0");
         company.setCreateTime(new Date());
-        company.setEmail(StringUtils.isBlank(companyParam.getEmail())?null:companyParam.getEmail());
+        company.setEmail(StringUtils.isBlank(companyParam.getEmail()) ? null : companyParam.getEmail());
         company.setPhoneNo(companyParam.getPhoneNo());
-        company.setAccount(StringUtils.isBlank(companyParam.getAccount())?null:companyParam.getAccount());
-        company.setLinkmanName(StringUtils.isBlank(companyParam.getLinkmanName())?null:companyParam.getLinkmanName());
-        company.setPostalCode(StringUtils.isBlank(companyParam.getPostalCode())?null:companyParam.getPostalCode());
-        company.setDetailedAdd(StringUtils.isBlank(companyParam.getDetailedAdd())?null:companyParam.getDetailedAdd());
-        company.setCity(StringUtils.isBlank(companyParam.getCity())?null:companyParam.getCity());
-        company.setProvince(StringUtils.isBlank(companyParam.getProvince())?null:companyParam.getProvince());
-        company.setCompanyName(StringUtils.isBlank(companyParam.getCompanyName())?null:companyParam.getCompanyName());
+        company.setAccount(StringUtils.isBlank(companyParam.getAccount()) ? null : companyParam.getAccount());
+        company.setLinkmanName(StringUtils.isBlank(companyParam.getLinkmanName()) ? null : companyParam.getLinkmanName());
+        company.setPostalCode(StringUtils.isBlank(companyParam.getPostalCode()) ? null : companyParam.getPostalCode());
+        company.setDetailedAdd(StringUtils.isBlank(companyParam.getDetailedAdd()) ? null : companyParam.getDetailedAdd());
+        company.setCity(StringUtils.isBlank(companyParam.getCity()) ? null : companyParam.getCity());
+        company.setProvince(StringUtils.isBlank(companyParam.getProvince()) ? null : companyParam.getProvince());
+        company.setCompanyName(StringUtils.isBlank(companyParam.getCompanyName()) ? null : companyParam.getCompanyName());
         company.setLoginName(companyParam.getLoginName());
-        company.setGender(StringUtils.isBlank(companyParam.getGender())?null:companyParam.getGender());
+        company.setGender(StringUtils.isBlank(companyParam.getGender()) ? null : companyParam.getGender());
         company.setCreateUser(companyParam.getCreateUser());
         companyMapper.insertSelective(company);
 
@@ -245,17 +248,24 @@ public class AdminUserService {
      * @return
      */
     @Transactional
-    public BaseResponse deleteUserBatch(List<Integer> ids) {
+    public BaseResponse deleteUserBatch(List<Integer> ids, Integer userId) {
         BaseResponse response = new BaseResponse<>();
         for (Integer id : ids) {
             //删除公司
             Company company = companyMapper.selectByPrimaryKey(id);
             company.setFlag("1");
+            company.setUpdateUser(userId);
             companyMapper.updateByPrimaryKey(company);
             //删除用户
-            UserExample userExample=new UserExample();
+            UserExample userExample = new UserExample();
             userExample.createCriteria().andFlagEqualTo("0").andCompanyIdEqualTo(id);
-            userMapper.deleteByExample(userExample);
+            List<User> users = userMapper.selectByExample(userExample);
+            for (User user : users) {
+                user.setUpdateUser(userId);
+                user.setUpdateTime(new Date());
+                user.setFlag("1");
+                userMapper.updateByPrimaryKey(user);
+            }
         }
         response.setResponseCode(ResponseCode.OK.getCode());
         response.setResponseMsg(ResponseCode.OK.getMessage());

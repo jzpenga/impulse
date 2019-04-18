@@ -56,7 +56,6 @@ public class AdminDicService {
         if (StringUtils.isBlank(dictionary.getDicCode())) {
             throw new MyException("系统编码不能为空!");
         }
-        User user = userMapper.selectByPrimaryKey(userId);
         //确定层级
         if (dictionary.getParentId() == null) {
             dictionary.setHierarchy("1");
@@ -86,7 +85,7 @@ public class AdminDicService {
             }
             dictionaryUpdate.setDicName(dictionary.getDicName());
             dictionaryUpdate.setUpdateTime(new Date());
-            dictionaryUpdate.setUpdateUser(user.getCompanyId()+"");
+            dictionaryUpdate.setUpdateUser(userId+"");
 
             dictionaryMapper.updateByPrimaryKey(dictionaryUpdate);
         } else {
@@ -103,7 +102,7 @@ public class AdminDicService {
             //新增
             dictionary.setCreateTime(new Date());
             dictionary.setFlag("0");
-            dictionary.setCreateUser(user.getCompanyId()+"");
+            dictionary.setCreateUser(userId+"");
             dictionaryMapper.insertSelective(dictionary);
         }
         response.setResponseCode(ResponseCode.OK.getCode());
@@ -137,7 +136,6 @@ public class AdminDicService {
      */
     public BaseResponse deleteDic(List<Integer> ids,Integer userId) {
         BaseResponse response = new BaseResponse<>();
-        User user = userMapper.selectByPrimaryKey(userId);
         for (Integer id : ids) {
             Dictionary dictionary = dictionaryMapper.selectByPrimaryKey(id);
             dictionary.setFlag("1");
@@ -149,7 +147,7 @@ public class AdminDicService {
             if(!dictionaryList2.isEmpty()){
                 for ( Dictionary secondDictionary: dictionaryList2) {
                     secondDictionary.setFlag("1");
-                    secondDictionary.setUpdateUser(user.getCompanyId()+"");
+                    secondDictionary.setUpdateUser(userId+"");
                     dictionaryMapper.updateByPrimaryKey(secondDictionary);
 
                     DictionaryExample dictionaryExample3=new DictionaryExample();
@@ -158,7 +156,7 @@ public class AdminDicService {
                     if(!dictionaryList3.isEmpty()) {
                         for (Dictionary thirdDictionary : dictionaryList3) {
                             thirdDictionary.setFlag("1");
-                            thirdDictionary.setUpdateUser(user.getCompanyId()+"");
+                            thirdDictionary.setUpdateUser(userId+"");
                             dictionaryMapper.updateByPrimaryKey(thirdDictionary);
                         }
                     }

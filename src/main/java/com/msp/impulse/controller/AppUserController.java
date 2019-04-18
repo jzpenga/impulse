@@ -61,7 +61,7 @@ public class AppUserController {
         try{
             String token = httpServletRequest.getHeader("token");
             String consumerId = JWT.decode(token).getAudience().get(0);
-            response=sensorService.saveAppSensor(appSensorQuery,consumerId);
+            response=sensorService.saveAppSensor(appSensorQuery,Integer.parseInt(consumerId));
         }catch (MyException e) {
             logger.error(e.getMessage());
             response = new BaseResponse();

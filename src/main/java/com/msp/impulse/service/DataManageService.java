@@ -237,7 +237,7 @@ public class DataManageService {
         User user = userService.findUserById(userId);
         if (user != null && (user.getAuthFlag() == Constants.AuthFlag.NORMAL.getValue())) {
             //管理员用户id不作为查询条件
-            dataHistoryQuery.setUserId(user.getCompanyId());
+            dataHistoryQuery.setUserId(Integer.parseInt(userId));
         }
         BaseResponse response = new BaseResponse<>();
         PageBean pageBean= realTimeDataDao.selectRealTimeDataInfo(dataHistoryQuery);

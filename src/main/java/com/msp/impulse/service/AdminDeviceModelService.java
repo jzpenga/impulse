@@ -59,8 +59,7 @@ public class AdminDeviceModelService {
             throw new MyException("请输入iot设备类型!");
         }
         //根据用户id获取公司id
-        User user = userMapper.selectByPrimaryKey(userId);
-        if(user==null){
+        if(userId==null){
             throw  new MyException("当前登录用户不存在");
         }
 
@@ -89,7 +88,7 @@ public class AdminDeviceModelService {
             deviceModel1.setSensorModel(deviceModelQuery.getSensorModel());
             deviceModel1.setDeviceType(deviceModel1.getDeviceType());
             deviceModel1.setUpdateTime(new Date());
-            deviceModel1.setUpdateUser(user.getCompanyId());
+            deviceModel1.setUpdateUser(userId);
             deviceModelMapper.updateByPrimaryKey(deviceModel1);
 
             //更新modelService==========================================start
@@ -99,14 +98,14 @@ public class AdminDeviceModelService {
             for (ModelService modelService : modelServices) {
                 modelService.setUpdateTime(new Date());
                 modelService.setFlag("1");
-                modelService.setUpdateUser(user.getCompanyId()+"");
+                modelService.setUpdateUser(userId+"");
                 modelServiceMapper.updateByPrimaryKey(modelService);
             }
             List<Integer> modelServiceIds = deviceModelQuery.getModelServiceIds();
             if (!modelServiceIds.isEmpty()) {
                 //新增modelService
                 for (Integer id : modelServiceIds) {
-                    addModelService(id, deviceModelQuery.getSensorModel(), deviceModelQuery.getId(),user.getCompanyId());
+                    addModelService(id, deviceModelQuery.getSensorModel(), deviceModelQuery.getId(),userId);
                 }
             }
             //更新modelService=============================================end
@@ -129,7 +128,7 @@ public class AdminDeviceModelService {
             deviceModel.setSensorModel(deviceModelQuery.getSensorModel());
             deviceModel.setCreateTime(new Date());
             deviceModel.setFlag("0");
-            deviceModel.setCreateUser(user.getCompanyId());
+            deviceModel.setCreateUser(userId);
             deviceModelMapper.insertSelective(deviceModel);
 
             //新增modelService
@@ -137,7 +136,7 @@ public class AdminDeviceModelService {
             if (modelServiceIds!=null&&!modelServiceIds.isEmpty()) {
                 //新增modelService
                 for (Integer id : modelServiceIds) {
-                    addModelService(id, deviceModelQuery.getSensorModel(), deviceModel.getId(),user.getCompanyId());
+                    addModelService(id, deviceModelQuery.getSensorModel(), deviceModel.getId(),userId);
                 }
             }
         }
@@ -260,7 +259,6 @@ public class AdminDeviceModelService {
     @Transactional
     public BaseResponse deleteDeviceModelById(List<Integer> ids,Integer userId) {
         BaseResponse response = new BaseResponse();
-        User user = userMapper.selectByPrimaryKey(userId);
         for (Integer id : ids) {
             DeviceModel deviceModel = deviceModelMapper.selectByPrimaryKey(id);
             if (deviceModel == null) {
@@ -268,7 +266,7 @@ public class AdminDeviceModelService {
             }
             deviceModel.setUpdateTime(new Date());
             deviceModel.setFlag("1");
-            deviceModel.setUpdateUser(user.getCompanyId());
+            deviceModel.setUpdateUser(userId);
             deviceModelMapper.updateByPrimaryKey(deviceModel);
         }
         response.setResponseMsg(ResponseCode.OK.getMessage());

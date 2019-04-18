@@ -21,7 +21,7 @@ public class CompanyAndLink {
 
     private Integer sensorNumber;//传感器个数
 
-    private String name;//联系人姓名
+    private String linkmanName;//联系人姓名
 
     private String account;//联系人登录名
 
@@ -111,12 +111,12 @@ public class CompanyAndLink {
         this.sensorNumber = sensorNumber;
     }
 
-    public String getName() {
-        return name;
+    public String getLinkmanName() {
+        return linkmanName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setLinkmanName(String linkmanName) {
+        this.linkmanName = linkmanName;
     }
 
     public String getAccount() {

@@ -66,9 +66,9 @@ public class UserController {
         BaseResponse response = new BaseResponse<>();
         try {
             String token = httpServletRequest.getHeader("token");
-            String consumerId = JWT.decode(token).getAudience().get(0);
+            String userId = JWT.decode(token).getAudience().get(0);
             //更新密码
-            response = userService.modifyPwd(consumerId, oPwd, newPwd);
+            response = userService.modifyPwd(userId, oPwd, newPwd);
         } catch (MyException e) {
             logger.error(e.getMessage());
             response = new BaseResponse();

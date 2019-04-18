@@ -32,11 +32,11 @@ public class UserService {
     /**
      * 更新密码
      *
-     * @param consumerId
+     * @param userId
      * @param newPwd
      * @param oPwd
      */
-    public BaseResponse modifyPwd(String consumerId, String oPwd, String newPwd) {
+    public BaseResponse modifyPwd(String userId, String oPwd, String newPwd) {
         BaseResponse response = new BaseResponse<>();
         //参数是否为空
         if (StringUtils.isBlank(oPwd) || StringUtils.isBlank(newPwd)) {
@@ -44,8 +44,9 @@ public class UserService {
             response.setResponseMsg(ResponseCode.PARAMETER_ISNULL.getMessage());
             return response;
         }
+        User user = userMapper.selectByPrimaryKey(Integer.parseInt(userId));
         //判断用户是否登录
-        Company company = companyMapper.selectByPrimaryKey(Integer.parseInt(consumerId));
+        Company company = companyMapper.selectByPrimaryKey(user.getCompanyId());
         if (null == company) {
             response.setResponseCode(ResponseCode.NOT_LOGIN.getCode());
             response.setResponseMsg(ResponseCode.NOT_LOGIN.getMessage());
@@ -62,8 +63,13 @@ public class UserService {
         String newPassWord = DigestUtils.md5DigestAsHex(newPwd.getBytes());
         company.setPassword(newPassWord);
         company.setUpdateTime(new Date());
+        company.setUpdateUser(Integer.parseInt(userId));
         companyMapper.updateByPrimaryKey(company);
 
+        user.setPassword(newPassWord);
+        user.setUpdateUser(Integer.parseInt(userId));
+        user.setUpdateTime(new Date());
+        userMapper.updateByPrimaryKey(user);
         response.setResponseCode(ResponseCode.OK.getCode());
         response.setResponseMsg(ResponseCode.OK.getMessage());
         return response;
