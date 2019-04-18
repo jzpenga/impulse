@@ -526,9 +526,12 @@
     where d.id=s.device_model_id  and d.sensor_model=#{deviceType}  and s.flag!="1"
   </select>
   <select id="selectDataReport" parameterType="string" resultType="com.msp.impulse.vo.DataReportVo">
-      select   s.name sensorName ,s.device_id deviceId,s.sensor_no sensorNo,s.gateway_name gatewayName,s.sensor_type sensorType,s.user_id userId,c.company_name companyName,d.code_name codeName,d.service_code serviceCode,s.sensor_model sensorModel,
+      select   s.name sensorName ,s.device_id deviceId,s.sensor_no sensorNo,s.gateway_name gatewayName,
+      s.sensor_type sensorType,s.user_id userId,
+      c.login_name loginName,d.code_name codeName,d.service_code serviceCode,s.sensor_model sensorModel,
        c.callback_url callbackUrl from  sensor s  left  join model_service d
-       on s.sensor_model=d.device_model_id  LEFT JOIN company c  on s.user_id=c.id
+       on s.sensor_model=d.device_model_id  LEFT JOIN
+		( select  u.login_name ,c.callback_url,u.id   from user u,company  c where c.id=u.company_id) c  on s.user_id=c.id
       where s.device_id=#{deviceId}
   </select>
 </mapper>

@@ -48,7 +48,7 @@ public class DataReportService {
             dataKeyValue.put(dataReportVo.getServiceCode(), dataReportVo.getCodeName());
         }
 //        dataReportVo1.setCodeName();
-        dataReportVo1.setCompanyName(dataReportVo1.getCompanyName());
+        dataReportVo1.setLoginName(dataReportVo1.getLoginName());
         dataReportVo1.setDeviceId(dataReportVo1.getDeviceId());
         dataReportVo1.setGatewayName(dataReportVo1.getGatewayName());
         dataReportVo1.setSensorModel(dataReportVo1.getSensorModel());

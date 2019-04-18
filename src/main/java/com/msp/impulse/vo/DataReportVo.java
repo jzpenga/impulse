@@ -9,7 +9,7 @@ public class DataReportVo {
     private String sensorType;
     private String  deviceId;
     private String userId;
-    private String companyName;
+    private String loginName;
     private  String gatewayName;
     private  String serviceCode;
     private  String codeName;
@@ -64,12 +64,12 @@ public class DataReportVo {
         this.userId = userId;
     }
 
-    public String getCompanyName() {
-        return companyName;
+    public String getLoginName() {
+        return loginName;
     }
 
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
+    public void setLoginName(String loginName) {
+        this.loginName = loginName;
     }
 
     public String getGatewayName() {
