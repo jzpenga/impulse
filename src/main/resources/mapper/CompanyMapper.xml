@@ -502,8 +502,8 @@
     <result property="linkmanName" column="linkman_name" />
   </resultMap>
   <select id="findUser" parameterType="com.msp.impulse.query.FindUserQuery" resultMap="userResultMap">
-    select  c.id,c.company_name,c.gateway_number,c.province,c.city,
-    c.login_name ,c.linkman_name ,c.phone_no,c.flag,IFNULL(n.sensor_number,0) sensor_number
+    select  c.id,c.company_name,IFNULL(c.gateway_number,0) gateway_number,c.province,c.city,
+    c.login_name ,c.linkman_name ,c.phone_no,c.flag,IFNULL(n.sensor_number,0)
     from company c
     left  join
     (select  count(*)  sensor_number ,c.id nId from  sensor  s,company c where s.user_id=c.id  and  s.flag="0"  GROUP BY c.id) n
