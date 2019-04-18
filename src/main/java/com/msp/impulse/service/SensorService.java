@@ -524,7 +524,7 @@ public class SensorService {
         return response;
     }
 
-    public BaseResponse saveAppSensor(AppSensorQuery appSensorQuery, Integer consumerId) {
+    public BaseResponse saveAppSensor(AppSensorQuery appSensorQuery, Integer userId) {
         BaseResponse response = new BaseResponse();
         //传感器名称必输
         if (StringUtils.isBlank(appSensorQuery.getSensorModel())) {
@@ -563,13 +563,13 @@ public class SensorService {
             sensor.setDeviceId(deviceId);
             sensor.setFlag("0");
             sensor.setCreateTime(new Date());
-            if(consumerId!=null){
-                sensor.setUserId(consumerId);
-                sensor.setCreateUser(consumerId);
-                Company company = companyMapper.selectByPrimaryKey(consumerId);
-                if (company!=null) {
-                    if (StringUtils.isNotBlank(company.getCompanyName())) {
-                        sensor.setUserName(company.getCompanyName());
+            if(userId!=null){
+                sensor.setUserId(userId);
+                sensor.setCreateUser(userId);
+                User user = userMapper.selectByPrimaryKey(userId);
+                if (user!=null) {
+                    if (StringUtils.isNotBlank(user.getLoginName())) {
+                        sensor.setUserName(user.getLoginName());
                     }
                 }
             }
@@ -593,21 +593,25 @@ public class SensorService {
             Sensor sensor = sensorList.get(0);
             //获取新增时权限值,如果为普通用户，不能新增
             if(sensor.getUserId()!=null){
-
+                User user = userMapper.selectByPrimaryKey(sensor.getUserId());
+                if(user.getAuthFlag().equals(Constants.AuthFlag.NORMAL.getValue())){
+                    throw new MyException("用户已绑定该设备!");
+                }else if(user.getAuthFlag().equals(Constants.AuthFlag.ADMIN.getValue())){
+                   //获取当前用户权限,管理员不能重复扫描
+                    User user1 = userMapper.selectByPrimaryKey(userId);
+                    if(user1.getAuthFlag().equals(Constants.AuthFlag.ADMIN.getValue())){
+                        throw new MyException("管理员不能重复绑定该设备!");
+                    }
+                }
             }
-            userMapper.selectByPrimaryKey(sensor.getUserId());
-            //管理员不能重复扫描
-            //--当前用户权限值
-            User user = userMapper.selectByPrimaryKey(consumerId);
-            String authFlag = user.getAuthFlag();
             //设备修改
-            if(consumerId!=null){
-                sensor.setUserId(consumerId);
-                sensor.setUpdateUser(consumerId);
-                Company company = companyMapper.selectByPrimaryKey(consumerId);
-                if (company!=null) {
-                    if (StringUtils.isNotBlank(company.getCompanyName())) {
-                        sensor.setUserName(company.getCompanyName());
+            if(userId!=null){
+                sensor.setUserId(userId);
+                sensor.setUpdateUser(userId);
+                User user = userMapper.selectByPrimaryKey(userId);
+                if (user!=null) {
+                    if (StringUtils.isNotBlank(user.getLoginName())) {
+                        sensor.setUserName(user.getLoginName());
                     }
                 }
                 sensor.setUpdateTime(new Date());
