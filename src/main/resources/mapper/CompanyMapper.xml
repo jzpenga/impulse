@@ -506,8 +506,8 @@
     c.login_name ,c.linkman_name ,c.phone_no,c.flag,IFNULL(n.sensor_number,0) sensor_number
     from company c
     left  join
-    (select  count(*)  sensor_number ,c.id nId from  sensor  s,company c where s.user_id=c.id  and  s.flag="0"  GROUP BY c.id) n
-    on  n.nId=c.id
+    (select  count(*)  sensor_number ,u.id nId,u.company_id  from  sensor  s,user u where s.user_id=u.id  and  s.flag="0"  GROUP BY    u.id) n
+    on  n.company_id=c.id
     where 1=1
     <if test="companyName != null and companyName!=''">
       and c.company_name like "%"#{companyName}"%"
