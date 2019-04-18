@@ -502,7 +502,7 @@
     <result property="linkmanName" column="linkman_name" />
   </resultMap>
   <select id="findUser" parameterType="com.msp.impulse.query.FindUserQuery" resultMap="userResultMap">
-    select  c.id,c.company_name,IFNULL(c.gateway_number,0) gateway_number,c.province,c.city,
+    select  u.id,c.company_name,IFNULL(c.gateway_number,0) gateway_number,c.province,c.city,
     c.login_name ,c.linkman_name ,c.phone_no,c.flag,IFNULL(n.sensor_number,0) sensor_number
     from company c
     left  join
