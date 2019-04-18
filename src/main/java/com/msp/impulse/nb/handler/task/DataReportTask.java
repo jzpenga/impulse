@@ -47,7 +47,7 @@ public class DataReportTask implements Runnable {
                 dataReportEntity.setEventTime(dto.getService().getEventTime());
                 dataReportEntity.setDataKey(fieldName);
                 dataReportEntity.setUserId(Integer.valueOf(param.getUserId()));
-                dataReportEntity.setUserName(param.getCompanyName());
+                dataReportEntity.setUserName(param.getLoginName());
                 dataReportEntity.setSensorName(param.getSensorName());
                 dataReportEntity.setEquipmentNo(param.getSensorNo());
                 dataReportEntity.setDataKeyName(param.getDataValueAndKey().get(fieldName));
