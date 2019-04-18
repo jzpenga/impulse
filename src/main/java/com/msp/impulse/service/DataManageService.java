@@ -235,7 +235,7 @@ public class DataManageService {
 
         //获取用户id
         User user = userService.findUserById(userId);
-        if (user != null && (user.getAuthFlag() == Constants.AuthFlag.NORMAL.getValue())) {
+        if (user != null && (user.getAuthFlag() .equals( Constants.AuthFlag.NORMAL.getValue()))) {
             //管理员用户id不作为查询条件
             dataHistoryQuery.setUserId(Integer.parseInt(userId));
         }
