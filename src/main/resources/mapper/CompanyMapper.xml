@@ -522,7 +522,7 @@
       AND c.login_name like "%"#{loginName}"%"
     </if>
     <if test="name != null and name!=''">
-      AND k.name like "%"#{name}"%"
+      AND k.linkman_name like "%"#{name}"%"
     </if>
     <if test="phoneNo != null and phoneNo!=''">
       AND k.phone_no like "%"#{phoneNo}"%"
