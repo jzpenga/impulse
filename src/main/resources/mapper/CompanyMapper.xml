@@ -502,15 +502,25 @@
     <result property="linkmanName" column="linkman_name" />
   </resultMap>
   <select id="findUser" parameterType="com.msp.impulse.query.FindUserQuery" resultMap="userResultMap">
-    select  n.id,c.company_name,IFNULL(c.gateway_number,0) gateway_number,c.province,c.city,
-    c.login_name ,c.linkman_name ,c.phone_no,c.flag,IFNULL(n.sensor_number,0) sensor_number
-    from company c
+    select  u.id,c.company_name,IFNULL(c.gateway_number,0) gateway_number,c.province,c.city,
+    c.login_name ,c.linkman_name ,c.phone_no,c.flag,IFNULL(n.sensor_number,0) sensor_number,u.auth_flag
+    from company c left  join user u on c.id=u.company_id
     left  join
-    (select  count(*)  sensor_number ,u.id ,u.company_id  from  sensor  s,user u where s.user_id=u.id  and  s.flag="0"  GROUP BY    u.id) n
+    (select  count(*)  sensor_number  ,u.company_id  from  sensor  s,user u where s.user_id=u.id  and  s.flag="0"  GROUP BY    u.id    ) n
     on  n.company_id=c.id
     where 1=1
     <if test="companyName != null and companyName!=''">
       and c.company_name like "%"#{companyName}"%"
+    </if>
+    <if test="authFlag != null and authFlag!=''">
+      and u.auth_flag =#{authFlag}
+    </if>
+    <if test="userIds != null  and userIds.size > 0">
+      and  u.id in
+      <foreach item="idItem" collection="userIds"
+               open="(" separator="," close=")" >
+        #{idItem}
+      </foreach>
     </if>
     <if test="province != null and province!=''">
       and c.province = #{province}

@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.msp.impulse.base.BaseResponse;
 import com.msp.impulse.base.ResponseCode;
 import com.msp.impulse.exception.MyException;
+import com.msp.impulse.query.AgentParam;
 import com.msp.impulse.query.CompanyParam;
 import com.msp.impulse.query.FindUserByIdQuery;
 import com.msp.impulse.query.FindUserQuery;
@@ -31,10 +32,12 @@ public class AdminUserController {
 
     @PostMapping("findUser")
     @ApiOperation(value = "查询用户数据", notes = "查询用户数据", tags = "用户管理", httpMethod = "POST")
-    public BaseResponse<PageInfo> findUser(@RequestBody FindUserQuery userQuery) {
+    public BaseResponse<PageInfo> findUser(@RequestBody FindUserQuery userQuery,HttpServletRequest httpServletRequest) {
         BaseResponse<PageInfo> response;
         try {
-            response = adminUserService.findUser(userQuery);
+            String token = httpServletRequest.getHeader("token");
+            String userId = JWT.decode(token).getAudience().get(0);
+            response = adminUserService.findUser(userQuery,Integer.parseInt(userId));
         } catch(MyException e){
             logger.error(e.getMessage());
             response = new BaseResponse();
@@ -78,6 +81,31 @@ public class AdminUserController {
             String token = httpServletRequest.getHeader("token");
             String userId = JWT.decode(token).getAudience().get(0);
             response = adminUserService.saveUser(companyParam,Integer.parseInt(userId));
+        } catch(MyException e){
+            logger.error(e.getMessage());
+            response = new BaseResponse();
+            response.setResponseCode(ResponseCode.PARAMETER_VALIDATION_FAILED.getCode());
+            response.setResponseMsg(e.getMessage());
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            response = new BaseResponse<>();
+            response.setResponseCode(ResponseCode.SERVER_FAILED.getCode());
+            response.setResponseMsg(ResponseCode.SERVER_FAILED.getMessage());
+        }
+        return response;
+    }
+
+    /**
+     * 新增修改用户数据
+     */
+    @PostMapping("saveAgent")
+    @ApiOperation(value = "新增修改代理人", notes = "新增修改代理人", tags = "用户管理", httpMethod = "POST")
+    public BaseResponse saveAgent(@RequestBody AgentParam agentParam, HttpServletRequest httpServletRequest) {
+        BaseResponse response;
+        try {
+            String token = httpServletRequest.getHeader("token");
+            String userId = JWT.decode(token).getAudience().get(0);
+            response = adminUserService.saveAgent(agentParam,Integer.parseInt(userId));
         } catch(MyException e){
             logger.error(e.getMessage());
             response = new BaseResponse();

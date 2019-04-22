@@ -4,6 +4,8 @@ import com.msp.impulse.base.BaseRequest;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.util.List;
+
 @ApiModel("用户查询")
 public class FindUserQuery extends BaseRequest {
     @ApiModelProperty(name = "companyName", value = "公司名称", example = "殷继彤的海鲜公司", required = true)
@@ -18,6 +20,10 @@ public class FindUserQuery extends BaseRequest {
     private String name;
     @ApiModelProperty(name = "phoneNo", value = "手机号", example = "13333333333", required = true)
     private  String phoneNo;
+    @ApiModelProperty(name = "userIds", value = "被当前代理人代理的用户id", example = "")
+    private List<Integer> userIds;
+    @ApiModelProperty(name = "authFlag", value = "", example = "")
+    private String authFlag;
 
     public String getCompanyName() {
         return companyName;
@@ -65,5 +71,21 @@ public class FindUserQuery extends BaseRequest {
 
     public void setPhoneNo(String phoneNo) {
         this.phoneNo = phoneNo;
+    }
+
+    public List<Integer> getUserIds() {
+        return userIds;
+    }
+
+    public void setUserIds(List<Integer> userIds) {
+        this.userIds = userIds;
+    }
+
+    public String getAuthFlag() {
+        return authFlag;
+    }
+
+    public void setAuthFlag(String authFlag) {
+        this.authFlag = authFlag;
     }
 }

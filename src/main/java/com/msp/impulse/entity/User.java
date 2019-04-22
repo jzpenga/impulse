@@ -10,6 +10,16 @@ public class User implements Serializable {
 
     private String password;
 
+    private String name;
+
+    private String phoneNo;
+
+    private Integer agentId;
+
+    private Integer companyId;
+
+    private String authFlag;
+
     private String flag;
 
     private Date createTime;
@@ -21,10 +31,6 @@ public class User implements Serializable {
     private Integer updateUser;
 
     private String state;
-
-    private Integer companyId;
-
-    private String authFlag;
 
     private static final long serialVersionUID = 1L;
 
@@ -50,6 +56,46 @@ public class User implements Serializable {
 
     public void setPassword(String password) {
         this.password = password == null ? null : password.trim();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
+    }
+
+    public String getPhoneNo() {
+        return phoneNo;
+    }
+
+    public void setPhoneNo(String phoneNo) {
+        this.phoneNo = phoneNo == null ? null : phoneNo.trim();
+    }
+
+    public Integer getAgentId() {
+        return agentId;
+    }
+
+    public void setAgentId(Integer agentId) {
+        this.agentId = agentId;
+    }
+
+    public Integer getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Integer companyId) {
+        this.companyId = companyId;
+    }
+
+    public String getAuthFlag() {
+        return authFlag;
+    }
+
+    public void setAuthFlag(String authFlag) {
+        this.authFlag = authFlag == null ? null : authFlag.trim();
     }
 
     public String getFlag() {
@@ -98,21 +144,5 @@ public class User implements Serializable {
 
     public void setState(String state) {
         this.state = state == null ? null : state.trim();
-    }
-
-    public Integer getCompanyId() {
-        return companyId;
-    }
-
-    public void setCompanyId(Integer companyId) {
-        this.companyId = companyId;
-    }
-
-    public String getAuthFlag() {
-        return authFlag;
-    }
-
-    public void setAuthFlag(String authFlag) {
-        this.authFlag = authFlag == null ? null : authFlag.trim();
     }
 }

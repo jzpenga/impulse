@@ -305,6 +305,336 @@ public class UserExample {
             return (Criteria) this;
         }
 
+        public Criteria andNameIsNull() {
+            addCriterion("name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameIsNotNull() {
+            addCriterion("name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameEqualTo(String value) {
+            addCriterion("name =", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameNotEqualTo(String value) {
+            addCriterion("name <>", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameGreaterThan(String value) {
+            addCriterion("name >", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameGreaterThanOrEqualTo(String value) {
+            addCriterion("name >=", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameLessThan(String value) {
+            addCriterion("name <", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameLessThanOrEqualTo(String value) {
+            addCriterion("name <=", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameLike(String value) {
+            addCriterion("name like", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameNotLike(String value) {
+            addCriterion("name not like", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameIn(List<String> values) {
+            addCriterion("name in", values, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameNotIn(List<String> values) {
+            addCriterion("name not in", values, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameBetween(String value1, String value2) {
+            addCriterion("name between", value1, value2, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameNotBetween(String value1, String value2) {
+            addCriterion("name not between", value1, value2, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhoneNoIsNull() {
+            addCriterion("phone_no is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhoneNoIsNotNull() {
+            addCriterion("phone_no is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhoneNoEqualTo(String value) {
+            addCriterion("phone_no =", value, "phoneNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhoneNoNotEqualTo(String value) {
+            addCriterion("phone_no <>", value, "phoneNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhoneNoGreaterThan(String value) {
+            addCriterion("phone_no >", value, "phoneNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhoneNoGreaterThanOrEqualTo(String value) {
+            addCriterion("phone_no >=", value, "phoneNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhoneNoLessThan(String value) {
+            addCriterion("phone_no <", value, "phoneNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhoneNoLessThanOrEqualTo(String value) {
+            addCriterion("phone_no <=", value, "phoneNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhoneNoLike(String value) {
+            addCriterion("phone_no like", value, "phoneNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhoneNoNotLike(String value) {
+            addCriterion("phone_no not like", value, "phoneNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhoneNoIn(List<String> values) {
+            addCriterion("phone_no in", values, "phoneNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhoneNoNotIn(List<String> values) {
+            addCriterion("phone_no not in", values, "phoneNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhoneNoBetween(String value1, String value2) {
+            addCriterion("phone_no between", value1, value2, "phoneNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andPhoneNoNotBetween(String value1, String value2) {
+            addCriterion("phone_no not between", value1, value2, "phoneNo");
+            return (Criteria) this;
+        }
+
+        public Criteria andAgentIdIsNull() {
+            addCriterion("agent_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAgentIdIsNotNull() {
+            addCriterion("agent_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAgentIdEqualTo(Integer value) {
+            addCriterion("agent_id =", value, "agentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAgentIdNotEqualTo(Integer value) {
+            addCriterion("agent_id <>", value, "agentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAgentIdGreaterThan(Integer value) {
+            addCriterion("agent_id >", value, "agentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAgentIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("agent_id >=", value, "agentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAgentIdLessThan(Integer value) {
+            addCriterion("agent_id <", value, "agentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAgentIdLessThanOrEqualTo(Integer value) {
+            addCriterion("agent_id <=", value, "agentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAgentIdIn(List<Integer> values) {
+            addCriterion("agent_id in", values, "agentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAgentIdNotIn(List<Integer> values) {
+            addCriterion("agent_id not in", values, "agentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAgentIdBetween(Integer value1, Integer value2) {
+            addCriterion("agent_id between", value1, value2, "agentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAgentIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("agent_id not between", value1, value2, "agentId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompanyIdIsNull() {
+            addCriterion("company_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompanyIdIsNotNull() {
+            addCriterion("company_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompanyIdEqualTo(Integer value) {
+            addCriterion("company_id =", value, "companyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompanyIdNotEqualTo(Integer value) {
+            addCriterion("company_id <>", value, "companyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompanyIdGreaterThan(Integer value) {
+            addCriterion("company_id >", value, "companyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompanyIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("company_id >=", value, "companyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompanyIdLessThan(Integer value) {
+            addCriterion("company_id <", value, "companyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompanyIdLessThanOrEqualTo(Integer value) {
+            addCriterion("company_id <=", value, "companyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompanyIdIn(List<Integer> values) {
+            addCriterion("company_id in", values, "companyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompanyIdNotIn(List<Integer> values) {
+            addCriterion("company_id not in", values, "companyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompanyIdBetween(Integer value1, Integer value2) {
+            addCriterion("company_id between", value1, value2, "companyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompanyIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("company_id not between", value1, value2, "companyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuthFlagIsNull() {
+            addCriterion("auth_flag is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuthFlagIsNotNull() {
+            addCriterion("auth_flag is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuthFlagEqualTo(String value) {
+            addCriterion("auth_flag =", value, "authFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuthFlagNotEqualTo(String value) {
+            addCriterion("auth_flag <>", value, "authFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuthFlagGreaterThan(String value) {
+            addCriterion("auth_flag >", value, "authFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuthFlagGreaterThanOrEqualTo(String value) {
+            addCriterion("auth_flag >=", value, "authFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuthFlagLessThan(String value) {
+            addCriterion("auth_flag <", value, "authFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuthFlagLessThanOrEqualTo(String value) {
+            addCriterion("auth_flag <=", value, "authFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuthFlagLike(String value) {
+            addCriterion("auth_flag like", value, "authFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuthFlagNotLike(String value) {
+            addCriterion("auth_flag not like", value, "authFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuthFlagIn(List<String> values) {
+            addCriterion("auth_flag in", values, "authFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuthFlagNotIn(List<String> values) {
+            addCriterion("auth_flag not in", values, "authFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuthFlagBetween(String value1, String value2) {
+            addCriterion("auth_flag between", value1, value2, "authFlag");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuthFlagNotBetween(String value1, String value2) {
+            addCriterion("auth_flag not between", value1, value2, "authFlag");
+            return (Criteria) this;
+        }
+
         public Criteria andFlagIsNull() {
             addCriterion("flag is null");
             return (Criteria) this;
@@ -682,136 +1012,6 @@ public class UserExample {
 
         public Criteria andStateNotBetween(String value1, String value2) {
             addCriterion("state not between", value1, value2, "state");
-            return (Criteria) this;
-        }
-
-        public Criteria andCompanyIdIsNull() {
-            addCriterion("company_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCompanyIdIsNotNull() {
-            addCriterion("company_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCompanyIdEqualTo(Integer value) {
-            addCriterion("company_id =", value, "companyId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCompanyIdNotEqualTo(Integer value) {
-            addCriterion("company_id <>", value, "companyId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCompanyIdGreaterThan(Integer value) {
-            addCriterion("company_id >", value, "companyId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCompanyIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("company_id >=", value, "companyId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCompanyIdLessThan(Integer value) {
-            addCriterion("company_id <", value, "companyId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCompanyIdLessThanOrEqualTo(Integer value) {
-            addCriterion("company_id <=", value, "companyId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCompanyIdIn(List<Integer> values) {
-            addCriterion("company_id in", values, "companyId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCompanyIdNotIn(List<Integer> values) {
-            addCriterion("company_id not in", values, "companyId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCompanyIdBetween(Integer value1, Integer value2) {
-            addCriterion("company_id between", value1, value2, "companyId");
-            return (Criteria) this;
-        }
-
-        public Criteria andCompanyIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("company_id not between", value1, value2, "companyId");
-            return (Criteria) this;
-        }
-
-        public Criteria andAuthFlagIsNull() {
-            addCriterion("auth_flag is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andAuthFlagIsNotNull() {
-            addCriterion("auth_flag is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andAuthFlagEqualTo(String value) {
-            addCriterion("auth_flag =", value, "authFlag");
-            return (Criteria) this;
-        }
-
-        public Criteria andAuthFlagNotEqualTo(String value) {
-            addCriterion("auth_flag <>", value, "authFlag");
-            return (Criteria) this;
-        }
-
-        public Criteria andAuthFlagGreaterThan(String value) {
-            addCriterion("auth_flag >", value, "authFlag");
-            return (Criteria) this;
-        }
-
-        public Criteria andAuthFlagGreaterThanOrEqualTo(String value) {
-            addCriterion("auth_flag >=", value, "authFlag");
-            return (Criteria) this;
-        }
-
-        public Criteria andAuthFlagLessThan(String value) {
-            addCriterion("auth_flag <", value, "authFlag");
-            return (Criteria) this;
-        }
-
-        public Criteria andAuthFlagLessThanOrEqualTo(String value) {
-            addCriterion("auth_flag <=", value, "authFlag");
-            return (Criteria) this;
-        }
-
-        public Criteria andAuthFlagLike(String value) {
-            addCriterion("auth_flag like", value, "authFlag");
-            return (Criteria) this;
-        }
-
-        public Criteria andAuthFlagNotLike(String value) {
-            addCriterion("auth_flag not like", value, "authFlag");
-            return (Criteria) this;
-        }
-
-        public Criteria andAuthFlagIn(List<String> values) {
-            addCriterion("auth_flag in", values, "authFlag");
-            return (Criteria) this;
-        }
-
-        public Criteria andAuthFlagNotIn(List<String> values) {
-            addCriterion("auth_flag not in", values, "authFlag");
-            return (Criteria) this;
-        }
-
-        public Criteria andAuthFlagBetween(String value1, String value2) {
-            addCriterion("auth_flag between", value1, value2, "authFlag");
-            return (Criteria) this;
-        }
-
-        public Criteria andAuthFlagNotBetween(String value1, String value2) {
-            addCriterion("auth_flag not between", value1, value2, "authFlag");
             return (Criteria) this;
         }
     }

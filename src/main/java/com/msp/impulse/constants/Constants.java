@@ -64,7 +64,8 @@ public interface Constants {
     //权限  0-管理员 1-普通用户
     enum  AuthFlag{
         ADMIN("管理员", "0"),
-        NORMAL("普通用户", "1");
+        NORMAL("普通用户", "1"),
+        AGENT("代理人", "2");
 
         private AuthFlag(String name, String value){
             this.name = name;

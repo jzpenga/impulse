@@ -466,6 +466,13 @@
     <if test="userId != null">
       and s.user_id =#{userId}
     </if>
+    <if test="userIds != null  and userIds.size > 0">
+     and s.user_id in
+    <foreach item="idItem" collection="userIds"
+             open="(" separator="," close=")" >
+      #{idItem}
+    </foreach>
+    </if>
     <if test="name != null and name != ''">
       and s.name  like "%"#{name}"%"
     </if>

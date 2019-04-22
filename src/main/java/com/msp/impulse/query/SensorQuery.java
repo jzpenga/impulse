@@ -4,6 +4,8 @@ import com.msp.impulse.base.BaseRequest;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.util.List;
+
 @ApiModel("传感器查询")
 public class SensorQuery extends BaseRequest {
     @ApiModelProperty(name = "name", value = "传感器名称", example = "")
@@ -14,6 +16,8 @@ public class SensorQuery extends BaseRequest {
     private String sensorModel;
     @ApiModelProperty(name = "userId", value = "用户id", example = "")
     private Integer userId;
+    @ApiModelProperty(name = "userIds", value = "被当前代理人代理的用户id", example = "")
+    private List<Integer> userIds;
 
     public String getName() {
         return name;
@@ -45,6 +49,14 @@ public class SensorQuery extends BaseRequest {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+
+    public List<Integer> getUserIds() {
+        return userIds;
+    }
+
+    public void setUserIds(List<Integer> userIds) {
+        this.userIds = userIds;
     }
 }
 

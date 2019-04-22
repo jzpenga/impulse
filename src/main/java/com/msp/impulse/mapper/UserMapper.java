@@ -1,6 +1,5 @@
 package com.msp.impulse.mapper;
 
-import com.msp.impulse.annotation.PassToken;
 import com.msp.impulse.entity.User;
 import com.msp.impulse.entity.UserExample;
 import java.util.List;

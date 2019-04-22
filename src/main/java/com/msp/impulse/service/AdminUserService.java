@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -30,6 +31,8 @@ public class AdminUserService {
     private GatewayMapper gatewayMapper;
     @Autowired
     private SensorMapper sensorMapper;
+    @Autowired
+    private  UserService userService;
 
     /**
      * 用户信息查询
@@ -37,7 +40,7 @@ public class AdminUserService {
      * @param findUserQuery
      * @return
      */
-    public BaseResponse<PageInfo> findUser(FindUserQuery findUserQuery) {
+    public BaseResponse<PageInfo> findUser(FindUserQuery findUserQuery,Integer userId) {
         BaseResponse<PageInfo> response = new BaseResponse<>();
         if (findUserQuery.getPageNo() == null) {
             findUserQuery.setPageNo(1);
@@ -46,6 +49,24 @@ public class AdminUserService {
             findUserQuery.setPageSize(10);
         }
         PageHelper.startPage(findUserQuery.getPageNo(), findUserQuery.getPageSize());
+
+        User user = userService.findUserById(userId + "");
+        if (user != null) {
+            if(user.getAuthFlag().equals(Constants.AuthFlag.AGENT.getValue())){
+                //查询代理人所管理的用户
+                List<Integer> userIds=new ArrayList<>();
+                UserExample userExample=new UserExample();
+                userExample.createCriteria().andAgentIdEqualTo(userId).andFlagEqualTo("0");
+                List<User> users = userMapper.selectByExample(userExample);
+                for (User user1:users) {
+                    userIds.add(user1.getId());
+                }
+                findUserQuery.setUserIds(userIds);
+            }
+        }
+        if(StringUtils.isBlank(findUserQuery.getAuthFlag())){
+            findUserQuery.setAuthFlag(Constants.AuthFlag.NORMAL.getValue());
+        }
         List<Company> gatewayList = companyMapper.findUser(findUserQuery);
         PageInfo<Company> pageInfo = new PageInfo<>(gatewayList);
 
@@ -171,6 +192,8 @@ public class AdminUserService {
             user.setLoginName(companyParam.getLoginName());
             user.setUpdateTime(new Date());
             user.setUpdateUser(userId);
+            user.setName(companyParam.getLinkmanName());
+            user.setPhoneNo(companyParam.getPhoneNo());
             userMapper.updateByPrimaryKey(user);
 
         } else {
@@ -205,6 +228,8 @@ public class AdminUserService {
             user.setCompanyId(companyId);
             user.setFlag("0");
             user.setCreateUser(userId);
+            user.setName(companyParam.getLinkmanName());
+            user.setPhoneNo(companyParam.getPhoneNo());
             userMapper.insertSelective(user);
         }
         response.setResponseCode(ResponseCode.OK.getCode());
@@ -283,6 +308,38 @@ public class AdminUserService {
         BaseResponse response = new BaseResponse<>();
         List<Company> companyList = companyMapper.seletByUserName(userName);
         response.setData(companyList);
+        response.setResponseCode(ResponseCode.OK.getCode());
+        response.setResponseMsg(ResponseCode.OK.getMessage());
+        return response;
+    }
+
+    /**
+     * 新增代理人
+     * @param agentParam
+     * @param parseInt
+     * @return
+     */
+    public BaseResponse saveAgent(AgentParam agentParam, int parseInt) {
+        BaseResponse response = new BaseResponse<>();
+        if(agentParam.getId()==null) {
+            User user = new User();
+            user.setPhoneNo(agentParam.getPhoneNo());
+            user.setName(agentParam.getName());
+            user.setPassword(agentParam.getPassword());
+            user.setLoginName(agentParam.getLoginName());
+            user.setCreateTime(new Date());
+            user.setCreateUser(parseInt);
+            userMapper.insertSelective(user);
+        }else{
+            User user = userMapper.selectByPrimaryKey(agentParam.getId());
+            user.setUpdateTime(new Date());
+            user.setUpdateUser(parseInt);
+            user.setLoginName(agentParam.getLoginName());
+            user.setPassword(agentParam.getPassword());
+            user.setName(agentParam.getName());
+            user.setPhoneNo(agentParam.getPhoneNo());
+            userMapper.updateByPrimaryKey(user);
+        }
         response.setResponseCode(ResponseCode.OK.getCode());
         response.setResponseMsg(ResponseCode.OK.getMessage());
         return response;
