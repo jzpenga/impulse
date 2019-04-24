@@ -306,7 +306,7 @@ public class SensorService {
         if (sensorQuery.getPageSize() == null) {
             sensorQuery.setPageSize(10);
         }
-        PageHelper.startPage(sensorQuery.getPageNo(), sensorQuery.getPageSize());
+
         if (sensorQuery.getUserId() == null) {
             //获取用户id
             User user = userService.findUserById(userId + "");
@@ -329,6 +329,7 @@ public class SensorService {
         } else {
             sensorQuery.setUserId(sensorQuery.getUserId());
         }
+        PageHelper.startPage(sensorQuery.getPageNo(), sensorQuery.getPageSize());
         List<Sensor> sensorList = sensorMapper.selectSensorInfo(sensorQuery);
         PageInfo<Sensor> pageInfo = new PageInfo<>(sensorList);
 

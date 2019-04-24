@@ -48,7 +48,7 @@ public class AdminUserService {
         if (findUserQuery.getPageSize() == null) {
             findUserQuery.setPageSize(10);
         }
-        PageHelper.startPage(findUserQuery.getPageNo(), findUserQuery.getPageSize());
+
 
         User user = userService.findUserById(userId + "");
         if (user != null) {
@@ -67,6 +67,7 @@ public class AdminUserService {
         if(StringUtils.isBlank(findUserQuery.getAuthFlag())){
             findUserQuery.setAuthFlag(Constants.AuthFlag.NORMAL.getValue());
         }
+        PageHelper.startPage(findUserQuery.getPageNo(), findUserQuery.getPageSize());
         List<Company> gatewayList = companyMapper.findUser(findUserQuery);
         PageInfo<Company> pageInfo = new PageInfo<>(gatewayList);
 
