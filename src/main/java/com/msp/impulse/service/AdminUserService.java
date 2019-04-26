@@ -193,7 +193,7 @@ public class AdminUserService {
             user.setUpdateUser(userId);
             user.setName(companyParam.getLinkmanName());
             user.setPhoneNo(companyParam.getPhoneNo());
-            if(companyParam.getAgent()!=null) {
+            if (companyParam.getAgent() != null) {
                 user.setAgentId(companyParam.getAgent());
             }
             userMapper.updateByPrimaryKey(user);
@@ -227,7 +227,7 @@ public class AdminUserService {
             } else {
                 user.setAuthFlag(companyParam.getAuthFlag());
             }
-            if(companyParam.getAgent()!=null) {
+            if (companyParam.getAgent() != null) {
                 user.setAgentId(companyParam.getAgent());
             }
             user.setCompanyId(companyId);
@@ -382,13 +382,14 @@ public class AdminUserService {
 
     /**
      * 根据名称模糊查询所有代理人
+     *
      * @param agentName
      * @return
      */
     public BaseResponse searchAgentByName(String agentName) {
         BaseResponse response = new BaseResponse();
-        UserExample userExample=new UserExample();
-        userExample.createCriteria().andNameLike("%"+agentName+"%").andFlagEqualTo("0");
+        UserExample userExample = new UserExample();
+        userExample.createCriteria().andNameLike("%" + agentName + "%").andFlagEqualTo("0");
         List<User> users = userMapper.selectByExample(userExample);
         response.setData(users);
         response.setResponseCode(ResponseCode.OK.getCode());
@@ -400,6 +401,20 @@ public class AdminUserService {
         BaseResponse response = new BaseResponse();
         User user = userMapper.selectByPrimaryKey(id);
         response.setData(user);
+        response.setResponseCode(ResponseCode.OK.getCode());
+        response.setResponseMsg(ResponseCode.OK.getMessage());
+        return response;
+    }
+
+    public BaseResponse deleteAgent(List<Integer> ids, int userId) {
+        BaseResponse response = new BaseResponse();
+        for (Integer id : ids) {
+            User user = userMapper.selectByPrimaryKey(id);
+            user.setUpdateTime(new Date());
+            user.setUpdateUser(userId);
+            user.setFlag("1");
+            userMapper.updateByPrimaryKey(user);
+        }
         response.setResponseCode(ResponseCode.OK.getCode());
         response.setResponseMsg(ResponseCode.OK.getMessage());
         return response;

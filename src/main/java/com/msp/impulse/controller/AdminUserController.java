@@ -169,11 +169,34 @@ public class AdminUserController {
     }
 
     @GetMapping("findAgentById/{id}")
-    @ApiOperation(value = "根据id查询用户数据", notes = "根据id查询用户数据", tags = "用户管理", httpMethod = "POST")
+    @ApiOperation(value = "根据id查询代理人数据", notes = "根据id查询代理人数据", tags = "用户管理", httpMethod = "POST")
     public BaseResponse<User> findAgentById(@PathVariable Integer id) {
         BaseResponse<User> response;
         try {
             response = adminUserService.findAgentById(id);
+        }catch(MyException e){
+            logger.error(e.getMessage());
+            response = new BaseResponse();
+            response.setResponseCode(ResponseCode.PARAMETER_VALIDATION_FAILED.getCode());
+            response.setResponseMsg(e.getMessage());
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            response = new BaseResponse<>();
+            response.setResponseCode(ResponseCode.SERVER_FAILED.getCode());
+            response.setResponseMsg(ResponseCode.SERVER_FAILED.getMessage());
+        }
+        return response;
+    }
+
+
+    @PostMapping("deleteAgent")
+    @ApiOperation(value = "批量删除代理人数据", notes = "批量删除代理人数据", tags = "用户管理", httpMethod = "POST")
+    public BaseResponse deleteAgent(@RequestBody List<Integer> ids, HttpServletRequest httpServletRequest) {
+        BaseResponse response;
+        try {
+            String token = httpServletRequest.getHeader("token");
+            String userId = JWT.decode(token).getAudience().get(0);
+            response = adminUserService.deleteAgent(ids,Integer.parseInt(userId));
         }catch(MyException e){
             logger.error(e.getMessage());
             response = new BaseResponse();
