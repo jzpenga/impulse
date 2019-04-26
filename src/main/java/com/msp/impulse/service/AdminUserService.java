@@ -32,7 +32,7 @@ public class AdminUserService {
     @Autowired
     private SensorMapper sensorMapper;
     @Autowired
-    private  UserService userService;
+    private UserService userService;
 
     /**
      * 用户信息查询
@@ -40,7 +40,7 @@ public class AdminUserService {
      * @param findUserQuery
      * @return
      */
-    public BaseResponse<PageInfo> findUser(FindUserQuery findUserQuery,Integer userId) {
+    public BaseResponse<PageInfo> findUser(FindUserQuery findUserQuery, Integer userId) {
         BaseResponse<PageInfo> response = new BaseResponse<>();
         if (findUserQuery.getPageNo() == null) {
             findUserQuery.setPageNo(1);
@@ -52,19 +52,19 @@ public class AdminUserService {
 
         User user = userService.findUserById(userId + "");
         if (user != null) {
-            if(user.getAuthFlag().equals(Constants.AuthFlag.AGENT.getValue())){
+            if (user.getAuthFlag().equals(Constants.AuthFlag.AGENT.getValue())) {
                 //查询代理人所管理的用户
-                List<Integer> userIds=new ArrayList<>();
-                UserExample userExample=new UserExample();
+                List<Integer> userIds = new ArrayList<>();
+                UserExample userExample = new UserExample();
                 userExample.createCriteria().andAgentIdEqualTo(userId).andFlagEqualTo("0");
                 List<User> users = userMapper.selectByExample(userExample);
-                for (User user1:users) {
+                for (User user1 : users) {
                     userIds.add(user1.getId());
                 }
                 findUserQuery.setUserIds(userIds);
             }
         }
-        if(StringUtils.isBlank(findUserQuery.getAuthFlag())){
+        if (StringUtils.isBlank(findUserQuery.getAuthFlag())) {
             findUserQuery.setAuthFlag(Constants.AuthFlag.NORMAL.getValue());
         }
         PageHelper.startPage(findUserQuery.getPageNo(), findUserQuery.getPageSize());
@@ -316,27 +316,57 @@ public class AdminUserService {
 
     /**
      * 新增代理人
+     *
      * @param agentParam
      * @param parseInt
      * @return
      */
     public BaseResponse saveAgent(AgentParam agentParam, int parseInt) {
-        BaseResponse response = new BaseResponse<>();
-        if(agentParam.getId()==null) {
+        BaseResponse response = new BaseResponse();
+
+        if (StringUtils.isBlank(agentParam.getLoginName())) {
+            response.setResponseCode(ResponseCode.LPGIN_NAME_MUST_HAVE.getCode());
+            response.setResponseMsg(ResponseCode.LPGIN_NAME_MUST_HAVE.getMessage());
+            return response;
+        }
+        if (StringUtils.isBlank(agentParam.getName())) {
+            response.setResponseCode(ResponseCode.LINKMAN_NAME_MUST_HAVE.getCode());
+            response.setResponseMsg(ResponseCode.LINKMAN_NAME_MUST_HAVE.getMessage());
+            return response;
+        }
+        if (StringUtils.isBlank(agentParam.getPhoneNo())) {
+            response.setResponseCode(ResponseCode.PHONE_NO_MUST_HAVE.getCode());
+            response.setResponseMsg(ResponseCode.PHONE_NO_MUST_HAVE.getMessage());
+            return response;
+        }
+        if (agentParam.getId() == null) {
+            //用户登录名不能为空
+            if (StringUtils.isBlank(agentParam.getPassword())) {
+                response.setResponseCode(ResponseCode.PASSWORD_NULL.getCode());
+                response.setResponseMsg(ResponseCode.PASSWORD_NULL.getMessage());
+                return response;
+            }
             User user = new User();
             user.setPhoneNo(agentParam.getPhoneNo());
             user.setName(agentParam.getName());
-            user.setPassword(agentParam.getPassword());
+            //密码加密
+            String pwd = DigestUtils.md5DigestAsHex(agentParam.getPassword().getBytes());
+            user.setPassword(pwd);
             user.setLoginName(agentParam.getLoginName());
             user.setCreateTime(new Date());
             user.setCreateUser(parseInt);
+            user.setFlag("0");
+            user.setAuthFlag(Constants.AuthFlag.AGENT.getValue());
             userMapper.insertSelective(user);
-        }else{
+        } else {
             User user = userMapper.selectByPrimaryKey(agentParam.getId());
             user.setUpdateTime(new Date());
             user.setUpdateUser(parseInt);
             user.setLoginName(agentParam.getLoginName());
-            user.setPassword(agentParam.getPassword());
+            if (StringUtils.isNotBlank(agentParam.getPassword())) {
+                String pwd = DigestUtils.md5DigestAsHex(agentParam.getPassword().getBytes());
+                user.setPassword(pwd);
+            }
             user.setName(agentParam.getName());
             user.setPhoneNo(agentParam.getPhoneNo());
             userMapper.updateByPrimaryKey(user);

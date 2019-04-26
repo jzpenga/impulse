@@ -29,6 +29,7 @@ public enum ResponseCode {
     TOKEN_TIME_OUT(4000,"token失效"),
     TOKEN_CREATE_WRONG(4001,"token生成失败！！！"),
     NOT_HAVE_TOKEN(4002,"无token，请重新登录"),
+    LPGIN_NAME_MUST_HAVE(3022,"请输入登录名"),
     ;
 
 
