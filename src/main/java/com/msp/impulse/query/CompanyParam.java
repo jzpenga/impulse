@@ -48,6 +48,7 @@ public class CompanyParam {
     private String callbackUrl;
 
     private String AuthFlag;
+    private Integer agent;
 
 
     public Integer getId() {
@@ -232,5 +233,13 @@ public class CompanyParam {
 
     public void setAuthFlag(String authFlag) {
         AuthFlag = authFlag;
+    }
+
+    public Integer getAgent() {
+        return agent;
+    }
+
+    public void setAgent(Integer agent) {
+        this.agent = agent;
     }
 }

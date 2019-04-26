@@ -503,11 +503,11 @@
   </resultMap>
   <select id="findUser" parameterType="com.msp.impulse.query.FindUserQuery" resultMap="userResultMap">
     select  u.id,c.company_name,IFNULL(c.gateway_number,0) gateway_number,c.province,c.city,
-    c.login_name ,c.linkman_name ,c.phone_no,c.flag,IFNULL(n.sensor_number,0) sensor_number,u.auth_flag
-    from company c left  join user u on c.id=u.company_id
+    u.login_name ,c.linkman_name ,c.phone_no,u.flag,IFNULL(n.sensor_number,0) sensor_number,u.auth_flag
+    from user  u left  join company c on c.id=u.company_id
     left  join
-    (select  count(*)  sensor_number  ,u.company_id  from  sensor  s,user u where s.user_id=u.id  and  s.flag="0"  GROUP BY    u.id    ) n
-    on  n.company_id=c.id
+    (select  count(*)  sensor_number  ,u.id  from  sensor  s,user u where s.user_id=u.id  and  s.flag="0"  GROUP BY    u.id    ) n
+    on  n.id=u.id
     where 1=1
     <if test="companyName != null and companyName!=''">
       and c.company_name like "%"#{companyName}"%"
@@ -537,7 +537,7 @@
     <if test="phoneNo != null and phoneNo!=''">
       AND c.phone_no like "%"#{phoneNo}"%"
     </if>
-    AND c.flag="0"
+    AND u.flag="0"
   </select>
   <select id="findCompanyNameByLoginName" parameterType="string" resultType="string">
     select c.company_name companyName from company c

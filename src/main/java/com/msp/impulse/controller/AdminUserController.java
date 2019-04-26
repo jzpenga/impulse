@@ -144,26 +144,26 @@ public class AdminUserController {
         }
         return response;
     }
-//    /**
-//     * 根据名称搜索用户
-//     */
-//    @GetMapping("searchUserByName")
-//    @ApiOperation(value = "根据用户名称搜索用户", notes = "根据用户名称搜索用户", tags = "用户管理", httpMethod = "POST")
-//    public BaseResponse searchUserByName(@RequestBody String userName) {
-//        BaseResponse response;
-//        try {
-//            response = adminUserService.searchUserByName(userName);
-//        } catch(MyException e){
-//            logger.error(e.getMessage());
-//            response = new BaseResponse();
-//            response.setResponseCode(ResponseCode.PARAMETER_VALIDATION_FAILED.getCode());
-//            response.setResponseMsg(e.getMessage());
-//        } catch (Exception e) {
-//            logger.error(e.getMessage(), e);
-//            response = new BaseResponse<>();
-//            response.setResponseCode(ResponseCode.SERVER_FAILED.getCode());
-//            response.setResponseMsg(ResponseCode.SERVER_FAILED.getMessage());
-//        }
-//        return response;
-//    }
+    /**
+     * 根据名称搜索代理人
+     */
+    @GetMapping("searchAgentByName")
+    @ApiOperation(value = "根据用户名称搜索代理人", notes = "根据用户名称搜索代理人", tags = "用户管理", httpMethod = "POST")
+    public BaseResponse searchAgentByName( String agentName) {
+        BaseResponse response;
+        try {
+            response = adminUserService.searchAgentByName(agentName);
+        } catch(MyException e){
+            logger.error(e.getMessage());
+            response = new BaseResponse();
+            response.setResponseCode(ResponseCode.PARAMETER_VALIDATION_FAILED.getCode());
+            response.setResponseMsg(e.getMessage());
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            response = new BaseResponse<>();
+            response.setResponseCode(ResponseCode.SERVER_FAILED.getCode());
+            response.setResponseMsg(ResponseCode.SERVER_FAILED.getMessage());
+        }
+        return response;
+    }
 }

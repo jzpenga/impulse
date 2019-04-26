@@ -48,8 +48,6 @@ public class AdminUserService {
         if (findUserQuery.getPageSize() == null) {
             findUserQuery.setPageSize(10);
         }
-
-
         User user = userService.findUserById(userId + "");
         if (user != null) {
             if (user.getAuthFlag().equals(Constants.AuthFlag.AGENT.getValue())) {
@@ -195,6 +193,9 @@ public class AdminUserService {
             user.setUpdateUser(userId);
             user.setName(companyParam.getLinkmanName());
             user.setPhoneNo(companyParam.getPhoneNo());
+            if(companyParam.getAgent()!=null) {
+                user.setAgentId(companyParam.getAgent());
+            }
             userMapper.updateByPrimaryKey(user);
 
         } else {
@@ -225,6 +226,9 @@ public class AdminUserService {
                 user.setAuthFlag(Constants.AuthFlag.NORMAL.getValue());//普通用户
             } else {
                 user.setAuthFlag(companyParam.getAuthFlag());
+            }
+            if(companyParam.getAgent()!=null) {
+                user.setAgentId(companyParam.getAgent());
             }
             user.setCompanyId(companyId);
             user.setFlag("0");
@@ -371,6 +375,22 @@ public class AdminUserService {
             user.setPhoneNo(agentParam.getPhoneNo());
             userMapper.updateByPrimaryKey(user);
         }
+        response.setResponseCode(ResponseCode.OK.getCode());
+        response.setResponseMsg(ResponseCode.OK.getMessage());
+        return response;
+    }
+
+    /**
+     * 根据名称模糊查询所有代理人
+     * @param agentName
+     * @return
+     */
+    public BaseResponse searchAgentByName(String agentName) {
+        BaseResponse response = new BaseResponse();
+        UserExample userExample=new UserExample();
+        userExample.createCriteria().andNameLike("%"+agentName+"%").andFlagEqualTo("0");
+        List<User> users = userMapper.selectByExample(userExample);
+        response.setData(users);
         response.setResponseCode(ResponseCode.OK.getCode());
         response.setResponseMsg(ResponseCode.OK.getMessage());
         return response;
