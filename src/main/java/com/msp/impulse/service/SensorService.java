@@ -109,8 +109,12 @@ public class SensorService {
         } else {//新增
             //新增设备====================================================================start
             if (StringUtils.isBlank(sensor.getSensorNo())) {
-                throw new RuntimeException("传感器序列号不能为空!");
+                throw new MyException("传感器序列号不能为空!");
             }
+            //判断序列号是否重复
+           if(sensorRepeat(sensor.getSensorNo())){
+               throw new MyException("传感器序列号重复!");
+           }
             //根据设备id，获取设备型号  HY900
             String deviceModel = getDeviceModel(sensor.getSensorModel());
             //获取iotServiceType   WaterMeter
@@ -180,6 +184,22 @@ public class SensorService {
             }
         }
         //新增通道==============================================================================end
+    }
+
+    /**
+     * 判断序列号是否重复
+     * @param sensorNo
+     * @return
+     */
+    private boolean sensorRepeat(String sensorNo) {
+        SensorExample sensorExample=new SensorExample();
+        sensorExample.createCriteria().andSensorNoEqualTo(sensorNo).andFlagEqualTo("0");
+        List<Sensor> sensorList = sensorMapper.selectByExample(sensorExample);
+        if(sensorList.isEmpty()){
+            return false;
+        }else{
+           return true;
+        }
     }
 
     public String RegDirectDevice(RegDirectQuery regDirectQuery) {
