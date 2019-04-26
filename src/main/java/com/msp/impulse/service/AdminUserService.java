@@ -66,8 +66,8 @@ public class AdminUserService {
             findUserQuery.setAuthFlag(Constants.AuthFlag.NORMAL.getValue());
         }
         PageHelper.startPage(findUserQuery.getPageNo(), findUserQuery.getPageSize());
-        List<Company> gatewayList = companyMapper.findUser(findUserQuery);
-        PageInfo<Company> pageInfo = new PageInfo<>(gatewayList);
+        List<CompanyAndLink> companyAndLinks = companyMapper.findUser(findUserQuery);
+        PageInfo<CompanyAndLink> pageInfo = new PageInfo<>(companyAndLinks);
 
         response.setData(pageInfo);
         response.setResponseCode(ResponseCode.OK.getCode());
@@ -391,6 +391,15 @@ public class AdminUserService {
         userExample.createCriteria().andNameLike("%"+agentName+"%").andFlagEqualTo("0");
         List<User> users = userMapper.selectByExample(userExample);
         response.setData(users);
+        response.setResponseCode(ResponseCode.OK.getCode());
+        response.setResponseMsg(ResponseCode.OK.getMessage());
+        return response;
+    }
+
+    public BaseResponse<User> findAgentById(Integer id) {
+        BaseResponse response = new BaseResponse();
+        User user = userMapper.selectByPrimaryKey(id);
+        response.setData(user);
         response.setResponseCode(ResponseCode.OK.getCode());
         response.setResponseMsg(ResponseCode.OK.getMessage());
         return response;

@@ -1,6 +1,7 @@
 package com.msp.impulse.mapper;
 
 import com.msp.impulse.entity.Company;
+import com.msp.impulse.entity.CompanyAndLink;
 import com.msp.impulse.entity.CompanyExample;
 import java.util.List;
 
@@ -34,7 +35,7 @@ public interface CompanyMapper {
 
     Company findByNameAndPwd(@Param("loginName")String loginName, @Param("pwd")String pwd);
 
-    List<Company> findUser(FindUserQuery findUserQuery);
+    List<CompanyAndLink> findUser(FindUserQuery findUserQuery);
 
     String findCompanyNameByLoginName(String loginName);
 

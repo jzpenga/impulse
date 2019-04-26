@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.github.pagehelper.PageInfo;
 import com.msp.impulse.base.BaseResponse;
 import com.msp.impulse.base.ResponseCode;
+import com.msp.impulse.entity.User;
 import com.msp.impulse.exception.MyException;
 import com.msp.impulse.query.AgentParam;
 import com.msp.impulse.query.CompanyParam;
@@ -148,12 +149,32 @@ public class AdminUserController {
      * 根据名称搜索代理人
      */
     @GetMapping("searchAgentByName")
-    @ApiOperation(value = "根据用户名称搜索代理人", notes = "根据用户名称搜索代理人", tags = "用户管理", httpMethod = "POST")
+    @ApiOperation(value = "根据用户名称搜索代理人", notes = "根据用户名称搜索代理人", tags = "用户管理", httpMethod = "GET")
     public BaseResponse searchAgentByName( String agentName) {
         BaseResponse response;
         try {
             response = adminUserService.searchAgentByName(agentName);
         } catch(MyException e){
+            logger.error(e.getMessage());
+            response = new BaseResponse();
+            response.setResponseCode(ResponseCode.PARAMETER_VALIDATION_FAILED.getCode());
+            response.setResponseMsg(e.getMessage());
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            response = new BaseResponse<>();
+            response.setResponseCode(ResponseCode.SERVER_FAILED.getCode());
+            response.setResponseMsg(ResponseCode.SERVER_FAILED.getMessage());
+        }
+        return response;
+    }
+
+    @GetMapping("findAgentById/{id}")
+    @ApiOperation(value = "根据id查询用户数据", notes = "根据id查询用户数据", tags = "用户管理", httpMethod = "POST")
+    public BaseResponse<User> findAgentById(@PathVariable Integer id) {
+        BaseResponse<User> response;
+        try {
+            response = adminUserService.findAgentById(id);
+        }catch(MyException e){
             logger.error(e.getMessage());
             response = new BaseResponse();
             response.setResponseCode(ResponseCode.PARAMETER_VALIDATION_FAILED.getCode());
