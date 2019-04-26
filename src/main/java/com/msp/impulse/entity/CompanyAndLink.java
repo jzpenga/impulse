@@ -1,5 +1,7 @@
 package com.msp.impulse.entity;
 
+import java.util.Date;
+
 public class CompanyAndLink {
     private Integer id;
 
@@ -32,6 +34,8 @@ public class CompanyAndLink {
     private String email;
 
     private  String name;
+
+    private Date createTime;
 
     public Integer getId() {
         return id;
@@ -160,5 +164,13 @@ public class CompanyAndLink {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 }
