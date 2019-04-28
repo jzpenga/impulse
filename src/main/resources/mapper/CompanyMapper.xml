@@ -532,13 +532,13 @@
       AND c.city = #{city}
     </if>
     <if test="loginName != null and loginName!=''">
-      AND c.login_name like "%"#{loginName}"%"
+      AND u.login_name like "%"#{loginName}"%"
     </if>
     <if test="name != null and name!=''">
-      AND c.linkman_name like "%"#{name}"%"
+      AND u.name like "%"#{name}"%"
     </if>
     <if test="phoneNo != null and phoneNo!=''">
-      AND c.phone_no like "%"#{phoneNo}"%"
+      AND u.phone_no like "%"#{phoneNo}"%"
     </if>
     AND u.flag="0"
   </select>
