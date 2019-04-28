@@ -43,6 +43,9 @@ public class DataReportService {
 
         HashMap<String, String> dataKeyValue = new HashMap<>();
         List<DataReportVo> dataReportVoList = sensorMapper.selectDataReport(deviceId);
+        if(dataReportVoList.isEmpty()){
+            throw  new MyException("【"+deviceId+"】对应的数据不存在!");
+        }
         DataReportVo dataReportVo1 = dataReportVoList.get(0);
         for (DataReportVo dataReportVo : dataReportVoList) {
             dataKeyValue.put(dataReportVo.getServiceCode(), dataReportVo.getCodeName());
