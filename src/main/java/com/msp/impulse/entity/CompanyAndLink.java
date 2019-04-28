@@ -33,8 +33,6 @@ public class CompanyAndLink {
 
     private String email;
 
-    private  String name;
-
     private Date createTime;
 
     public Integer getId() {
@@ -155,15 +153,6 @@ public class CompanyAndLink {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public Date getCreateTime() {
