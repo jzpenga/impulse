@@ -333,7 +333,7 @@ public class AdminUserService {
             response.setResponseMsg(ResponseCode.LPGIN_NAME_MUST_HAVE.getMessage());
             return response;
         }
-        if (StringUtils.isBlank(agentParam.getName())) {
+        if (StringUtils.isBlank(agentParam.getLinkmanName())) {
             response.setResponseCode(ResponseCode.LINKMAN_NAME_MUST_HAVE.getCode());
             response.setResponseMsg(ResponseCode.LINKMAN_NAME_MUST_HAVE.getMessage());
             return response;
@@ -352,7 +352,7 @@ public class AdminUserService {
             }
             User user = new User();
             user.setPhoneNo(agentParam.getPhoneNo());
-            user.setName(agentParam.getName());
+            user.setName(agentParam.getLinkmanName());
             //密码加密
             String pwd = DigestUtils.md5DigestAsHex(agentParam.getPassword().getBytes());
             user.setPassword(pwd);
@@ -371,7 +371,7 @@ public class AdminUserService {
                 String pwd = DigestUtils.md5DigestAsHex(agentParam.getPassword().getBytes());
                 user.setPassword(pwd);
             }
-            user.setName(agentParam.getName());
+            user.setName(agentParam.getLinkmanName());
             user.setPhoneNo(agentParam.getPhoneNo());
             userMapper.updateByPrimaryKey(user);
         }

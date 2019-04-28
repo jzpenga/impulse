@@ -8,7 +8,7 @@ public class AgentParam {
 
     private String password;
 
-    private String name;
+    private String linkmanName;
 
     private String phoneNo;
 
@@ -36,12 +36,12 @@ public class AgentParam {
         this.password = password;
     }
 
-    public String getName() {
-        return name;
+    public String getLinkmanName() {
+        return linkmanName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setLinkmanName(String linkmanName) {
+        this.linkmanName = linkmanName;
     }
 
     public String getPhoneNo() {
