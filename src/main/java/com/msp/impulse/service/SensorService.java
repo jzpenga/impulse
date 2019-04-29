@@ -103,7 +103,7 @@ public class SensorService {
             }
             sensorMapper.updateByPrimaryKey(sensorUp);
             List<Pass> passList = sensorAddQuery.getPassList();
-            if (passList != null) {
+            if (passList != null&&passList.size()!=0) {
                 gatewayService.savePass(passList, userId, sensor, null);
             }
         } else {//新增
@@ -167,7 +167,7 @@ public class SensorService {
         }
         //新增通道===========================================================================start
         List<Pass> passList = sensorAddQuery.getPassList();
-        if (passList != null) {
+        if (passList != null&&passList.size()!=0) {
             try {
                 gatewayService.savePass(passList, userId, sensor, null);
             } catch (Exception e) {
