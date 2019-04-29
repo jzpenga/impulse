@@ -9,6 +9,7 @@ public class DataReportVo {
     private String sensorType;
     private String  deviceId;
     private String userId;
+    private  String  userName;
     private String loginName;
     private  String gatewayName;
     private  String serviceCode;
@@ -110,5 +111,13 @@ public class DataReportVo {
 
     public void setDataValueAndKey(HashMap<String, String> dataValueAndKey) {
         this.dataValueAndKey = dataValueAndKey;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

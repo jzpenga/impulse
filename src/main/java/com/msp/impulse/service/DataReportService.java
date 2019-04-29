@@ -4,10 +4,7 @@ import com.msp.impulse.dao.DataReportDao;
 import com.msp.impulse.dao.RealTimeDataDao;
 import com.msp.impulse.entity.*;
 import com.msp.impulse.exception.MyException;
-import com.msp.impulse.mapper.CompanyMapper;
-import com.msp.impulse.mapper.DictionaryMapper;
-import com.msp.impulse.mapper.RealTimeDataMapper;
-import com.msp.impulse.mapper.SensorMapper;
+import com.msp.impulse.mapper.*;
 import com.msp.impulse.nb.entity.DataReportEntity;
 import com.msp.impulse.vo.DataReportVo;
 import org.apache.commons.lang.StringUtils;
@@ -15,8 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -35,6 +30,8 @@ public class DataReportService {
     private DictionaryMapper dictionaryMapper;
     @Autowired
     private RealTimeDataMapper realTimeDataMapper;
+    @Autowired
+    private UserMapper userMapper;
     @Autowired
     private RealTimeDataDao realTimeDataDao;
 
@@ -59,6 +56,10 @@ public class DataReportService {
         dataReportVo1.setSensorNo(dataReportVo1.getSensorNo());
         dataReportVo1.setSensorType(dataReportVo1.getSensorType());
         dataReportVo1.setUserId(dataReportVo1.getUserId());
+        if(dataReportVo1.getUserId()!=null){
+            User user = userMapper.selectByPrimaryKey(Integer.parseInt(dataReportVo1.getUserId()));
+            dataReportVo1.setUserName(user.getLoginName());
+        }
         dataReportVo1.setCallbackUrl(dataReportVo1.getCallbackUrl());
 //        dataReportVo1.setServiceCode();
         dataReportVo1.setDataValueAndKey(dataKeyValue);
