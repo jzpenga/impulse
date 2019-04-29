@@ -31,8 +31,6 @@ public class DataReportService {
     @Autowired
     private RealTimeDataMapper realTimeDataMapper;
     @Autowired
-    private UserMapper userMapper;
-    @Autowired
     private RealTimeDataDao realTimeDataDao;
 
     public DataReportVo getDataReport(String deviceId) {
@@ -56,10 +54,6 @@ public class DataReportService {
         dataReportVo1.setSensorNo(dataReportVo1.getSensorNo());
         dataReportVo1.setSensorType(dataReportVo1.getSensorType());
         dataReportVo1.setUserId(dataReportVo1.getUserId());
-        if(dataReportVo1.getUserId()!=null){
-            User user = userMapper.selectByPrimaryKey(Integer.parseInt(dataReportVo1.getUserId()));
-            dataReportVo1.setUserName(user.getLoginName());
-        }
         dataReportVo1.setCallbackUrl(dataReportVo1.getCallbackUrl());
 //        dataReportVo1.setServiceCode();
         dataReportVo1.setDataValueAndKey(dataKeyValue);
