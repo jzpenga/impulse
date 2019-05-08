@@ -10,6 +10,7 @@ import com.msp.impulse.exception.MyException;
 import com.msp.impulse.mapper.*;
 import com.msp.impulse.query.*;
 import com.msp.impulse.vo.CompanyDetailVo;
+import com.msp.impulse.vo.CompanyInfoVo;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -91,9 +92,9 @@ public class AdminUserService {
         CompanyDetailVo companyDetailVo = new CompanyDetailVo();
         User user = userMapper.selectByPrimaryKey(userId);
         //查询公司
-        Company company = companyMapper.selectByPrimaryKey(user.getCompanyId());
-        if (company != null) {
-            companyDetailVo.setCompany(company);
+        CompanyInfoVo companyInfoVo = companyMapper.selectCompanyById(user.getCompanyId());
+        if (companyInfoVo != null) {
+            companyDetailVo.setCompanyInfoVo(companyInfoVo);
         }
         //查询网关
         GatewayQuery gatewayQuery = new GatewayQuery();
@@ -389,7 +390,8 @@ public class AdminUserService {
     public BaseResponse searchAgentByName(String agentName) {
         BaseResponse response = new BaseResponse();
         UserExample userExample = new UserExample();
-        userExample.createCriteria().andNameLike("%" + agentName + "%").andFlagEqualTo("0");
+        userExample.createCriteria().andNameLike("%" + agentName + "%").andFlagEqualTo("0")
+        .andAuthFlagEqualTo(Constants.AuthFlag.AGENT.getValue());
         List<User> users = userMapper.selectByExample(userExample);
         response.setData(users);
         response.setResponseCode(ResponseCode.OK.getCode());

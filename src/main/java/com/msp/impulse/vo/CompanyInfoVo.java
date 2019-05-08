@@ -1,8 +1,8 @@
-package com.msp.impulse.query;
+package com.msp.impulse.vo;
 
 import java.util.Date;
 
-public class CompanyParam {
+public class CompanyInfoVo {
     private Integer id;
 
     private String companyName;
@@ -47,8 +47,9 @@ public class CompanyParam {
 
     private String callbackUrl;
 
-    private String authFlag;
-    private Integer agent;
+    private Integer agentId;
+
+    private  String agentName;
 
 
     public Integer getId() {
@@ -227,19 +228,19 @@ public class CompanyParam {
         this.callbackUrl = callbackUrl;
     }
 
-    public String getAuthFlag() {
-        return authFlag;
+    public Integer getAgentId() {
+        return agentId;
     }
 
-    public void setAuthFlag(String authFlag) {
-        this.authFlag = authFlag;
+    public void setAgentId(Integer agentId) {
+        this.agentId = agentId;
     }
 
-    public Integer getAgent() {
-        return agent;
+    public String getAgentName() {
+        return agentName;
     }
 
-    public void setAgent(Integer agent) {
-        this.agent = agent;
+    public void setAgentName(String agentName) {
+        this.agentName = agentName;
     }
 }

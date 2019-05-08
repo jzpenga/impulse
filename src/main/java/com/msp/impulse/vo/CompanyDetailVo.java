@@ -10,18 +10,18 @@ import java.util.List;
 @ApiModel(value = "公司详细信息", description = "公司详细信息")
 public class CompanyDetailVo {
     @ApiModelProperty(name = "company", value = "公司", example = "公司", required = true)
-    private Company company;
+    private CompanyInfoVo companyInfoVo;
     @ApiModelProperty(name = "pageBeanGateway", value = "网关列表分页", example = "网关列表分页", required = true)
     private PageInfo<Gateway> pageBeanGateway;
     @ApiModelProperty(name = "pageBeanSensor", value = "传感器列表分页", example = "传感器列表分页", required = true)
     private PageInfo<Sensor> pageBeanSensor;
 
-    public Company getCompany() {
-        return company;
+    public CompanyInfoVo getCompanyInfoVo() {
+        return companyInfoVo;
     }
 
-    public void setCompany(Company company) {
-        this.company = company;
+    public void setCompanyInfoVo(CompanyInfoVo companyInfoVo) {
+        this.companyInfoVo = companyInfoVo;
     }
 
     public PageInfo<Gateway> getPageBeanGateway() {

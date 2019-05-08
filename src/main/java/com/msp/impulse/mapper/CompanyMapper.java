@@ -6,6 +6,7 @@ import com.msp.impulse.entity.CompanyExample;
 import java.util.List;
 
 import com.msp.impulse.query.FindUserQuery;
+import com.msp.impulse.vo.CompanyInfoVo;
 import org.apache.ibatis.annotations.Param;
 
 public interface CompanyMapper {
@@ -40,4 +41,6 @@ public interface CompanyMapper {
     String findCompanyNameByLoginName(String loginName);
 
     List<Company> seletByUserName(String userName);
+
+    CompanyInfoVo selectCompanyById(Integer companyId);
 }

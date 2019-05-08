@@ -549,4 +549,16 @@
     select  id,company_name companyName  from  company  where company_name  like "%"#{userName}"%"
     and flag="0"
   </select>
+
+  <select id="selectCompanyById" parameterType="int" resultType="com.msp.impulse.vo.CompanyInfoVo">
+   select  a.login_name loginName,a.`password`,a.company_name companyName,a.province,a.city,a.agent_id agentId,
+   a.detailed_add detailedAdd,a.postal_code postalCode,a.create_time createTime,a.linkman_name linkmanName,a.email,
+   a.phone_no phoneNo,a.gender,u.`name` agentName
+   from
+    (select   c.login_name,c.`password`,c.company_name,c.province,c.city,u.agent_id,c.detailed_add,c.postal_code ,
+    c.linkman_name,c.email,c.phone_no,c.gender,c.create_time  from  company c ,user u
+    where u.company_id=c.id  and  c.id=#{companyId}) a,
+    user u
+   where u.id=a.agent_id
+  </select>
 </mapper>
