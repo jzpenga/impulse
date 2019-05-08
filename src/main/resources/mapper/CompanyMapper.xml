@@ -557,8 +557,8 @@
    from
     (select   c.login_name,c.`password`,c.company_name,c.province,c.city,u.agent_id,c.detailed_add,c.postal_code ,
     c.linkman_name,c.email,c.phone_no,c.gender,c.create_time  from  company c ,user u
-    where u.company_id=c.id  and  c.id=#{companyId}) a,
+    where u.company_id=c.id  and  c.id=#{companyId}) a  left join
     user u
-   where u.id=a.agent_id
+   on u.id=a.agent_id
   </select>
 </mapper>
