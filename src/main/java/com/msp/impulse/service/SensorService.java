@@ -273,7 +273,7 @@ public class SensorService {
     public String getIotServiceTypeNameByModel(String sensorModel) {
         //根据型号查询
         DeviceModelExample deviceModelExample = new DeviceModelExample();
-        deviceModelExample.createCriteria().andFlagEqualTo("0").andSensorModelEqualTo(sensorModel);
+        deviceModelExample.createCriteria().andFlagEqualTo("0").andIdEqualTo(Integer.parseInt(sensorModel));
         List<DeviceModel> deviceModelList = deviceModelMapper.selectByExample(deviceModelExample);
         if (deviceModelList.isEmpty()) {
             throw new MyException(sensorModel + "对应的iot类型不存在");
@@ -570,15 +570,14 @@ public class SensorService {
             throw new MyException("传感器序列号必输!");
         }
         //获取型号id
-        DeviceModel deviceModelId1 = getDeviceModelId(appSensorQuery.getSensorModel());
-        Integer deviceModelId = deviceModelId1.getId();//获取id
+        DeviceModel deviceModelId1 = deviceModelMapper.selectByPrimaryKey(Integer.parseInt(appSensorQuery.getSensorModel()));
         //根据序列号和型号查询设备
         SensorExample sensorExample = new SensorExample();
-        sensorExample.createCriteria().andFlagEqualTo("0").andSensorModelEqualTo(deviceModelId + "")
+        sensorExample.createCriteria().andFlagEqualTo("0").andSensorModelEqualTo(appSensorQuery.getSensorModel() )
                 .andSensorNoEqualTo(appSensorQuery.getSensorNo());
         List<Sensor> sensorList = sensorMapper.selectByExample(sensorExample);
 
-        if (sensorList.isEmpty()) {
+        if (sensorList.isEmpty()||sensorList.size()==0) {
             Sensor sensor = new Sensor();
             //获取iot平台设备类型
             String iotServiceTypeNameByModel = getIotServiceTypeNameByModel(appSensorQuery.getSensorModel());
@@ -593,7 +592,7 @@ public class SensorService {
                 String deviceType = deviceModelId1.getDeviceType();//获取设备类型NB
                 sensor.setSensorType(deviceType);
             }
-            sensor.setSensorModel(deviceModelId + "");
+            sensor.setSensorModel(appSensorQuery.getSensorModel() + "");
             sensor.setSensorNo(appSensorQuery.getSensorNo());
 
             sensor.setDeviceId(deviceId);

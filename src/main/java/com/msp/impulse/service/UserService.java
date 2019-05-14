@@ -144,13 +144,13 @@ public class UserService {
         }
         String pwd = DigestUtils.md5DigestAsHex(password.getBytes());//默认密码
         //根据用户名密码查询用户
-        Company company = companyMapper.findByNameAndPwd(loginName, pwd);
-        if(company==null){
+        User user = userMapper.findByNameAndPwd(loginName, pwd);
+        if(user==null){
             throw new MyException("用户名或密码不正确!");
         }
         //生成token
-        String token = JWT.create().withAudience(company.getId() + "")
-                .sign(Algorithm.HMAC256(company.getPassword()));
+        String token = JWT.create().withAudience(user.getId() + "")
+                .sign(Algorithm.HMAC256(user.getPassword()));
         Map<String, String> map = new HashMap<>();
         map.put("token", token);
         response.setData(map);

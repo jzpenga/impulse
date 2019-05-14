@@ -11,6 +11,7 @@ import com.msp.impulse.annotation.UserLoginToken;
 import com.msp.impulse.base.BaseResponse;
 import com.msp.impulse.base.ResponseCode;
 import com.msp.impulse.entity.Company;
+import com.msp.impulse.entity.User;
 import com.msp.impulse.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,8 +77,8 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                 } catch (JWTDecodeException j) {
                     throw new RuntimeException("401");
                 }
-                Company company = userService.findById(userId);
-                if (company == null) {
+                User user = userService.findUserById(userId);
+                if (user == null) {
                     response.setResponseMsg(ResponseCode.TOKEN_TIME_OUT.getMessage());
                     response.setResponseCode(ResponseCode.TOKEN_TIME_OUT.getCode());
                     String jsonString  = JSONObject.toJSONString(response);
@@ -86,7 +87,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                     return false;
                 }
                 // 验证 token
-                JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(company.getPassword())).build();
+                JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(user.getPassword())).build();
                 try {
                     jwtVerifier.verify(token);
                 } catch (JWTVerificationException e) {
