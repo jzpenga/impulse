@@ -569,6 +569,10 @@ public class SensorService {
         if (StringUtils.isBlank(appSensorQuery.getSensorNo())) {
             throw new MyException("传感器序列号必输!");
         }
+        //判断序列号是否重复
+        if(sensorRepeat(appSensorQuery.getSensorNo())){
+            throw new MyException("传感器序列号重复!");
+        }
         //获取型号id
         DeviceModel deviceModelId1 = deviceModelMapper.selectByPrimaryKey(Integer.parseInt(appSensorQuery.getSensorModel()));
         //根据序列号和型号查询设备
