@@ -3,6 +3,8 @@ package com.msp.impulse.mapper;
 import com.msp.impulse.entity.User;
 import com.msp.impulse.entity.UserExample;
 import java.util.List;
+
+import com.msp.impulse.vo.AppUserVo;
 import org.apache.ibatis.annotations.Param;
 
 public interface UserMapper {
@@ -29,4 +31,6 @@ public interface UserMapper {
     int updateByPrimaryKey(User record);
 
     User findByNameAndPwd(@Param("loginName") String loginName, @Param("pwd")String pwd);
+
+    AppUserVo findUserInfo(String userId);
 }

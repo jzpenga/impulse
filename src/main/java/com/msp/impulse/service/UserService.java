@@ -11,6 +11,7 @@ import com.msp.impulse.entity.UserExample;
 import com.msp.impulse.exception.MyException;
 import com.msp.impulse.mapper.CompanyMapper;
 import com.msp.impulse.mapper.UserMapper;
+import com.msp.impulse.vo.AppUserVo;
 import com.msp.impulse.vo.CompanyVo;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -161,13 +162,8 @@ public class UserService {
 
     public BaseResponse findUserInfo(String userId) {
         BaseResponse response=new BaseResponse();
-        UserExample userExample = new UserExample();
-        userExample.createCriteria().andIdEqualTo(Integer.parseInt(userId)).andFlagNotEqualTo("1");
-        List<User> userList = userMapper.selectByExample(userExample);
-        if (userList.isEmpty()) {
-            throw  new MyException("用户信息不存在!");
-        }
-        response.setData(userList.get(0));
+        AppUserVo appUserVo = userMapper.findUserInfo(userId);
+        response.setData(appUserVo);
         response.setResponseCode(ResponseCode.OK.getCode());
         response.setResponseMsg(ResponseCode.OK.getMessage());
         return response;
