@@ -161,13 +161,13 @@ public class UserService {
 
     public BaseResponse findUserInfo(String userId) {
         BaseResponse response=new BaseResponse();
-        CompanyExample companyExample = new CompanyExample();
-        companyExample.createCriteria().andIdEqualTo(Integer.parseInt(userId)).andFlagNotEqualTo("1");
-        List<Company> companyList = companyMapper.selectByExample(companyExample);
-        if (companyList.isEmpty()) {
+        UserExample userExample = new UserExample();
+        userExample.createCriteria().andIdEqualTo(Integer.parseInt(userId)).andFlagNotEqualTo("1");
+        List<User> userList = userMapper.selectByExample(userExample);
+        if (userList.isEmpty()) {
             throw  new MyException("用户信息不存在!");
         }
-        response.setData(companyList.get(0));
+        response.setData(userList.get(0));
         response.setResponseCode(ResponseCode.OK.getCode());
         response.setResponseMsg(ResponseCode.OK.getMessage());
         return response;
