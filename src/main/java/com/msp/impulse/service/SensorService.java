@@ -569,10 +569,10 @@ public class SensorService {
         if (StringUtils.isBlank(appSensorQuery.getSensorNo())) {
             throw new MyException("传感器序列号必输!");
         }
-        //判断序列号是否重复
-        if(sensorRepeat(appSensorQuery.getSensorNo())){
-            throw new MyException("传感器序列号重复!");
+        if (StringUtils.isBlank(appSensorQuery.getSensorName())) {
+            throw new MyException("传感器序列号必输!");
         }
+
         //获取型号id
         DeviceModel deviceModelId1 = deviceModelMapper.selectByPrimaryKey(Integer.parseInt(appSensorQuery.getSensorModel()));
         //根据序列号和型号查询设备
@@ -580,8 +580,11 @@ public class SensorService {
         sensorExample.createCriteria().andFlagEqualTo("0").andSensorModelEqualTo(appSensorQuery.getSensorModel() )
                 .andSensorNoEqualTo(appSensorQuery.getSensorNo());
         List<Sensor> sensorList = sensorMapper.selectByExample(sensorExample);
-
         if (sensorList.isEmpty()||sensorList.size()==0) {
+            //判断序列号是否重复
+            if(sensorRepeat(appSensorQuery.getSensorNo())){
+                throw new MyException("传感器序列号重复!");
+            }
             Sensor sensor = new Sensor();
             //获取iot平台设备类型
             String iotServiceTypeNameByModel = getIotServiceTypeNameByModel(appSensorQuery.getSensorModel());
@@ -598,7 +601,7 @@ public class SensorService {
             }
             sensor.setSensorModel(appSensorQuery.getSensorModel() + "");
             sensor.setSensorNo(appSensorQuery.getSensorNo());
-
+            sensor.setName(appSensorQuery.getSensorName());
             sensor.setDeviceId(deviceId);
             sensor.setFlag("0");
             sensor.setCreateTime(new Date());
@@ -643,6 +646,7 @@ public class SensorService {
                     }
                 }
             }
+            sensor.setName(appSensorQuery.getSensorName());
             //设备修改
             if (userId != null) {
                 sensor.setUserId(userId);
