@@ -588,9 +588,12 @@ public class SensorService {
             Sensor sensor = new Sensor();
             //获取iot平台设备类型
             String iotServiceTypeNameByModel = getIotServiceTypeNameByModel(appSensorQuery.getSensorModel());
+            //根据设备id，获取设备型号  HY900
+            String deviceModel = getDeviceModel(appSensorQuery.getSensorModel());
             //注册设备
             RegDirectQuery regDirectQuery = new RegDirectQuery();
-            regDirectQuery.setSensorModel(appSensorQuery.getSensorModel());
+            regDirectQuery.setSensorModel(deviceModel);
+            regDirectQuery.setSensorName(appSensorQuery.getSensorName());
             regDirectQuery.setSensorNo(appSensorQuery.getSensorNo());
             regDirectQuery.setIotSensorType(iotServiceTypeNameByModel);
             String deviceId = RegDirectDevice(regDirectQuery);
@@ -644,6 +647,20 @@ public class SensorService {
                     if (user1.getAuthFlag().equals(Constants.AuthFlag.ADMIN.getValue())) {
                         throw new MyException("管理员不能重复绑定该设备!");
                     }
+                    if (user1.getAuthFlag().equals(Constants.AuthFlag.AGENT.getValue())) {
+                        throw new MyException("管理员已绑定该设备，代理商不能重复绑定!");
+                    }
+                }else if(user.getAuthFlag().equals(Constants.AuthFlag.AGENT.getValue())){
+                    //获取当前用户权限,管理员不能重复扫描
+                    User user1 = userMapper.selectByPrimaryKey(userId);
+                    if (user1.getAuthFlag().equals(Constants.AuthFlag.AGENT.getValue())) {
+                        throw new MyException("代理商不能重复绑定该设备!");
+                    }
+                    if (user1.getAuthFlag().equals(Constants.AuthFlag.ADMIN.getValue())) {
+                        throw new MyException("代理商已绑定该设备，管理员不能重复绑定!");
+                    }
+                }else{
+                    throw  new MyException("请确认用户身份!");
                 }
             }
             sensor.setName(appSensorQuery.getSensorName());
