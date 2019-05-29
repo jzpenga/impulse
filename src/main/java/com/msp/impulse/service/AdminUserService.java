@@ -283,21 +283,11 @@ public class AdminUserService {
     public BaseResponse deleteUserBatch(List<Integer> ids, Integer userId) {
         BaseResponse response = new BaseResponse<>();
         for (Integer id : ids) {
-            //删除公司
-            Company company = companyMapper.selectByPrimaryKey(id);
-            company.setFlag("1");
-            company.setUpdateUser(userId);
-            companyMapper.updateByPrimaryKey(company);
-            //删除用户
-            UserExample userExample = new UserExample();
-            userExample.createCriteria().andFlagEqualTo("0").andCompanyIdEqualTo(id);
-            List<User> users = userMapper.selectByExample(userExample);
-            for (User user : users) {
-                user.setUpdateUser(userId);
-                user.setUpdateTime(new Date());
-                user.setFlag("1");
-                userMapper.updateByPrimaryKey(user);
-            }
+            User user1 = userMapper.selectByPrimaryKey(id);
+            user1.setFlag("1");
+            user1.setUpdateUser(userId);
+            user1.setUpdateTime(new Date());
+            userMapper.updateByPrimaryKey(user1);
         }
         response.setResponseCode(ResponseCode.OK.getCode());
         response.setResponseMsg(ResponseCode.OK.getMessage());

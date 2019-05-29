@@ -332,7 +332,6 @@ public class SensorService {
             User user = userService.findUserById(userId + "");
             if (user != null) {
                 if (user.getAuthFlag().equals(Constants.AuthFlag.NORMAL.getValue())) {
-                    //管理员用户id不作为查询条件
                     sensorQuery.setUserId(userId);
                 }else if(user.getAuthFlag().equals(Constants.AuthFlag.AGENT.getValue())){
                     //查询代理人所管理的用户
@@ -343,6 +342,7 @@ public class SensorService {
                     for (User user1:users) {
                         userIds.add(user1.getId());
                     }
+                    userIds.add(userId);
                     sensorQuery.setUserIds(userIds);
                 }
             }
