@@ -490,7 +490,7 @@
         s.create_time createTime,s.create_user  createUser,s.device_id deviceId,s.flag,s.gateway_name,
         s.id,s.latitude,s.longitude,s.`name`,s.pass_no,s.pass_number,s.sensor_model sensorModel,s.sensor_no sensorNo,s.sensor_type sensorType
        ,s.state,s.update_time updateTime,s.update_user updateUser,s.user_id userId,s.user_name userName,s.work_status workStatus
-      from  sensor  where user_name=#{loginName} and s.flag!="1"
+      from  sensor s where user_name=#{loginName} and s.flag!="1"
   </select>
   <select id="findSensorByDeviceId" parameterType="string" resultType="com.msp.impulse.entity.Sensor">
       select
