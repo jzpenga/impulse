@@ -163,8 +163,8 @@ public class DataManageDaoImpl implements DataManageDao {
     public PageInfo findRealTimeData(DataHistoryQuery dataHistoryQuery) throws ParseException {
         Criteria criteria=new Criteria();
         //用户id
-        if(dataHistoryQuery.getUserId()!=null){
-            criteria.and("userId").is(dataHistoryQuery.getUserId());
+        if(!dataHistoryQuery.getUserIds().isEmpty()){
+            criteria.and("userId").in(dataHistoryQuery.getUserIds());
         }
         //网关名称
         if(StringUtils.isNotBlank(dataHistoryQuery.getGatewayName())){

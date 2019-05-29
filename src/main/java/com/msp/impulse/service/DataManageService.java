@@ -9,7 +9,9 @@ import com.msp.impulse.dao.DataManageDao;
 import com.msp.impulse.dao.RealTimeDataDao;
 import com.msp.impulse.entity.PageBean;
 import com.msp.impulse.entity.User;
+import com.msp.impulse.entity.UserExample;
 import com.msp.impulse.exception.MyException;
+import com.msp.impulse.mapper.UserMapper;
 import com.msp.impulse.nb.entity.DataReportEntity;
 import com.msp.impulse.query.DataHistoryQuery;
 import com.msp.impulse.vo.DataHistoryMapVo;
@@ -37,6 +39,8 @@ public class DataManageService {
     private RealTimeDataDao realTimeDataDao;
     @Autowired
     private UserService userService;
+    @Autowired
+    private UserMapper userMapper;
 
 
 //    public BaseResponse findHomeData() {
@@ -232,13 +236,25 @@ public class DataManageService {
             }
             dataReportEntity.setUserName("环宇智谷测试");
         }*/
-
+        List userIds=new ArrayList();
         //获取用户id
         User user = userService.findUserById(userId);
         if (user != null && (user.getAuthFlag() .equals( Constants.AuthFlag.NORMAL.getValue()))) {
             //管理员用户id不作为查询条件
-            dataHistoryQuery.setUserId(Integer.parseInt(userId));
+            userIds.add(Integer.parseInt(userId));
+            dataHistoryQuery.setUserIds(userIds);
+        }else if(user != null && (user.getAuthFlag() .equals(Constants.AuthFlag.AGENT.getValue()))){
+            //查询代理人所管理的用户
+            UserExample userExample=new UserExample();
+            userExample.createCriteria().andAgentIdEqualTo(Integer.parseInt(userId)).andFlagEqualTo("0");
+            List<User> users = userMapper.selectByExample(userExample);
+            for (User user1:users) {
+                userIds.add(user1.getId());
+            }
+            userIds.add(Integer.parseInt(userId));
+            dataHistoryQuery.setUserIds(userIds);
         }
+
         BaseResponse response = new BaseResponse<>();
         PageBean pageBean= realTimeDataDao.selectRealTimeDataInfo(dataHistoryQuery);
         response.setData(pageBean);

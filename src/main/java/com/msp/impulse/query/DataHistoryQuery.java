@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @ApiModel("实时数据查询")
 public class DataHistoryQuery extends BaseRequest {
@@ -22,8 +23,8 @@ public class DataHistoryQuery extends BaseRequest {
     private String sensorType;
     @ApiModelProperty(name = "wayNo", value = "通道号", example = "")
     private Integer wayNo;
-    @ApiModelProperty(name = "userId", value = "用户id", example = "")
-    private Integer userId;
+    @ApiModelProperty(name = "userIds", value = "用户id", example = "")
+    private List<Integer> userIds;
     @ApiModelProperty(name = "sensorModel", value = "设备型号", example = "")
     private String sensorModel;
     @ApiModelProperty(name = "deviceId", value = "设备型号", example = "")
@@ -85,12 +86,12 @@ public class DataHistoryQuery extends BaseRequest {
         this.wayNo = wayNo;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public List<Integer> getUserIds() {
+        return userIds;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUserIds(List<Integer> userIds) {
+        this.userIds = userIds;
     }
 
     public String getSensorModel() {
