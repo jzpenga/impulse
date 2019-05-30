@@ -530,7 +530,7 @@
   <select id="findServiceType" parameterType="string" resultType="com.msp.impulse.entity.ServiceType">
     select s.service_code serviceCode ,s.code_name serviceName
       from device_model d,model_service s
-    where d.id=s.device_model_id  and d.sensor_model=#{deviceType}  and s.flag!="1"
+    where d.id=s.device_model_id  and d.sensor_model=#{deviceType}  and s.flag!="1" and d.flag!='1'
   </select>
   <select id="selectDataReport" parameterType="string" resultType="com.msp.impulse.vo.DataReportVo">
       select   s.name sensorName ,s.device_id deviceId,s.sensor_no sensorNo,s.gateway_name gatewayName,
