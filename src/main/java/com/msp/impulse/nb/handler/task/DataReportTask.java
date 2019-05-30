@@ -51,7 +51,7 @@ public class DataReportTask implements Runnable {
                 dataReportEntity.setSensorName(param.getSensorName());
                 dataReportEntity.setEquipmentNo(param.getSensorNo());
                 dataReportEntity.setDataKeyName(param.getDataValueAndKey().get(fieldName));
-                dataReportEntity.setDataValue(data.get(fieldName).textValue());
+                dataReportEntity.setDataValue(Double.valueOf(data.get(fieldName).textValue()).toString());
                 dataReportEntity.setDataMark(dataMark);
                 dataReportEntities.add(dataReportEntity);
                 subData.put(fieldName,data.get(fieldName).textValue());
