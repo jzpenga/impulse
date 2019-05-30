@@ -109,6 +109,14 @@ public class DataReportService {
                     long start = System.currentTimeMillis();
                     RealTimeData realTimeData1 = realTimeDataDao.selectByDeviceIdAndDataKey(dataReportEntity.getDeviceId(), dataReportEntity.getDataKey());
 //                    RealTimeData realTimeData1 = realTimeDataMapper.selectByDeviceIdAndDataKey(dataReportEntity.getDeviceId(), dataReportEntity.getDataKey());
+                    //查询服务编码对应的单位ext1
+                    String ext1="";
+                    DictionaryExample dictionaryExample=new DictionaryExample();
+                    dictionaryExample.createCriteria().andFlagEqualTo("0").andDicCodeEqualTo(dataReportEntity.getDataKey());
+                    List<Dictionary> dictionaryList = dictionaryMapper.selectByExample(dictionaryExample);
+                    if(!dictionaryList.isEmpty()){
+                        ext1= dictionaryList.get(0).getExt1();
+                    }
                     if (realTimeData1 != null) {  //更新数据
                         if (dataReportEntity.getUserId() != null) {
                             realTimeData1.setUserId(dataReportEntity.getUserId());
@@ -129,6 +137,9 @@ public class DataReportService {
                         realTimeData1.setFlag("0");
                         realTimeData1.setDataMark(dataReportEntity.getDataMark());
                         realTimeData1.setUpdateTime(new Date());
+                        if(StringUtils.isNotBlank(ext1)){
+                            realTimeData1.setDataKeyExt(ext1);
+                        }
                         realTimeDataDao.save(realTimeData1);
                     } else {//新增数据
                         RealTimeData realTimeData = new RealTimeData();
@@ -153,6 +164,9 @@ public class DataReportService {
                         realTimeData.setServiceId(dataReportEntity.getServiceId());
                         realTimeData.setFlag("0");
                         realTimeData.setCreateTime(new Date());
+                        if(StringUtils.isNotBlank(ext1)){
+                            realTimeData.setDataKeyExt(ext1);
+                        }
                         realTimeDataDao.save(realTimeData);
                     }
                     logger.info("更新实时数据时间===>"+(System.currentTimeMillis()-start)/1000f+"秒");

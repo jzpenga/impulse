@@ -84,6 +84,9 @@ public class AdminDicService {
                 }
             }
             dictionaryUpdate.setDicName(dictionary.getDicName());
+            if(StringUtils.isNotBlank(dictionary.getExt1())){
+                dictionaryUpdate.setExt1(dictionary.getExt1());
+            }
             dictionaryUpdate.setUpdateTime(new Date());
             dictionaryUpdate.setUpdateUser(userId+"");
 

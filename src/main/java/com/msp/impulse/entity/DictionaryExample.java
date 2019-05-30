@@ -435,6 +435,76 @@ public class DictionaryExample {
             return (Criteria) this;
         }
 
+        public Criteria andExt1IsNull() {
+            addCriterion("ext1 is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andExt1IsNotNull() {
+            addCriterion("ext1 is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andExt1EqualTo(String value) {
+            addCriterion("ext1 =", value, "ext1");
+            return (Criteria) this;
+        }
+
+        public Criteria andExt1NotEqualTo(String value) {
+            addCriterion("ext1 <>", value, "ext1");
+            return (Criteria) this;
+        }
+
+        public Criteria andExt1GreaterThan(String value) {
+            addCriterion("ext1 >", value, "ext1");
+            return (Criteria) this;
+        }
+
+        public Criteria andExt1GreaterThanOrEqualTo(String value) {
+            addCriterion("ext1 >=", value, "ext1");
+            return (Criteria) this;
+        }
+
+        public Criteria andExt1LessThan(String value) {
+            addCriterion("ext1 <", value, "ext1");
+            return (Criteria) this;
+        }
+
+        public Criteria andExt1LessThanOrEqualTo(String value) {
+            addCriterion("ext1 <=", value, "ext1");
+            return (Criteria) this;
+        }
+
+        public Criteria andExt1Like(String value) {
+            addCriterion("ext1 like", value, "ext1");
+            return (Criteria) this;
+        }
+
+        public Criteria andExt1NotLike(String value) {
+            addCriterion("ext1 not like", value, "ext1");
+            return (Criteria) this;
+        }
+
+        public Criteria andExt1In(List<String> values) {
+            addCriterion("ext1 in", values, "ext1");
+            return (Criteria) this;
+        }
+
+        public Criteria andExt1NotIn(List<String> values) {
+            addCriterion("ext1 not in", values, "ext1");
+            return (Criteria) this;
+        }
+
+        public Criteria andExt1Between(String value1, String value2) {
+            addCriterion("ext1 between", value1, value2, "ext1");
+            return (Criteria) this;
+        }
+
+        public Criteria andExt1NotBetween(String value1, String value2) {
+            addCriterion("ext1 not between", value1, value2, "ext1");
+            return (Criteria) this;
+        }
+
         public Criteria andUpdateTimeIsNull() {
             addCriterion("update_time is null");
             return (Criteria) this;

@@ -23,6 +23,8 @@ public class RealTimeData implements Serializable {
 
     private String dataKey;
 
+    private String  dataKeyExt;
+
     private String dataValue;
 
     private String dataMark;
@@ -111,6 +113,14 @@ public class RealTimeData implements Serializable {
 
     public void setDataKey(String dataKey) {
         this.dataKey = dataKey == null ? null : dataKey.trim();
+    }
+
+    public String getDataKeyExt() {
+        return dataKeyExt;
+    }
+
+    public void setDataKeyExt(String dataKeyExt) {
+        this.dataKeyExt = dataKeyExt;
     }
 
     public String getDataValue() {
