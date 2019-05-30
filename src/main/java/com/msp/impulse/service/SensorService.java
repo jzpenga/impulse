@@ -428,6 +428,12 @@ public class SensorService {
         sensor.setFlag("1");
         sensor.setUpdateUser(userId);
         sensorMapper.updateByPrimaryKey(sensor);
+
+        //删除实时数据
+        List<RealTimeData> realTimeDataList = realTimeDataDao.selectByDeviceId(sensor.getDeviceId());
+        for (RealTimeData realTimeData: realTimeDataList) {
+            realTimeDataDao.updateFlag(realTimeData);
+        }
         response.setResponseCode(ResponseCode.OK.getCode());
         response.setResponseMsg(ResponseCode.OK.getMessage());
         return response;
@@ -462,6 +468,12 @@ public class SensorService {
             sensor.setFlag("1");
             sensor.setUpdateUser(userId);
             sensorMapper.updateByPrimaryKey(sensor);
+
+            //删除实时数据
+            List<RealTimeData> realTimeDataList = realTimeDataDao.selectByDeviceId(sensor.getDeviceId());
+            for (RealTimeData realTimeData: realTimeDataList) {
+                realTimeDataDao.updateFlag(realTimeData);
+            }
         }
         response.setResponseCode(ResponseCode.OK.getCode());
         response.setResponseMsg(ResponseCode.OK.getMessage());

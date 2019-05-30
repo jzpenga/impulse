@@ -32,7 +32,7 @@ public class RealTimeDataDaoImpl implements RealTimeDataDao {
     @Override
     public RealTimeData selectByDeviceIdAndDataKey(String deviceId, String dataKey) {
         Query query = new Query();
-        query.addCriteria(Criteria.where("deviceId").is(deviceId).and("dataKey").is(dataKey));
+        query.addCriteria(Criteria.where("deviceId").is(deviceId).and("dataKey").is(dataKey).and("flag").is("0"));
         RealTimeData realTimeData = mongoTemplate.findOne(query, RealTimeData.class);
         return realTimeData;
     }
@@ -104,5 +104,19 @@ public class RealTimeDataDaoImpl implements RealTimeDataDao {
         PageBean pageBean = new PageBean(dataHistoryQuery.getPageNo(), dataHistoryQuery.getPageSize(), totalRecord.intValue());
         pageBean.setList(realTimeDataList);
         return pageBean;
+    }
+
+    @Override
+    public List<RealTimeData> selectByDeviceId(String deviceId) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("deviceId").is(deviceId).and("flag").is("0"));
+        List<RealTimeData> realTimeData = mongoTemplate.find(query, RealTimeData.class);
+        return realTimeData;
+    }
+
+    @Override
+    public void updateFlag(RealTimeData realTimeData) {
+        realTimeData.setFlag("1");
+        mongoTemplate.save(realTimeData);
     }
 }
