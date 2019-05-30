@@ -154,7 +154,7 @@ public class SensorService {
 
             //新增实时数据===================================================================start
             ModelServiceExample modelServiceExample = new ModelServiceExample();
-            modelServiceExample.createCriteria().andModelNameEqualTo(deviceModel).andFlagEqualTo("0");
+            modelServiceExample.createCriteria().andDeviceModelIdEqualTo(Integer.parseInt(sensor.getSensorModel())).andFlagEqualTo("0");
             List<ModelService> modelServices = modelServiceMapper.selectByExample(modelServiceExample);
             for (ModelService modelService : modelServices) {
                 RealTimeData realTimeData = new RealTimeData();
