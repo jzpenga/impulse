@@ -51,10 +51,15 @@ public class DataReportTask implements Runnable {
                 dataReportEntity.setSensorName(param.getSensorName());
                 dataReportEntity.setEquipmentNo(param.getSensorNo());
                 dataReportEntity.setDataKeyName(param.getDataValueAndKey().get(fieldName));
-                dataReportEntity.setDataValue(Double.valueOf(data.get(fieldName).textValue()).toString());
+
+                String textValue = data.get(fieldName).textValue();
+                if (!StringUtils.isEmpty(textValue) && textValue.contains(".") && textValue.indexOf(".")!=1){
+                    textValue = Double.valueOf(textValue).toString();
+                }
+                dataReportEntity.setDataValue(textValue);
                 dataReportEntity.setDataMark(dataMark);
                 dataReportEntities.add(dataReportEntity);
-                subData.put(fieldName,data.get(fieldName).textValue());
+                subData.put(fieldName, textValue);
             });
             //System.out.println("入库数据 ====》 "+dataReportEntities);
             //入库
