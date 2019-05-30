@@ -18,6 +18,7 @@ public class NBDXManager {
     private static Logger logger = LoggerFactory.getLogger(NBDXManager.class);
 
     private static final String MANUFACTURER_ID = "hyzg";
+    private static final String MANUFACTURER_ID_New = "b706451dbc604aaba9d2f9398eaeaf5d";
     private static final String MANUFACTURER_NAME = "hyzg";
 
     public static  RegDirectDeviceOutDTO registerDevice(DeviceInfo infoEntity) {
@@ -64,7 +65,7 @@ public class NBDXManager {
         ModifyDeviceInforInDTO mdiInDTO = new ModifyDeviceInforInDTO();
         mdiInDTO.setName(deviceInfo.getName());
         mdiInDTO.setDeviceType(deviceInfo.getDeviceType());
-        mdiInDTO.setManufacturerId(MANUFACTURER_ID);
+        mdiInDTO.setManufacturerId("HY600".equals(deviceInfo.getModel())?MANUFACTURER_ID:MANUFACTURER_ID_New);
         mdiInDTO.setManufacturerName(MANUFACTURER_NAME);
         mdiInDTO.setModel(deviceInfo.getModel());
         mdiInDTO.setProtocolType("CoAP");
