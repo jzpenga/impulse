@@ -55,7 +55,7 @@ public class RealTimeDataDaoImpl implements RealTimeDataDao {
         }
         Query query = new Query();
         Criteria criteria = new Criteria();
-        if(!dataHistoryQuery.getUserIds().isEmpty()){
+        if(dataHistoryQuery.getUserIds()!=null&&!dataHistoryQuery.getUserIds().isEmpty()){
             criteria.and("userId").in(dataHistoryQuery.getUserIds());
         }
         criteria.and("dataValue").exists(true);
@@ -99,6 +99,7 @@ public class RealTimeDataDaoImpl implements RealTimeDataDao {
         }
         Pageable pageable = new PageRequest(dataHistoryQuery.getPageNo() - 1, dataHistoryQuery.getPageSize(), sort);
         List<RealTimeData> realTimeDataList = mongoTemplate.find(query1.with(pageable), RealTimeData.class);
+
 
         PageBean pageBean = new PageBean(dataHistoryQuery.getPageNo(), dataHistoryQuery.getPageSize(), totalRecord.intValue());
         pageBean.setList(realTimeDataList);
