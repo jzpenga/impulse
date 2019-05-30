@@ -161,6 +161,7 @@ public class SensorService {
                 realTimeData.setCreateTime(new Date());
                 realTimeData.setDataKey(modelService.getServiceCode());
                 realTimeData.setDeviceId(deviceId);
+                realTimeData.setFlag("0");
                 realTimeDataDao.save(realTimeData);
             }
             //新增实时数据======================================================================end
@@ -640,6 +641,7 @@ public class SensorService {
                 realTimeData.setCreateTime(new Date());
                 realTimeData.setDataKey(modelService.getServiceCode());
                 realTimeData.setDeviceId(deviceId);
+                realTimeData.setFlag("0");
                 realTimeDataDao.save(realTimeData);
             }
             response.setResponseCode(ResponseCode.OK.getCode());
