@@ -126,6 +126,7 @@ public class DataReportService {
                         if (StringUtils.isNotBlank(dataReportEntity.getDataKeyName())) {
                             realTimeData1.setDataKeyName(dataReportEntity.getDataKeyName());
                         }
+                        realTimeData1.setFlag("0");
                         realTimeData1.setDataMark(dataReportEntity.getDataMark());
                         realTimeData1.setUpdateTime(new Date());
                         realTimeDataDao.save(realTimeData1);

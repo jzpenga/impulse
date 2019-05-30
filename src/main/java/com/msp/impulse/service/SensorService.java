@@ -154,13 +154,14 @@ public class SensorService {
 
             //新增实时数据===================================================================start
             ModelServiceExample modelServiceExample = new ModelServiceExample();
-            modelServiceExample.createCriteria().andModelNameEqualTo(deviceModel).andFlagEqualTo("0");
+            modelServiceExample.createCriteria().andDeviceModelIdEqualTo(Integer.parseInt(sensor.getSensorModel())).andFlagEqualTo("0");
             List<ModelService> modelServices = modelServiceMapper.selectByExample(modelServiceExample);
             for (ModelService modelService : modelServices) {
                 RealTimeData realTimeData = new RealTimeData();
                 realTimeData.setCreateTime(new Date());
                 realTimeData.setDataKey(modelService.getServiceCode());
                 realTimeData.setDeviceId(deviceId);
+                realTimeData.setFlag("0");
                 realTimeDataDao.save(realTimeData);
             }
             //新增实时数据======================================================================end
@@ -428,6 +429,12 @@ public class SensorService {
         sensor.setFlag("1");
         sensor.setUpdateUser(userId);
         sensorMapper.updateByPrimaryKey(sensor);
+
+        //删除实时数据
+        List<RealTimeData> realTimeDataList = realTimeDataDao.selectByDeviceId(sensor.getDeviceId());
+        for (RealTimeData realTimeData: realTimeDataList) {
+            realTimeDataDao.updateFlag(realTimeData);
+        }
         response.setResponseCode(ResponseCode.OK.getCode());
         response.setResponseMsg(ResponseCode.OK.getMessage());
         return response;
@@ -462,6 +469,12 @@ public class SensorService {
             sensor.setFlag("1");
             sensor.setUpdateUser(userId);
             sensorMapper.updateByPrimaryKey(sensor);
+
+            //删除实时数据
+            List<RealTimeData> realTimeDataList = realTimeDataDao.selectByDeviceId(sensor.getDeviceId());
+            for (RealTimeData realTimeData: realTimeDataList) {
+                realTimeDataDao.updateFlag(realTimeData);
+            }
         }
         response.setResponseCode(ResponseCode.OK.getCode());
         response.setResponseMsg(ResponseCode.OK.getMessage());
@@ -628,6 +641,7 @@ public class SensorService {
                 realTimeData.setCreateTime(new Date());
                 realTimeData.setDataKey(modelService.getServiceCode());
                 realTimeData.setDeviceId(deviceId);
+                realTimeData.setFlag("0");
                 realTimeDataDao.save(realTimeData);
             }
             response.setResponseCode(ResponseCode.OK.getCode());
