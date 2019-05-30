@@ -327,7 +327,7 @@
   <select id="findDicByCondition" parameterType="com.msp.impulse.query.DicQuery" resultType="com.msp.impulse.entity.Dictionary">
     select d.create_time createTime,d.create_user createUser,d.dic_code dicCode,
     d.dic_name dicName,d.flag,d.hierarchy,d.id,d.parent_id parentId,d.state,d.update_time updateTime
-    ,d.update_user updateUser,,d.ext1
+    ,d.update_user updateUser,d.ext1
     from  dictionary d
     where 1=1
     <if test="dicName != null and dicName!=''">
