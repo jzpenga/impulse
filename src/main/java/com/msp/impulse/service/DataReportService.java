@@ -138,7 +138,7 @@ public class DataReportService {
                         realTimeData1.setDataMark(dataReportEntity.getDataMark());
                         realTimeData1.setUpdateTime(new Date());
                         if(StringUtils.isNotBlank(ext1)){
-                            realTimeData1.setDataKeyExt(ext1);
+                            realTimeData1.setExt1(ext1);
                         }
                         realTimeDataDao.save(realTimeData1);
                     } else {//新增数据
@@ -165,7 +165,7 @@ public class DataReportService {
                         realTimeData.setFlag("0");
                         realTimeData.setCreateTime(new Date());
                         if(StringUtils.isNotBlank(ext1)){
-                            realTimeData.setDataKeyExt(ext1);
+                            realTimeData.setExt1(ext1);
                         }
                         realTimeDataDao.save(realTimeData);
                     }

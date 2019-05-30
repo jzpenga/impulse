@@ -23,7 +23,7 @@ public class RealTimeData implements Serializable {
 
     private String dataKey;
 
-    private String  dataKeyExt;
+    private String  ext1;
 
     private String dataValue;
 
@@ -115,12 +115,12 @@ public class RealTimeData implements Serializable {
         this.dataKey = dataKey == null ? null : dataKey.trim();
     }
 
-    public String getDataKeyExt() {
-        return dataKeyExt;
+    public String getExt1() {
+        return ext1;
     }
 
-    public void setDataKeyExt(String dataKeyExt) {
-        this.dataKeyExt = dataKeyExt;
+    public void setExt1(String ext1) {
+        this.ext1 = ext1;
     }
 
     public String getDataValue() {
