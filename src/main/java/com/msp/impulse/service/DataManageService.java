@@ -264,9 +264,9 @@ public class DataManageService {
         return response;
     }
 
-    public BaseResponse<List<RealTimeData>> findRealTimeDataByDeviceId(String deviceId) {
+    public BaseResponse<List<RealTimeData>> findRealTimeDataByDeviceId(String sensorNo) {
         BaseResponse response = new BaseResponse<>();
-        List<RealTimeData> realTimeDataList=realTimeDataDao.findRealTimeDataByDeviceId(deviceId);
+        List<RealTimeData> realTimeDataList=realTimeDataDao.findRealTimeDataByDeviceId(sensorNo);
         response.setData(realTimeDataList);
         response.setResponseMsg(ResponseCode.OK.getMessage());
         response.setResponseCode(ResponseCode.OK.getCode());

@@ -16,5 +16,5 @@ public interface RealTimeDataDao {
 
     void updateFlag(RealTimeData realTimeData);
 
-    List<RealTimeData> findRealTimeDataByDeviceId(String deviceId);
+    List<RealTimeData> findRealTimeDataByDeviceId(String sensorNo);
 }

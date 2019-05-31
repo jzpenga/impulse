@@ -122,9 +122,9 @@ public class RealTimeDataDaoImpl implements RealTimeDataDao {
     }
 
     @Override
-    public List<RealTimeData> findRealTimeDataByDeviceId(String deviceId) {
+    public List<RealTimeData> findRealTimeDataByDeviceId(String sensorNo) {
         Query query = new Query();
-        query.addCriteria(Criteria.where("deviceId").is(deviceId).and("flag").is("0"));
+        query.addCriteria(Criteria.where("equipmentNo").is(sensorNo).and("flag").is("0"));
         List<RealTimeData> realTimeDataList = mongoTemplate.find(query, RealTimeData.class);
         return realTimeDataList;
     }
