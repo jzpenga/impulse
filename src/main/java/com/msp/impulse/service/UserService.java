@@ -163,6 +163,11 @@ public class UserService {
     public BaseResponse findUserInfo(String userId) {
         BaseResponse response=new BaseResponse();
         AppUserVo appUserVo = userMapper.findUserInfo(userId);
+        if(appUserVo==null){
+            response.setResponseCode(ResponseCode.TOKEN_TIME_OUT.getCode());
+            response.setResponseMsg(ResponseCode.TOKEN_TIME_OUT.getMessage());
+            return response;
+        }
         response.setData(appUserVo);
         response.setResponseCode(ResponseCode.OK.getCode());
         response.setResponseMsg(ResponseCode.OK.getMessage());

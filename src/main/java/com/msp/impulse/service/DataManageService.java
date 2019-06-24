@@ -8,6 +8,7 @@ import com.msp.impulse.dao.ControlInstruDao;
 import com.msp.impulse.dao.DataManageDao;
 import com.msp.impulse.dao.RealTimeDataDao;
 import com.msp.impulse.entity.PageBean;
+import com.msp.impulse.entity.RealTimeData;
 import com.msp.impulse.entity.User;
 import com.msp.impulse.entity.UserExample;
 import com.msp.impulse.exception.MyException;
@@ -258,6 +259,15 @@ public class DataManageService {
         BaseResponse response = new BaseResponse<>();
         PageBean pageBean= realTimeDataDao.selectRealTimeDataInfo(dataHistoryQuery);
         response.setData(pageBean);
+        response.setResponseMsg(ResponseCode.OK.getMessage());
+        response.setResponseCode(ResponseCode.OK.getCode());
+        return response;
+    }
+
+    public BaseResponse<List<RealTimeData>> findRealTimeDataByDeviceId(String sensorNo) {
+        BaseResponse response = new BaseResponse<>();
+        List<RealTimeData> realTimeDataList=realTimeDataDao.findRealTimeDataByDeviceId(sensorNo);
+        response.setData(realTimeDataList);
         response.setResponseMsg(ResponseCode.OK.getMessage());
         response.setResponseCode(ResponseCode.OK.getCode());
         return response;

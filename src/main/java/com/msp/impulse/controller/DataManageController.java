@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.github.pagehelper.PageInfo;
 import com.msp.impulse.base.BaseResponse;
 import com.msp.impulse.base.ResponseCode;
+import com.msp.impulse.entity.RealTimeData;
 import com.msp.impulse.exception.MyException;
 import com.msp.impulse.query.DataHistoryQuery;
 import com.msp.impulse.service.DataManageService;
@@ -12,12 +13,10 @@ import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
 @RequestMapping("impulse/dataManage")
@@ -120,6 +119,25 @@ public class DataManageController {
         BaseResponse response;
         try {
             response = dataManageService.findHistoryData(dataHistoryQuery);
+        } catch (MyException e) {
+            logger.error(e.getMessage(), e);
+            response = new BaseResponse();
+            response.setResponseCode(ResponseCode.SERVER_FAILED.getCode());
+            response.setResponseMsg(ResponseCode.SERVER_FAILED.getMessage());
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            response = new BaseResponse();
+            response.setResponseCode(ResponseCode.SERVER_FAILED.getCode());
+            response.setResponseMsg(ResponseCode.SERVER_FAILED.getMessage());
+        }
+        return response;
+    }
+    @GetMapping("findRealTimeDataByDeviceId")
+    @ApiOperation(value = "根据deviceId查询实时数据信息", notes = "根据deviceId查询实时数据信息", tags = "传感器操作", httpMethod = "GET")
+    public BaseResponse<List<RealTimeData>> findRealTimeDataByDeviceId(String deviceId) {
+        BaseResponse<List<RealTimeData>> response;
+        try {
+            response = dataManageService.findRealTimeDataByDeviceId(deviceId);
         } catch (MyException e) {
             logger.error(e.getMessage(), e);
             response = new BaseResponse();

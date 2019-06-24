@@ -7,6 +7,7 @@
     <result column="dic_name" jdbcType="VARCHAR" property="dicName" />
     <result column="hierarchy" jdbcType="VARCHAR" property="hierarchy" />
     <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+    <result column="ext1" jdbcType="VARCHAR" property="ext1" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_user" jdbcType="VARCHAR" property="updateUser" />
@@ -73,7 +74,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, dic_code, dic_name, hierarchy, parent_id, update_time, create_time, update_user, 
+    id, dic_code, dic_name, hierarchy, parent_id, ext1, update_time, create_time, update_user, 
     create_user, state, flag
   </sql>
   <select id="selectByExample" parameterType="com.msp.impulse.entity.DictionaryExample" resultMap="BaseResultMap">
@@ -108,18 +109,20 @@
   </delete>
   <insert id="insert" parameterType="com.msp.impulse.entity.Dictionary">
     insert into dictionary (id, dic_code, dic_name, 
-      hierarchy, parent_id, update_time, 
-      create_time, update_user, create_user, 
-      state, flag)
+      hierarchy, parent_id, ext1, 
+      update_time, create_time, update_user, 
+      create_user, state, flag
+      )
     values (#{id,jdbcType=INTEGER}, #{dicCode,jdbcType=VARCHAR}, #{dicName,jdbcType=VARCHAR}, 
-      #{hierarchy,jdbcType=VARCHAR}, #{parentId,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, 
-      #{state,jdbcType=VARCHAR}, #{flag,jdbcType=VARCHAR})
+      #{hierarchy,jdbcType=VARCHAR}, #{parentId,jdbcType=INTEGER}, #{ext1,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, 
+      #{createUser,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR}, #{flag,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.msp.impulse.entity.Dictionary">
     <selectKey keyColumn="id" keyProperty="id" order="AFTER"
                resultType="int">
-      SELECT LAST_INSERT_ID()
+    SELECT LAST_INSERT_ID()
     </selectKey>
     insert into dictionary
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -137,6 +140,9 @@
       </if>
       <if test="parentId != null">
         parent_id,
+      </if>
+      <if test="ext1 != null">
+        ext1,
       </if>
       <if test="updateTime != null">
         update_time,
@@ -172,6 +178,9 @@
       </if>
       <if test="parentId != null">
         #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="ext1 != null">
+        #{ext1,jdbcType=VARCHAR},
       </if>
       <if test="updateTime != null">
         #{updateTime,jdbcType=TIMESTAMP},
@@ -217,6 +226,9 @@
       <if test="record.parentId != null">
         parent_id = #{record.parentId,jdbcType=INTEGER},
       </if>
+      <if test="record.ext1 != null">
+        ext1 = #{record.ext1,jdbcType=VARCHAR},
+      </if>
       <if test="record.updateTime != null">
         update_time = #{record.updateTime,jdbcType=TIMESTAMP},
       </if>
@@ -247,6 +259,7 @@
       dic_name = #{record.dicName,jdbcType=VARCHAR},
       hierarchy = #{record.hierarchy,jdbcType=VARCHAR},
       parent_id = #{record.parentId,jdbcType=INTEGER},
+      ext1 = #{record.ext1,jdbcType=VARCHAR},
       update_time = #{record.updateTime,jdbcType=TIMESTAMP},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       update_user = #{record.updateUser,jdbcType=VARCHAR},
@@ -271,6 +284,9 @@
       </if>
       <if test="parentId != null">
         parent_id = #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="ext1 != null">
+        ext1 = #{ext1,jdbcType=VARCHAR},
       </if>
       <if test="updateTime != null">
         update_time = #{updateTime,jdbcType=TIMESTAMP},
@@ -299,6 +315,7 @@
       dic_name = #{dicName,jdbcType=VARCHAR},
       hierarchy = #{hierarchy,jdbcType=VARCHAR},
       parent_id = #{parentId,jdbcType=INTEGER},
+      ext1 = #{ext1,jdbcType=VARCHAR},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_user = #{updateUser,jdbcType=VARCHAR},
@@ -309,15 +326,15 @@
   </update>
   <select id="findDicByCondition" parameterType="com.msp.impulse.query.DicQuery" resultType="com.msp.impulse.entity.Dictionary">
     select d.create_time createTime,d.create_user createUser,d.dic_code dicCode,
-      d.dic_name dicName,d.flag,d.hierarchy,d.id,d.parent_id parentId,d.state,d.update_time updateTime
-     ,d.update_user updateUser
+    d.dic_name dicName,d.flag,d.hierarchy,d.id,d.parent_id parentId,d.state,d.update_time updateTime
+    ,d.update_user updateUser,d.ext1
     from  dictionary d
     where 1=1
     <if test="dicName != null and dicName!=''">
-    and d.dic_name like "%"#{dicName}"%"
+      and d.dic_name like "%"#{dicName}"%"
     </if>
     <if test="dicCode != null and dicCode!=''">
-    and d.dic_code=#{dicCode}
+      and d.dic_code=#{dicCode}
     </if>
     and d.flag!="1" and d.hierarchy="1"
   </select>
@@ -325,7 +342,7 @@
     select
       d.create_time createTime,d.create_user createUser,d.dic_code dicCode,
       d.dic_name dicName,d.flag,d.hierarchy,d.id,d.parent_id parentId,d.state,d.update_time updateTime
-     ,d.update_user updateUser
+     ,d.update_user updateUser,d.ext1
     from dictionary d where d.parent_id=#{id} and d.flag!="1"
   </select>
   <select id="findDicByDicCode" parameterType="string" resultType="com.msp.impulse.entity.Dictionary">
