@@ -50,6 +50,6 @@ nb:
   secret: 3IoAGtbiAeMjk72WdICQTVXaoT0a
   manufacturerId: hyzg
   manufacturerName: hyzg
-  dataCallbackUrl: http://47.105.55.134:8888/v1.0.0/messageReceiver
+  dataCallbackUrl: http://47.105.55.134:8889/v1.0.0/messageReceiver
 
 
