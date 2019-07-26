@@ -3,6 +3,7 @@ package com.msp.impulse.nb.utils;
 import com.iotplatform.client.NorthApiClient;
 import com.iotplatform.client.NorthApiException;
 import com.iotplatform.client.dto.ClientInfo;
+import com.msp.impulse.nb.config.NBIotConfigProperties;
 
 public class AuthUtil {
 

@@ -5,6 +5,7 @@ import com.iotplatform.client.NorthApiException;
 import com.iotplatform.client.dto.*;
 import com.iotplatform.client.invokeapi.Authentication;
 import com.iotplatform.client.invokeapi.DeviceManagement;
+import com.msp.impulse.nb.config.NBIotConfigProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,9 +18,7 @@ public class NBDXManager {
 
     private static Logger logger = LoggerFactory.getLogger(NBDXManager.class);
 
-    private static final String MANUFACTURER_ID = "hyzg";
     private static final String MANUFACTURER_ID_New = "b706451dbc604aaba9d2f9398eaeaf5d";
-    private static final String MANUFACTURER_NAME = "hyzg";
 
     public static  RegDirectDeviceOutDTO registerDevice(DeviceInfo infoEntity) {
 
@@ -62,11 +61,12 @@ public class NBDXManager {
 
 
     private static  boolean modifyDeviceInfo(DeviceManagement deviceManagement, String accessToken,String deviceId, DeviceInfo deviceInfo) {
+        NBIotConfigProperties nbIotConfigProperties = SpringContextHolder.getBean(NBIotConfigProperties.class);
         ModifyDeviceInforInDTO mdiInDTO = new ModifyDeviceInforInDTO();
         mdiInDTO.setName(deviceInfo.getName());
         mdiInDTO.setDeviceType(deviceInfo.getDeviceType());
-        mdiInDTO.setManufacturerId("HY600".equals(deviceInfo.getModel())?MANUFACTURER_ID:MANUFACTURER_ID_New);
-        mdiInDTO.setManufacturerName(MANUFACTURER_NAME);
+        mdiInDTO.setManufacturerId("HY600".equals(deviceInfo.getModel())?nbIotConfigProperties.getManufacturerId():MANUFACTURER_ID_New);
+        mdiInDTO.setManufacturerName(nbIotConfigProperties.getManufacturerName());
         mdiInDTO.setModel(deviceInfo.getModel());
         mdiInDTO.setProtocolType("CoAP");
         try {

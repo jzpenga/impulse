@@ -34,7 +34,7 @@ mybatis:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 server:
-  port: 8072
+  port: 8888
   session:
     timeout:3600
 
@@ -42,5 +42,14 @@ logging:
   level:
     root: INFO
   file: impulse.log
+
+nb:
+  platformIp: device.api.ct10649.com
+  platformPort: 8743
+  appId: ew3ulaLFw7lUFvxhZO8fDOEfWSga
+  secret: 3IoAGtbiAeMjk72WdICQTVXaoT0a
+  manufacturerId: hyzg
+  manufacturerName: hyzg
+  dataCallbackUrl: http://47.105.55.134:8888/v1.0.0/messageReceiver
 
 
