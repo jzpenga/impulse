@@ -56,9 +56,9 @@ public class SubscribeInfoController {
                 baseResponse.setResponseMsg("接口调用失败！");
             }else {
                 //入库
-                subscribeInfoEntity.setPassword("");
-                SubscribeInfoEntity entity = subscribeInfoService.saveSubscribeInfo(subscribeInfoEntity);
-                if (entity!=null){
+                //subscribeInfoEntity.setPassword("");
+                int count = subscribeInfoService.saveSubscribeInfo(subscribeInfoEntity);
+                if (count > 0){
                     baseResponse.setResponseCode(200);
                     baseResponse.setResponseMsg("success !");
                 }else {
