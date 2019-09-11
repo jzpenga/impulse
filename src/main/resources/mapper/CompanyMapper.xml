@@ -561,7 +561,7 @@
     user u
    on u.id=a.agent_id
   </select>
-  <select id="selectCompanyByUserId" parameterType="int" resultType="string">
+  <select id="selectCompanyByUserId" parameterType="string" resultType="string">
       select DISTINCT c.callback_url from user u,company c where u.company_id=c.id and u.id=#{userId}
   </select>
 </mapper>
