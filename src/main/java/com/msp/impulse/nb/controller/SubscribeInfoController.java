@@ -25,10 +25,11 @@ public class SubscribeInfoController {
     /**
      * 200成功
      *
-     * 400 callbackUrl 为空
+     * 400 callbackUrl 为空,
      * 403 用户名密码认证失败
      *
      * 503调用callbaseUrl接口失败，注册接口失败
+     *
      */
     @PostMapping
     public BaseResponse<Object> subscribeData(@RequestBody SubscribeInfoEntity subscribeInfoEntity){
@@ -39,6 +40,11 @@ public class SubscribeInfoController {
             return baseResponse;
         }
 
+        if("admin".equals(subscribeInfoEntity.getLoginName())){
+            baseResponse.setResponseCode(400);
+            baseResponse.setResponseMsg("用户名密码不合规范！");
+            return baseResponse;
+        }
         Company company = userService.findByNameAndPwd(subscribeInfoEntity.getLoginName(), subscribeInfoEntity.getPassword()).getData();
         if (company!=null){
             //验证成功

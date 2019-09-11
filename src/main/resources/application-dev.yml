@@ -8,19 +8,19 @@ spring:
       #监控统计拦截的filters
       filters: stat
       driver-class-name: com.mysql.jdbc.Driver
-      url: jdbc:mysql://rm-8vb9q0m9d1vtweyguzo.mysql.zhangbei.rds.aliyuncs.com:3306/huanyu_admin?characterEncoding=utf-8&useSSL=false&useCursorFetch=true&allowPublicKeyRetrieval=true
-      username: bht
-      password: bht_2018
+      url: jdbc:mysql://rm-m5e7x039d1rj7k336po.mysql.rds.aliyuncs.com:3306/huanyu_admin_dev?characterEncoding=utf-8&useSSL=false&useCursorFetch=true&allowPublicKeyRetrieval=true
+      username: hyzg
+      password: Hyzg8888
   data:
      mongodb:
        custom:
         hosts:
-        - dds-8vbce58e780028c41916-pub.mongodb.zhangbei.rds.aliyuncs.com
+        - 47.105.55.134
         ports:
-           - 3717
-        database: admin
-        username: root
-        password: bht_2018
+           - 8060
+        database: huanyu_admin_dev
+        username: hyzg_dev
+        password: hyzg8888
   jackson:
     deserialization:
       FAIL_ON_UNKNOWN_PROPERTIES: false
@@ -46,4 +46,12 @@ logging:
     root: INFO
   file: impulse.log
 
+nb:
+  platformIp: 180.101.147.89
+  platformPort: 8743
+  appId: zP_FVj4ytNsqYGiakgFmWwMO_hga
+  secret: CkOFfYserdkJvoXeERe__P0unlMa
+  manufacturerId: hyzg
+  manufacturerName: hyzg
+  dataCallbackUrl: http://47.105.55.134:8072/v1.0.0/messageReceiver
 

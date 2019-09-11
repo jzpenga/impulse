@@ -7,7 +7,7 @@ import com.iotplatform.client.invokeapi.Authentication;
 import com.iotplatform.client.invokeapi.SubscriptionManagement;
 import com.iotplatform.utils.PropertyUtil;
 import com.msp.impulse.nb.utils.AuthUtil;
-import com.msp.impulse.nb.utils.NBIotConfigProperties;
+import com.msp.impulse.nb.config.NBIotConfigProperties;
 import com.msp.impulse.nb.utils.SpringContextHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +24,8 @@ public class ApplicationMessageReceiver implements ApplicationListener<Applicati
         //应用启动成功，注册回调
         try {
             /**---------------------initialize northApiClient------------------------*/
-            NorthApiClient northApiClient = AuthUtil.initApiClient(SpringContextHolder.getBean(NBIotConfigProperties.class));
+            NBIotConfigProperties iotConfigProperties = SpringContextHolder.getBean(NBIotConfigProperties.class);
+            NorthApiClient northApiClient = AuthUtil.initApiClient(iotConfigProperties);
             SubscriptionManagement subscriptionManagement = new SubscriptionManagement(northApiClient);
 
             /**---------------------get accessToken at first------------------------*/
@@ -45,8 +46,8 @@ public class ApplicationMessageReceiver implements ApplicationListener<Applicati
                 /**---------------------sub deviceAdded notification------------------------*/
                 //note: 10.X.X.X is a LAN IP, not a public IP, so subscription callbackUrl's IP cannot be 10.X.X.X
                 System.out.println("======subscribe to device business data notification======");
-                String callbackUrl = "http://47.105.55.134:8072/v1.0.0/messageReceiver";//this is a test callbackUrl
-                subDeviceData(subscriptionManagement, "deviceAdded", callbackUrl, accessToken);
+                String callbackUrl = iotConfigProperties.getDataCallbackUrl();//this is a test callbackUrl
+                //subDeviceData(subscriptionManagement, "deviceAdded", callbackUrl, accessToken);
                 subDeviceData(subscriptionManagement, "deviceDataChanged", callbackUrl, accessToken);
             }
 
