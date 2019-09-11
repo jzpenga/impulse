@@ -7,6 +7,7 @@ import com.msp.impulse.exception.MyException;
 import com.msp.impulse.mapper.*;
 import com.msp.impulse.nb.entity.DataReportEntity;
 import com.msp.impulse.vo.DataReportVo;
+import io.swagger.annotations.Example;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,7 +55,8 @@ public class DataReportService {
         dataReportVo1.setSensorNo(dataReportVo1.getSensorNo());
         dataReportVo1.setSensorType(dataReportVo1.getSensorType());
         dataReportVo1.setUserId(dataReportVo1.getUserId());
-        dataReportVo1.setCallbackUrl(dataReportVo1.getCallbackUrl());
+        String callback = companyMapper.selectCompanyByUserId(dataReportVo1.getUserId());
+        dataReportVo1.setCallbackUrl(callback);
 //        dataReportVo1.setServiceCode();
         dataReportVo1.setDataValueAndKey(dataKeyValue);
 

@@ -43,4 +43,6 @@ public interface CompanyMapper {
     List<Company> seletByUserName(String userName);
 
     CompanyInfoVo selectCompanyById(Integer companyId);
+
+    String selectCompanyByUserId(String userId);
 }
